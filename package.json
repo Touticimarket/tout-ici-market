@@ -1,9 +1,22 @@
-import { Bike, Briefcase, Car, Gamepad2, Hammer, Home, MoreHorizontal, Phone, Shirt, Sofa, Umbrella } from "lucide-react";
-const categories = [["Automobile",Car],["Moto",Bike],["Immobilier",Home],["Emploi",Briefcase],["Mode",Shirt],["Téléphones",Phone],["Maison & Jardin",Sofa],["Vacances & Loisirs",Umbrella],["Bricolage",Hammer],["Jeux & Consoles",Gamepad2],["Autres catégories",MoreHorizontal]];
-export default function Categories() {
-  return <section id="categories" className="mx-auto max-w-7xl px-4 md:px-8 py-10">
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 xl:grid-cols-11 gap-4">
-      {categories.map(([name, Icon]: any) => <div key={name} className="category-card"><Icon className="mx-auto mb-3" size={38}/><div className="font-black text-sm">{name}</div></div>)}
-    </div>
-  </section>;
+{
+  "name": "tout-ici-market",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "@supabase/supabase-js": "latest",
+    "lucide-react": "latest"
+  },
+  "devDependencies": {
+    "tailwindcss": "latest",
+    "postcss": "latest",
+    "typescript": "latest"
+  }
 }
