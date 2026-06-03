@@ -7,15 +7,17 @@
     "build": "next build",
     "start": "next start"
   },
- "devDependencies": {
-  "@types/node": "latest",
-  "@types/react": "latest",
-  "@types/react-dom": "latest",
-  "tailwindcss": "latest",
-  "postcss": "latest",
-  "typescript": "latest"
-},
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "@supabase/supabase-js": "latest",
+    "lucide-react": "latest"
+  },
   "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
     "tailwindcss": "latest",
     "postcss": "latest",
     "typescript": "latest"
