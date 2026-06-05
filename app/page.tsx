@@ -1,18 +1,18 @@
 export default function Home() {
-  const links = [
-    { href: "/automobile", left: "3.3%", top: "44.1%", width: "18.7%" },
-    { href: "/moto", left: "22.4%", top: "44.1%", width: "16.8%" },
-    { href: "/immobilier", left: "39.6%", top: "44.1%", width: "17%" },
-    { href: "/emploi", left: "56.8%", top: "44.1%", width: "18.1%" },
-    { href: "/mode", left: "75.3%", top: "44.1%", width: "19.4%" },
+ const links = [
+  { href: "/automobile", left: "4.5%", top: "42.8%", width: "16%" },
+  { href: "/moto", left: "21.2%", top: "42.8%", width: "16%" },
+  { href: "/immobilier", left: "38%", top: "42.8%", width: "16%" },
+  { href: "/emploi", left: "54.7%", top: "42.8%", width: "16%" },
+  { href: "/mode", left: "71.5%", top: "42.8%", width: "20%" },
 
-    { href: "/telephones", left: "3.3%", top: "50.2%", width: "17.4%" },
-    { href: "/maison-jardin", left: "21.1%", top: "50.2%", width: "15.4%" },
-    { href: "/vacances-loisirs", left: "36.8%", top: "50.2%", width: "16.6%" },
-    { href: "/bricolage", left: "53.8%", top: "50.2%", width: "12%" },
-    { href: "/jeux-consoles", left: "66.1%", top: "50.2%", width: "14%" },
-    { href: "/autres", left: "80.3%", top: "50.2%", width: "14.4%" },
-  ];
+  { href: "/telephones", left: "4.5%", top: "48.7%", width: "15%" },
+  { href: "/maison-jardin", left: "20.7%", top: "48.7%", width: "15%" },
+  { href: "/vacances-loisirs", left: "36.7%", top: "48.7%", width: "16%" },
+  { href: "/bricolage", left: "53.2%", top: "48.7%", width: "13%" },
+  { href: "/jeux-consoles", left: "66.8%", top: "48.7%", width: "14%" },
+  { href: "/autres", left: "81.2%", top: "48.7%", width: "14%" },
+];
 
   return (
     <main style={{ position: "relative", width: "100%" }}>
