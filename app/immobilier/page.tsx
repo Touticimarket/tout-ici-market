@@ -1,4 +1,4 @@
-xport default function ImmobilierPage() {
+export default function ImmobilierPage() {
   return (
     <main
       style={{
