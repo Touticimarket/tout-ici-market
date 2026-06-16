@@ -1,5 +1,6 @@
 export default function Home() {
  const links = [
+ { href: "/automobile/deposer", left: "73%", top: "2.2%", width: "11%" },
   { href: "/automobile", left: "4.5%", top: "42.8%", width: "16%" },
   { href: "/moto", left: "21.2%", top: "42.8%", width: "16%" },
   { href: "/immobilier", left: "38%", top: "42.8%", width: "16%" },
