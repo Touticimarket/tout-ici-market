@@ -50,7 +50,7 @@ export default function ChoisirTypeAutomobile(){
         return <section className="auto-choose-group" key={groupe}>
           <h2>{groupe}</h2>
           <div className="auto-choose-grid">{liste.map(type=>
-            <a key={type.slug} href={"/automobile/deposer?type="+encodeURIComponent(type.slug)} className="auto-choose-card">
+            <a key={type.slug} href={type.catalogueAuto?"/automobile/deposer?type="+encodeURIComponent(type.slug):"/deposer/automobile/"+type.slug} className="auto-choose-card">
               <span className="auto-choose-icon" aria-hidden="true">{type.icone}</span>
               <span><strong>{type.nom} <span aria-hidden="true" style={{color:"#0d4ccc"}}>›</span></strong><p>{type.description}</p></span>
             </a>
