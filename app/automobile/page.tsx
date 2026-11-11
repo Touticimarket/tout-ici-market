@@ -37,9 +37,9 @@ export default function AutomobilePage() {
             <p style={{ fontSize: 22, lineHeight: 1.5 }}>
               Trouvez votre voiture neuve, d’occasion, électrique, hybride ou utilitaire.
             </p>
-            <button style={{ ...buttonStyle, background: "#F6B900", color: "#111" }}>
+            <a href="/automobile/deposer" style={{ ...buttonStyle, background: "#F6B900", color: "#111", display: "inline-block", textDecoration: "none" }}>
               Déposer une annonce auto
-            </button>
+            </a>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, fontSize: 46 }}>
