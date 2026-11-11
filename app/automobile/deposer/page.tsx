@@ -316,7 +316,7 @@ export default function DeposerAutoPage() {
           <a href="/automobile" style={{color:"#0047cb",textDecoration:"none"}}>Automobile</a>
           <a href="/moto" style={{color:"#00348b",textDecoration:"none"}}>Moto</a>
           <a href="/immobilier" style={{color:"#00348b",textDecoration:"none"}}>Immobilier</a>
-          <a href="/automobile/deposer" style={{background:"#ffcf1f",padding:"11px 15px",borderRadius:13,color:"#10214a",textDecoration:"none"}}>Déposer une annonce</a>
+          <a href="/deposer" style={{background:"#ffcf1f",padding:"11px 15px",borderRadius:13,color:"#10214a",textDecoration:"none"}}>Déposer une annonce</a>
         </nav>
         <section className="auto-hero">
           <div>
