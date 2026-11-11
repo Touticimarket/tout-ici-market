@@ -8,11 +8,27 @@ export default function AutomobilePage() {
 
   return (
     <main style={{ fontFamily: "Arial, sans-serif", background: "#f8f9fb", minHeight: "100vh" }}>
-      <header style={{ background: "white", padding: "18px 5%", borderBottom: "1px solid #eee", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-        <a href="/" style={{ color: "#0047BB", fontWeight: "bold", textDecoration: "none" }}>
-          ← Retour accueil
-        </a>
-      </header>
+     <header
+  style={{
+    background: "white",
+    padding: "18px 5%",
+    borderBottom: "1px solid #eee",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  }}
+>
+  <a
+    href="/"
+    style={{
+      color: "#0047BB",
+      fontWeight: "bold",
+      textDecoration: "none",
+    }}
+  >
+    ← Retour accueil
+  </a>
+</header>
 
       <section style={{ width: "92%", margin: "30px auto", borderRadius: 30, overflow: "hidden", background: "linear-gradient(135deg,#003D99,#0b5be0)", color: "white", padding: "55px 5%" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 30, alignItems: "center" }}>
