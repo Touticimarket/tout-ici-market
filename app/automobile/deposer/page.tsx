@@ -44,6 +44,7 @@ export default function DeposerAutoPage() {
   const [publishing, setPublishing] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [publicationId, setPublicationId] = useState("");
+  const [draftId, setDraftId] = useState("");
 
   const [form, setForm] = useState({
     marqueId: "",
@@ -107,6 +108,7 @@ export default function DeposerAutoPage() {
   }
 
   function choisirPhotos(files: FileList | null) {
+    if (draftId) { setMessage("Un brouillon existe déjà. Réessayez la publication sans modifier les photos."); return; }
     if (!files) return;
     const images = [...photos, ...Array.from(files)].filter((file) => file.type.startsWith("image/") && file.size <= 10 * 1024 * 1024).slice(0, 20);
     photoUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -124,6 +126,7 @@ export default function DeposerAutoPage() {
   }
 
   function supprimerPhoto(index: number) {
+    if (draftId) { setMessage("Un brouillon existe déjà. Réessayez la publication sans modifier les photos."); return; }
     const images = photos.filter((_, i) => i !== index);
     photoUrls.forEach((url) => URL.revokeObjectURL(url));
     setPhotos(images);
@@ -155,48 +158,66 @@ export default function DeposerAutoPage() {
       return;
     }
     setPublishing(true);
+    let currentDraft = draftId;
     try {
-      const {data: annonce, error: insertError} = await supabase.from("annonces_auto").insert({
-        user_id: userData.user.id,
-        marque: form.marque,
-        modele: form.modele,
-        finition: form.finition,
-        version_text: form.motorisation,
-        annee: Number(form.annee),
-        kilometrage: Number(form.kilometrage),
-        carburant: form.carburant,
-        boite: form.boite,
-        puissance_ch: Number(form.puissance_ch || 0),
-        prix: Number(form.prix),
-        ville: form.ville.trim(),
-        departement: form.departement.trim(),
-        description: form.description.trim(),
-        options,
-        statut: "publiee",
-        mia_verifie: false,
-      }).select("id").single();
-      if (insertError || !annonce) throw new Error(insertError?.message || "Enregistrement de l’annonce impossible.");
-
-      const medias: {annonce_id:string; user_id:string; storage_path:string; ordre:number}[] = [];
-      for (let index=0;index<photos.length;index++) {
-        const photo = photos[index];
-        const extension = photo.type === "image/png" ? "png" : photo.type === "image/webp" ? "webp" : "jpg";
-        const storagePath = userData.user.id + "/" + annonce.id + "/" + String(index + 1).padStart(2, "0") + "-" + crypto.randomUUID() + "." + extension;
-        setMessage("Envoi des photos : " + (index+1) + "/" + photos.length);
-        const {error: photoError} = await supabase.storage.from("annonces-auto").upload(storagePath, photo, {
-          contentType: photo.type,
-          cacheControl: "3600",
-          upsert: false
-        });
-        if (photoError) throw new Error("Photo " + (index+1) + " : " + photoError.message);
-        medias.push({annonce_id:String(annonce.id),user_id:userData.user.id,storage_path:storagePath,ordre:index});
+      if (!currentDraft) {
+        const {data: annonce, error: insertError} = await supabase.from("annonces_auto").insert({
+          user_id: userData.user.id,
+          marque: form.marque,
+          modele: form.modele,
+          finition: form.finition,
+          version_text: form.motorisation,
+          annee: Number(form.annee),
+          kilometrage: Number(form.kilometrage),
+          carburant: form.carburant,
+          boite: form.boite,
+          puissance_ch: Number(form.puissance_ch || 0),
+          prix: Number(form.prix),
+          ville: form.ville.trim(),
+          departement: form.departement.trim(),
+          description: form.description.trim(),
+          options,
+          statut: "brouillon",
+          mia_verifie: false,
+        }).select("id").single();
+        if (insertError || !annonce) throw new Error(insertError?.message || "Impossible de créer le brouillon.");
+        currentDraft = String(annonce.id);
+        setDraftId(currentDraft);
       }
-      const {error: mediasError} = await supabase.from("annonces_auto_medias").insert(medias);
-      if (mediasError) throw new Error("Photos envoyées, mais association à l’annonce impossible : " + mediasError.message);
-      setPublicationId(String(annonce.id));
-      setMessage("Votre annonce et ses " + photos.length + " photo(s) ont été enregistrées avec succès !");
-    } catch (error) {
-      setMessage("Publication incomplète : " + (error instanceof Error ? error.message : "Erreur inconnue") + ". Si une annonce a déjà été créée, ne recommencez pas avant vérification.");
+
+      const {data:existingPhotos,error:readError}=await supabase.from("annonces_auto_photos")
+        .select("url,ordre").eq("annonce_id",currentDraft);
+      if (readError) throw new Error("Lecture des photos : "+readError.message);
+      const currentPhotos=existingPhotos || [];
+      for (let index=currentPhotos.length;index<photos.length;index++) {
+        const photo=photos[index];
+        if(!["image/jpeg","image/png","image/webp"].includes(photo.type) || photo.size>10*1024*1024) {
+          throw new Error("Photo invalide ou supérieure à 10 Mo.");
+        }
+        const extension = photo.type === "image/png" ? "png" : photo.type === "image/webp" ? "webp" : "jpg";
+        const storagePath = userData.user.id + "/" + currentDraft + "/" + String(index + 1).padStart(2,"0") + "-" + crypto.randomUUID() + "." + extension;
+        setMessage("Envoi des photos : "+(index+1)+"/"+photos.length);
+        const {error:photoError}=await supabase.storage.from("annonces-auto")
+          .upload(storagePath,photo,{contentType:photo.type,cacheControl:"3600",upsert:false});
+        if(photoError) throw new Error("Photo "+(index+1)+" : "+photoError.message);
+        const publicUrl=supabase.storage.from("annonces-auto").getPublicUrl(storagePath).data.publicUrl;
+        const {error:linkError}=await supabase.from("annonces_auto_photos")
+          .insert({annonce_id:currentDraft,url:publicUrl,ordre:index});
+        if(linkError) {
+          await supabase.storage.from("annonces-auto").remove([storagePath]);
+          throw new Error("Association de la photo : "+linkError.message);
+        }
+      }
+      const {error:publishError}=await supabase.from("annonces_auto")
+        .update({statut:"publiee"}).eq("id",currentDraft).eq("user_id",userData.user.id);
+      if(publishError) throw new Error("Validation finale de l’annonce : "+publishError.message);
+      setPublicationId(currentDraft);
+      setDraftId("");
+      setMessage("Votre annonce et ses photos sont publiées !");
+    } catch(error) {
+      setMessage("Enregistrement interrompu : "+(error instanceof Error?error.message:"Erreur inconnue")+
+        ". Votre brouillon est conservé ; vous pouvez réessayer.");
+    }
     } finally {
       setPublishing(false);
     }
