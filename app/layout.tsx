@@ -10,29 +10,31 @@ export default function RootLayout({
       <body style={{ margin: 0 }}>
         <header
           style={{
-            height: "72px",
-            display: "flex",
-            alignItems: "center",
-            padding: "0 16px",
-            background: "#ffffff",
-            boxSizing: "border-box",
+            height: "0px",
+            position: "relative",
+            zIndex: 20,
           }}
         >
           <a
             href="/"
             aria-label="Accueil TOUT ICI MARKET"
             style={{
+              position: "absolute",
+              top: "66px",
+              left: "16px",
+              transform: "translateY(-50%)",
               display: "flex",
               alignItems: "center",
-              flexShrink: 0,
+              textDecoration: "none",
+              zIndex: 20,
             }}
           >
             <img
               src="/toutici market.png"
               alt="TOUT ICI MARKET"
               style={{
-                width: "150px",
-                maxHeight: "58px",
+                width: "190px",
+                maxHeight: "70px",
                 height: "auto",
                 objectFit: "contain",
                 display: "block",
