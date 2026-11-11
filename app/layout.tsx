@@ -20,7 +20,7 @@ export default function RootLayout({
             aria-label="Accueil TOUT ICI MARKET"
             style={{
               position: "absolute",
-              top: "66px",
+              top: "56px",
               left: "16px",
               transform: "translateY(-50%)",
               display: "flex",
@@ -33,8 +33,8 @@ export default function RootLayout({
               src="/toutici market.png"
               alt="TOUT ICI MARKET"
               style={{
-                width: "190px",
-                maxHeight: "70px",
+                width: "230px",
+                maxHeight: "85px",
                 height: "auto",
                 objectFit: "contain",
                 display: "block",
