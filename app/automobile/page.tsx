@@ -5,6 +5,7 @@ import {supabase} from "../lib/supabaseClient";
 
 type Annonce = {
   id: string | number;
+  type_vehicule?: string;
   marque: string | null;
   modele: string | null;
   finition: string | null;
@@ -33,7 +34,7 @@ export default function AutomobilePage() {
     let actif=true;
     async function charger() {
       const {data,error}=await supabase.from("annonces_auto")
-        .select("id,marque,modele,finition,annee,kilometrage,carburant,boite,prix,ville,description")
+        .select("id,type_vehicule,marque,modele,finition,annee,kilometrage,carburant,boite,prix,ville,description")
         .eq("statut","publiee").order("id",{ascending:false}).limit(100);
       if (!actif) return;
       if(error){setErreur("Impossible de charger les annonces : "+error.message);setLoading(false);return;}
@@ -119,7 +120,8 @@ export default function AutomobilePage() {
                 {visibles.map(a=><article className="cars-card" key={String(a.id)}>
                   {images[String(a.id)] ? <img className="cars-photo" src={images[String(a.id)]} alt={[a.marque,a.modele].filter(Boolean).join(" ")}/> : <div className="cars-photo" style={{display:"grid",placeItems:"center",fontSize:60}}>🚗</div>}
                   <div style={{padding:20}}>
-                    <div className="cars-price">{euro(a.prix)}</div>
+                    <span style={{background:"#fff3c2",color:"#5c4800",fontSize:11,padding:"5px 9px",borderRadius:14,fontWeight:700}}>{a.type_vehicule==="suv-4x4"?"SUV & 4x4":a.type_vehicule==="monospace"?"Monospace":"Voiture"}</span>
+                    <div className="cars-price" style={{marginTop:10}}>{euro(a.prix)}</div>
                     <h3 style={{fontSize:19,margin:"10px 0 8px"}}>{[a.marque,a.modele,a.finition].filter(Boolean).join(" ")}</h3>
                     <p style={{color:"#56647b",lineHeight:1.55}}>{[a.annee,a.carburant,a.kilometrage!=null?new Intl.NumberFormat("fr-FR").format(a.kilometrage)+" km":null,a.boite].filter(Boolean).join(" · ")}</p>
                     <strong>📍 {a.ville||"France"}</strong>
