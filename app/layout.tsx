@@ -20,7 +20,7 @@ export default function RootLayout({
             aria-label="Accueil TOUT ICI MARKET"
             style={{
               position: "absolute",
-              top: "40px",
+              top: "36px",
               left: "16px",
               transform: "translateY(-50%)",
               display: "flex",
