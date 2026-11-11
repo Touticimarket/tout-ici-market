@@ -64,19 +64,28 @@ export default function ChoixDepotPage(){
                   <h3><a href={"/deposer/"+c.slug} className="depot-category-link">{c.nom} <span style={{color:"#0b55c5"}} aria-hidden="true">›</span></a></h3>
                   <p>{c.description}</p>
                   <div className="depot-sub-links">
-                    {c.sousCategories.slice(0,c.slug==="automobile"?8:5).map(nom=>{
+                    {c.sousCategories.slice(0,c.slug==="automobile"?14:5).map(nom=>{
                       const autoSousRubriques:Record<string,string>={
                         "Voiture":"voiture","SUV & 4x4":"suv-4x4","Utilitaire":"utilitaire",
-                        "Fourgon":"fourgon","Van aménagé":"van-amenage","Camping-car":"camping-car",
+                        "Fourgon":"fourgon","Camion":"camion","Caravaning":"camping-car",
+                        "Van aménagé":"van-amenage","Camping-car":"camping-car",
                         "Caravane":"caravane","Remorque":"remorque","Porte-voiture":"porte-voiture",
-                        "Pièces automobiles":"pieces-auto"
+                        "Pièces automobiles":"pieces-auto","Vélos":"velo",
+                        "Équipement auto":"accessoires-auto",
+                        "Équipement caravaning":"equipement-caravaning",
+                        "Équipement nautisme":"equipement-nautisme",
+                        "Équipement vélo":"equipement-velo",
+                        "Réparation mécanique":"reparation-mecanique"
                       };
+                      const sousSlug=autoSousRubriques[nom];
                       const href=c.slug==="automobile"
-                        ? "/automobile/deposer?type="+encodeURIComponent(autoSousRubriques[nom])
+                        ? (sousSlug==="voiture"||sousSlug==="suv-4x4"||sousSlug==="monospace"
+                            ? "/automobile/deposer?type="+encodeURIComponent(sousSlug)
+                            : "/deposer/automobile/"+encodeURIComponent(sousSlug||"voiture"))
                         : "/deposer/"+c.slug+"?sousCategorie="+encodeURIComponent(nom);
                       return <a key={nom} className="depot-sub-chip" href={href}>{nom} ›</a>;
                     })}
-                    {c.sousCategories.length>(c.slug==="automobile"?8:5)&&
+                    {c.sousCategories.length>(c.slug==="automobile"?14:5)&&
                       <a href={"/deposer/"+c.slug} className="depot-all-subs">Voir toutes les sous-catégories →</a>}
                   </div>
                   {c.slug!=="automobile"&&<div style={{color:"#79869c",fontSize:11,marginTop:11}}>Formulaire de préparation — publication à venir</div>}
