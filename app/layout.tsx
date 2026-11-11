@@ -10,11 +10,12 @@ export default function RootLayout({
       <body style={{ margin: 0 }}>
         <header
           style={{
-            background: "#ffffff",
-            padding: "10px 24px",
+            height: "76px",
             display: "flex",
             alignItems: "center",
-            minHeight: "76px",
+            padding: "0 24px",
+            background: "#ffffff",
+            boxSizing: "border-box",
           }}
         >
           <a href="/" aria-label="Accueil TOUT ICI MARKET">
@@ -22,14 +23,13 @@ export default function RootLayout({
               src="/public/573d5360-613f-4829-a940-affaa4dcfd7e.png"
               alt="TOUT ICI MARKET"
               style={{
-                width: "145px",
+                width: "105px",
                 height: "auto",
                 display: "block",
               }}
             />
           </a>
         </header>
-
         {children}
       </body>
     </html>
