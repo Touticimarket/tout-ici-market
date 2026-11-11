@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import { trouverTypeVehicule } from "../../deposer/automobile/types";
 
 type Item = { id: string; nom: string };
 
@@ -100,6 +101,8 @@ export default function DeposerAutoPage() {
   const [userEmail, setUserEmail] = useState("");
   const [publicationId, setPublicationId] = useState("");
   const [draftId, setDraftId] = useState("");
+  const [typeVehicule, setTypeVehicule] = useState("voiture");
+  const typeSelectionne = trouverTypeVehicule(typeVehicule);
 
   const [form, setForm] = useState({
     marqueId: "",
@@ -119,6 +122,11 @@ export default function DeposerAutoPage() {
     departement: "",
     description: "",
   });
+
+  useEffect(() => {
+    const typeDemande = new URLSearchParams(window.location.search).get("type") || "voiture";
+    setTypeVehicule(["voiture","suv-4x4","monospace"].includes(typeDemande) ? typeDemande : "voiture");
+  }, []);
 
   useEffect(() => {
     supabase.auth.getUser().then(({data}) => setUserEmail(data.user?.email || ""));
@@ -218,6 +226,7 @@ export default function DeposerAutoPage() {
       if (!currentDraft) {
         const {data: annonce, error: insertError} = await supabase.from("annonces_auto").insert({
           user_id: userData.user.id,
+          type_vehicule: typeVehicule,
           marque: form.marque,
           modele: form.modele,
           finition: form.finition,
@@ -321,6 +330,9 @@ export default function DeposerAutoPage() {
         <section className="auto-hero">
           <div>
             <span style={{background:"#f8c522",color:"#092d69",borderRadius:9,padding:"8px 13px",fontWeight:800,fontSize:12}}>🚘 AUTOMOBILE</span>
+            <p style={{margin:"17px 0 0",fontSize:14,fontWeight:800,color:"#ffe27c"}}>
+              Type sélectionné : {typeSelectionne?.nom || "Voiture"} · <a href="/deposer/automobile" style={{color:"white",textDecoration:"underline"}}>Changer de type</a>
+            </p>
             <h1>Déposez votre annonce automobile <span style={{color:"#ffd12e"}}>en quelques minutes</span></h1>
             <p style={{fontSize:18,maxWidth:600}}>Vendez votre véhicule simplement sur TOUT ICI MARKET, entre particuliers ou auprès de professionnels.</p>
             <div style={{display:"flex",flexWrap:"wrap",gap:18,fontSize:13,marginTop:24}}><span>✓ Dépôt gratuit pour les particuliers</span><span>✓ Jusqu’à 20 photos</span><span>✓ Conseils de sécurité MIA</span></div>
