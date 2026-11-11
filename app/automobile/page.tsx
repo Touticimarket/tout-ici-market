@@ -1,178 +1,136 @@
+"use client";
+
+import {useEffect, useMemo, useState} from "react";
+import {supabase} from "../lib/supabaseClient";
+
+type Annonce = {
+  id: string | number;
+  marque: string | null;
+  modele: string | null;
+  finition: string | null;
+  annee: number | null;
+  kilometrage: number | null;
+  carburant: string | null;
+  boite: string | null;
+  prix: number | null;
+  ville: string | null;
+  description: string | null;
+};
+type Photo = {annonce_id:string;storage_path:string;ordre:number};
+const euro=(value:number|null)=>new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(value||0);
+
 export default function AutomobilePage() {
-  const voitures = [
-    ["Audi A3 Sportback", "14 500 €", "2020 · Diesel · 78 000 km · Automatique", "Lyon", "Audi"],
-    ["BMW Série 3 M Sport", "24 900 €", "2019 · Essence · 92 000 km · Automatique", "Strasbourg", "BMW"],
-    ["Peugeot 3008 GT", "21 500 €", "2021 · Hybride · 64 000 km · Automatique", "Mulhouse", "Peugeot"],
-    ["Renault Captur Intens", "16 900 €", "2020 · Essence · 51 000 km · Manuelle", "Colmar", "Renault"],
-  ];
+  const [annonces,setAnnonces]=useState<Annonce[]>([]);
+  const [images,setImages]=useState<Record<string,string>>({});
+  const [recherche,setRecherche]=useState("");
+  const [marque,setMarque]=useState("");
+  const [prixMax,setPrixMax]=useState("");
+  const [carburant,setCarburant]=useState("");
+  const [loading,setLoading]=useState(true);
+  const [erreur,setErreur]=useState("");
+
+  useEffect(()=>{
+    let actif=true;
+    async function charger() {
+      const {data,error}=await supabase.from("annonces_auto")
+        .select("id,marque,modele,finition,annee,kilometrage,carburant,boite,prix,ville,description")
+        .eq("statut","publiee").order("id",{ascending:false}).limit(100);
+      if (!actif) return;
+      if(error){setErreur("Impossible de charger les annonces : "+error.message);setLoading(false);return;}
+      const voitures=(data||[]) as Annonce[];
+      setAnnonces(voitures);
+      if(voitures.length) {
+        const ids=voitures.map(a=>String(a.id));
+        const {data:medias}=await supabase.from("annonces_auto_medias")
+          .select("annonce_id,storage_path,ordre").in("annonce_id",ids).order("ordre",{ascending:true});
+        if(actif&&medias) {
+          const photos:Record<string,string>={};
+          for(const media of medias as Photo[]) {
+            if(!photos[media.annonce_id]) photos[media.annonce_id]=supabase.storage.from("annonces-auto").getPublicUrl(media.storage_path).data.publicUrl;
+          }
+          setImages(photos);
+        }
+      }
+      setLoading(false);
+    }
+    charger();
+    return ()=>{actif=false};
+  },[]);
+
+  const marques=useMemo(()=>[...new Set(annonces.map(a=>a.marque).filter((v):v is string=>!!v))].sort((a,b)=>a.localeCompare(b,"fr")),[annonces]);
+  const visibles=useMemo(()=>annonces.filter(a=>{
+    const texte=[a.marque,a.modele,a.finition,a.ville].filter(Boolean).join(" ").toLocaleLowerCase("fr");
+    if(recherche&& !texte.includes(recherche.toLocaleLowerCase("fr")))return false;
+    if(marque&&a.marque!==marque)return false;
+    if(prixMax&&Number(a.prix||0)>Number(prixMax))return false;
+    if(carburant&&a.carburant!==carburant)return false;
+    return true;
+  }),[annonces,recherche,marque,prixMax,carburant]);
 
   return (
-    <main style={{ fontFamily: "Arial, sans-serif", background: "#f8f9fb", minHeight: "100vh" }}>
-     <header
-  style={{
-    background: "white",
-    padding: "18px 5%",
-    borderBottom: "1px solid #eee",
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  }}
->
-  <a
-    href="/"
-    style={{
-      color: "#0047BB",
-      fontWeight: "bold",
-      textDecoration: "none",
-    }}
-  >
-    ← Retour accueil
-  </a>
-</header>
-
-      <section style={{ width: "92%", margin: "30px auto", borderRadius: 30, overflow: "hidden", background: "linear-gradient(135deg,#003D99,#0b5be0)", color: "white", padding: "55px 5%" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 30, alignItems: "center" }}>
+    <main style={{fontFamily:"Arial, sans-serif",background:"#f6f8fc",color:"#10214a",minHeight:"100vh"}}>
+      <style>{`
+        .cars-wrap{max-width:1430px;margin:auto;padding:20px 20px 70px}
+        .cars-nav{display:flex;justify-content:flex-end;align-items:center;gap:22px;min-height:65px;flex-wrap:wrap;font-size:14px;font-weight:700}
+        .cars-nav a{color:#05275c;text-decoration:none}
+        .cars-hero{background:linear-gradient(90deg,rgba(3,21,49,.97),rgba(4,29,64,.84) 43%,rgba(4,36,74,.18)),url("https://images.unsplash.com/photo-1702139146899-df34319ede56?auto=format&fit=crop&w=1600&q=85") center 53%/cover,linear-gradient(135deg,#103c7a,#5f8aa9);border-radius:22px;padding:54px 42px;min-height:260px;display:flex;align-items:center;color:white}
+        .cars-main{display:grid;grid-template-columns:255px minmax(0,1fr);gap:22px;margin-top:23px}
+        .cars-panel,.cars-card{background:white;border:1px solid #e1e8f2;border-radius:17px;padding:21px;box-shadow:0 6px 25px #1c34540b}
+        .cars-input{width:100%;padding:13px;border-radius:10px;border:1px solid #cdd8e9;box-sizing:border-box;background:white;margin-top:7px;margin-bottom:14px;font-size:14px}
+        .cars-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:18px}
+        .cars-card{overflow:hidden;padding:0}
+        .cars-photo{height:180px;width:100%;object-fit:cover;background:linear-gradient(135deg,#dde7f8,#f7f9fc)}
+        .cars-price{font-size:25px;color:#0644c1;font-weight:800}
+        .cars-btn{display:inline-block;background:#ffcf1f;color:#10214a;text-decoration:none;padding:15px 22px;border-radius:13px;font-weight:800}
+        @media(max-width:800px){.cars-main{grid-template-columns:1fr}.cars-hero{padding:26px 23px;min-height:220px}.cars-nav{gap:14px}.cars-wrap{padding:12px}}
+      `}</style>
+      <div className="cars-wrap">
+        <nav className="cars-nav" aria-label="Navigation principale">
+          <a href="/">Accueil</a><a href="/automobile" style={{color:"#0048cd"}}>Automobile</a><a href="/moto">Moto</a><a href="/immobilier">Immobilier</a>
+          <a href="/automobile/deposer" className="cars-btn">Déposer une annonce</a>
+        </nav>
+        <section className="cars-hero">
           <div>
-            <h1 style={{ fontSize: 58, margin: 0 }}>🚗 Automobile</h1>
-            <p style={{ fontSize: 22, lineHeight: 1.5 }}>
-              Trouvez votre voiture neuve, d’occasion, électrique, hybride ou utilitaire.
-            </p>
-            <a href="/automobile/deposer" style={{ ...buttonStyle, background: "#F6B900", color: "#111", display: "inline-block", textDecoration: "none" }}>
-              Déposer une annonce auto
-            </a>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, fontSize: 46 }}>
-            {["🚗", "🚙", "🚘", "🚐", "🏎️", "⚡"].map((icon) => (
-              <div key={icon} style={{ background: "rgba(255,255,255,0.16)", borderRadius: 22, padding: 22, textAlign: "center" }}>
-                {icon}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section style={{ width: "92%", margin: "30px auto", display: "grid", gridTemplateColumns: "310px 1fr", gap: 28 }}>
-        <aside style={{ background: "white", borderRadius: 24, padding: 24, boxShadow: "0 10px 30px rgba(0,0,0,0.08)", height: "fit-content" }}>
-          <h2 style={{ marginTop: 0, color: "#0047BB" }}>Filtres</h2>
-
-          <label style={labelStyle}>Marque</label>
-          <select style={inputStyle}>
-            <option>Toutes</option>
-            <option>Audi</option>
-            <option>BMW</option>
-            <option>Mercedes</option>
-            <option>Peugeot</option>
-            <option>Renault</option>
-            <option>Tesla</option>
-            <option>Cupra</option>
-            <option>Toyota</option>
-            <option>MG</option>
-          </select>
-
-          <label style={labelStyle}>Modèle</label>
-          <input placeholder="Ex : 3008, Série 3..." style={inputStyle} />
-
-          <label style={labelStyle}>Année</label>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-            <input placeholder="Min" style={inputStyle} />
-            <input placeholder="Max" style={inputStyle} />
-          </div>
-
-          <label style={labelStyle}>Kilométrage</label>
-          <input placeholder="Km maximum" style={inputStyle} />
-
-          <label style={labelStyle}>Prix</label>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-            <input placeholder="Min" style={inputStyle} />
-            <input placeholder="Max" style={inputStyle} />
-          </div>
-
-          <label style={labelStyle}>Carburant</label>
-          <select style={inputStyle}>
-            <option>Tous</option>
-            <option>Essence</option>
-            <option>Diesel</option>
-            <option>Hybride</option>
-            <option>Hybride rechargeable</option>
-            <option>Électrique</option>
-          </select>
-
-          <label style={labelStyle}>Boîte</label>
-          <select style={inputStyle}>
-            <option>Toutes</option>
-            <option>Automatique</option>
-            <option>Manuelle</option>
-          </select>
-
-          <label style={labelStyle}>Finition</label>
-          <input placeholder="GT, M Sport, AMG..." style={inputStyle} />
-
-          <label style={labelStyle}>Lieu</label>
-          <input placeholder="Ville ou code postal" style={inputStyle} />
-
-          <button style={{ ...buttonStyle, width: "100%", marginTop: 18 }}>
-            Rechercher
-          </button>
-        </aside>
-
-        <section>
-          <div style={{ background: "#FFF6DD", border: "1px solid #F6E4A7", borderRadius: 24, padding: 24, marginBottom: 24 }}>
-            <h2 style={{ marginTop: 0 }}>Professionnels automobile</h2>
-            <p>Garagistes, marchands VO et concessions : créez votre vitrine garage et publiez votre stock.</p>
-            <strong>Vitrine dès 9,90 € HT/mois · Packs véhicules dès 3,50 € HT/annonce</strong>
-          </div>
-
-          <h2 style={{ fontSize: 32 }}>Annonces automobiles</h2>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 22 }}>
-            {voitures.map(([titre, prix, infos, ville, marque]) => (
-              <article key={titre} style={{ background: "white", borderRadius: 22, overflow: "hidden", boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }}>
-                <div style={{ height: 170, background: "#eef2f8", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 58 }}>
-                  🚗
-                </div>
-                <div style={{ padding: 20 }}>
-                  <div style={{ color: "#0047BB", fontSize: 28, fontWeight: 900 }}>{prix}</div>
-                  <h3 style={{ margin: "8px 0" }}>{titre}</h3>
-                  <p style={{ color: "#555" }}>{infos}</p>
-                  <p style={{ fontWeight: 700 }}>📍 {ville}</p>
-                  <span style={{ background: "#FFF6DD", padding: "6px 10px", borderRadius: 20, fontWeight: 700 }}>
-                    {marque}
-                  </span>
-                </div>
-              </article>
-            ))}
+            <span style={{background:"#ffcf1f",color:"#06275c",padding:"8px 11px",borderRadius:9,fontSize:12,fontWeight:800}}>AUTOMOBILE</span>
+            <h1 style={{fontSize:"clamp(36px,4.2vw,61px)",margin:"14px 0 10px"}}>Trouvez votre prochaine voiture</h1>
+            <p style={{fontSize:19,maxWidth:540,lineHeight:1.5}}>Achetez, vendez ou échangez votre véhicule simplement sur TOUT ICI MARKET.</p>
+            <a href="/automobile/deposer" className="cars-btn">Déposer une annonce auto</a>
           </div>
         </section>
-      </section>
+        <div className="cars-main">
+          <aside className="cars-panel" style={{alignSelf:"start"}}>
+            <h2 style={{color:"#0644c1",marginTop:0}}>Rechercher</h2>
+            <label>Marque<select className="cars-input" value={marque} onChange={e=>setMarque(e.target.value)}><option value="">Toutes les marques</option>{marques.map(m=><option key={m}>{m}</option>)}</select></label>
+            <label>Modèle, finition ou ville<input className="cars-input" value={recherche} onChange={e=>setRecherche(e.target.value)} placeholder="Ex : BMW X5, Lyon..."/></label>
+            <label>Prix maximum (€)<input className="cars-input" type="number" min="0" value={prixMax} onChange={e=>setPrixMax(e.target.value)} placeholder="Ex : 25000"/></label>
+            <label>Carburant<select className="cars-input" value={carburant} onChange={e=>setCarburant(e.target.value)}><option value="">Tous les carburants</option>{["Essence","Diesel","Hybride","Hybride rechargeable","Électrique","GPL"].map(v=><option key={v}>{v}</option>)}</select></label>
+            <button type="button" onClick={()=>{setMarque("");setRecherche("");setPrixMax("");setCarburant("")}} style={{background:"#eef4ff",border:0,borderRadius:10,padding:"12px 15px",color:"#0042b5",fontWeight:700,cursor:"pointer",width:"100%"}}>Réinitialiser les filtres</button>
+          </aside>
+          <section>
+            <h2 style={{margin:"4px 0 18px"}}>Annonces automobiles {loading?"":<span style={{color:"#68768f",fontSize:17,fontWeight:400}}>({visibles.length})</span>}</h2>
+            {erreur&&<p role="alert" className="cars-panel">{erreur}</p>}
+            {loading ? <p className="cars-panel">Chargement des annonces…</p> : !visibles.length ?
+              <div className="cars-panel" style={{padding:30}}>
+                <h3>{annonces.length?"Aucun véhicule ne correspond à votre recherche.":"Les premières annonces arrivent !"}</h3>
+                <p>Vous souhaitez vendre votre voiture ? Publiez votre annonce avec ses photos.</p>
+                <a href="/automobile/deposer" className="cars-btn">Déposer une annonce</a>
+              </div> :
+              <div className="cars-cards">
+                {visibles.map(a=><article className="cars-card" key={String(a.id)}>
+                  {images[String(a.id)] ? <img className="cars-photo" src={images[String(a.id)]} alt={[a.marque,a.modele].filter(Boolean).join(" ")}/> : <div className="cars-photo" style={{display:"grid",placeItems:"center",fontSize:60}}>🚗</div>}
+                  <div style={{padding:20}}>
+                    <div className="cars-price">{euro(a.prix)}</div>
+                    <h3 style={{fontSize:19,margin:"10px 0 8px"}}>{[a.marque,a.modele,a.finition].filter(Boolean).join(" ")}</h3>
+                    <p style={{color:"#56647b",lineHeight:1.55}}>{[a.annee,a.carburant,a.kilometrage!=null?new Intl.NumberFormat("fr-FR").format(a.kilometrage)+" km":null,a.boite].filter(Boolean).join(" · ")}</p>
+                    <strong>📍 {a.ville||"France"}</strong>
+                    {a.description&&<p style={{fontSize:13,color:"#697790",marginTop:12}}>{a.description.slice(0,125)}{a.description.length>125?"…":""}</p>}
+                  </div>
+                </article>)}
+              </div>
+            }
+          </section>
+        </div>
+      </div>
     </main>
   );
 }
-
-const inputStyle = {
-  width: "100%",
-  boxSizing: "border-box" as const,
-  padding: "13px",
-  borderRadius: "12px",
-  border: "1px solid #ddd",
-  fontSize: "14px",
-  background: "white",
-};
-
-const labelStyle = {
-  display: "block",
-  marginTop: "16px",
-  marginBottom: "6px",
-  fontWeight: 700,
-  color: "#333",
-};
-
-const buttonStyle = {
-  background: "#0047BB",
-  color: "white",
-  border: "none",
-  borderRadius: "14px",
-  padding: "15px 24px",
-  fontWeight: "bold",
-  cursor: "pointer",
-};
