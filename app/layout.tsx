@@ -22,7 +22,7 @@ export default function RootLayout({
               position: "absolute",
               top: "0px",
               left: "16px",
-              width: "375px",
+              width: "187px",
               height: "76px",
               display: "flex",
               alignItems: "center",
