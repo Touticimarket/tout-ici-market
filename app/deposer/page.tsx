@@ -79,7 +79,7 @@ export default function ChoixDepotPage(){
                       };
                       const sousSlug=autoSousRubriques[nom];
                       const href=c.slug==="automobile"
-                        ? (sousSlug==="voiture"||sousSlug==="suv-4x4"||sousSlug==="monospace"
+                        ? (nom==="Caravaning" ? "/deposer/automobile#caravaning" : sousSlug==="voiture"||sousSlug==="suv-4x4"||sousSlug==="monospace"
                             ? "/automobile/deposer?type="+encodeURIComponent(sousSlug)
                             : "/deposer/automobile/"+encodeURIComponent(sousSlug||"voiture"))
                         : "/deposer/"+c.slug+"?sousCategorie="+encodeURIComponent(nom);
