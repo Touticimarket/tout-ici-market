@@ -8,13 +8,7 @@ export default function AutomobilePage() {
 
   return (
     <main style={{ fontFamily: "Arial, sans-serif", background: "#f8f9fb", minHeight: "100vh" }}>
-      <header style={{ background: "white", padding: "18px 5%", borderBottom: "1px solid #eee", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <a href="/" style={{ textDecoration: "none" }}>
-          <div style={{ color: "#0047BB", fontSize: 34, fontWeight: 900 }}>
-            TOUT <span style={{ color: "#F6B900" }}>ICI</span>
-          </div>
-          <div style={{ color: "#F6B900", letterSpacing: 6, fontSize: 12, fontWeight: 700 }}>MARKET</div>
-        </a>
+      <header style={{ background: "white", padding: "18px 5%", borderBottom: "1px solid #eee", display: "flex", justifyContent: "space-between", alignItems: "center" }}
         <a href="/" style={{ color: "#0047BB", fontWeight: "bold", textDecoration: "none" }}>
           ← Retour accueil
         </a>
