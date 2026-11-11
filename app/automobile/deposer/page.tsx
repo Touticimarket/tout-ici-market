@@ -96,6 +96,14 @@ export default function DeposerAutoPage() {
 
   async function publier() {
     setMessage("");
+    if (!form.marqueId || !form.modeleId || !form.annee || !form.prix || !form.ville || !form.kilometrage) {
+      setMessage("Complétez la marque, le modèle, l’année, le kilométrage, le prix et la ville.");
+      return;
+    }
+    if (Number(form.annee) < 1900 || Number(form.annee) > new Date().getFullYear() + 1 || Number(form.kilometrage) < 0 || Number(form.prix) <= 0) {
+      setMessage("Vérifiez l’année, le kilométrage et le prix.");
+      return;
+    }
     const { data: userData } = await supabase.auth.getUser();
 
     if (!userData.user) {
@@ -120,7 +128,7 @@ export default function DeposerAutoPage() {
       description: form.description,
       options,
       statut: "publiee",
-      mia_verifie: true,
+      mia_verifie: false,
     });
 
     setMessage(error ? "Erreur : " + error.message : "Annonce publiée avec succès ✅");
@@ -134,17 +142,17 @@ export default function DeposerAutoPage() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 16 }}>
           <select style={inputStyle} onChange={(e) => choisirMarque(e.target.value)}>
-            <option>Marque</option>
+            <option value="">Marque</option>
             {marques.map((m) => <option key={m.id} value={m.id}>{m.nom}</option>)}
           </select>
 
           <select style={inputStyle} onChange={(e) => choisirModele(e.target.value)}>
-            <option>Modèle</option>
+            <option value="">Modèle</option>
             {modeles.map((m) => <option key={m.id} value={m.id}>{m.nom}</option>)}
           </select>
 
           <select style={inputStyle} onChange={(e) => choisirFinition(e.target.value)}>
-            <option>Finition</option>
+            <option value="">Finition</option>
             {finitions.map((f) => <option key={f.id} value={f.id}>{f.nom}</option>)}
           </select>
 
@@ -152,7 +160,7 @@ export default function DeposerAutoPage() {
             const mot = motorisations.find((m) => m.nom === e.target.value);
             setForm({ ...form, motorisation: mot?.nom || "", carburant: mot?.carburant || "", boite: mot?.boite || "", puissance_ch: String(mot?.puissance_ch || "") });
           }}>
-            <option>Motorisation</option>
+            <option value="">Motorisation</option>
             {motorisations.map((m) => <option key={m.id}>{m.nom}</option>)}
           </select>
 
@@ -175,7 +183,7 @@ export default function DeposerAutoPage() {
         <textarea style={{ ...inputStyle, marginTop: 24, minHeight: 140 }} placeholder="Description" onChange={(e) => setForm({ ...form, description: e.target.value })} />
 
         <div style={{ background: "#eaf8ef", color: "#087a3d", padding: 18, borderRadius: 18, marginTop: 20, fontWeight: "bold" }}>
-          🟢 MIA vérifiera la cohérence de votre annonce.
+          MIA : vérification automatique à venir. Les informations doivent être exactes avant publication.
         </div>
 
         <button onClick={publier} style={buttonStyle}>Publier mon annonce</button>
