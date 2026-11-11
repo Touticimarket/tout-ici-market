@@ -15,11 +15,19 @@ export default function Home() {
   ];
 
   return (
-    <main style={{ position: "relative", width: "100%" }}>
+    <main
+      style={{
+        position: "relative",
+        width: "100%",
+      }}
+    >
       <img
         src="/public/banner-home.png"
         alt="TOUT ICI Market"
-        style={{ width: "100%", display: "block" }}
+        style={{
+          width: "100%",
+          display: "block",
+        }}
       />
 
       {links.map((link) => (
