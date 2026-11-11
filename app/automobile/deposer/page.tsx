@@ -5,31 +5,86 @@ import { supabase } from "../../lib/supabaseClient";
 
 type Item = { id: string; nom: string };
 
-const optionsAuto = [
-  "ABS", "ESP", "Airbags", "Isofix", "Régulateur", "Régulateur adaptatif",
-  "Limiteur", "Maintien dans la voie", "Détecteur angle mort", "Freinage d’urgence",
-  "Lecture panneaux", "Caméra recul", "Caméra 360", "Radar avant", "Radar arrière",
-  "Park Assist", "Alerte fatigue", "Appel SOS",
-
-  "Climatisation", "Clim auto", "Clim bizone", "Sièges chauffants",
-  "Sièges ventilés", "Sièges électriques", "Mémoire conducteur",
-  "Volant chauffant", "Accès mains libres", "Démarrage sans clé",
-  "Hayon électrique", "Vitres électriques", "Rétros rabattables",
-
-  "GPS", "Écran tactile", "Bluetooth", "Apple CarPlay", "Android Auto",
-  "USB", "USB-C", "Charge induction", "Audio premium", "Commande vocale",
-  "Affichage tête haute", "Cockpit digital", "Wi-Fi",
-
-  "Cuir", "Semi-cuir", "Alcantara", "Sièges sport", "Palettes au volant",
-  "Éclairage ambiance", "Banquette rabattable", "Accoudoir",
-
-  "Jantes alu", "Feux LED", "Matrix LED", "Xénon", "Antibrouillards",
-  "Toit ouvrant", "Toit panoramique", "Vitres teintées", "Barres de toit",
-  "Attelage", "Peinture métallisée", "Pack sport",
-
-  "Câble recharge", "Charge rapide", "Pompe à chaleur",
-  "Préconditionnement batterie", "Modes conduite", "Récupération énergie"
-];
+const optionsParCategorie = [
+  {
+    titre: "Confort", icone: "✦", options: [
+      "Climatisation", "Clim auto", "Clim bizone", "Climatisation trizone",
+      "Climatisation quadrizone", "Chauffage stationnaire", "Pompe à chaleur",
+      "Régulateur", "Régulateur adaptatif", "Limiteur", "Modes conduite",
+      "Direction assistée", "Direction assistée variable", "Suspension pilotée",
+      "Suspension pneumatique", "Aide au démarrage en côte", "Stop & Start",
+      "Accès mains libres", "Démarrage sans clé", "Hayon électrique",
+      "Ouverture du coffre mains libres", "Vitres électriques",
+      "Rétros rabattables", "Rétros électriques", "Rétros dégivrants",
+      "Essuie-glaces automatiques", "Allumage automatique des feux",
+      "Pare-brise chauffant", "Volant chauffant", "Pare-soleil électriques"
+    ]
+  },
+  {
+    titre: "Sécurité", icone: "◈", options: [
+      "ABS", "ESP", "ASR / antipatinage", "Airbags", "Airbags latéraux",
+      "Airbags rideaux", "Isofix", "Freinage d’urgence",
+      "Freinage automatique d’urgence", "Alerte collision frontale",
+      "Détecteur angle mort", "Maintien dans la voie",
+      "Alerte franchissement de ligne", "Lecture panneaux",
+      "Détection des piétons", "Détection des cyclistes",
+      "Alerte fatigue", "Appel SOS", "Surveillance pression pneus",
+      "Aide au stationnement", "Radar avant", "Radar arrière",
+      "Caméra recul", "Caméra 360", "Park Assist",
+      "Assistance conduite autoroute", "Aide au freinage",
+      "Contrôle descente", "Alarme", "Antidémarrage",
+      "Fermeture centralisée", "Fixations siège enfant"
+    ]
+  },
+  {
+    titre: "Multimédia", icone: "♫", options: [
+      "GPS", "GPS connecté", "Écran tactile", "Écran central grand format",
+      "Cockpit digital", "Tableau de bord numérique",
+      "Affichage tête haute", "Bluetooth", "Apple CarPlay",
+      "Apple CarPlay sans fil", "Android Auto", "Android Auto sans fil",
+      "USB", "USB-C", "Prise 12 V", "Prise 230 V",
+      "Charge induction", "Audio premium", "Radio DAB",
+      "Commande vocale", "Wi-Fi", "Services connectés",
+      "Mise à jour à distance", "Caméra embarquée",
+      "Écran passager", "Écrans arrière", "Système de navigation 3D",
+      "Commandes audio au volant"
+    ]
+  },
+  {
+    titre: "Extérieur", icone: "☼", options: [
+      "Jantes alu", "Jantes 17 pouces", "Jantes 18 pouces",
+      "Jantes 19 pouces", "Jantes 20 pouces", "Feux LED",
+      "Matrix LED", "Xénon", "Antibrouillards",
+      "Feux de jour LED", "Feux adaptatifs", "Toit ouvrant",
+      "Toit panoramique", "Toit ouvrant électrique",
+      "Vitres teintées", "Vitres arrière surteintées",
+      "Barres de toit", "Attelage", "Attelage escamotable",
+      "Peinture métallisée", "Peinture nacrée", "Pack sport",
+      "Pack extérieur noir", "Pare-chocs sport",
+      "Becquet arrière", "Rétroviseurs noirs",
+      "Caméras de rétroviseurs", "Câble recharge", "Charge rapide",
+      "Prise de recharge Type 2", "Prise de recharge CCS"
+    ]
+  },
+  {
+    titre: "Intérieur", icone: "▣", options: [
+      "Cuir", "Semi-cuir", "Alcantara", "Sellerie tissu",
+      "Sellerie sport", "Sièges sport", "Sièges chauffants",
+      "Sièges ventilés", "Sièges massants", "Sièges électriques",
+      "Sièges à mémoire", "Mémoire conducteur",
+      "Réglage lombaire", "Sièges arrière chauffants",
+      "Banquette rabattable", "Banquette coulissante",
+      "Accoudoir", "Accoudoir arrière", "Palettes au volant",
+      "Volant cuir", "Volant multifonction",
+      "Éclairage ambiance", "Éclairage intérieur LED",
+      "Rétroviseur intérieur électrochrome", "Toit de pavillon noir",
+      "Inserts bois", "Inserts aluminium", "Tapis de sol",
+      "Coffre à double plancher", "Filet de coffre",
+      "7 places", "Troisième rangée de sièges",
+      "Préconditionnement batterie", "Récupération énergie"
+    ]
+  }
+] as const;
 
 export default function DeposerAutoPage() {
   const [marques, setMarques] = useState<Item[]>([]);
@@ -240,8 +295,18 @@ export default function DeposerAutoPage() {
         .auto-upload{display:block;text-align:center;border:2px dashed #b9cbe9;border-radius:14px;padding:30px 14px;cursor:pointer;background:#f8faff}
         .auto-photo-thumbs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}
         .auto-photo-thumbs img{width:100%;height:70px;object-fit:cover;border-radius:8px}
-        .auto-options{display:flex;flex-wrap:wrap;gap:9px}
-        .auto-options label{border:1px solid #dbe3f1;border-radius:8px;padding:10px;background:#fff;font-size:13px}
+        .auto-option-columns{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:start}
+        .auto-option-category{border:1px solid #dbe4f3;border-radius:14px;padding:14px 10px;background:#f9fbff;min-width:0}
+        .auto-option-category h3{font-size:15px;color:#063fae;margin:0 0 5px}
+        .auto-option-count{font-size:11px;color:#697993;margin:0 0 11px}
+        .auto-option-items{display:flex;flex-direction:column;gap:4px}
+        .auto-option-check{display:flex;align-items:flex-start;gap:7px;padding:7px 5px;border-radius:7px;font-size:12px;line-height:1.35;cursor:pointer;overflow-wrap:anywhere}
+        .auto-option-check:hover{background:#ebf2ff}
+        .auto-option-check input{accent-color:#0545cc;flex-shrink:0;margin:1px 0 0;width:15px;height:15px}
+        .auto-option-check:has(input:checked){background:#edf4ff;color:#0645bf;font-weight:650}
+        @media(max-width:1250px){.auto-option-columns{grid-template-columns:repeat(3,minmax(0,1fr))}}
+        @media(max-width:780px){.auto-option-columns{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:490px){.auto-option-columns{grid-template-columns:1fr}}
         @media(max-width:950px){.auto-layout{grid-template-columns:1fr}.auto-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-photo-form{grid-template-columns:1fr}}
         @media(max-width:540px){.auto-wrap{padding:12px}.auto-hero{padding:22px;min-height:190px}.auto-form-grid{grid-template-columns:1fr}.auto-panel{padding:17px}}
       `}</style>
@@ -312,7 +377,27 @@ export default function DeposerAutoPage() {
             </section>
             <section className="auto-panel" style={{marginTop:16}}>
               <h2 style={{marginTop:0,fontSize:22}}><span style={{color:"#0345c9"}}>2.</span> Caractéristiques et équipements</h2>
-              <div className="auto-options">{optionsAuto.map(option=><label key={option}><input type="checkbox" checked={options.includes(option)} onChange={()=>toggleOption(option)}/> {option}</label>)}</div>
+              <p style={{color:"#63748f",fontSize:13,marginTop:-8,marginBottom:18}}>
+                Choisissez librement les équipements de votre véhicule. <strong style={{color:"#0345c9"}}>{options.length} sélectionné{options.length>1?"s":""}</strong>.
+              </p>
+              <div className="auto-option-columns">
+                {optionsParCategorie.map(categorie=>(
+                  <section className="auto-option-category" key={categorie.titre} aria-label={"Options "+categorie.titre}>
+                    <h3><span aria-hidden="true" style={{color:"#e1a800",marginRight:6}}>{categorie.icone}</span>{categorie.titre}</h3>
+                    <p className="auto-option-count">
+                      {categorie.options.filter(option=>options.includes(option)).length} / {categorie.options.length} équipements
+                    </p>
+                    <div className="auto-option-items">
+                      {categorie.options.map(option=>(
+                        <label className="auto-option-check" key={option}>
+                          <input type="checkbox" checked={options.includes(option)} onChange={()=>toggleOption(option)}/>
+                          <span>{option}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              </div>
             </section>
             <section className="auto-panel" style={{marginTop:16}}>
               <h2 style={{marginTop:0,fontSize:22}}><span style={{color:"#0345c9"}}>3.</span> Description et publication</h2>
