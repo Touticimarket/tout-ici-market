@@ -217,7 +217,6 @@ export default function DeposerAutoPage() {
     } catch(error) {
       setMessage("Enregistrement interrompu : "+(error instanceof Error?error.message:"Erreur inconnue")+
         ". Votre brouillon est conservé ; vous pouvez réessayer.");
-    }
     } finally {
       setPublishing(false);
     }
