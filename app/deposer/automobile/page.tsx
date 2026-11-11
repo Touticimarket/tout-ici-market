@@ -59,7 +59,7 @@ export default function ChoisirTypeAutomobile(){
       {groupesAutomobile.map(groupe=>{
         const liste=types.filter(t=>t.groupe===groupe);
         if(!liste.length)return null;
-        return <section className="auto-choose-group" key={groupe}>
+        return <section className="auto-choose-group" key={groupe} id={groupe==="Caravaning, vans & loisirs"?"caravaning":groupe==="Vélos & mobilité douce"?"velos":undefined}>
           <h2>{groupe}</h2>
           <div className="auto-choose-grid">{liste.map(type=>
             <a key={type.slug} href={type.catalogueAuto?"/automobile/deposer?type="+encodeURIComponent(type.slug):"/deposer/automobile/"+type.slug} className="auto-choose-card">
