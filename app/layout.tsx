@@ -10,7 +10,7 @@ export default function RootLayout({
       <body style={{ margin: 0 }}>
         <header
           style={{
-            height: "76px",
+            height: "72px",
             display: "flex",
             alignItems: "center",
             padding: "0 24px",
@@ -23,7 +23,7 @@ export default function RootLayout({
             src="/toutici market.png"
               alt="TOUT ICI MARKET"
               style={{
-                width: "105px",
+                width: "125px",
                 height: "auto",
                 display: "block",
               }}
