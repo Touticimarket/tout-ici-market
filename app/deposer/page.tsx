@@ -25,7 +25,13 @@ export default function ChoixDepotPage(){
         .depot-section h2{font-size:23px;margin:0 0 14px;color:#073b99}
         .depot-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
         .depot-card{display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e1e9f6;border-radius:18px;padding:20px;text-decoration:none;color:#122751;min-height:155px;box-shadow:0 5px 20px #20376a0b;transition:transform .15s,border-color .15s}
-        .depot-card:hover,.depot-card:focus-visible{transform:translateY(-2px);border-color:#0b56c8;outline-offset:3px}
+        .depot-card:hover{border-color:#0b56c8}
+        .depot-category-link{color:#14264d;text-decoration:none}
+        .depot-category-link:hover{text-decoration:underline}
+        .depot-sub-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+        .depot-sub-chip{font-size:12px;color:#0c47b1;background:#f0f5ff;border:1px solid #dce7fb;border-radius:8px;padding:6px 8px;text-decoration:none;font-weight:600}
+        .depot-sub-chip:hover,.depot-sub-chip:focus-visible{background:#fff2c6;border-color:#e1be44}
+        .depot-all-subs{display:inline-block;font-size:12px;color:#0641b2;text-decoration:underline;padding:6px 3px}
         .depot-ico{flex:0 0 auto;width:48px;height:48px;display:grid;place-items:center;background:#fff6d5;border-radius:12px;font-size:26px}
         .depot-card h3{font-size:18px;margin:0 0 8px}
         .depot-card p{font-size:14px;color:#68748a;line-height:1.4;margin:0 0 12px}
@@ -52,15 +58,30 @@ export default function ChoixDepotPage(){
           return <section key={groupe} className="depot-section" aria-label={groupe}>
             <h2>{groupe}</h2>
             <div className="depot-cards">
-              {selection.map(c=><a key={c.slug} href={c.slug==="automobile"?"/automobile/deposer":"/deposer/"+c.slug} className="depot-card">
+              {selection.map(c=><article key={c.slug} className="depot-card">
                 <span className="depot-ico" aria-hidden="true">{c.icone}</span>
-                <div>
-                  <h3>{c.nom} <span style={{color:"#0b55c5"}} aria-hidden="true">›</span></h3>
+                <div style={{minWidth:0,flex:1}}>
+                  <h3><a href={"/deposer/"+c.slug} className="depot-category-link">{c.nom} <span style={{color:"#0b55c5"}} aria-hidden="true">›</span></a></h3>
                   <p>{c.description}</p>
-                  <div className="depot-subs">{c.sousCategories.slice(0,4).join(" · ")}</div>
-                  {c.slug!=="automobile"&&<div style={{color:"#79869c",fontSize:11,marginTop:8}}>Formulaire en préparation</div>}
+                  <div className="depot-sub-links">
+                    {c.sousCategories.slice(0,c.slug==="automobile"?8:5).map(nom=>{
+                      const autoSousRubriques:Record<string,string>={
+                        "Voiture":"voiture","SUV & 4x4":"suv-4x4","Utilitaire":"utilitaire",
+                        "Fourgon":"fourgon","Van aménagé":"van-amenage","Camping-car":"camping-car",
+                        "Caravane":"caravane","Remorque":"remorque","Porte-voiture":"porte-voiture",
+                        "Pièces automobiles":"pieces-auto"
+                      };
+                      const href=c.slug==="automobile"
+                        ? "/automobile/deposer?type="+encodeURIComponent(autoSousRubriques[nom])
+                        : "/deposer/"+c.slug+"?sousCategorie="+encodeURIComponent(nom);
+                      return <a key={nom} className="depot-sub-chip" href={href}>{nom} ›</a>;
+                    })}
+                    {c.sousCategories.length>(c.slug==="automobile"?8:5)&&
+                      <a href={"/deposer/"+c.slug} className="depot-all-subs">Voir toutes les sous-catégories →</a>}
+                  </div>
+                  {c.slug!=="automobile"&&<div style={{color:"#79869c",fontSize:11,marginTop:11}}>Formulaire de préparation — publication à venir</div>}
                 </div>
-              </a>)}
+              </article>)}
             </div>
           </section>
         })}
