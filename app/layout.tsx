@@ -23,7 +23,7 @@ export default function RootLayout({
             src="/toutici market.png"
               alt="TOUT ICI MARKET"
               style={{
-                width: "125px",
+                width: "375px",
                 height: "auto",
                 display: "block",
               }}
