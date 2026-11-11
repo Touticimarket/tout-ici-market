@@ -41,6 +41,9 @@ export default function DeposerAutoPage() {
   const [photos, setPhotos] = useState<File[]>([]);
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
   const [plaque, setPlaque] = useState("");
+  const [publishing, setPublishing] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [publicationId, setPublicationId] = useState("");
 
   const [form, setForm] = useState({
     marqueId: "",
@@ -60,6 +63,12 @@ export default function DeposerAutoPage() {
     departement: "",
     description: "",
   });
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({data}) => setUserEmail(data.user?.email || ""));
+    const {data: {subscription}} = supabase.auth.onAuthStateChange((_event, session) => setUserEmail(session?.user?.email || ""));
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     supabase.from("marques_auto").select("id, nom").order("ordre_affichage").then(({ data }) => {
@@ -105,56 +114,99 @@ export default function DeposerAutoPage() {
     setPhotoUrls(images.map((file) => URL.createObjectURL(file)));
   }
 
-  async function publier() {
+  async function connexionGoogle() {
     setMessage("");
-    if (!form.marqueId || !form.modeleId || !form.annee || !form.prix || !form.ville || !form.kilometrage) {
+    const {error} = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin + "/automobile/deposer" }
+    });
+    if (error) setMessage("Connexion impossible : " + error.message);
+  }
+
+  function supprimerPhoto(index: number) {
+    const images = photos.filter((_, i) => i !== index);
+    photoUrls.forEach((url) => URL.revokeObjectURL(url));
+    setPhotos(images);
+    setPhotoUrls(images.map((file) => URL.createObjectURL(file)));
+  }
+
+  async function publier() {
+    if (publishing) return;
+    setMessage("");
+    setPublicationId("");
+    if (!form.marqueId || !form.modeleId || !form.annee || !form.prix || !form.ville.trim() || form.kilometrage === "") {
       setMessage("Complétez la marque, le modèle, l’année, le kilométrage, le prix et la ville.");
       return;
     }
-    if (Number(form.annee) < 1900 || Number(form.annee) > new Date().getFullYear() + 1 || Number(form.kilometrage) < 0 || Number(form.prix) <= 0) {
+    if (!Number.isFinite(Number(form.annee)) || !Number.isInteger(Number(form.annee)) ||
+        Number(form.annee) < 1900 || Number(form.annee) > new Date().getFullYear()+1 ||
+        !Number.isFinite(Number(form.kilometrage)) || Number(form.kilometrage) < 0 ||
+        !Number.isFinite(Number(form.prix)) || Number(form.prix) <= 0) {
       setMessage("Vérifiez l’année, le kilométrage et le prix.");
       return;
     }
-    const { data: userData } = await supabase.auth.getUser();
-
-    if (!userData.user) {
-      setMessage("Connectez-vous pour publier une annonce.");
+    if (photos.length < 1) {
+      setMessage("Ajoutez au moins une photo du véhicule avant publication.");
       return;
     }
-
-    if (photos.length) {
-      setMessage("Les photos sont sélectionnées mais leur stockage n’est pas encore configuré. Publication désactivée pour éviter de perdre vos photos.");
+    const {data: userData, error: authError} = await supabase.auth.getUser();
+    if (authError || !userData.user) {
+      setMessage("Connectez-vous avec Google pour publier votre annonce.");
       return;
     }
+    setPublishing(true);
+    try {
+      const {data: annonce, error: insertError} = await supabase.from("annonces_auto").insert({
+        user_id: userData.user.id,
+        marque: form.marque,
+        modele: form.modele,
+        finition: form.finition,
+        version_text: form.motorisation,
+        annee: Number(form.annee),
+        kilometrage: Number(form.kilometrage),
+        carburant: form.carburant,
+        boite: form.boite,
+        puissance_ch: Number(form.puissance_ch || 0),
+        prix: Number(form.prix),
+        ville: form.ville.trim(),
+        departement: form.departement.trim(),
+        description: form.description.trim(),
+        options,
+        statut: "publiee",
+        mia_verifie: false,
+      }).select("id").single();
+      if (insertError || !annonce) throw new Error(insertError?.message || "Enregistrement de l’annonce impossible.");
 
-    const { error } = await supabase.from("annonces_auto").insert({
-      user_id: userData.user.id,
-      marque: form.marque,
-      modele: form.modele,
-      finition: form.finition,
-      version_text: form.motorisation,
-      annee: Number(form.annee),
-      kilometrage: Number(form.kilometrage),
-      carburant: form.carburant,
-      boite: form.boite,
-      puissance_ch: Number(form.puissance_ch || 0),
-      prix: Number(form.prix),
-      ville: form.ville,
-      departement: form.departement,
-      description: form.description,
-      options,
-      statut: "publiee",
-      mia_verifie: false,
-    });
-
-    setMessage(error ? "Erreur : " + error.message : "Annonce publiée avec succès ✅");
+      const medias: {annonce_id:string; user_id:string; storage_path:string; ordre:number}[] = [];
+      for (let index=0;index<photos.length;index++) {
+        const photo = photos[index];
+        const extension = photo.type === "image/png" ? "png" : photo.type === "image/webp" ? "webp" : "jpg";
+        const storagePath = userData.user.id + "/" + annonce.id + "/" + String(index + 1).padStart(2, "0") + "-" + crypto.randomUUID() + "." + extension;
+        setMessage("Envoi des photos : " + (index+1) + "/" + photos.length);
+        const {error: photoError} = await supabase.storage.from("annonces-auto").upload(storagePath, photo, {
+          contentType: photo.type,
+          cacheControl: "3600",
+          upsert: false
+        });
+        if (photoError) throw new Error("Photo " + (index+1) + " : " + photoError.message);
+        medias.push({annonce_id:String(annonce.id),user_id:userData.user.id,storage_path:storagePath,ordre:index});
+      }
+      const {error: mediasError} = await supabase.from("annonces_auto_medias").insert(medias);
+      if (mediasError) throw new Error("Photos envoyées, mais association à l’annonce impossible : " + mediasError.message);
+      setPublicationId(String(annonce.id));
+      setMessage("Votre annonce et ses " + photos.length + " photo(s) ont été enregistrées avec succès !");
+    } catch (error) {
+      setMessage("Publication incomplète : " + (error instanceof Error ? error.message : "Erreur inconnue") + ". Si une annonce a déjà été créée, ne recommencez pas avant vérification.");
+    } finally {
+      setPublishing(false);
+    }
   }
 
   return (
     <main style={{fontFamily:"Arial, sans-serif",background:"#f6f8fc",minHeight:"100vh",color:"#10214a"}}>
       <style>{`
         .auto-wrap{max-width:1450px;margin:auto;padding:22px 22px 70px}
-        .auto-hero{border-radius:24px;padding:36px 40px;background:linear-gradient(105deg,rgba(4,22,54,.97),rgba(5,44,104,.85) 55%,rgba(5,60,128,.18)),linear-gradient(135deg,#103c7a,#5f8aa9);color:white;min-height:235px;display:flex;align-items:center}
+        .auto-hero{border-radius:24px;padding:36px 40px;background:linear-gradient(90deg,rgba(5,24,53,.96) 0%,rgba(5,28,61,.91) 38%,rgba(5,39,82,.4) 68%,rgba(5,40,80,.06) 100%),url("https://images.unsplash.com/photo-1702139146899-df34319ede56?auto=format&fit=crop&w=1600&q=85") center 53% / cover,linear-gradient(135deg,#103c7a,#5f8aa9);color:white;min-height:235px;display:flex;align-items:center}
         .auto-hero h1{font-size:clamp(28px,3.4vw,49px);line-height:1.1;max-width:710px;margin:12px 0}
         .auto-layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:18px;margin-top:20px}
         .auto-panel{background:white;border:1px solid #e2e8f3;border-radius:18px;padding:24px;box-shadow:0 4px 22px #122c5910}
@@ -174,6 +226,13 @@ export default function DeposerAutoPage() {
         @media(max-width:540px){.auto-wrap{padding:12px}.auto-hero{padding:22px;min-height:190px}.auto-form-grid{grid-template-columns:1fr}.auto-panel{padding:17px}}
       `}</style>
       <div className="auto-wrap">
+        <nav aria-label="Navigation principale" style={{minHeight:63,display:"flex",justifyContent:"flex-end",alignItems:"center",gap:24,flexWrap:"wrap",padding:"5px 8px",fontWeight:700,fontSize:14}}>
+          <a href="/" style={{color:"#00348b",textDecoration:"none"}}>Accueil</a>
+          <a href="/automobile" style={{color:"#0047cb",textDecoration:"none"}}>Automobile</a>
+          <a href="/moto" style={{color:"#00348b",textDecoration:"none"}}>Moto</a>
+          <a href="/immobilier" style={{color:"#00348b",textDecoration:"none"}}>Immobilier</a>
+          <a href="/automobile/deposer" style={{background:"#ffcf1f",padding:"11px 15px",borderRadius:13,color:"#10214a",textDecoration:"none"}}>Déposer une annonce</a>
+        </nav>
         <section className="auto-hero">
           <div>
             <span style={{background:"#f8c522",color:"#092d69",borderRadius:9,padding:"8px 13px",fontWeight:800,fontSize:12}}>🚘 AUTOMOBILE</span>
@@ -204,7 +263,7 @@ export default function DeposerAutoPage() {
                     <div style={{fontSize:32,color:"#0750d5"}}>☁</div>
                     <strong>Ajoutez vos photos ici</strong><p style={{fontSize:12}}>JPG, PNG, WEBP — 10 Mo maximum par image</p>
                   </label>
-                  <div className="auto-photo-thumbs">{photoUrls.map((url,i)=><img src={url} alt={"Photo du véhicule "+(i+1)} key={url}/>)}</div>
+                  <div className="auto-photo-thumbs">{photoUrls.map((url,i)=><div key={url}><img src={url} alt={"Photo du véhicule "+(i+1)}/><button type="button" onClick={()=>supprimerPhoto(i)} aria-label={"Supprimer la photo "+(i+1)} style={{fontSize:11,width:"100%",border:"0",background:"#fff1f1",color:"#ae192c",padding:5,cursor:"pointer"}}>Retirer</button></div>)}</div>
                   <p style={{background:"#effaf0",padding:12,borderRadius:10,fontSize:12}}>💡 MIA conseille de photographier l’extérieur, l’intérieur, le tableau de bord et les éventuels défauts.</p>
                 </div>
                 <div>
@@ -239,7 +298,9 @@ export default function DeposerAutoPage() {
               <h2 style={{marginTop:0,fontSize:22}}><span style={{color:"#0345c9"}}>3.</span> Description et publication</h2>
               <textarea style={{...inputStyle,minHeight:125}} value={form.description} onChange={e=>setForm({...form,description:e.target.value})} placeholder="Décrivez votre véhicule, son entretien, son état général..."/>
               <p style={{fontSize:13,color:"#56627a"}}>La vérification automatique MIA et l’estimation du prix ne sont pas encore actives.</p>
-              <button type="button" onClick={publier} style={buttonStyle}>Publier mon annonce</button>
+              {userEmail ? <p style={{fontSize:13,color:"#137443"}}>Connecté : {userEmail}</p> : <button type="button" onClick={connexionGoogle} style={{...buttonStyle,background:"#fff",color:"#0047bb",border:"1px solid #0047bb",marginRight:12}}>Se connecter avec Google</button>}
+              <button type="button" onClick={publier} disabled={publishing} style={{...buttonStyle,opacity:publishing?.6:1}}>{publishing ? "Publication en cours…" : "Publier mon annonce"}</button>
+              {publicationId && <p><a href="/automobile" style={{color:"#0047bb",fontWeight:700}}>Retrouver mon annonce dans Automobile</a></p>}
               {message&&<p role="status" style={{fontWeight:700,marginTop:15}}>{message}</p>}
             </section>
           </div>
