@@ -20,7 +20,7 @@ export default function RootLayout({
         >
           <a href="/" aria-label="Accueil TOUT ICI MARKET">
             <img
-            src="/573d5360-613f-4829-a940-affaa4dcfd7e.png"
+            src="/toutici market.png"
               alt="TOUT ICI MARKET"
               style={{
                 width: "105px",
