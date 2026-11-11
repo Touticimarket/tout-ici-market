@@ -16,7 +16,12 @@ export default function ChoisirTypeAutomobile(){
       .auto-choose-container{max-width:1370px;margin:auto;padding:0 22px 60px}
       .auto-choose-nav{min-height:91px;display:flex;justify-content:flex-end;align-items:center;gap:24px;font-size:14px;font-weight:bold;flex-wrap:wrap}
       .auto-choose-nav a{color:#0a3d9c;text-decoration:none}
-      .auto-choose-hero{background:linear-gradient(125deg,#0538ae,#0866cb);padding:38px 45px 35px;border-radius:22px;color:white}
+      .auto-choose-hero{background:linear-gradient(115deg,#0538ae,#0866cb);padding:32px 36px;border-radius:22px;color:white;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,1fr);align-items:center;gap:22px}
+      .auto-choose-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;height:205px}
+      .auto-choose-gallery figure{margin:0;position:relative;overflow:hidden;border-radius:12px;border:2px solid #ffffff55;box-shadow:0 12px 23px #031d4b33;background:#4f78aa}
+      .auto-choose-gallery img{width:100%;height:100%;object-fit:cover;display:block}
+      .auto-choose-gallery figcaption{position:absolute;bottom:0;left:0;right:0;padding:9px 7px;font-size:12px;font-weight:800;color:white;background:linear-gradient(transparent,#051e4add)}
+      @media(max-width:950px){.auto-choose-hero{grid-template-columns:1fr}.auto-choose-gallery{height:170px}}
       .auto-choose-hero h1{margin:10px 0;font-size:clamp(28px,3.6vw,44px)}
       .auto-choose-hero p{line-height:1.5;font-size:17px}
       .auto-choose-search{border:0;border-radius:10px;padding:15px 17px;width:min(550px,100%);font-size:15px;margin-top:8px}
@@ -30,7 +35,7 @@ export default function ChoisirTypeAutomobile(){
       .auto-choose-card p{font-size:12px;line-height:1.4;color:#62728a;margin:0}
       @media(max-width:1090px){.auto-choose-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
       @media(max-width:800px){.auto-choose-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-      @media(max-width:540px){.auto-choose-container{padding:0 13px 40px}.auto-choose-nav{padding-top:82px;justify-content:center;min-height:150px}.auto-choose-hero{padding:25px 22px}.auto-choose-grid{grid-template-columns:1fr}}
+      @media(max-width:540px){.auto-choose-container{padding:0 13px 40px}.auto-choose-nav{padding-top:82px;justify-content:center;min-height:150px}.auto-choose-hero{padding:25px 22px}.auto-choose-gallery{height:132px}.auto-choose-grid{grid-template-columns:1fr}}
     `}</style>
     <div className="auto-choose-container">
       <nav className="auto-choose-nav" aria-label="Navigation">
@@ -38,11 +43,18 @@ export default function ChoisirTypeAutomobile(){
         <a href="/automobile">Annonces automobiles</a>
       </nav>
       <header className="auto-choose-hero">
-        <span style={{fontWeight:800,color:"#ffe488",fontSize:12}}>🚘 TOUT ICI MARKET · AUTOMOBILE</span>
-        <h1>Quel type de véhicule souhaitez-vous proposer ?</h1>
-        <p>Voiture, utilitaire, fourgon, caravane, remorque ou van : choisissez précisément votre catégorie avant de déposer l'annonce.</p>
-        <input type="search" className="auto-choose-search" value={recherche} onChange={e=>setRecherche(e.target.value)}
-          placeholder="Rechercher : remorque, camping-car, utilitaire…" aria-label="Rechercher un type de véhicule"/>
+        <div>
+          <span style={{fontWeight:800,color:"#ffe488",fontSize:12}}>🚘 TOUT ICI MARKET · AUTOMOBILE & VÉHICULES</span>
+          <h1>Quel véhicule ou équipement souhaitez-vous proposer ?</h1>
+          <p>Voitures, utilitaires, camions, caravaning, remorques, vélos, équipements et services mécaniques : choisissez votre rubrique.</p>
+          <input type="search" className="auto-choose-search" value={recherche} onChange={e=>setRecherche(e.target.value)}
+            placeholder="Rechercher : remorque, camping-car, utilitaire…" aria-label="Rechercher un type de véhicule"/>
+        </div>
+        <div className="auto-choose-gallery" aria-label="Photos d'illustration des véhicules">
+          <figure><img src="https://images.unsplash.com/photo-1607853202242-f76e8b299cce?auto=format&fit=crop&w=640&q=80" alt="SUV récent en rue urbaine"/><figcaption>Voitures & SUV</figcaption></figure>
+          <figure><img src="https://images.unsplash.com/photo-1641199788912-9a7385a35c82?auto=format&fit=crop&w=640&q=80" alt="Fourgon utilitaire stationné en ville"/><figcaption>Utilitaires & fourgons</figcaption></figure>
+          <figure><img src="https://images.unsplash.com/photo-1780296269675-169390638617?auto=format&fit=crop&w=640&q=80" alt="Berline moderne en milieu urbain"/><figcaption>Berlines premium</figcaption></figure>
+        </div>
       </header>
       {groupesAutomobile.map(groupe=>{
         const liste=types.filter(t=>t.groupe===groupe);
