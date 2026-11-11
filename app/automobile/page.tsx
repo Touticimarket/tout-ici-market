@@ -16,7 +16,7 @@ type Annonce = {
   ville: string | null;
   description: string | null;
 };
-type Photo = {annonce_id:string;storage_path:string;ordre:number};
+type Photo = {annonce_id:string;url:string;ordre:number};
 const euro=(value:number|null)=>new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(value||0);
 
 export default function AutomobilePage() {
@@ -41,12 +41,12 @@ export default function AutomobilePage() {
       setAnnonces(voitures);
       if(voitures.length) {
         const ids=voitures.map(a=>String(a.id));
-        const {data:medias}=await supabase.from("annonces_auto_medias")
-          .select("annonce_id,storage_path,ordre").in("annonce_id",ids).order("ordre",{ascending:true});
+        const {data:medias}=await supabase.from("annonces_auto_photos")
+          .select("annonce_id,url,ordre").in("annonce_id",ids).order("ordre",{ascending:true});
         if(actif&&medias) {
           const photos:Record<string,string>={};
           for(const media of medias as Photo[]) {
-            if(!photos[media.annonce_id]) photos[media.annonce_id]=supabase.storage.from("annonces-auto").getPublicUrl(media.storage_path).data.publicUrl;
+            if(!photos[media.annonce_id]) photos[media.annonce_id]=media.url;
           }
           setImages(photos);
         }
