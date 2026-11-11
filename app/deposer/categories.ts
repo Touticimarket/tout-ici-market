@@ -9,8 +9,8 @@ export type DepotCategorie = {
 };
 
 export const depotCategories: DepotCategorie[] = [
-  {slug:"automobile",nom:"Automobile & véhicules",icone:"🚘",description:"Voitures, utilitaires, fourgons, vans, caravanes et remorques",groupe:"Véhicules & mobilité",
-    sousCategories:["Voiture","SUV & 4x4","Utilitaire","Fourgon","Van aménagé","Camping-car","Caravane","Remorque","Porte-voiture","Pièces automobiles"],
+  {slug:"automobile",nom:"Automobile & véhicules",icone:"🚘",description:"Voitures, utilitaires, caravaning, camions, vélos, équipements et services",groupe:"Véhicules & mobilité",
+    sousCategories:["Voiture","Utilitaire","Fourgon","Camion","Caravaning","Van aménagé","Caravane","Remorque","Vélos","Équipement auto","Équipement caravaning","Équipement nautisme","Équipement vélo","Réparation mécanique"],
     champs:[{nom:"marque",libelle:"Marque"},{nom:"modele",libelle:"Modèle"}]},
   {slug:"moto",nom:"Moto & deux-roues",icone:"🏍️",description:"Motos, scooters, quads et équipements",groupe:"Véhicules & mobilité",
     sousCategories:["Moto","Scooter","Quad","Vélomoteur","Pièces et équipements"],
@@ -37,7 +37,7 @@ export const depotCategories: DepotCategorie[] = [
     sousCategories:["Console","Jeu vidéo","Accessoires gaming","Jeux de société","Jouets","Collections"],
     champs:[{nom:"marque",libelle:"Marque / console"},{nom:"etat",libelle:"État"}]},
   {slug:"nautisme",nom:"Nautisme & loisirs",icone:"⛵",description:"Bateaux, jet-skis et loisirs nautiques",groupe:"Voyages & loisirs",
-    sousCategories:["Bateau à moteur","Voilier","Jet-ski","Semi-rigide","Remorque","Équipement nautique","Autres loisirs"],
+    sousCategories:["Bateau à moteur","Voilier","Jet-ski","Semi-rigide","Remorque bateau","Équipement nautisme","Autres loisirs"],
     champs:[{nom:"marque",libelle:"Marque"},{nom:"modele",libelle:"Modèle"},{nom:"annee",libelle:"Année",type:"number"},{nom:"longueur",libelle:"Longueur (m)"}]},
   {slug:"vacances-loisirs",nom:"Vacances & loisirs",icone:"🏖️",description:"Locations saisonnières et activités",groupe:"Voyages & loisirs",
     sousCategories:["Location de vacances","Camping et mobil-home","Chalet et bungalow","Chambre d'hôtes","Activités","Sport et vélo"],
