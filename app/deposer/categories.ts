@@ -9,12 +9,9 @@ export type DepotCategorie = {
 };
 
 export const depotCategories: DepotCategorie[] = [
-  {slug:"automobile",nom:"Automobile & véhicules",icone:"🚘",description:"Voitures, utilitaires, caravaning, camions, vélos, équipements et services",groupe:"Véhicules & mobilité",
-    sousCategories:["Voiture","Utilitaire","Fourgon","Camion","Caravaning","Van aménagé","Caravane","Remorque","Vélos","Équipement auto","Équipement caravaning","Équipement nautisme","Équipement vélo","Réparation mécanique"],
+  {slug:"automobile",nom:"Automobile & véhicules",icone:"🚘",description:"Voitures, motos, scooters, utilitaires, camions, caravaning et vélos",groupe:"Véhicules & mobilité",
+    sousCategories:["Voiture","Moto","Scooter","Quad","Moto trail","Utilitaire","Fourgon","Camion","Caravaning","Van aménagé","Caravane","Remorque","Vélos","Équipement auto","Équipement moto","Pièces moto","Équipement caravaning","Équipement nautisme","Équipement vélo","Réparation mécanique"],
     champs:[{nom:"marque",libelle:"Marque"},{nom:"modele",libelle:"Modèle"}]},
-  {slug:"moto",nom:"Moto & deux-roues",icone:"🏍️",description:"Motos, scooters, quads et équipements",groupe:"Véhicules & mobilité",
-    sousCategories:["Moto","Scooter","Quad","Vélomoteur","Pièces et équipements"],
-    champs:[{nom:"marque",libelle:"Marque"},{nom:"modele",libelle:"Modèle"},{nom:"annee",libelle:"Année",type:"number"},{nom:"kilometrage",libelle:"Kilométrage",type:"number"}]},
   {slug:"immobilier",nom:"Immobilier",icone:"🏡",description:"Vente, location, neuf et vacances",groupe:"Logement & emploi",
     sousCategories:["Maison à vendre","Appartement à vendre","Location","Colocation","Terrain","Immobilier neuf","Bureaux et commerces","Immobilier international"],
     champs:[{nom:"surface",libelle:"Surface (m²)",type:"number"},{nom:"pieces",libelle:"Nombre de pièces",type:"number"},{nom:"chambres",libelle:"Chambres",type:"number"},{nom:"code_postal",libelle:"Code postal"}]},
