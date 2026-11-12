@@ -3,9 +3,36 @@
 import {useEffect,useMemo,useState} from "react";
 import {useParams} from "next/navigation";
 import {trouverTypeVehicule} from "../types";
+import {supabase} from "../../../lib/supabaseClient";
 
 type Champ = {id:string;libelle:string;type?:"text"|"number";placeholder?:string};
 type Donnees = Record<string,string>;
+
+type RefMarque = {id:string;nom:string};
+type RefModele = {id:string;nom:string;marque_id:string;type_slug:string;attributs:Record<string,unknown>};
+type RefVersion = {id:string;nom:string};
+type RefMoteur = {id:string;nom:string;energie:string|null;boite:string|null;puissance_ch:number|null;ptac_kg:number|null;charge_utile_kg:number|null;volume_m3:number|null;permis:string|null};
+type RefEquipement = {id:string;nom:string;groupe:string};
+
+const slugsMoto=["moto","moto-trail","moto-sportive","moto-custom","scooter","maxi-scooter","cyclomoteur","quad","trois-roues","moto-electrique","moto-collection"];
+const slugsTransport=["utilitaire","fourgon","camionnette","camion","poids-lourd","benne"];
+const slugsCamping=["van","van-amenage","fourgon-amenage","camping-car","caravane","mobil-home","cellule-camping"];
+const slugsRemorques=["remorque","porte-voiture","remorque-moto","remorque-bateau","semi-remorque"];
+const slugsCycles=["velo","vtt","velo-route","vae","trottinette"];
+
+function slugsModeles(typeSlug:string):string[]{
+  // « Moto » généraliste doit aussi montrer ses trails, sportives, scooters et quads.
+  return typeSlug==="moto"?slugsMoto:[typeSlug];
+}
+function slugsEquipements(typeSlug:string):string[]{
+  if(slugsMoto.includes(typeSlug))return ["moto",typeSlug];
+  if(slugsTransport.includes(typeSlug))return ["utilitaire","camion",typeSlug];
+  if(slugsCamping.includes(typeSlug))return ["camping-car","caravane",typeSlug];
+  if(slugsRemorques.includes(typeSlug))return ["remorque",typeSlug];
+  if(slugsCycles.includes(typeSlug))return ["velo",typeSlug];
+  return ["voiture",typeSlug];
+}
+
 
 function champsDuType(slug:string,motorise:boolean,nature:string):Champ[]{
   const commun:Champ[]=[{id:"marque",libelle:"Marque / fabricant"},{id:"modele",libelle:"Modèle / référence"},{id:"etat",libelle:"État",placeholder:"Neuf, très bon état, occasion..."}];
@@ -76,6 +103,23 @@ export default function DepotTypeVehicule(){
   const [previews,setPreviews]=useState<string[]>([]);
   const [message,setMessage]=useState("");
   const [pret,setPret]=useState(false);
+  const [marquesRef,setMarquesRef]=useState<RefMarque[]>([]);
+  const [modelesRef,setModelesRef]=useState<RefModele[]>([]);
+  const [versionsRef,setVersionsRef]=useState<RefVersion[]>([]);
+  const [moteursRef,setMoteursRef]=useState<RefMoteur[]>([]);
+  const [equipementsRef,setEquipementsRef]=useState<RefEquipement[]>([]);
+  const [catalogueErreur,setCatalogueErreur]=useState("");
+  const marquesDuCatalogue=useMemo(()=>marquesRef.filter(m=>modelesRef.some(md=>md.marque_id===m.id)),[marquesRef,modelesRef]);
+  const modelesDeMarque=useMemo(()=>modelesRef.filter(m=>m.marque_id===donnees.ref_marque_id),[modelesRef,donnees.ref_marque_id]);
+  const equipementsChoisis=useMemo(()=>{try{
+    const v=JSON.parse(donnees.equipements||"[]");
+    return Array.isArray(v)?v.filter(x=>typeof x==="string") as string[]:[];
+  }catch{return [] as string[]}},[donnees.equipements]);
+  const groupesEquipements=useMemo(()=>{
+    const groupes:Record<string,RefEquipement[]>={};
+    for(const equip of equipementsRef) (groupes[equip.groupe]??=[]).push(equip);
+    return Object.entries(groupes).sort(([a],[b])=>a.localeCompare(b,"fr"));
+  },[equipementsRef]);
 
   useEffect(()=>{
     setPret(false);
@@ -97,6 +141,105 @@ export default function DepotTypeVehicule(){
   },[type,cle]);
 
   const champs=useMemo(()=>type?champsDuType(type.slug,type.motorise,type.nature):[],[type]);
+
+  useEffect(()=>{
+    let actif=true;
+    setMarquesRef([]);
+    setModelesRef([]);
+    setEquipementsRef([]);
+    setCatalogueErreur("");
+    if(!type)return;
+    async function chargerCatalogue(){
+      const slugs=slugsModeles(type!.slug);
+      const equipSlugs=slugsEquipements(type!.slug);
+      const [modelesResult,equipementsResult]=await Promise.all([
+        supabase.from("ref_vehicules_modeles").select("id,nom,marque_id,type_slug,attributs")
+          .in("type_slug",slugs).order("nom").limit(1500),
+        supabase.from("ref_vehicules_equipements").select("id,nom,groupe")
+          .in("type_slug",equipSlugs).order("groupe").order("nom").limit(500)
+      ]);
+      if(!actif)return;
+      if(modelesResult.error||equipementsResult.error){
+        setCatalogueErreur("Le catalogue constructeur est momentanément inaccessible : saisissez les informations manuellement.");
+        return;
+      }
+      const models=(modelesResult.data||[]) as RefModele[];
+      setModelesRef(models);
+      setEquipementsRef((equipementsResult.data||[]) as RefEquipement[]);
+      const ids=[...new Set(models.map(m=>m.marque_id))];
+      if(ids.length){
+        const {data:marques,error}=await supabase.from("ref_vehicules_marques")
+          .select("id,nom").in("id",ids).order("nom").limit(500);
+        if(actif){
+          if(error)setCatalogueErreur("Les marques ne sont pas accessibles. Saisie manuelle possible.");
+          else setMarquesRef((marques||[]) as RefMarque[]);
+        }
+      }
+    }
+    chargerCatalogue();
+    return ()=>{actif=false};
+  },[type]);
+
+  useEffect(()=>{
+    let actif=true;
+    setVersionsRef([]);
+    if(!donnees.ref_modele_id)return;
+    supabase.from("ref_vehicules_versions").select("id,nom")
+      .eq("modele_id",donnees.ref_modele_id).order("nom").limit(400)
+      .then(({data})=>{if(actif)setVersionsRef((data||[]) as RefVersion[])});
+    return ()=>{actif=false};
+  },[donnees.ref_modele_id]);
+
+  useEffect(()=>{
+    let actif=true;
+    setMoteursRef([]);
+    if(!donnees.ref_version_id)return;
+    supabase.from("ref_vehicules_motorisations")
+      .select("id,nom,energie,boite,puissance_ch,ptac_kg,charge_utile_kg,volume_m3,permis")
+      .eq("version_id",donnees.ref_version_id).order("nom").limit(400)
+      .then(({data})=>{if(actif)setMoteursRef((data||[]) as RefMoteur[])});
+    return ()=>{actif=false};
+  },[donnees.ref_version_id]);
+
+  function choisirMarqueReference(id:string){
+    const marque=marquesRef.find(m=>m.id===id);
+    setDonnees(old=>({
+      ...old,ref_marque_id:id,ref_modele_id:"",ref_version_id:"",ref_moteur_id:"",
+      marque:marque?.nom||old.marque,modele:"",version:""
+    }));
+  }
+  function choisirModeleReference(id:string){
+    const modele=modelesRef.find(m=>m.id===id);
+    setDonnees(old=>({
+      ...old,ref_modele_id:id,ref_version_id:"",ref_moteur_id:"",
+      modele:modele?.nom||old.modele,version:"",
+      cylindree:modele?.attributs?.cylindree_cm3!=null?String(modele.attributs.cylindree_cm3):old.cylindree,
+      permis:typeof modele?.attributs?.permis==="string"?modele.attributs.permis:old.permis
+    }));
+  }
+  function choisirVersionReference(id:string){
+    const version=versionsRef.find(v=>v.id===id);
+    setDonnees(old=>({...old,ref_version_id:id,ref_moteur_id:"",version:version?.nom||""}));
+  }
+  function choisirMoteurReference(id:string){
+    const moteur=moteursRef.find(m=>m.id===id);
+    setDonnees(old=>({
+      ...old,ref_moteur_id:id,motorisation:moteur?.nom||"",
+      energie:moteur?.energie||old.energie,
+      boite:moteur?.boite||old.boite,
+      puissance:moteur?.puissance_ch!=null?String(moteur.puissance_ch):old.puissance,
+      ptac:moteur?.ptac_kg!=null?String(moteur.ptac_kg):old.ptac,
+      charge:moteur?.charge_utile_kg!=null?String(moteur.charge_utile_kg):old.charge,
+      volume:moteur?.volume_m3!=null?String(moteur.volume_m3):old.volume,
+      permis:moteur?.permis||old.permis
+    }));
+  }
+  function toggleEquipement(nom:string){
+    const nouvelles= equipementsChoisis.includes(nom)
+      ? equipementsChoisis.filter(e=>e!==nom) : [...equipementsChoisis,nom];
+    setDonnees(old=>({...old,equipements:JSON.stringify(nouvelles)}));
+  }
+
 
   if(!type)return <main style={{fontFamily:"Arial,sans-serif",padding:"120px 24px",textAlign:"center"}}>
     <h1>Cette catégorie est introuvable.</h1>
@@ -146,8 +289,18 @@ export default function DepotTypeVehicule(){
       .typed-panel h2{color:#0642b4;margin:0 0 19px;font-size:21px}
       .typed-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
       .typed-label{font-size:13px;font-weight:700;display:block}
-      .typed-label input,.typed-label textarea{font-family:inherit;font-size:14px;background:white;color:#10244c;width:100%;display:block;border:1px solid #cad6e8;border-radius:11px;padding:13px;margin-top:7px}
+      .typed-label input,.typed-label select,.typed-label textarea{font-family:inherit;font-size:14px;background:white;color:#10244c;width:100%;display:block;border:1px solid #cad6e8;border-radius:11px;padding:13px;margin-top:7px}
       .typed-label textarea{height:135px;resize:vertical;line-height:1.5}
+      .typed-reference{border:1px solid #cfdcf1;background:#f6faff;padding:18px;border-radius:14px;margin-bottom:18px}
+      .typed-reference h3{font-size:16px;color:#0643b4;margin:0 0 8px}
+      .typed-option-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+      .typed-option-col{background:#f7faff;border:1px solid #e1e9f4;border-radius:12px;padding:13px}
+      .typed-option-col h3{margin:0 0 10px;font-size:15px;color:#0342b4}
+      .typed-option-col label{display:flex;align-items:flex-start;gap:7px;margin:7px 0;font-size:12px;line-height:1.4;cursor:pointer}
+      .typed-option-col input{accent-color:#064bcc;margin-top:2px}
+      @media(max-width:930px){.typed-option-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:540px){.typed-option-grid{grid-template-columns:1fr}}
+
       .typed-wide{grid-column:1/-1}
       .typed-photo-drop{border:2px dashed #b5c5e4;background:#f8faff;border-radius:14px;padding:26px;text-align:center}
       .typed-photo-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px}
@@ -189,6 +342,41 @@ export default function DepotTypeVehicule(){
           </section>
           <section className="typed-panel">
             <h2>2. Caractéristiques de votre {type.nature==="service"?"service":type.nature==="equipement"?"équipement":"véhicule"}</h2>
+            {marquesDuCatalogue.length>0&&type.nature==="vehicule"&&<div className="typed-reference">
+              <h3>🔎 Catalogue constructeur — aide à la saisie</h3>
+              <p style={{fontSize:12,color:"#5c6c86",lineHeight:1.5}}>
+                Choisissez votre marque, votre modèle, votre version et éventuellement votre motorisation. Les champs ci-dessous restent modifiables ; les données historiques ne sont pas encore toutes vérifiées.
+              </p>
+              <div className="typed-fields">
+                <label className="typed-label">Marque constructeur
+                  <select value={donnees.ref_marque_id||""} onChange={e=>choisirMarqueReference(e.target.value)}>
+                    <option value="">Choisir une marque</option>
+                    {marquesDuCatalogue.map(b=><option key={b.id} value={b.id}>{b.nom}</option>)}
+                  </select>
+                </label>
+                <label className="typed-label">Modèle
+                  <select value={donnees.ref_modele_id||""} onChange={e=>choisirModeleReference(e.target.value)}
+                    disabled={!donnees.ref_marque_id}>
+                    <option value="">Choisir un modèle</option>
+                    {modelesDeMarque.map(m=><option key={m.id} value={m.id}>{m.nom}</option>)}
+                  </select>
+                </label>
+                <label className="typed-label">Version / finition
+                  <select value={donnees.ref_version_id||""} onChange={e=>choisirVersionReference(e.target.value)}
+                    disabled={!donnees.ref_modele_id}>
+                    <option value="">Choisir une version</option>
+                    {versionsRef.map(v=><option key={v.id} value={v.id}>{v.nom}</option>)}
+                  </select>
+                </label>
+                {moteursRef.length>0&&<label className="typed-label">Motorisation
+                  <select value={donnees.ref_moteur_id||""} onChange={e=>choisirMoteurReference(e.target.value)}>
+                    <option value="">Choisir une motorisation</option>
+                    {moteursRef.map(m=><option key={m.id} value={m.id}>{[m.nom,m.puissance_ch!=null?m.puissance_ch+" ch":null,m.energie].filter(Boolean).join(" · ")}</option>)}
+                  </select>
+                </label>}
+              </div>
+            </div>}
+            {catalogueErreur&&<p role="status" style={{color:"#805b00",fontSize:13}}>{catalogueErreur}</p>}
             <div className="typed-fields">
               {champs.map(champ=><label className="typed-label" key={champ.id}>{champ.libelle}
                 <input type={champ.type||"text"} min={champ.type==="number"?"0":undefined} value={donnees[champ.id]||""}
@@ -196,6 +384,19 @@ export default function DepotTypeVehicule(){
               </label>)}
             </div>
           </section>
+          {groupesEquipements.length>0&&<section className="typed-panel">
+            <h2>3. Équipements de votre {type.nature==="vehicule"?"véhicule":"article"}</h2>
+            <p style={{fontSize:13,color:"#64748b",marginTop:-8,marginBottom:16}}>Cochez uniquement les équipements réellement présents. {equipementsChoisis.length} sélectionné{equipementsChoisis.length>1?"s":""}.</p>
+            <div className="typed-option-grid">
+              {groupesEquipements.map(([groupe,liste])=><section className="typed-option-col" key={groupe}>
+                <h3>{groupe}</h3>
+                {liste.map(e=><label key={e.id}>
+                  <input type="checkbox" checked={equipementsChoisis.includes(e.nom)} onChange={()=>toggleEquipement(e.nom)}/>
+                  <span>{e.nom}</span>
+                </label>)}
+              </section>)}
+            </div>
+          </section>}
           <section className="typed-panel">
             <h2>3. Photos ({photos.length}/10)</h2>
             <div className="typed-photo-drop">
