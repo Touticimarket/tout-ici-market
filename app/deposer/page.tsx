@@ -23,6 +23,16 @@ export default function ChoixDepotPage(){
         .depot-search{width:min(600px,100%);padding:16px 18px;border:0;border-radius:12px;font-size:16px;box-shadow:0 5px 25px #051e441e}
         .depot-section{margin-top:28px}
         .depot-section h2{font-size:23px;margin:0 0 14px;color:#073b99}
+        .depot-section-featured{padding:20px;border:1px solid #dae7f7;border-left:5px solid #f8c825;border-radius:19px;background:linear-gradient(115deg,#f9fbff,#ffffff);box-shadow:0 5px 19px #123a6d0b}
+        .depot-section-featured h2{margin-bottom:6px}
+        .depot-section-featured .depot-cards{grid-template-columns:1fr}
+        .depot-section-featured .depot-card{max-width:none;min-height:112px;align-items:center;padding:17px 20px;background:#fff}
+        .depot-section-featured .depot-ico{width:53px;height:53px;font-size:29px}
+        .depot-section-featured .depot-card h3{font-size:18px}
+        .depot-section-featured .depot-card p{font-size:13px}
+        .depot-section-subtitle{font-size:13px;color:#62738b;margin:0 0 14px;line-height:1.5}
+        .depot-feature-cta{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:10px 14px;border-radius:10px;background:#ffd32a;color:#05275c;text-decoration:none;font-size:13px;font-weight:800}
+        .depot-feature-cta:hover{background:#ffca07}
         .depot-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
         .depot-card{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid #e1e9f6;border-radius:15px;padding:15px;text-decoration:none;color:#122751;min-height:125px;box-shadow:0 5px 20px #20376a0b;transition:transform .15s,border-color .15s}
         .depot-card:hover{border-color:#0b56c8}
@@ -43,7 +53,7 @@ export default function ChoixDepotPage(){
       `}</style>
       <div className="depot-shell">
         <nav className="depot-nav" aria-label="Navigation de dépôt">
-          <a href="/">Accueil</a><a href="/deposer/automobile">Automobile & Véhicules</a><a href="/immobilier">Immobilier</a><a href="/emploi">Emploi</a>
+          <a href="/">Accueil</a><a href="/deposer/automobile">Automobile & Véhicules</a><a href="/deposer/immobilier">Immobilier</a><a href="/deposer/emploi">Emploi & Services</a>
           <span style={{background:"#ffd12e",color:"#0e2b62",padding:"12px 17px",borderRadius:12}}>Déposer une annonce</span>
         </nav>
         <header className="depot-intro">
@@ -56,8 +66,11 @@ export default function ChoixDepotPage(){
         {depotGroupes.map(groupe=>{
           const selection=categories.filter(c=>c.groupe===groupe);
           if(!selection.length)return null;
-          return <section key={groupe} className="depot-section" aria-label={groupe}>
+          const miseEnAvant = groupe==="Immobilier" || groupe==="Emploi & Services";
+          return <section key={groupe} className={"depot-section"+(miseEnAvant?" depot-section-featured":"")} aria-label={groupe}>
             <h2>{groupe}</h2>
+            {groupe==="Immobilier"&&<p className="depot-section-subtitle">Une rubrique indépendante pour les ventes, locations, colocations, terrains et commerces.</p>}
+            {groupe==="Emploi & Services"&&<p className="depot-section-subtitle">Une rubrique indépendante pour les offres d'emploi, les candidatures, les formations et les services.</p>}
             <div className="depot-cards">
               {selection.map(c=><article key={c.slug} className="depot-card">
                 <span className="depot-ico" aria-hidden="true">{c.icone}</span>
@@ -90,6 +103,9 @@ export default function ChoixDepotPage(){
                     {c.sousCategories.length>(c.slug==="automobile"?6:3)&&
                       <a href={"/deposer/"+c.slug} className="depot-all-subs">Voir toutes les rubriques →</a>}
                   </div>
+                  {miseEnAvant&&<a className="depot-feature-cta" href={"/deposer/"+c.slug}>
+                    {c.slug==="immobilier"?"Préparer une annonce immobilière":"Préparer une annonce emploi ou service"} <span aria-hidden="true">→</span>
+                  </a>}
                   {c.slug!=="automobile"&&<div style={{color:"#79869c",fontSize:11,marginTop:11}}>Formulaire de préparation — publication à venir</div>}
                 </div>
               </article>)}
