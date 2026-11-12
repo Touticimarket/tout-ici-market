@@ -87,7 +87,7 @@ export default function AutomobilePage() {
       `}</style>
       <div className="cars-wrap">
         <nav className="cars-nav" aria-label="Navigation principale">
-          <a href="/">Accueil</a><a href="/automobile" style={{color:"#0048cd"}}>Automobile</a><a href="/moto">Moto</a><a href="/immobilier">Immobilier</a>
+          <a href="/">Accueil</a><a href="/deposer/automobile" style={{color:"#0048cd"}}>Automobile & Véhicules</a><a href="/immobilier">Immobilier</a>
           <a href="/deposer" className="cars-btn">Déposer une annonce</a>
         </nav>
         <section className="cars-hero">
@@ -113,8 +113,8 @@ export default function AutomobilePage() {
             {loading ? <p className="cars-panel">Chargement des annonces…</p> : !visibles.length ?
               <div className="cars-panel" style={{padding:30}}>
                 <h3>{annonces.length?"Aucun véhicule ne correspond à votre recherche.":"Les premières annonces arrivent !"}</h3>
-                <p>Vous souhaitez vendre votre voiture ? Publiez votre annonce avec ses photos.</p>
-                <a href="/automobile/deposer" className="cars-btn">Déposer une annonce</a>
+                <p>Vous souhaitez vendre un véhicule ? Choisissez son type pour préparer votre annonce.</p>
+                <a href="/deposer/automobile" className="cars-btn">Déposer une annonce</a>
               </div> :
               <div className="cars-cards">
                 {visibles.map(a=><article className="cars-card" key={String(a.id)}>
