@@ -9,7 +9,7 @@ export type DepotCategorie = {
 };
 
 export const depotCategories: DepotCategorie[] = [
-  {slug:"automobile",nom:"Automobile & véhicules",icone:"🚘",description:"Voitures, motos, scooters, utilitaires, camions, caravaning et vélos",groupe:"Véhicules & mobilité",
+  {slug:"automobile",nom:"Automobile & Véhicules",icone:"🚘",description:"Voitures, motos, scooters, utilitaires, camions, caravaning et vélos",groupe:"Véhicules & mobilité",
     sousCategories:["Voiture","Moto","Scooter","Quad","Moto trail","Utilitaire","Fourgon","Camion","Caravaning","Van aménagé","Caravane","Remorque","Vélos","Équipement auto","Équipement moto","Pièces moto","Équipement caravaning","Équipement nautisme","Équipement vélo","Réparation mécanique"],
     champs:[{nom:"marque",libelle:"Marque"},{nom:"modele",libelle:"Modèle"}]},
   {slug:"immobilier",nom:"Immobilier",icone:"🏡",description:"Vente, location, neuf et vacances",groupe:"Logement & emploi",
