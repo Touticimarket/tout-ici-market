@@ -92,10 +92,10 @@ export default function AutomobilePage() {
         </nav>
         <section className="cars-hero">
           <div>
-            <span style={{background:"#ffcf1f",color:"#06275c",padding:"8px 11px",borderRadius:9,fontSize:12,fontWeight:800}}>AUTOMOBILE</span>
-            <h1 style={{fontSize:"clamp(36px,4.2vw,61px)",margin:"14px 0 10px"}}>Trouvez votre prochaine voiture</h1>
-            <p style={{fontSize:19,maxWidth:540,lineHeight:1.5}}>Achetez, vendez ou échangez votre véhicule simplement sur TOUT ICI MARKET.</p>
-            <a href="/automobile/deposer" className="cars-btn">Déposer une annonce auto</a>
+            <span style={{background:"#ffcf1f",color:"#06275c",padding:"8px 11px",borderRadius:9,fontSize:12,fontWeight:800}}>AUTOMOBILE & VÉHICULES</span>
+            <h1 style={{fontSize:"clamp(36px,4.2vw,61px)",margin:"14px 0 10px"}}>Trouvez votre prochain véhicule</h1>
+            <p style={{fontSize:19,maxWidth:540,lineHeight:1.5}}>Voitures, motos, scooters, utilitaires, camions et caravaning : retrouvez tous vos véhicules au même endroit.</p>
+            <a href="/deposer/automobile" className="cars-btn">Choisir le type de véhicule</a>
           </div>
         </section>
         <div className="cars-main">
