@@ -322,8 +322,8 @@ export default function DeposerAutoPage() {
       <div className="auto-wrap">
         <nav aria-label="Navigation principale" style={{minHeight:63,display:"flex",justifyContent:"flex-end",alignItems:"center",gap:24,flexWrap:"wrap",padding:"5px 8px",fontWeight:700,fontSize:14}}>
           <a href="/" style={{color:"#00348b",textDecoration:"none"}}>Accueil</a>
-          <a href="/automobile" style={{color:"#0047cb",textDecoration:"none"}}>Automobile</a>
-          <a href="/moto" style={{color:"#00348b",textDecoration:"none"}}>Moto</a>
+          <a href="/deposer/automobile" style={{color:"#0047cb",textDecoration:"none"}}>Automobile & Véhicules</a>
+          
           <a href="/immobilier" style={{color:"#00348b",textDecoration:"none"}}>Immobilier</a>
           <a href="/deposer" style={{background:"#ffcf1f",padding:"11px 15px",borderRadius:13,color:"#10214a",textDecoration:"none"}}>Déposer une annonce</a>
         </nav>
