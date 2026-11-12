@@ -1,3 +1,4 @@
+import BoutonRetour from "./components/BoutonRetour";
 import type { ReactNode } from "react";
 
 export default function RootLayout({
@@ -43,6 +44,7 @@ export default function RootLayout({
           </a>
         </header>
         {children}
+        <BoutonRetour />
       </body>
     </html>
   );
