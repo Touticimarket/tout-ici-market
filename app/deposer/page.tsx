@@ -54,6 +54,7 @@ export default function ChoixDepotPage(){
       <div className="depot-shell">
         <nav className="depot-nav" aria-label="Navigation de dépôt">
           <a href="/">Accueil</a><a href="/deposer/automobile">Automobile & Véhicules</a><a href="/deposer/immobilier">Immobilier</a><a href="/deposer/emploi">Emploi & Services</a>
+          <a href="/compte/inscription" style={{color:"#074bb8",textDecoration:"none",border:"1px solid #bdd3ee",background:"#eef5ff",padding:"10px 12px",borderRadius:11}}>Créer un compte</a>
           <span style={{background:"#ffd12e",color:"#0e2b62",padding:"12px 17px",borderRadius:12}}>Déposer une annonce</span>
         </nav>
         <header className="depot-intro">
