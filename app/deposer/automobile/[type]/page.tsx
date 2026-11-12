@@ -37,6 +37,20 @@ function champsDuType(slug:string,motorise:boolean,nature:string):Champ[]{
     {id:"longueur",libelle:"Longueur (m)"},{id:"ptac",libelle:"PTAC (kg)",type:"number"},
     {id:"equipement",libelle:"Équipements de vie (cuisine, douche, chauffage...)"}
   ];
+  if(["moto","moto-trail","moto-sportive","moto-custom","scooter","maxi-scooter","cyclomoteur","quad","trois-roues","moto-electrique","moto-collection"].includes(slug)) return [
+    ...commun,
+    {id:"annee",libelle:"Année",type:"number"},
+    {id:"kilometrage",libelle:"Kilométrage (km)",type:"number"},
+    {id:"cylindree",libelle:"Cylindrée (cm³)",type:"number"},
+    {id:"puissance",libelle:"Puissance (ch)",type:"number"},
+    {id:"permis",libelle:"Permis / catégorie d'homologation",placeholder:"AM, A1, A2, A, B..."},
+    {id:"energie",libelle:"Énergie / carburant",placeholder:"Essence, électrique..."},
+    {id:"transmission",libelle:"Transmission",placeholder:"Chaîne, courroie, cardan..."},
+    {id:"refroidissement",libelle:"Refroidissement",placeholder:"Air, liquide..."},
+    {id:"abs",libelle:"ABS / freinage"},
+    {id:"controle_traction",libelle:"Contrôle de traction"},
+    {id:"entretien",libelle:"Historique d'entretien"}
+  ];
   if(["velo","vtt","velo-route","vae","trottinette"].includes(slug)) return [
     ...commun,{id:"taille",libelle:"Taille de cadre / roues"},
     {id:"matiere",libelle:"Matériau du cadre"},
