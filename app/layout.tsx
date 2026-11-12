@@ -1,3 +1,4 @@
+import SuiviNavigation from "./components/SuiviNavigation";
 import BoutonRetour from "./components/BoutonRetour";
 import type { ReactNode } from "react";
 
@@ -45,6 +46,7 @@ export default function RootLayout({
         </header>
         {children}
         <BoutonRetour />
+        <SuiviNavigation />
       </body>
     </html>
   );
