@@ -83,6 +83,7 @@ export default function ChoisirTypeAutomobile(){
       .vh-header-search button{border:0;background:#ffcf1f;border-radius:30px;padding:13px 17px;color:#072456;font-size:18px;cursor:pointer}
       .vh-header-links{display:flex;gap:17px;align-items:center;margin-left:auto;font-size:13px;font-weight:800;flex-wrap:wrap}
       .vh-header-links a{text-decoration:none;color:#14366e}
+      .vh-header-links .vh-signup-btn{color:#0849b7;border:1px solid #b7cef0;background:#eef5ff;border-radius:10px;padding:11px 13px}
       .vh-yellow-btn{display:inline-flex;align-items:center;gap:8px;background:#ffd321;border-radius:13px;padding:13px 16px;color:#102354!important}
       .vh-nav{background:#07418f;min-height:58px;display:flex;gap:0;align-items:stretch;overflow-x:auto;scrollbar-width:thin}
       .vh-nav a{display:flex;align-items:center;gap:8px;white-space:nowrap;color:white;text-decoration:none;padding:17px 23px;font-weight:800;font-size:14px;border-right:1px solid #ffffff1b}
@@ -148,6 +149,7 @@ export default function ChoisirTypeAutomobile(){
       </form>
       <div className="vh-header-links">
         <a href="/automobile">Voir les annonces</a>
+        <a href="/compte/inscription" className="vh-signup-btn">Créer un compte</a>
         <a className="vh-yellow-btn" href="/deposer">＋ Déposer une annonce</a>
       </div>
     </div>
