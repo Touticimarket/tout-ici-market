@@ -1,7 +1,9 @@
+import DernieresVisites from "./components/DernieresVisites";
+import LiensCompte from "./components/LiensCompte";
 import {
   CarFront, House, BriefcaseBusiness, Shirt, Sofa, Smartphone,
   Palmtree, Wrench, Gamepad2, LayoutGrid, Plus,
-  UserRound, Building2, ChevronDown, ArrowUpRight
+  ChevronDown, ArrowUpRight
 } from "lucide-react";
 
 const categories = [
@@ -29,6 +31,8 @@ export default function Home() {
       .ti-home-menu .ti-home-more{display:inline-flex;align-items:center;gap:3px}
       .ti-home-account{display:flex;gap:12px;align-items:center}
       .ti-home-account a,.ti-home-account span{display:inline-flex;align-items:center;gap:6px}
+      .ti-home-account .ti-home-signup{display:inline-flex;gap:6px;align-items:center;color:#0750be;border:1px solid #bdd4f8;border-radius:11px;padding:10px 12px;background:#f0f6ff;font-weight:800}
+      .ti-home-account .ti-home-signup:hover{background:#e4efff}
       .ti-home-account .ti-home-sell{background:linear-gradient(#ffda3f,#ffb800);color:#061e4c;border-radius:12px;padding:13px 16px;box-shadow:0 3px 8px #b87e0015}
       .ti-home-sell:hover{filter:brightness(.98)}
       .ti-home-hero-crop{position:relative;overflow:hidden;aspect-ratio:1536/349;background:#eef6ff}
@@ -86,8 +90,7 @@ export default function Home() {
       </nav>
       <div className="ti-home-account">
         <a className="ti-home-sell" href="/deposer"><Plus size={17}/> Déposer une annonce</a>
-        <span title="Connexion en préparation"><UserRound size={17}/> Connexion</span>
-        <span title="Espace professionnel en préparation"><Building2 size={17}/> Espace pro</span>
+        <LiensCompte />
       </div>
     </header>
 
@@ -108,6 +111,8 @@ export default function Home() {
         </a>)}
       </div>
     </section>
+
+    <DernieresVisites />
 
     <div className="ti-home-rest-crop">
       <img src="/public/banner-home.png" alt="Aperçu des annonces populaires et des services de TOUT ICI MARKET."/>
