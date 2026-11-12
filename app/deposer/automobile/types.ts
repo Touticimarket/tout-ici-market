@@ -11,6 +11,7 @@ export type TypeVehicule = {
 
 export const groupesAutomobile = [
   "Voitures particulières",
+  "Motos, scooters & quads",
   "Utilitaires, camions & transport",
   "Caravaning, vans & loisirs",
   "Remorques & transport",
@@ -24,6 +25,19 @@ export const typesVehicules: TypeVehicule[] = [
   {slug:"monospace",nom:"Monospace",icone:"🚘",description:"Familiale, monospace et 7 places",groupe:"Voitures particulières",motorise:true,catalogueAuto:true,nature:"vehicule"},
   {slug:"voiture-sans-permis",nom:"Voiture sans permis",icone:"🚗",description:"Voiturette et quadricycle",groupe:"Voitures particulières",motorise:true,catalogueAuto:false,nature:"vehicule"},
   {slug:"vehicule-collection",nom:"Voiture de collection",icone:"🏎️",description:"Anciennes et véhicules d'exception",groupe:"Voitures particulières",motorise:true,catalogueAuto:false,nature:"vehicule"},
+
+
+  {slug:"moto",nom:"Moto",icone:"🏍️",description:"Roadster, sportive, routière ou custom",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
+  {slug:"moto-trail",nom:"Trail & aventure",icone:"🏍️",description:"Trail, maxi-trail et aventure",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
+  {slug:"moto-sportive",nom:"Moto sportive",icone:"🏍️",description:"Sportive, supersport et circuit",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
+  {slug:"moto-custom",nom:"Custom & cruiser",icone:"🏍️",description:"Cruiser, custom et chopper",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
+  {slug:"scooter",nom:"Scooter",icone:"🛵",description:"Scooters urbains 50 à 125 cm³",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
+  {slug:"maxi-scooter",nom:"Maxi-scooter",icone:"🛵",description:"Scooters de grande cylindrée",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
+  {slug:"cyclomoteur",nom:"Cyclomoteur",icone:"🛵",description:"Mobylette, 50 cm³ et cyclomoteur",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
+  {slug:"quad",nom:"Quad",icone:"🏍️",description:"Quad, SSV et buggy de loisirs",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
+  {slug:"trois-roues",nom:"Trois-roues",icone:"🛺",description:"Tricycle motorisé et scooter trois-roues",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
+  {slug:"moto-electrique",nom:"Moto électrique",icone:"⚡",description:"Motos et scooters 100 % électriques",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
+  {slug:"moto-collection",nom:"Moto de collection",icone:"🏍️",description:"Motos anciennes et de collection",groupe:"Motos, scooters & quads",motorise:true,catalogueAuto:false,nature:"vehicule"},
 
   {slug:"utilitaire",nom:"Utilitaire",icone:"🚐",description:"Véhicule de travail ou de livraison",groupe:"Utilitaires, camions & transport",motorise:true,catalogueAuto:false,nature:"vehicule"},
   {slug:"fourgon",nom:"Fourgon",icone:"🚐",description:"Fourgon tôlé et fourgonnette",groupe:"Utilitaires, camions & transport",motorise:true,catalogueAuto:false,nature:"vehicule"},
@@ -54,6 +68,8 @@ export const typesVehicules: TypeVehicule[] = [
 
   {slug:"pieces-auto",nom:"Pièces automobiles",icone:"⚙️",description:"Moteurs, carrosserie et pièces détachées",groupe:"Équipements & réparations",motorise:false,catalogueAuto:false,nature:"equipement"},
   {slug:"accessoires-auto",nom:"Équipement auto",icone:"🧰",description:"Accessoires, autoradios et équipements",groupe:"Équipements & réparations",motorise:false,catalogueAuto:false,nature:"equipement"},
+  {slug:"equipement-moto",nom:"Équipement moto",icone:"🪖",description:"Casques, blousons, bottes et protections",groupe:"Équipements & réparations",motorise:false,catalogueAuto:false,nature:"equipement"},
+  {slug:"pieces-moto",nom:"Pièces moto",icone:"⚙️",description:"Échappement, mécanique et accessoires deux-roues",groupe:"Équipements & réparations",motorise:false,catalogueAuto:false,nature:"equipement"},
   {slug:"pneus-jantes",nom:"Pneus & jantes",icone:"🛞",description:"Pneumatiques, roues et jantes",groupe:"Équipements & réparations",motorise:false,catalogueAuto:false,nature:"equipement"},
   {slug:"equipement-caravaning",nom:"Équipement caravaning",icone:"🏕️",description:"Auvents, accessoires et pièces de camping-car",groupe:"Équipements & réparations",motorise:false,catalogueAuto:false,nature:"equipement"},
   {slug:"equipement-nautisme",nom:"Équipement nautisme",icone:"⚓",description:"Pièces, gilets, accastillage et accessoires",groupe:"Équipements & réparations",motorise:false,catalogueAuto:false,nature:"equipement"},
