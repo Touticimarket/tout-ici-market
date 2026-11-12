@@ -88,6 +88,7 @@ export default function AutomobilePage() {
       <div className="cars-wrap">
         <nav className="cars-nav" aria-label="Navigation principale">
           <a href="/">Accueil</a><a href="/deposer/automobile" style={{color:"#0048cd"}}>Automobile & Véhicules</a><a href="/immobilier">Immobilier</a>
+          <a href="/compte/inscription" style={{color:"#0647bf",textDecoration:"none",fontWeight:800}}>Créer un compte</a>
           <a href="/deposer" className="cars-btn">Déposer une annonce</a>
         </nav>
         <section className="cars-hero">
