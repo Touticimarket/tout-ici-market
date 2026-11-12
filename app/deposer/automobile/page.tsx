@@ -46,20 +46,20 @@ export default function ChoisirTypeAutomobile(){
         <div>
           <span style={{fontWeight:800,color:"#ffe488",fontSize:12}}>🚘 TOUT ICI MARKET · AUTOMOBILE & VÉHICULES</span>
           <h1>Quel véhicule ou équipement souhaitez-vous proposer ?</h1>
-          <p>Voitures, utilitaires, camions, caravaning, remorques, vélos, équipements et services mécaniques : choisissez votre rubrique.</p>
+          <p>Voitures, motos, scooters, quads, utilitaires, camions, caravaning, vélos, équipements et services mécaniques : choisissez votre rubrique.</p>
           <input type="search" className="auto-choose-search" value={recherche} onChange={e=>setRecherche(e.target.value)}
-            placeholder="Rechercher : remorque, camping-car, utilitaire…" aria-label="Rechercher un type de véhicule"/>
+            placeholder="Rechercher : moto, scooter, quad, remorque, utilitaire…" aria-label="Rechercher un type de véhicule"/>
         </div>
         <div className="auto-choose-gallery" aria-label="Photos d'illustration des véhicules">
           <figure><img src="https://images.unsplash.com/photo-1607853202242-f76e8b299cce?auto=format&fit=crop&w=640&q=80" alt="SUV récent en rue urbaine"/><figcaption>Voitures & SUV</figcaption></figure>
           <figure><img src="https://images.unsplash.com/photo-1641199788912-9a7385a35c82?auto=format&fit=crop&w=640&q=80" alt="Fourgon utilitaire stationné en ville"/><figcaption>Utilitaires & fourgons</figcaption></figure>
-          <figure><img src="https://images.unsplash.com/photo-1780296269675-169390638617?auto=format&fit=crop&w=640&q=80" alt="Berline moderne en milieu urbain"/><figcaption>Berlines premium</figcaption></figure>
+          <figure><img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=640&q=80" alt="Moto routière dans un décor extérieur"/><figcaption>Motos & scooters</figcaption></figure>
         </div>
       </header>
       {groupesAutomobile.map(groupe=>{
         const liste=types.filter(t=>t.groupe===groupe);
         if(!liste.length)return null;
-        return <section className="auto-choose-group" key={groupe} id={groupe==="Caravaning, vans & loisirs"?"caravaning":groupe==="Vélos & mobilité douce"?"velos":undefined}>
+        return <section className="auto-choose-group" key={groupe} id={groupe==="Motos, scooters & quads"?"deux-roues":groupe==="Caravaning, vans & loisirs"?"caravaning":groupe==="Vélos & mobilité douce"?"velos":undefined}>
           <h2>{groupe}</h2>
           <div className="auto-choose-grid">{liste.map(type=>
             <a key={type.slug} href={type.catalogueAuto?"/automobile/deposer?type="+encodeURIComponent(type.slug):"/deposer/automobile/"+type.slug} className="auto-choose-card">
