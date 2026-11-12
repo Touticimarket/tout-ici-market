@@ -12,10 +12,10 @@ export const depotCategories: DepotCategorie[] = [
   {slug:"automobile",nom:"Automobile & Véhicules",icone:"🚘",description:"Voitures, motos, scooters, utilitaires, camions, caravaning et vélos",groupe:"Véhicules & mobilité",
     sousCategories:["Voiture","Moto","Scooter","Quad","Moto trail","Utilitaire","Fourgon","Camion","Caravaning","Van aménagé","Caravane","Remorque","Vélos","Équipement auto","Équipement moto","Pièces moto","Équipement caravaning","Équipement nautisme","Équipement vélo","Réparation mécanique"],
     champs:[{nom:"marque",libelle:"Marque"},{nom:"modele",libelle:"Modèle"}]},
-  {slug:"immobilier",nom:"Immobilier",icone:"🏡",description:"Vente, location, neuf et vacances",groupe:"Logement & emploi",
+  {slug:"immobilier",nom:"Immobilier",icone:"🏡",description:"Vente, location, neuf et vacances",groupe:"Immobilier",
     sousCategories:["Maison à vendre","Appartement à vendre","Location","Colocation","Terrain","Immobilier neuf","Bureaux et commerces","Immobilier international"],
     champs:[{nom:"surface",libelle:"Surface (m²)",type:"number"},{nom:"pieces",libelle:"Nombre de pièces",type:"number"},{nom:"chambres",libelle:"Chambres",type:"number"},{nom:"code_postal",libelle:"Code postal"}]},
-  {slug:"emploi",nom:"Emploi & services",icone:"💼",description:"Offres, candidatures et services à domicile",groupe:"Logement & emploi",
+  {slug:"emploi",nom:"Emploi & services",icone:"💼",description:"Offres, candidatures et services à domicile",groupe:"Emploi & Services",
     sousCategories:["Offre d'emploi","Recherche d'emploi","Services aux particuliers","Cours et formation","Prestations professionnelles"],
     champs:[{nom:"poste",libelle:"Métier ou service"},{nom:"contrat",libelle:"Type de contrat / prestation"},{nom:"experience",libelle:"Expérience souhaitée"}]},
   {slug:"maison-jardin",nom:"Maison & jardin",icone:"🛋️",description:"Meubles, électroménager et décoration",groupe:"Maison & équipements",
@@ -44,7 +44,7 @@ export const depotCategories: DepotCategorie[] = [
     champs:[{nom:"etat",libelle:"État / détails"}]}
 ];
 
-export const depotGroupes = ["Véhicules & mobilité","Logement & emploi","Maison & équipements","Mode & divertissement","Voyages & loisirs","Autres annonces"];
+export const depotGroupes = ["Véhicules & mobilité","Immobilier","Emploi & Services","Maison & équipements","Mode & divertissement","Voyages & loisirs","Autres annonces"];
 export function trouverCategorie(slug:string) {
   return depotCategories.find(c=>c.slug===slug);
 }
