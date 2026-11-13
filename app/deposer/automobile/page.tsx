@@ -17,7 +17,7 @@ const grandesRubriques:Rubrique[]=[
   {titre:"Camions",description:"Poids lourds, tracteurs, porteurs, remorques…",photo:"https://images.pexels.com/photos/37848366/pexels-photo-37848366.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🚚",href:"/deposer/automobile/camion"},
   {titre:"Caravaning",description:"Camping-cars, caravanes, cellules, vans aménagés…",photo:"https://images.pexels.com/photos/27173835/pexels-photo-27173835.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🚎",href:"#caravaning"},
   {titre:"Remorques",description:"Bagagères, porte-voitures, plateaux, spéciales…",photo:"https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=750&q=85",icone:"🛻",href:"/deposer/automobile/remorque"},
-  {titre:"Motos & Scooters",description:"Motos, scooters, 3 roues, quads…",photo:"https://images.pexels.com/photos/8532500/pexels-photo-8532500.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🏍️",href:"#deux-roues"},
+  {titre:"Motos & Scooters",description:"Motos, scooters, 3 roues, quads…",photo:"https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=85",icone:"🏍️",href:"#deux-roues"},
   {titre:"Vélos",description:"Vélos, VAE, VTT, route, enfants, accessoires…",photo:"https://images.pexels.com/photos/5274201/pexels-photo-5274201.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🚲",href:"#velos"},
   {titre:"Nautisme",description:"Bateaux, jet-skis, voiliers, remorques bateau…",photo:"https://images.pexels.com/photos/5973217/pexels-photo-5973217.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"⛵",href:"/deposer/nautisme"},
   {titre:"Vans & aménagés",description:"Vans, fourgons aménagés, minibus, loisirs…",photo:"https://images.pexels.com/photos/37443372/pexels-photo-37443372.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🏕️",href:"/deposer/automobile/van-amenage"},
@@ -70,12 +70,12 @@ export default function PageAutomobileVehicules(){
       .vh-root a:focus-visible,.vh-root button:focus-visible,.vh-root input:focus-visible{outline:3px solid #ffcf28;outline-offset:3px}
       body:has(.vh-root) .ti-brand-link{top:8px;left:13px;width:229px;height:72px;background:#fff;border-radius:14px;padding:5px 10px;box-shadow:0 4px 17px #041a4350}
       body:has(.vh-root) .ti-brand-link img{width:100%;height:100%;object-fit:contain;object-position:center}
-      .vh-top{min-height:92px;padding:10px 22px 10px 270px;background:linear-gradient(115deg,#042057,#073b83);display:flex;align-items:center;gap:20px;color:#fff}
+      .vh-top{min-height:92px;padding:10px 22px 10px 270px;background:#fff;border-bottom:1px solid #e1e8f2;display:flex;align-items:center;gap:20px;color:#092b61}
       .vh-top-search{background:#fff;color:#0d3262;border-radius:32px;display:flex;align-items:center;flex:1 1 auto;max-width:600px;min-width:210px;overflow:hidden;box-shadow:0 5px 16px #00000016}
       .vh-top-search input{min-width:0;flex:1;border:0;background:transparent;padding:16px 22px;color:#0d2b5e;font-size:14px;outline:0}
       .vh-top-search button{width:49px;height:49px;flex:none;display:grid;place-items:center;color:#02296d;border:0;border-radius:50%;background:#ffcf20;cursor:pointer}
       .vh-top-actions{display:flex;align-items:center;gap:15px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
-      .vh-top-actions a{display:inline-flex;align-items:center;gap:7px;color:#fff;text-decoration:none;font-size:13px;font-weight:800;white-space:nowrap}
+      .vh-top-actions a{display:inline-flex;align-items:center;gap:7px;color:#0a2e66;text-decoration:none;font-size:13px;font-weight:800;white-space:nowrap}
       .vh-top-actions a:hover{text-decoration:underline}
       .vh-top-actions .vh-top-cta{padding:13px 17px;background:#ffcb1d;color:#072753;border-radius:13px;box-shadow:0 4px 11px #001b4670}
       .vh-top-actions .vh-top-cta:hover{background:#ffda42;text-decoration:none}
