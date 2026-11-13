@@ -17,7 +17,7 @@ type Categorie={slug:string;nom:string;description:string;photo:string;icone:str
 
 const categories:Categorie[]=[
   {slug:"voiture",nom:"Automobiles",description:"Berlines, SUV, citadines et sportives",icone:"🚗",types:["voiture","suv-4x4","monospace","vehicule-collection","voiture-sans-permis"],photo:"https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1000"},
-  {slug:"moto",nom:"Motos & Scooters",description:"Routières, trails, scooters et quads",icone:"🏍️",types:["moto","moto-trail","moto-sportive","moto-custom","scooter","maxi-scooter","cyclomoteur","quad","trois-roues","moto-electrique"],photo:"https://images.pexels.com/photos/8532500/pexels-photo-8532500.jpeg?auto=compress&cs=tinysrgb&w=1000"},
+  {slug:"moto",nom:"Motos & Scooters",description:"Routières, trails, scooters et quads",icone:"🏍️",types:["moto","moto-trail","moto-sportive","moto-custom","scooter","maxi-scooter","cyclomoteur","quad","trois-roues","moto-electrique"],photo:"https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=85"},
   {slug:"utilitaire",nom:"Utilitaires",description:"Fourgons, camionnettes et pick-up",icone:"🚐",types:["utilitaire","fourgon","camionnette"],photo:"https://images.pexels.com/photos/32976307/pexels-photo-32976307.jpeg?auto=compress&cs=tinysrgb&w=1000"},
   {slug:"camion",nom:"Camions",description:"Poids lourds, tracteurs et porteurs",icone:"🚚",types:["camion","poids-lourd","benne"],photo:"https://images.pexels.com/photos/37848366/pexels-photo-37848366.jpeg?auto=compress&cs=tinysrgb&w=1000"},
   {slug:"caravaning",nom:"Caravaning",description:"Camping-cars, caravanes et cellules",icone:"🚎",types:["camping-car","caravane","mobil-home","cellule-camping"],photo:"https://images.pexels.com/photos/27173835/pexels-photo-27173835.jpeg?auto=compress&cs=tinysrgb&w=1000"},
@@ -97,12 +97,12 @@ export default function AutomobilePage(){
       .market-vehicles{font-family:Arial,Helvetica,sans-serif;background:#f5f8fd;min-height:100vh;color:#0a2557}
       .market-vehicles *{box-sizing:border-box}
       .market-vehicles a:focus-visible,.market-vehicles button:focus-visible,.market-vehicles input:focus-visible,.market-vehicles select:focus-visible{outline:3px solid #ffc826;outline-offset:2px}
-      .mv-header{min-height:83px;display:flex;align-items:center;justify-content:flex-end;gap:15px;background:linear-gradient(120deg,#051d4e,#093d89);padding:12px 21px 12px 226px;color:#fff;flex-wrap:wrap}
+      .mv-header{min-height:83px;display:flex;align-items:center;justify-content:flex-end;gap:15px;background:#fff;border-bottom:1px solid #e1e8f2;padding:12px 21px 12px 226px;color:#092b61;flex-wrap:wrap}
       .mv-search{display:flex;align-items:center;min-width:210px;flex:1 1 330px;max-width:610px;border-radius:30px;background:#fff;overflow:hidden}
       .mv-search input{width:100%;min-width:0;border:0;background:#fff;padding:15px 21px;font-size:14px;color:#082650}
       .mv-search button{display:grid;place-items:center;width:49px;height:49px;border-radius:50%;border:0;background:#ffce17;color:#092652;cursor:pointer;flex:none}
       .mv-actions{display:flex;align-items:center;justify-content:flex-end;gap:15px;flex-wrap:wrap}
-      .mv-actions a{color:#fff;text-decoration:none;font-weight:800;font-size:13px;display:flex;gap:7px;align-items:center;white-space:nowrap}
+      .mv-actions a{color:#0a2e66;text-decoration:none;font-weight:800;font-size:13px;display:flex;gap:7px;align-items:center;white-space:nowrap}
       .mv-actions a:hover{text-decoration:underline}
       .mv-actions .mv-primary{padding:13px 17px;background:#ffcd1f;color:#051f51;border-radius:11px}
       .mv-nav{display:flex;justify-content:space-around;align-items:stretch;gap:4px;background:#0b4392;padding:0 12px;flex-wrap:wrap}
