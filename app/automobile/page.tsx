@@ -84,7 +84,13 @@ export default function AutomobilePage() {
         .cars-price{font-size:25px;color:#0644c1;font-weight:800}
         .cars-btn{display:inline-block;background:#ffcf1f;color:#10214a;text-decoration:none;padding:15px 22px;border-radius:13px;font-weight:800}
         @media(max-width:800px){.cars-main{grid-template-columns:1fr}.cars-hero{padding:26px 23px;min-height:220px}.cars-nav{gap:14px}.cars-wrap{padding:12px}}
-      `}</style>
+      
+        /* Navigation de recherche : aucun libellé masqué par le logo. */
+        .cars-nav{padding-left:210px;min-height:75px;gap:9px 16px;justify-content:flex-end}
+        .cars-nav a{white-space:nowrap;line-height:1.4}
+        @media(max-width:1050px){.cars-nav{padding:79px 8px 12px;min-height:145px;justify-content:center}}
+        @media(max-width:550px){.cars-nav{gap:9px 12px;font-size:12px}.cars-nav .cars-btn{padding:12px 14px}}
+`}</style>
       <div className="cars-wrap">
         <nav className="cars-nav" aria-label="Navigation principale">
           <a href="/">Accueil</a><a href="/deposer/automobile" style={{color:"#0048cd"}}>Automobile & Véhicules</a><a href="/immobilier">Immobilier</a>
