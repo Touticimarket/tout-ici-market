@@ -213,6 +213,7 @@ export default function PageAutomobileVehicules(){
         <button type="submit" aria-label="Voir les catégories correspondant à la recherche"><Search size={22}/></button>
       </form>
       <div className="vh-top-actions">
+        <a href="/automobile"><ArrowRight size={19}/> Voir les annonces</a>
         <a href="/compte"><CircleUserRound size={21}/> Mon compte</a>
         <a href="/compte/inscription">Créer un compte</a>
         <a href="/automobile"><Heart size={20}/> Voir les annonces</a>
