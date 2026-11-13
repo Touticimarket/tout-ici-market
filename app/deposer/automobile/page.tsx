@@ -12,16 +12,16 @@ type Rubrique = {titre:string;description:string;photo:string;icone:string;href:
 type Service = {titre:string;href:string;icone:typeof Disc3};
 
 const grandesRubriques:Rubrique[]=[
-  {titre:"Automobiles",description:"Voitures, berlines, SUV, citadines, etc.",photo:"https://images.unsplash.com/photo-1607853202242-f76e8b299cce?auto=format&fit=crop&w=750&q=85",icone:"🚗",href:"/automobile/deposer?type=voiture",motCle:"automobile voiture citadine"},
-  {titre:"Utilitaires",description:"Fourgons, fourgonnettes, camionnettes, pick-up…",photo:"https://images.unsplash.com/photo-1641199788912-9a7385a35c82?auto=format&fit=crop&w=750&q=85",icone:"🚐",href:"/deposer/automobile/utilitaire",motCle:"utilitaire fourgon camionnette"},
-  {titre:"Camions",description:"Poids lourds, tracteurs, porteurs, remorques…",photo:"https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=750&q=85",icone:"🚚",href:"/deposer/automobile/camion"},
-  {titre:"Caravaning",description:"Camping-cars, caravanes, cellules, vans aménagés…",photo:"https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=750&q=85",icone:"🚎",href:"#caravaning"},
+  {titre:"Automobiles",description:"Voitures, berlines, SUV, citadines, etc.",photo:"https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🚗",href:"/automobile/deposer?type=voiture",motCle:"automobile voiture citadine"},
+  {titre:"Utilitaires",description:"Fourgons, fourgonnettes, camionnettes, pick-up…",photo:"https://images.pexels.com/photos/32976307/pexels-photo-32976307.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🚐",href:"/deposer/automobile/utilitaire",motCle:"utilitaire fourgon camionnette"},
+  {titre:"Camions",description:"Poids lourds, tracteurs, porteurs, remorques…",photo:"https://images.pexels.com/photos/37848366/pexels-photo-37848366.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🚚",href:"/deposer/automobile/camion"},
+  {titre:"Caravaning",description:"Camping-cars, caravanes, cellules, vans aménagés…",photo:"https://images.pexels.com/photos/27173835/pexels-photo-27173835.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🚎",href:"#caravaning"},
   {titre:"Remorques",description:"Bagagères, porte-voitures, plateaux, spéciales…",photo:"https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=750&q=85",icone:"🛻",href:"/deposer/automobile/remorque"},
-  {titre:"Motos & Scooters",description:"Motos, scooters, 3 roues, quads…",photo:"https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=750&q=85",icone:"🏍️",href:"#deux-roues"},
-  {titre:"Vélos",description:"Vélos, VAE, VTT, route, enfants, accessoires…",photo:"https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=750&q=85",icone:"🚲",href:"#velos"},
-  {titre:"Nautisme",description:"Bateaux, jet-skis, voiliers, remorques bateau…",photo:"https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=750&q=85",icone:"⛵",href:"/deposer/nautisme"},
-  {titre:"Vans & aménagés",description:"Vans, fourgons aménagés, minibus, loisirs…",photo:"https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=750&q=85",icone:"🏕️",href:"/deposer/automobile/van-amenage"},
-  {titre:"Autres véhicules",description:"Tracteurs, engins, véhicules spécifiques, collection…",photo:"https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=750&q=85",icone:"🚙",href:"#toutes-rubriques"}
+  {titre:"Motos & Scooters",description:"Motos, scooters, 3 roues, quads…",photo:"https://images.pexels.com/photos/8532500/pexels-photo-8532500.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🏍️",href:"#deux-roues"},
+  {titre:"Vélos",description:"Vélos, VAE, VTT, route, enfants, accessoires…",photo:"https://images.pexels.com/photos/5274201/pexels-photo-5274201.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🚲",href:"#velos"},
+  {titre:"Nautisme",description:"Bateaux, jet-skis, voiliers, remorques bateau…",photo:"https://images.pexels.com/photos/5973217/pexels-photo-5973217.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"⛵",href:"/deposer/nautisme"},
+  {titre:"Vans & aménagés",description:"Vans, fourgons aménagés, minibus, loisirs…",photo:"https://images.pexels.com/photos/37443372/pexels-photo-37443372.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🏕️",href:"/deposer/automobile/van-amenage"},
+  {titre:"Autres véhicules",description:"Tracteurs, engins, véhicules spécifiques, collection…",photo:"https://images.pexels.com/photos/19172257/pexels-photo-19172257.jpeg?auto=compress&cs=tinysrgb&w=1000",icone:"🚙",href:"#toutes-rubriques"}
 ];
 
 const services:Service[]=[
@@ -86,7 +86,7 @@ export default function PageAutomobileVehicules(){
       .vh-location{white-space:nowrap}
       .vh-hero{position:relative;min-height:228px;background:
         linear-gradient(90deg,#051a46 0%,rgba(4,28,70,.86) 23%,rgba(2,31,72,.22) 54%,rgba(3,22,57,.12) 100%),
-        url("https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1800&q=85") center 53%/cover;
+        url("https://images.pexels.com/photos/38095094/pexels-photo-38095094.jpeg?auto=compress&cs=tinysrgb&w=1000") center 53%/cover;
         color:#fff;overflow:hidden}
       .vh-hero-inner{width:min(100%,1540px);min-height:228px;margin:0 auto;padding:25px 24px;display:grid;grid-template-columns:minmax(280px,.85fr) minmax(0,1.4fr);align-items:center;gap:24px}
       .vh-hero h1{display:inline-block;transform:skew(-5deg);background:#ffcf21;color:#09285c;border-radius:4px;margin:0 0 14px;padding:12px 20px;font-weight:900;font-size:clamp(25px,2.9vw,40px);line-height:1.08;box-shadow:0 5px 15px #041a4b27}
@@ -94,7 +94,7 @@ export default function PageAutomobileVehicules(){
       .vh-hero p{font-size:clamp(15px,1.5vw,20px);line-height:1.4;font-weight:700;margin:0;max-width:450px;text-shadow:0 2px 7px #061e42}
       .vh-hero-gallery{display:grid;grid-template-columns:1.1fr .95fr 1.05fr .9fr;gap:9px;height:179px;align-items:stretch}
       .vh-hero-gallery a{min-width:0;border:2px solid #ffffff65;border-radius:12px;overflow:hidden;position:relative;display:block;background:#a0b9d5;box-shadow:0 12px 23px #02173555}
-      .vh-hero-gallery img{width:100%;height:100%;object-fit:cover;display:block}
+      .vh-hero-gallery img{width:100%;height:100%;object-fit:cover;object-position:center 55%;display:block}
       .vh-hero-gallery span{position:absolute;bottom:0;left:0;right:0;color:#fff;background:linear-gradient(transparent,#03183ecf);padding:22px 8px 9px;text-align:center;font-size:12px;font-weight:800}
       .vh-shell{width:min(100%,1540px);margin:0 auto;padding:12px 10px 65px;display:grid;grid-template-columns:325px minmax(0,1fr);gap:17px;align-items:start}
       .vh-side{background:linear-gradient(160deg,#fff,#f4f7fd);border:1px solid #e7edf6;border-radius:21px;padding:8px 7px 15px;box-shadow:0 6px 28px #123a7311}
@@ -117,7 +117,7 @@ export default function PageAutomobileVehicules(){
       .vh-card{display:block;overflow:hidden;min-width:0;border:1px solid #e2e8f1;border-radius:15px;text-decoration:none;color:#0a204c;background:linear-gradient(180deg,#fff,#f7f9fd);box-shadow:0 4px 10px #162d5516;transition:transform .17s,box-shadow .17s,border-color .17s}
       .vh-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px #122d6128;border-color:#8cadde}
       .vh-card-image{height:117px;background:linear-gradient(135deg,#dceeff,#eaf3f9);position:relative;display:grid;place-items:center}
-      .vh-card-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+      .vh-card-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 55%}
       .vh-card-image .vh-image-fallback{font-size:46px}
       .vh-card-content{padding:11px 12px 13px}
       .vh-card-heading{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:4px}
