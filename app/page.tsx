@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 
 const categories = [
-  {name:"Automobile & Véhicules",description:"Auto, moto, utilitaire…",href:"/deposer/automobile",Icon:CarFront},
+  {name:"Automobile & Véhicules",description:"Auto, moto, utilitaire…",href:"/automobile",Icon:CarFront},
   {name:"Immobilier",description:"Vente & location",href:"/immobilier",Icon:House},
   {name:"Emploi & Services",description:"Offres & services",href:"/emploi",Icon:BriefcaseBusiness},
   {name:"Mode & Accessoires",description:"Vêtements & accessoires",href:"/mode",Icon:Shirt},
@@ -91,7 +91,7 @@ export default function Home() {
         </div>
       </div>
       <nav className="ti-home-menu" aria-label="Menu principal">
-        <a href="/deposer/automobile">Automobile & Véhicules</a>
+        <a href="/automobile">Automobile & Véhicules</a>
         <a href="/immobilier">Immobilier</a>
         <a href="/emploi">Emploi & Services</a>
         <a href="/mode">Mode</a>
