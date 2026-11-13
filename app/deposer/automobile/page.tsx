@@ -139,7 +139,28 @@ export default function ChoisirTypeAutomobile(){
       @media(max-width:800px){.vh-content{grid-template-columns:1fr}.vh-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.vh-side-head{grid-column:1/-1}.vh-hero-inner{grid-template-columns:1fr}.vh-hero-vehicles{height:135px}}
       @media(max-width:650px){.vh-header{padding:85px 12px 12px;flex-wrap:wrap}.vh-header-links{width:100%;justify-content:space-between}.vh-hero{padding:22px 13px}.vh-hero-vehicles{grid-template-columns:repeat(3,minmax(0,1fr));height:auto}.vh-hero-vehicles a{height:100px}.vh-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.vh-equipments{grid-template-columns:repeat(2,minmax(0,1fr))}.vh-detailed-grid{grid-template-columns:1fr}.vh-main{padding:17px 12px}.vh-side{grid-template-columns:1fr}.vh-hero-copy p{font-size:15px}}
       @media(max-width:360px){.vh-cards{grid-template-columns:1fr}}
-    `}</style>
+    
+      /* Accueil Véhicules : logo, barre de recherche et toutes les actions sans rognage. */
+      .vh-header{padding:11px 20px 11px 215px;min-height:78px;flex-wrap:wrap;gap:11px}
+      .vh-header-search{min-width:220px;flex:1 1 310px;max-width:none}
+      .vh-header-links{flex:0 1 auto;justify-content:flex-end;gap:10px}
+      .vh-header-links a{white-space:nowrap;line-height:1.35}
+      .vh-nav{flex-wrap:wrap;overflow-x:visible}
+      .vh-nav a{white-space:normal;line-height:1.35;padding:12px 16px}
+      @media(max-width:1100px){
+        .vh-header{padding:78px 14px 14px;gap:10px}
+        .vh-header-links{justify-content:center;margin-left:0;flex:1 1 100%}
+        .vh-header-search{flex:1 1 100%;max-width:none}
+        .vh-nav{justify-content:center}
+      }
+      @media(max-width:650px){
+        .vh-header{padding:76px 12px 13px;min-height:0;gap:9px}
+        .vh-header-links{gap:8px;justify-content:center}
+        .vh-header-links a{font-size:12px;padding:9px 11px!important}
+        .vh-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+        .vh-nav a{font-size:12px;padding:11px 10px;white-space:normal}
+      }
+`}</style>
     <div className="vh-header">
       <form className="vh-header-search" onSubmit={e=>{e.preventDefault();document.getElementById("vehicules-categories")?.scrollIntoView({behavior:"smooth"});}}>
         <input value={recherche} onChange={e=>setRecherche(e.target.value)}
