@@ -10,38 +10,16 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body style={{ margin: 0 }}>
-        <header
-          style={{
-            height: "0px",
-            position: "relative",
-            zIndex: 20,
-          }}
-        >
-          <a
-            href="/"
-            aria-label="Accueil TOUT ICI MARKET"
-            style={{
-              position: "absolute",
-              top: "36px",
-              left: "16px",
-              transform: "translateY(-50%)",
-              display: "flex",
-              alignItems: "center",
-              textDecoration: "none",
-              zIndex: 20,
-            }}
-          >
-            <img
-              src="/toutici market.png"
-              alt="TOUT ICI MARKET"
-              style={{
-                width: "230px",
-                maxHeight: "85px",
-                height: "auto",
-                objectFit: "contain",
-                display: "block",
-              }}
-            />
+        <style>{`
+          .ti-brand-link{position:absolute;top:8px;left:16px;width:195px;height:58px;display:flex;align-items:center;text-decoration:none;z-index:30}
+          .ti-brand-link img{display:block;width:100%;height:100%;object-fit:contain;object-position:left center}
+          @media(max-width:1100px){.ti-brand-link{width:180px;height:55px}}
+          @media(max-width:650px){.ti-brand-link{top:7px;left:12px;width:165px;height:57px}}
+          @media(max-width:390px){.ti-brand-link{width:148px;height:52px}}
+        `}</style>
+        <header style={{height:0,position:"relative",zIndex:20}}>
+          <a href="/" className="ti-brand-link" aria-label="Accueil TOUT ICI MARKET">
+            <img src="/toutici market.png" alt="TOUT ICI MARKET"/>
           </a>
         </header>
         {children}
