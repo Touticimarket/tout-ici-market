@@ -78,6 +78,35 @@ export default function Home() {
         .ti-home-category-card strong{font-size:12px}
         .ti-home-category-card small{font-size:10px}
       }
+
+      /* Navigation lisible : le logo officiel garde sa forme et le menu ne déborde plus. */
+      .ti-home-header{min-height:76px;height:auto;padding:9px 18px 9px 222px;gap:12px;flex-wrap:wrap}
+      .ti-home-menu{flex:1 1 auto;display:flex;flex-wrap:wrap;gap:9px 15px;align-items:center}
+      .ti-home-menu a,.ti-home-account a,.ti-home-account span{font-size:12px;line-height:1.35;white-space:nowrap}
+      .ti-home-account{flex:0 0 auto;display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end}
+      .ti-home-account .ti-home-sell{padding:11px 13px;min-height:43px}
+      .ti-home-account .ti-home-signup{padding:10px 12px;min-height:43px}
+      .ti-home-category-card strong,.ti-home-category-card small{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.35}
+      @media(max-width:1390px){
+        .ti-home-header{padding:8px 16px 11px 212px;min-height:106px;flex-direction:column;align-items:stretch;justify-content:center;gap:8px;overflow:visible}
+        .ti-home-account{order:0;justify-content:flex-end;flex:0 0 auto}
+        .ti-home-menu{order:1;justify-content:flex-end;gap:9px 17px;flex:0 1 auto}
+        .ti-home-menu a,.ti-home-account a,.ti-home-account span{font-size:12px}
+      }
+      @media(max-width:900px){
+        .ti-home-header{padding:78px 14px 13px;min-height:0;gap:12px}
+        .ti-home-menu{justify-content:center;gap:10px 18px;flex:0 1 auto}
+        .ti-home-account{justify-content:center;gap:8px}
+        .ti-home-menu a,.ti-home-account a,.ti-home-account span{font-size:13px}
+      }
+      @media(max-width:480px){
+        .ti-home-header{padding:76px 11px 12px;gap:10px}
+        .ti-home-menu{gap:9px 13px;justify-content:center}
+        .ti-home-menu a{font-size:12px}
+        .ti-home-account{width:100%;justify-content:center}
+        .ti-home-account .ti-home-sell{order:-1;width:100%;justify-content:center}
+        .ti-home-account a{font-size:12px}
+      }
     `}</style>
     <header className="ti-home-header">
       <nav className="ti-home-menu" aria-label="Menu principal">
