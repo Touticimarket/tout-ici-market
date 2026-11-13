@@ -318,9 +318,15 @@ export default function DeposerAutoPage() {
         @media(max-width:490px){.auto-option-columns{grid-template-columns:1fr}}
         @media(max-width:950px){.auto-layout{grid-template-columns:1fr}.auto-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-photo-form{grid-template-columns:1fr}}
         @media(max-width:540px){.auto-wrap{padding:12px}.auto-hero{padding:22px;min-height:190px}.auto-form-grid{grid-template-columns:1fr}.auto-panel{padding:17px}}
-      `}</style>
+      
+        /* Dépôt automobile : tous les liens visibles même sur écrans étroits. */
+        .auto-top-nav{padding:8px 10px 8px 210px!important;gap:9px 15px!important;min-height:77px!important}
+        .auto-top-nav a{white-space:nowrap;line-height:1.4;font-size:13px}
+        @media(max-width:1080px){.auto-top-nav{padding:78px 8px 12px!important;min-height:135px!important;justify-content:center!important}}
+        @media(max-width:550px){.auto-top-nav{gap:8px 12px!important}.auto-top-nav a{font-size:12px}.auto-top-nav a:last-child{padding:10px!important}}
+`}</style>
       <div className="auto-wrap">
-        <nav aria-label="Navigation principale" style={{minHeight:63,display:"flex",justifyContent:"flex-end",alignItems:"center",gap:24,flexWrap:"wrap",padding:"5px 8px",fontWeight:700,fontSize:14}}>
+        <nav aria-label="Navigation principale" className="auto-top-nav" style={{minHeight:63,display:"flex",justifyContent:"flex-end",alignItems:"center",gap:24,flexWrap:"wrap",padding:"5px 8px",fontWeight:700,fontSize:14}}>
           <a href="/" style={{color:"#00348b",textDecoration:"none"}}>Accueil</a>
           <a href="/deposer/automobile" style={{color:"#0047cb",textDecoration:"none"}}>Automobile & Véhicules</a>
           
