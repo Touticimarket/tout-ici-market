@@ -16,16 +16,16 @@ type Photo={annonce_id:string;url:string;ordre:number};
 type Categorie={slug:string;nom:string;description:string;photo:string;icone:string;types:string[]};
 
 const categories:Categorie[]=[
-  {slug:"voiture",nom:"Automobiles",description:"Berlines, SUV, citadines et sportives",icone:"🚗",types:["voiture","suv-4x4","monospace","vehicule-collection","voiture-sans-permis"],photo:"https://images.unsplash.com/photo-1607853202242-f76e8b299cce?auto=format&fit=crop&w=850&q=88"},
-  {slug:"moto",nom:"Motos & Scooters",description:"Routières, trails, scooters et quads",icone:"🏍️",types:["moto","moto-trail","moto-sportive","moto-custom","scooter","maxi-scooter","cyclomoteur","quad","trois-roues","moto-electrique"],photo:"https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=850&q=88"},
-  {slug:"utilitaire",nom:"Utilitaires",description:"Fourgons, camionnettes et pick-up",icone:"🚐",types:["utilitaire","fourgon","camionnette"],photo:"https://images.unsplash.com/photo-1641199788912-9a7385a35c82?auto=format&fit=crop&w=850&q=88"},
-  {slug:"camion",nom:"Camions",description:"Poids lourds, tracteurs et porteurs",icone:"🚚",types:["camion","poids-lourd","benne"],photo:"https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=850&q=88"},
-  {slug:"caravaning",nom:"Caravaning",description:"Camping-cars, caravanes et cellules",icone:"🚎",types:["camping-car","caravane","mobil-home","cellule-camping"],photo:"https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=850&q=88"},
-  {slug:"velo",nom:"Vélos",description:"VTT, vélos de route et électriques",icone:"🚲",types:["velo","vtt","velo-route","vae","trottinette"],photo:"https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=850&q=88"},
-  {slug:"nautisme",nom:"Nautisme",description:"Bateaux, voiliers et jet-skis",icone:"🛥️",types:["nautisme"],photo:"https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=850&q=88"},
-  {slug:"remorque",nom:"Remorques",description:"Plateaux, bagagères, porte-voitures",icone:"🛻",types:["remorque","porte-voiture","remorque-moto","remorque-bateau","semi-remorque"],photo:"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=850&q=88"},
-  {slug:"van",nom:"Vans aménagés",description:"Vans, camping et fourgons de loisirs",icone:"🏕️",types:["van","van-amenage","fourgon-amenage"],photo:"https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=850&q=88"},
-  {slug:"autres",nom:"Autres véhicules",description:"Collection, modèles spéciaux et quads",icone:"🚙",types:["vehicule-collection","quad","voiture-sans-permis"],photo:"https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=850&q=88"}
+  {slug:"voiture",nom:"Automobiles",description:"Berlines, SUV, citadines et sportives",icone:"🚗",types:["voiture","suv-4x4","monospace","vehicule-collection","voiture-sans-permis"],photo:"https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1000"},
+  {slug:"moto",nom:"Motos & Scooters",description:"Routières, trails, scooters et quads",icone:"🏍️",types:["moto","moto-trail","moto-sportive","moto-custom","scooter","maxi-scooter","cyclomoteur","quad","trois-roues","moto-electrique"],photo:"https://images.pexels.com/photos/8532500/pexels-photo-8532500.jpeg?auto=compress&cs=tinysrgb&w=1000"},
+  {slug:"utilitaire",nom:"Utilitaires",description:"Fourgons, camionnettes et pick-up",icone:"🚐",types:["utilitaire","fourgon","camionnette"],photo:"https://images.pexels.com/photos/32976307/pexels-photo-32976307.jpeg?auto=compress&cs=tinysrgb&w=1000"},
+  {slug:"camion",nom:"Camions",description:"Poids lourds, tracteurs et porteurs",icone:"🚚",types:["camion","poids-lourd","benne"],photo:"https://images.pexels.com/photos/37848366/pexels-photo-37848366.jpeg?auto=compress&cs=tinysrgb&w=1000"},
+  {slug:"caravaning",nom:"Caravaning",description:"Camping-cars, caravanes et cellules",icone:"🚎",types:["camping-car","caravane","mobil-home","cellule-camping"],photo:"https://images.pexels.com/photos/27173835/pexels-photo-27173835.jpeg?auto=compress&cs=tinysrgb&w=1000"},
+  {slug:"velo",nom:"Vélos",description:"VTT, vélos de route et électriques",icone:"🚲",types:["velo","vtt","velo-route","vae","trottinette"],photo:"https://images.pexels.com/photos/5274201/pexels-photo-5274201.jpeg?auto=compress&cs=tinysrgb&w=1000"},
+  {slug:"nautisme",nom:"Nautisme",description:"Bateaux, voiliers et jet-skis",icone:"🛥️",types:["nautisme"],photo:"https://images.pexels.com/photos/5973217/pexels-photo-5973217.jpeg?auto=compress&cs=tinysrgb&w=1000"},
+  {slug:"remorque",nom:"Remorques",description:"Plateaux, bagagères, porte-voitures",icone:"🛻",types:["remorque","porte-voiture","remorque-moto","remorque-bateau","semi-remorque"],photo:"https://images.pexels.com/photos/38095094/pexels-photo-38095094.jpeg?auto=compress&cs=tinysrgb&w=1000"},
+  {slug:"van",nom:"Vans aménagés",description:"Vans, camping et fourgons de loisirs",icone:"🏕️",types:["van","van-amenage","fourgon-amenage"],photo:"https://images.pexels.com/photos/37443372/pexels-photo-37443372.jpeg?auto=compress&cs=tinysrgb&w=1000"},
+  {slug:"autres",nom:"Autres véhicules",description:"Collection, modèles spéciaux et quads",icone:"🚙",types:["vehicule-collection","quad","voiture-sans-permis"],photo:"https://images.pexels.com/photos/19172257/pexels-photo-19172257.jpeg?auto=compress&cs=tinysrgb&w=1000"}
 ];
 const euros=(n:number|null)=>new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(n||0);
 
@@ -109,13 +109,13 @@ export default function AutomobilePage(){
       .mv-nav a{color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:9px;padding:13px 15px;font-size:14px;font-weight:800;border-bottom:4px solid transparent}
       .mv-nav a.active{background:#063780;border-bottom-color:#ffcd27}
       .mv-nav a:hover{background:#1458a3}
-      .mv-hero{background:linear-gradient(90deg,rgba(4,22,56,.93),rgba(6,36,71,.52) 45%,rgba(2,25,68,.05)),url("https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1900&q=85") center 52%/cover;min-height:265px;color:#fff}
-      .mv-hero-inner{max-width:1540px;margin:auto;min-height:265px;padding:26px 24px;display:grid;grid-template-columns:390px minmax(0,1fr);gap:22px;align-items:center}
-      .mv-hero h1{display:inline-block;background:#ffcb20;color:#09265e;padding:12px 20px;border-radius:5px;font-size:clamp(27px,3vw,43px);margin:12px 0 11px;transform:skew(-5deg)}
+      .mv-hero{background:linear-gradient(90deg,rgba(4,22,56,.93),rgba(6,36,71,.52) 45%,rgba(2,25,68,.05)),url("https://images.pexels.com/photos/38095094/pexels-photo-38095094.jpeg?auto=compress&cs=tinysrgb&w=1000") center 52%/cover;min-height:265px;color:#fff}
+      .mv-hero-inner{max-width:1540px;margin:auto;min-height:265px;padding:26px 24px;display:grid;grid-template-columns:minmax(410px,.95fr) minmax(0,1.45fr);gap:22px;align-items:center}
+      .mv-hero h1{white-space:nowrap;display:inline-block;background:#ffcb20;color:#09265e;padding:12px 20px;border-radius:5px;font-size:clamp(25px,2.55vw,39px);margin:12px 0 11px;transform:skew(-5deg)}
       .mv-hero p{font-size:clamp(16px,1.8vw,21px);font-weight:800;line-height:1.4;margin:0;max-width:440px;text-shadow:0 2px 6px #051a38}
       .mv-hero-showcase{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;height:186px}
       .mv-hero-showcase a{position:relative;display:block;overflow:hidden;background:#c0d2e8;border:2px solid #ffffff66;border-radius:13px;box-shadow:0 8px 19px #031d49b2;text-decoration:none;color:#fff}
-      .mv-hero-showcase img{height:100%;width:100%;object-fit:cover}
+      .mv-hero-showcase img{height:100%;width:100%;object-fit:cover;object-position:center 56%}
       .mv-hero-showcase span{position:absolute;left:0;right:0;bottom:0;font-size:12px;font-weight:800;text-align:center;padding:20px 8px 8px;background:linear-gradient(transparent,#09244bd9)}
       .mv-wrap{width:min(100%,1540px);margin:auto;padding:19px 18px 85px}
       .mv-back{display:inline-flex;gap:8px;align-items:center;color:#0744ab;text-decoration:none;font-size:13px;font-weight:750;margin-bottom:12px}
@@ -127,7 +127,7 @@ export default function AutomobilePage(){
       .mv-category{background:#fff;text-decoration:none;color:#0d285d;border:1px solid #dde6f3;border-radius:17px;overflow:hidden;box-shadow:0 4px 14px #14356b16;transition:transform .16s,border-color .16s}
       .mv-category:hover,.mv-category:focus-visible{transform:translateY(-3px);border-color:#ffcf30;box-shadow:0 9px 22px #1737642a}
       .mv-category-image{height:132px;position:relative;background:linear-gradient(140deg,#e0ecfb,#f8fbff);display:grid;place-items:center}
-      .mv-category-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+      .mv-category-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 56%}
       .mv-category-image span{font-size:39px}
       .mv-category-body{padding:12px 13px 14px}
       .mv-category-title{display:flex;gap:8px;justify-content:space-between;align-items:center;margin:0 0 5px;font-weight:900;font-size:15px}
@@ -153,7 +153,7 @@ export default function AutomobilePage(){
       .mv-pill.active{background:#0947a5;color:#fff;border-color:#0947a5}
       .mv-note{margin-top:18px;color:#6a7c97;font-size:12px;line-height:1.6}
       @media(max-width:1210px){.mv-categories{grid-template-columns:repeat(4,minmax(0,1fr))}.mv-listing-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.mv-header{padding-left:205px}.mv-hero-inner{grid-template-columns:310px minmax(0,1fr)}}
-      @media(max-width:940px){.mv-header{padding:80px 14px 13px}.mv-actions{justify-content:center;flex:1 1 100%}.mv-search{max-width:none}.mv-hero-inner{grid-template-columns:1fr}.mv-hero-showcase{height:145px}.mv-categories{grid-template-columns:repeat(3,minmax(0,1fr))}}
+      @media(max-width:940px){.mv-header{padding:80px 14px 13px}.mv-actions{justify-content:center;flex:1 1 100%}.mv-search{max-width:none}.mv-hero-inner{grid-template-columns:1fr}.mv-hero h1{white-space:normal}.mv-hero-showcase{height:145px}.mv-categories{grid-template-columns:repeat(3,minmax(0,1fr))}}
       @media(max-width:620px){.mv-header{padding:77px 11px 11px}.mv-actions{gap:10px}.mv-actions a{font-size:11px}.mv-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.mv-nav a{font-size:12px;padding:11px 9px}.mv-hero-inner{padding:25px 13px}.mv-hero-showcase{height:105px;gap:5px}.mv-hero-showcase span{font-size:9px}.mv-wrap{padding:15px 11px 60px}.mv-categories{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.mv-category-image{height:111px}.mv-category-title{font-size:13px}.mv-category-body p{font-size:11px}.mv-listing-grid{grid-template-columns:1fr}.mv-listing-section{padding:17px 12px}}
     `}</style>
     <header className="mv-header">
