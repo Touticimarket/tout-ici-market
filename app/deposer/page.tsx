@@ -50,7 +50,19 @@ export default function ChoixDepotPage(){
         @media(max-width:1200px){.depot-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
         @media(max-width:850px){.depot-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(max-width:620px){.depot-shell{padding:0 13px 40px}.depot-nav{padding-top:85px;justify-content:center;min-height:140px}.depot-intro{padding:27px 22px}.depot-cards{grid-template-columns:1fr}.depot-card{min-height:0}}
-      `}</style>
+      
+        /* Laisser toujours la place au logo, puis afficher les libellés entiers. */
+        .depot-nav{padding-left:210px;min-height:76px;gap:10px 15px;justify-content:flex-end}
+        .depot-nav a,.depot-nav span{white-space:nowrap;line-height:1.4;font-size:13px}
+        @media(max-width:1080px){
+          .depot-nav{padding:78px 8px 13px;min-height:135px;justify-content:center;gap:9px 14px}
+        }
+        @media(max-width:600px){
+          .depot-nav{padding-top:77px;gap:8px 12px}
+          .depot-nav a,.depot-nav span{font-size:12px}
+          .depot-nav span{padding:10px 12px!important}
+        }
+`}</style>
       <div className="depot-shell">
         <nav className="depot-nav" aria-label="Navigation de dépôt">
           <a href="/">Accueil</a><a href="/deposer/automobile">Automobile & Véhicules</a><a href="/deposer/immobilier">Immobilier</a><a href="/deposer/emploi">Emploi & Services</a>
