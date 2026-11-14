@@ -107,7 +107,7 @@ export default function Home() {
     <section className="ti-home-categories" aria-label="Toutes les catégories">
       <div className="ti-home-category-header">
         <h2>Toutes les catégories</h2>
-        <a href="/deposer">Voir toutes les catégories <ArrowUpRight size={15}/></a>
+        <a href="/annonces">Voir toutes les annonces <ArrowUpRight size={15}/></a>
       </div>
       <div className="ti-home-category-grid">
         {categories.map(({name,description,href,Icon})=><a href={href} key={name} className="ti-home-category-card">
