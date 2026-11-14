@@ -4,6 +4,7 @@ import {useEffect,useMemo,useState} from "react";
 import {useParams} from "next/navigation";
 import {trouverTypeVehicule} from "../types";
 import {supabase} from "../../../lib/supabaseClient";
+import {publierAnnonce} from "../../../lib/marketplace";
 
 type Champ = {id:string;libelle:string;type?:"text"|"number";placeholder?:string};
 type Donnees = Record<string,string>;
@@ -103,6 +104,7 @@ export default function DepotTypeVehicule(){
   const [previews,setPreviews]=useState<string[]>([]);
   const [message,setMessage]=useState("");
   const [pret,setPret]=useState(false);
+  const [enPublication,setEnPublication]=useState(false);
   const [marquesRef,setMarquesRef]=useState<RefMarque[]>([]);
   const [modelesRef,setModelesRef]=useState<RefModele[]>([]);
   const [versionsRef,setVersionsRef]=useState<RefVersion[]>([]);
@@ -268,11 +270,41 @@ export default function DepotTypeVehicule(){
     }
     try{
       localStorage.setItem(cle,JSON.stringify({...donnees,type:slug}));
-      setMessage("Brouillon enregistré dans ce navigateur. Publication en ligne bientôt disponible pour cette catégorie ; les photos ne sont pas sauvegardées.");
+      setMessage("Brouillon enregistré dans ce navigateur. Les photos ne sont pas sauvegardées dans ce brouillon local.");
     }catch{
       setMessage("Impossible d'enregistrer le brouillon local.");
     }
   };
+
+
+  async function publier(){
+    if(!type || enPublication)return;
+    if(!donnees.titre?.trim()||!donnees.description?.trim()||!donnees.ville?.trim()){
+      setMessage("Complétez le titre, la description et la ville.");return;
+    }
+    setEnPublication(true);
+    setMessage("");
+    try{
+      localStorage.setItem(cle,JSON.stringify({...donnees,type:slug}));
+      const caracteristiques:Record<string,unknown>={};
+      for(const [key,value] of Object.entries(donnees)){
+        if(!["titre","description","ville","prix","codePostal"].includes(key)){
+          if(key==="equipements"){
+            try{caracteristiques[key]=JSON.parse(value);}catch{caracteristiques[key]=[];}
+          }else caracteristiques[key]=value;
+        }
+      }
+      const id=await publierAnnonce({
+        categorie:"automobile",sousCategorie:slug,
+        titre:donnees.titre,description:donnees.description,ville:donnees.ville,
+        prix:donnees.prix?.trim()?Number(donnees.prix):null,
+        codePostal:donnees.codePostal,caracteristiques,photos
+      });
+      localStorage.removeItem(cle);
+      window.location.assign("/annonces/"+id);
+    }catch(e){setMessage(e instanceof Error?e.message:"Impossible de publier votre annonce.");}
+    finally{setEnPublication(false);}
+  }
 
   return <main className="auto-typed">
     <style>{`
@@ -406,12 +438,20 @@ export default function DepotTypeVehicule(){
                 onChange={e=>choisirPhotos(e.target.files)} aria-label="Ajouter des photos"/>
             </div>
             <div className="typed-photo-grid">{previews.map((url,index)=><img key={url} src={url} alt={"Photo "+(index+1)}/>)}</div>
-            <p style={{color:"#66748a",fontSize:12}}>Les photos sont affichées uniquement dans ce navigateur pour le moment.</p>
+            <p style={{color:"#66748a",fontSize:12}}>Ces photos seront envoyées sur le site lorsque vous publierez votre annonce.</p>
           </section>
           <section className="typed-panel">
-            <h2>4. Préparer la publication</h2>
-            <p style={{fontSize:14,lineHeight:1.6,color:"#67748b"}}>Cette catégorie est en cours d'activation. Vous pouvez enregistrer votre brouillon local, sans publier d'annonce ni envoyer de photos.</p>
-            <button type="button" className="typed-button" disabled={!pret} onClick={sauver}>Enregistrer mon brouillon</button>
+            <h2>4. Publier votre annonce</h2>
+            <p style={{fontSize:14,lineHeight:1.6,color:"#67748b"}}>Connectez-vous ou créez un compte gratuit pour publier. L'annonce et ses photos seront visibles dans les résultats, et vous pourrez ensuite les gérer depuis votre compte.</p>
+            <div style={{display:"flex",alignItems:"center",gap:11,flexWrap:"wrap"}}>
+              <button type="button" className="typed-button" disabled={!pret||enPublication} onClick={publier}>
+                {enPublication?"Publication en cours…":"Publier mon annonce"}
+              </button>
+              <button type="button" disabled={!pret||enPublication} onClick={sauver} style={{background:"#e9f2ff",color:"#0743ad",border:"1px solid #cedcf1",borderRadius:11,padding:"14px 16px",fontWeight:800,cursor:"pointer"}}>
+                Garder un brouillon local
+              </button>
+              <a href="/compte/connexion" style={{fontSize:13,color:"#0343b5",fontWeight:750}}>Se connecter</a>
+            </div>
             {message&&<p role="status" style={{background:"#fff5d9",padding:13,borderRadius:10,fontSize:13,lineHeight:1.6}}>{message}</p>}
           </section>
         </div>
