@@ -3,6 +3,7 @@
 import {useEffect,useMemo,useState} from "react";
 import {useParams} from "next/navigation";
 import {trouverCategorie} from "../categories";
+import {publierAnnonce} from "../../lib/marketplace";
 
 type Infos = Record<string,string>;
 const limitImages = 8;
@@ -17,6 +18,7 @@ export default function DepotRubriquePage(){
   const [apercus,setApercus]=useState<string[]>([]);
   const [message,setMessage]=useState("");
   const [charge,setCharge]=useState(false);
+  const [enPublication,setEnPublication]=useState(false);
 
   useEffect(()=>{
     if(!categorie)return;
@@ -63,6 +65,31 @@ export default function DepotRubriquePage(){
     }
   }
 
+  async function publier(){
+    if(enPublication||!categorie)return;
+    if(!infos.sousCategorie||!infos.titre?.trim()||!infos.description?.trim()||!infos.ville?.trim()){
+      setMessage("Complétez la sous-catégorie, le titre, la description et la ville.");return;
+    }
+    setEnPublication(true);
+    try{
+      localStorage.setItem(cle,JSON.stringify(infos));
+      const caracteristiques:Record<string,unknown>={};
+      for(const [k,v] of Object.entries(infos))
+        if(!["sousCategorie","titre","description","ville","prix","codePostal","code_postal"].includes(k))
+          caracteristiques[k]=v;
+      const id=await publierAnnonce({
+        categorie:slug,sousCategorie:infos.sousCategorie,titre:infos.titre,
+        description:infos.description,ville:infos.ville,
+        prix:infos.prix?.trim()?Number(infos.prix):null,
+        codePostal:infos.codePostal||infos.code_postal,
+        caracteristiques,photos
+      });
+      localStorage.removeItem(cle);
+      window.location.assign("/annonces/"+id);
+    }catch(e){setMessage(e instanceof Error?e.message:"Impossible de publier cette annonce.");}
+    finally{setEnPublication(false);}
+  }
+
   return <main className="rubrique-root">
     <style>{`
       .rubrique-root{font-family:Arial,sans-serif;background:#f6f8fc;color:#102451;min-height:100vh}
@@ -92,8 +119,8 @@ export default function DepotRubriquePage(){
       <nav className="rubrique-nav" aria-label="Navigation"><a href="/">Accueil</a><a href="/deposer">Toutes les catégories</a></nav>
       <header className="rubrique-hero">
         <span style={{fontSize:13,fontWeight:800,color:"#ffe282"}}>{categorie.icone} TOUT ICI MARKET · {categorie.nom.toUpperCase()}</span>
-        <h1>Préparez votre annonce {categorie.nom.toLocaleLowerCase("fr")}</h1>
-        <p>Un formulaire adapté à votre catégorie. Vous pouvez déjà préparer votre texte et enregistrer un brouillon local.</p>
+        <h1>Déposez votre annonce {categorie.nom.toLocaleLowerCase("fr")}</h1>
+        <p>Un formulaire adapté à votre catégorie. Publiez votre annonce pour la retrouver depuis votre compte et dans les résultats de recherche.</p>
       </header>
       <div className="rubrique-cols">
         <div>
@@ -132,19 +159,28 @@ export default function DepotRubriquePage(){
             </div>
           </section>
           <section className="rubrique-card">
-            <h2>3. Photos (aperçu local)</h2>
+            <h2>3. Photos de votre annonce</h2>
             <label className="rubrique-field" style={{border:"2px dashed #aebfdf",background:"#f9fbff",padding:25,borderRadius:12,textAlign:"center",cursor:"pointer"}}>
               <span style={{fontSize:30,display:"block",marginBottom:8}}>📷</span>
               Sélectionner jusqu'à 8 photos ({photos.length}/{limitImages})
               <input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={e=>choisirPhotos(e.target.files)} style={{margin:"12px auto 0",maxWidth:290}}/>
-              <span style={{fontWeight:400,fontSize:12,display:"block",marginTop:8}}>Aperçu uniquement, sans transfert vers le site à ce stade.</span>
+              <span style={{fontWeight:400,fontSize:12,display:"block",marginTop:8}}>Les photos seront transférées lors de la publication de l'annonce.</span>
             </label>
             <div className="rubrique-photos">{apercus.map((url,i)=><img key={url} src={url} alt={"Aperçu photo "+(i+1)}/>)}</div>
           </section>
           <section className="rubrique-card">
-            <h2>4. Enregistrer mon brouillon</h2>
-            <p style={{fontSize:14,lineHeight:1.6,color:"#67748a"}}>Cette rubrique est en cours de développement : l'enregistrement est local à cet appareil, pas dans la base de données. Vous ne publiez aucune annonce en cliquant ici.</p>
-            <button type="button" className="rubrique-btn" onClick={enregistrer} disabled={!charge}>Enregistrer mon brouillon</button>
+            <h2>4. Publier votre annonce</h2>
+            <p style={{fontSize:14,lineHeight:1.6,color:"#67748a"}}>Pour publier, vous devez être connecté à un compte gratuit. Votre annonce et vos photos seront enregistrées sur le site, puis visibles dans la rubrique choisie. Vous pourrez ensuite la gérer depuis « Mon compte ».</p>
+            <div style={{display:"flex",gap:12,alignItems:"center",flexWrap:"wrap"}}>
+              <button type="button" className="rubrique-btn" onClick={publier} disabled={!charge||enPublication}>
+                {enPublication?"Publication en cours…":"Publier mon annonce"}
+              </button>
+              <button type="button" onClick={enregistrer} disabled={!charge||enPublication}
+                style={{padding:"13px 16px",background:"#edf4ff",color:"#0947b4",border:"1px solid #cbdcf5",borderRadius:11,cursor:"pointer",fontWeight:700}}>
+                Garder un brouillon sur cet appareil
+              </button>
+              <a href="/compte/connexion" style={{color:"#0649be",fontSize:13,fontWeight:700}}>Se connecter</a>
+            </div>
             {message&&<p role="status" style={{background:"#fff6d8",padding:13,borderRadius:9,lineHeight:1.5,fontSize:13}}>{message}</p>}
           </section>
         </div>
