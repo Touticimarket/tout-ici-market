@@ -33,9 +33,10 @@ export default function MonCompte(){
       <h1 style={{display:"flex",alignItems:"center",gap:10}}><UserRound size={27}/> Mon compte</h1>
       {!charge?<p>Vérification de votre connexion…</p>:email?<>
         <p><ShieldCheck size={18} color="#1d8b57" style={{verticalAlign:"middle",marginRight:7}}/>Connecté avec <strong>{email}</strong>.</p>
-        <p style={{fontSize:14,color:"#60738c",lineHeight:1.55}}>Bienvenue dans votre espace TOUT ICI MARKET. Les fonctions de gestion de vos annonces seront ajoutées progressivement.</p>
+        <p style={{fontSize:14,color:"#60738c",lineHeight:1.55}}>Bienvenue dans votre espace TOUT ICI MARKET. Retrouvez toutes vos annonces, modifiez-les et marquez-les vendues ou archivées.</p>
         <div style={{padding:"18px 20px",background:"#f1f6ff",borderRadius:14,margin:"22px 0"}}>
           <CarFront size={22} style={{verticalAlign:"middle",marginRight:8}}/>
+          <a href="/compte/mes-annonces" style={{display:"inline-flex",gap:8,alignItems:"center",marginRight:16,color:"#0648ba",fontWeight:800,textDecoration:"none"}}>Mes annonces <ArrowRight size={16}/></a>
           <a href="/deposer" style={{color:"#0648ba",fontWeight:800,textDecoration:"none"}}>Déposer une annonce <ArrowRight size={16} style={{verticalAlign:"middle"}}/></a>
         </div>
         <button onClick={deconnexion} type="button" style={{display:"inline-flex",alignItems:"center",gap:8,background:"#fff4e0",color:"#754400",padding:"13px 17px",borderRadius:10,border:"1px solid #f0d38a",cursor:"pointer",fontWeight:800}}>
