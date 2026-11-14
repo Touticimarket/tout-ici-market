@@ -8,15 +8,15 @@ import {
 
 const categories = [
   {name:"Automobile & Véhicules",description:"Auto, moto, utilitaire…",href:"/automobile",Icon:CarFront},
-  {name:"Immobilier",description:"Vente & location",href:"/immobilier",Icon:House},
-  {name:"Emploi & Services",description:"Offres & services",href:"/emploi",Icon:BriefcaseBusiness},
-  {name:"Mode & Accessoires",description:"Vêtements & accessoires",href:"/mode",Icon:Shirt},
-  {name:"Maison & Jardin",description:"Meubles & décoration",href:"/maison-jardin",Icon:Sofa},
-  {name:"Téléphones",description:"Mobiles & informatique",href:"/telephones",Icon:Smartphone},
-  {name:"Vacances & Loisirs",description:"Séjours & loisirs",href:"/vacances-loisirs",Icon:Palmtree},
-  {name:"Bricolage",description:"Travaux & outillage",href:"/bricolage",Icon:Wrench},
-  {name:"Jeux & Consoles",description:"Gaming & jeux",href:"/jeux-consoles",Icon:Gamepad2},
-  {name:"Autres catégories",description:"Tout le reste",href:"/deposer",Icon:LayoutGrid},
+  {name:"Immobilier",description:"Vente & location",href:"/annonces?categorie=immobilier",Icon:House},
+  {name:"Emploi & Services",description:"Offres & services",href:"/annonces?categorie=emploi",Icon:BriefcaseBusiness},
+  {name:"Mode & Accessoires",description:"Vêtements & accessoires",href:"/annonces?categorie=mode",Icon:Shirt},
+  {name:"Maison & Jardin",description:"Meubles & décoration",href:"/annonces?categorie=maison-jardin",Icon:Sofa},
+  {name:"Téléphones",description:"Mobiles & informatique",href:"/annonces?categorie=telephones",Icon:Smartphone},
+  {name:"Vacances & Loisirs",description:"Séjours & loisirs",href:"/annonces?categorie=vacances-loisirs",Icon:Palmtree},
+  {name:"Bricolage",description:"Travaux & outillage",href:"/annonces?categorie=bricolage",Icon:Wrench},
+  {name:"Jeux & Consoles",description:"Gaming & jeux",href:"/annonces?categorie=jeux-consoles",Icon:Gamepad2},
+  {name:"Autres catégories",description:"Tout le reste",href:"/annonces",Icon:LayoutGrid},
 ];
 
 export default function Home() {
@@ -92,11 +92,11 @@ export default function Home() {
       </div>
       <nav className="ti-home-menu" aria-label="Menu principal">
         <a href="/automobile">Automobile & Véhicules</a>
-        <a href="/immobilier">Immobilier</a>
-        <a href="/emploi">Emploi & Services</a>
-        <a href="/mode">Mode</a>
-        <a href="/maison-jardin">Maison & Jardin</a>
-        <a href="/deposer" className="ti-home-more">Plus <ChevronDown size={14}/></a>
+        <a href="/annonces?categorie=immobilier">Immobilier</a>
+        <a href="/annonces?categorie=emploi">Emploi & Services</a>
+        <a href="/annonces?categorie=mode">Mode</a>
+        <a href="/annonces?categorie=maison-jardin">Maison & Jardin</a>
+        <a href="/annonces" className="ti-home-more">Plus <ChevronDown size={14}/></a>
       </nav>
     </header>
 
