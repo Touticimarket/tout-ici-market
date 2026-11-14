@@ -8,7 +8,7 @@ import {
 import {supabase} from "../lib/supabaseClient";
 
 type Annonce={
-  id:string;type_vehicule:string|null;marque:string|null;modele:string|null;finition:string|null;
+  source?:"auto"|"market";titre?:string;id:string;type_vehicule:string|null;marque:string|null;modele:string|null;finition:string|null;
   annee:number|null;kilometrage:number|null;carburant:string|null;boite:string|null;
   prix:number|null;ville:string|null;description:string|null;
 };
@@ -47,23 +47,43 @@ export default function AutomobilePage(){
   useEffect(()=>{
     let actif=true;
     async function charger(){
-      const {data,error}=await supabase.from("annonces_auto")
-        .select("id,type_vehicule,marque,modele,finition,annee,kilometrage,carburant,boite,prix,ville,description")
-        .eq("statut","publiee").order("id",{ascending:false}).limit(150);
+      const [automobiles,marche]=await Promise.all([
+        supabase.from("annonces_auto")
+          .select("id,type_vehicule,marque,modele,finition,annee,kilometrage,carburant,boite,prix,ville,description")
+          .eq("statut","publiee").order("id",{ascending:false}).limit(150),
+        supabase.from("annonces_marketplace")
+          .select("id,titre,sous_categorie,description,prix,ville,caracteristiques,photos")
+          .eq("categorie","automobile").eq("statut","publiee").limit(150)
+      ]);
       if(!actif)return;
-      if(error){setErreur("Les annonces ne sont pas disponibles pour le moment.");setChargement(false);return;}
-      const result=(data||[]) as Annonce[];
-      setAnnonces(result);
-      if(result.length){
-        const ids=result.map(a=>String(a.id));
+      const anciennes=(automobiles.data||[]).map(a=>({...a,source:"auto" as const})) as Annonce[];
+      const vues:Record<string,string>={};
+      const nouvelles=(marche.data||[]).map(a=>{
+        const infos=(a.caracteristiques&&typeof a.caracteristiques==="object"
+          ?a.caracteristiques:{}) as Record<string,unknown>;
+        if(Array.isArray(a.photos)&&a.photos.length)vues[String(a.id)]=String(a.photos[0]);
+        const v=(key:string)=>infos[key]==null?null:String(infos[key]);
+        const n=(key:string)=>infos[key]==null?null:Number(infos[key]);
+        return {
+          id:String(a.id),source:"market" as const,titre:String(a.titre),
+          type_vehicule:String(a.sous_categorie),marque:v("marque"),modele:v("modele"),
+          finition:v("version"),annee:n("annee"),kilometrage:n("kilometrage"),
+          carburant:v("energie"),boite:v("boite"),
+          prix:a.prix==null?null:Number(a.prix),ville:String(a.ville||""),
+          description:String(a.description||"")
+        } as Annonce;
+      });
+      setAnnonces([...nouvelles,...anciennes]);
+      if(anciennes.length){
+        const ids=anciennes.map(a=>String(a.id));
         const {data:medias}=await supabase.from("annonces_auto_photos")
           .select("annonce_id,url,ordre").in("annonce_id",ids).order("ordre",{ascending:true});
-        if(actif&&medias){
-          const images:Record<string,string>={};
-          for(const m of medias as Photo[])if(!images[m.annonce_id])images[m.annonce_id]=m.url;
-          setPhotos(images);
-        }
+        if(actif&&medias)for(const m of medias as Photo[])
+          if(!vues[m.annonce_id])vues[m.annonce_id]=m.url;
       }
+      if(!actif)return;
+      setPhotos(vues);
+      if(automobiles.error||marche.error)setErreur("Certaines annonces ne sont pas disponibles pour le moment.");
       setChargement(false);
     }
     charger();
@@ -249,9 +269,13 @@ export default function AutomobilePage(){
                 <div className="mv-listing-fallback" aria-label="Annonce sans photo">🚗</div>}
               <div className="mv-listing-content">
                 <strong className="mv-price">{euros(a.prix)}</strong>
-                <h3>{[a.marque,a.modele,a.finition].filter(Boolean).join(" ")}</h3>
+                <h3>{a.titre||[a.marque,a.modele,a.finition].filter(Boolean).join(" ")}</h3>
                 <p>{[a.annee,a.kilometrage!=null?a.kilometrage.toLocaleString("fr-FR")+" km":null,a.carburant].filter(Boolean).join(" · ")}</p>
                 <p><MapPin size={13} style={{verticalAlign:"middle"}}/> {a.ville||"France"}</p>
+                <a href={"/annonces/"+(a.source==="auto"?"auto-":"")+a.id}
+                  style={{display:"inline-flex",alignItems:"center",background:"#ffdc56",color:"#0c2b60",textDecoration:"none",padding:"9px 12px",borderRadius:9,fontSize:12,fontWeight:800}}>
+                  Voir l'annonce →
+                </a>
                 {a.description&&<p>{a.description.slice(0,110)}{a.description.length>110?"…":""}</p>}
               </div>
             </article>)}
