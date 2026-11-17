@@ -85,12 +85,14 @@ export default function MesMessages(){
         const match=/^(auto|market):([0-9a-f-]{36})$/i.exec(target);
         if(match&&uuid.test(match[2])){
           const type=match[1] as "auto"|"market";
-          const table=type==="auto"?"annonces_auto":"annonces_marketplace";
-          const cols=type==="auto"?"id,user_id,marque,modele":"id,user_id,titre";
-          const {data,error}=await supabase.from(table).select(cols).eq("id",match[2]).eq("statut","publiee").maybeSingle();
+          const {data,error}=type==="auto"
+            ?await supabase.from("annonces_auto").select("id,user_id,marque,modele")
+              .eq("id",match[2]).eq("statut","publiee").maybeSingle()
+            :await supabase.from("annonces_marketplace").select("id,user_id,titre")
+              .eq("id",match[2]).eq("statut","publiee").maybeSingle();
           if(!alive)return;
           if(!error&&data){
-            const a=data as Record<string,unknown>;
+            const a=data as unknown as Record<string,unknown>;
             const seller=String(a.user_id||"");
             if(seller===user.id)setInfo("Il s'agit de votre annonce. Les acheteurs pourront vous contacter ici.");
             else if(seller)setBrouillon({type,id:match[2],vendeurId:seller,titre:type==="auto"?[a.marque,a.modele].filter(Boolean).join(" ")||"Véhicule":String(a.titre||"Annonce")});
