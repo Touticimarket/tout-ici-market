@@ -71,6 +71,16 @@ export default function QuestionsAvisAnnonce({type,annonceId,vendeurId}:Props){
     setInfo(error?"Signalement impossible : "+error.message:"Signalement enregistré.");
   }
 
+  async function signalerAvis(avisId:string){
+    if(!userId){setInfo("Connectez-vous pour signaler un avis.");return;}
+    const motif=window.prompt("Pourquoi signalez-vous cet avis ? (5 caractères minimum)");
+    if(!motif)return;
+    const {error}=await supabase.from("market_signalements").insert({
+      auteur_id:userId,cible_type:"avis",cible_id:avisId,motif:motif.trim()
+    });
+    setInfo(error?"Signalement impossible : "+error.message:"Signalement enregistré.");
+  }
+
   const moyenne=avis.length?(avis.reduce((s,a)=>s+a.note,0)/avis.length).toFixed(1):null;
 
   return <section className="ti-qa">
@@ -121,9 +131,12 @@ export default function QuestionsAvisAnnonce({type,annonceId,vendeurId}:Props){
       {moyenne&&<div className="ti-qa-badge"><Star size={15}/> {moyenne} / 5 · {avis.length} avis affiché{avis.length>1?"s":""}</div>}
       <p className="ti-qa-intro">Les avis sont publiés après un échange clôturé entre deux utilisateurs. Ils ne constituent pas une certification indépendante de la vente.</p>
       {avis.length?avis.map(a=><div key={a.id} className="ti-qa-block">
+        <div className="ti-qa-meta"><span>Publié le {new Date(a.created_at).toLocaleDateString("fr-FR")}</span>
+          {userId&&<button type="button" onClick={()=>signalerAvis(a.id)} style={{background:"none",border:0,color:"#63748b",fontSize:11,cursor:"pointer"}}>
+            <Flag size={12} style={{verticalAlign:"middle"}}/> Signaler
+          </button>}</div>
         <strong style={{color:"#a87000",fontSize:15}}>{"★".repeat(a.note)}{"☆".repeat(5-a.note)}</strong>
         <p>{a.commentaire}</p>
-        <small style={{color:"#7c8da2"}}>{new Date(a.created_at).toLocaleDateString("fr-FR")}</small>
       </div>):<p className="ti-qa-intro">Ce vendeur n'a pas encore reçu d'avis.</p>}
     </div>
   </section>;
