@@ -38,6 +38,7 @@ export default function MesMessages(){
   const partenaire=discuter?(discuter.buyer_id===userId?discuter.seller_id:discuter.buyer_id):brouillon?.vendeurId||"";
   const nonLus=useMemo(()=>notifications.filter(n=>!n.lu),[notifications]);
   const titreEnCours=discuter?.titre_annonce||brouillon?.titre||"Sélectionnez une conversation";
+  const echangeReciproque=Boolean(discuter&&messages.some(m=>m.expediteur_id===discuter.buyer_id)&&messages.some(m=>m.expediteur_id===discuter.seller_id));
 
   const chargerListe=useCallback(async(uid:string)=>{
     const [c,n]=await Promise.all([
@@ -167,7 +168,7 @@ export default function MesMessages(){
   }
 
   async function clore(){
-    if(!discuter||userId!==discuter.seller_id||discuter.statut==="terminee")return;
+    if(!discuter||!echangeReciproque||userId!==discuter.seller_id||discuter.statut==="terminee")return;
     if(!window.confirm("Confirmer que cet échange est terminé ? Les deux participants pourront ensuite laisser un avis si chacun a envoyé un message."))return;
     const {error}=await supabase.from("market_conversations").update({statut:"terminee"}).eq("id",discuter.id).eq("seller_id",userId);
     if(error)setErreur(error.message);else{setInfo("Échange clôturé.");await chargerListe(userId);}
@@ -241,7 +242,7 @@ export default function MesMessages(){
       .ti-ms-send button,.ti-ms-btn{border:0;background:#ffd12b;color:#0d2d63;padding:13px 16px;border-radius:11px;cursor:pointer;font-weight:800}
       .ti-ms-send button:disabled,.ti-ms-btn:disabled{opacity:.5;cursor:not-allowed}
       .ti-ms-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
-      .ti-ms-actions button{background:#f5f8fd;border:1px solid #d5e2f2;border-radius:8px;padding:8px 10px;color:#174783;font-weight:750;font-size:11px;cursor:pointer}
+      .ti-ms-actions button{background:#f5f8fd;border:1px solid #d5e2f2;border-radius:8px;padding:8px 10px;color:#174783;font-weight:750;font-size:11px;cursor:pointer}.ti-ms-actions button:disabled{opacity:.45;cursor:not-allowed}
       .ti-ms-review{border-top:1px solid #e1e9f4;padding:17px 20px;display:grid;gap:8px}
       .ti-ms-review h3{font-size:16px;margin:0}
       .ti-ms-review select{padding:9px;border-radius:8px;border:1px solid #cbdaed;background:#fff;color:#0e2d5b}
@@ -283,7 +284,7 @@ export default function MesMessages(){
                 <a href={"/annonces/"+(discuter.listing_type==="auto"?"auto-":"")+discuter.listing_id} style={{fontSize:12,color:"#0c4bad",fontWeight:800,textDecoration:"none"}}>Voir l'annonce</a>
                 <button type="button" onClick={bloquer}>{blocked?"Débloquer":"Bloquer"}</button>
                 <button type="button" onClick={signaler}><Flag size={12} style={{verticalAlign:"middle"}}/> Signaler</button>
-                {discuter.seller_id===userId&&discuter.statut==="ouverte"&&<button type="button" onClick={clore}>Terminer l'échange</button>}
+                {discuter.seller_id===userId&&discuter.statut==="ouverte"&&<button type="button" onClick={clore} disabled={!echangeReciproque} title={!echangeReciproque?"Les deux utilisateurs doivent avoir échangé au moins un message chacun.":undefined}>Terminer l’échange</button>}
               </div>}
             </div>
             {erreur&&<p role="alert" className="ti-ms-alert">{erreur}</p>}
@@ -302,7 +303,7 @@ export default function MesMessages(){
             </div>}
             {discuter?.statut==="terminee"&&<div className="ti-ms-review">
               <strong><CheckCheck size={16} style={{verticalAlign:"middle"}}/> Échange clôturé</strong>
-              {avisEnvoye?<p>Votre avis a déjà été publié. Merci !</p>:<>
+              {avisEnvoye?<p>Votre avis a déjà été publié. Merci !</p>:!echangeReciproque?<p>Les avis seront disponibles lorsque chacun des deux participants aura envoyé au moins un message.</p>:<>
                 <h3>Laisser un avis sur votre interlocuteur</h3>
                 <p style={{fontSize:12,color:"#60748c",margin:0}}>Les avis concernent l'expérience d'échange, sans certification indépendante de la vente.</p>
                 <label style={{fontSize:13}}>Note <select value={note} onChange={e=>setNote(e.target.value)}>
