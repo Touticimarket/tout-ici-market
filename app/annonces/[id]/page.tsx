@@ -6,9 +6,10 @@ import {ArrowLeft,CalendarDays,MapPin,ShieldCheck,Tag,Plus} from "lucide-react";
 import {supabase} from "../../lib/supabaseClient";
 import {depotCategories} from "../../deposer/categories";
 import LiensHistoriqueVehicule from "../../components/LiensHistoriqueVehicule";
+import QuestionsAvisAnnonce from "../../components/QuestionsAvisAnnonce";
 
 type AnnonceDetail={
-  id:string;categorie:string;sous_categorie:string;titre:string;description:string;
+  id:string;user_id:string|null;categorie:string;sous_categorie:string;titre:string;description:string;
   prix:number|null;ville:string;code_postal:string|null;caracteristiques:Record<string,unknown>;
   photos:string[];created_at:string;
 };
@@ -39,7 +40,7 @@ export default function FicheAnnonce(){
       if(id.startsWith("auto-")){
         const annonceId=id.slice(5);
         const {data,error}=await supabase.from("annonces_auto")
-          .select("id,marque,modele,finition,annee,kilometrage,carburant,boite,prix,ville,description,created_at,type_vehicule")
+          .select("id,user_id,marque,modele,finition,annee,kilometrage,carburant,boite,prix,ville,description,created_at,type_vehicule")
           .eq("id",annonceId).eq("statut","publiee").maybeSingle();
         if(!actif)return;
         if(error||!data){setErreur("Cette annonce n'est plus disponible.");setChargement(false);return;}
@@ -47,7 +48,7 @@ export default function FicheAnnonce(){
           .select("url,ordre").eq("annonce_id",annonceId).order("ordre");
         if(!actif)return;
         setAnnonce({
-          id:annonceId,categorie:"automobile",sous_categorie:String(data.type_vehicule||"voiture"),
+          id:annonceId,user_id:data.user_id?String(data.user_id):null,categorie:"automobile",sous_categorie:String(data.type_vehicule||"voiture"),
           titre:[data.marque,data.modele,data.finition].filter(Boolean).join(" ")||"Automobile",
           description:String(data.description||""),prix:data.prix==null?null:Number(data.prix),
           ville:String(data.ville||""),code_postal:null,
@@ -56,12 +57,12 @@ export default function FicheAnnonce(){
         });
       }else{
         const {data,error}=await supabase.from("annonces_marketplace")
-          .select("id,categorie,sous_categorie,titre,description,prix,ville,code_postal,caracteristiques,photos,created_at")
+          .select("id,user_id,categorie,sous_categorie,titre,description,prix,ville,code_postal,caracteristiques,photos,created_at")
           .eq("id",id).eq("statut","publiee").maybeSingle();
         if(!actif)return;
         if(error||!data){setErreur("Cette annonce n'est plus disponible.");setChargement(false);return;}
         setAnnonce({
-          id:String(data.id),categorie:String(data.categorie),sous_categorie:String(data.sous_categorie),
+          id:String(data.id),user_id:data.user_id?String(data.user_id):null,categorie:String(data.categorie),sous_categorie:String(data.sous_categorie),
           titre:String(data.titre),description:String(data.description),prix:data.prix==null?null:Number(data.prix),
           ville:String(data.ville),code_postal:data.code_postal?String(data.code_postal):null,
           caracteristiques:(data.caracteristiques||{}) as Record<string,unknown>,
@@ -136,6 +137,7 @@ export default function FicheAnnonce(){
               <strong>{Array.isArray(valeur)?valeur.join(" · "):typeof valeur==="boolean"?(valeur?"Oui":"Non"):String(valeur)}</strong>
             </div>)}</div>
           </section>}
+          {annonce.user_id&&<QuestionsAvisAnnonce type={id.startsWith("auto-")?"auto":"market"} annonceId={annonce.id} vendeurId={annonce.user_id}/>}
           {annonce.categorie==="automobile"&&<LiensHistoriqueVehicule />}
         </div>
         <aside>
@@ -143,8 +145,9 @@ export default function FicheAnnonce(){
             <div className="fiche-price">{prixFmt(annonce.prix)}</div>
             <p style={{fontSize:14,color:"#68798e"}}><ShieldCheck size={18} style={{verticalAlign:"middle",marginRight:5}}/> Annonce publiée sur TOUT ICI MARKET.</p>
             <p style={{fontSize:13,color:"#62738b",lineHeight:1.6}}>Pour votre sécurité, évitez de communiquer des codes bancaires ou de payer en dehors d'un moyen sécurisé.</p>
-            <a href="/compte/inscription" className="fiche-cta">Créer un compte sur TOUT ICI MARKET</a>
-            <p style={{fontSize:12,color:"#74859a",lineHeight:1.5}}>La messagerie entre acheteurs et vendeurs sera ajoutée prochainement.</p>
+            {annonce.user_id?<a href={"/compte/messages?annonce="+(id.startsWith("auto-")?"auto:":"market:")+annonce.id} className="fiche-cta">Contacter le vendeur par message</a>:
+              <p style={{fontSize:12,color:"#74859a",lineHeight:1.5}}>Ce vendeur n'a pas encore de compte de messagerie associé.</p>}
+            <p style={{fontSize:12,color:"#74859a",lineHeight:1.5}}>Messagerie privée et sécurisée. Connectez-vous pour envoyer un message.</p>
           </div>
           <div className="fiche-panel"><strong>Vous souhaitez vendre ?</strong>
             <p style={{color:"#60728a",fontSize:13}}>Déposez gratuitement votre propre petite annonce.</p>
