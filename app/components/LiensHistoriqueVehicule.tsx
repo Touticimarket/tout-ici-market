@@ -33,8 +33,8 @@ export default function LiensHistoriqueVehicule({compact=false}:{compact?:boolea
       @media(max-width:1020px){.hv-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
       @media(max-width:450px){.hv-block{padding:16px 13px}.hv-grid{grid-template-columns:1fr 1fr;gap:7px}.hv-link{padding:11px 8px}.hv-link strong{font-size:12px}.hv-link small{font-size:10px}}
     `}</style>
-    <div className="hv-heading"><ShieldCheck size={21} aria-hidden="true"/><h2>Vérifier l'historique d'un véhicule</h2></div>
-    <p className="hv-intro">Vous le souhaitez ? Consultez librement l'un de ces sites externes avant d'acheter un véhicule d'occasion.</p>
+    <div className="hv-heading"><ShieldCheck size={21} aria-hidden="true"/><h2>Vous pouvez contrôler le kilométrage et l’historique du véhicule</h2></div>
+    <p className="hv-intro">Cette vérification est facultative. Si vous le souhaitez, consultez l’un de ces sites externes avant l’achat.</p>
     <div className="hv-grid">
       {services.map(service=><a key={service.nom} className="hv-link" href={service.url}
         target="_blank" rel="noopener noreferrer nofollow" aria-label={"Ouvrir "+service.nom+" sur son site officiel (nouvel onglet)"}>
