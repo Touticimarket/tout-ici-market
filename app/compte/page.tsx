@@ -3,13 +3,14 @@
 import {useEffect,useState} from "react";
 import {supabase} from "../lib/supabaseClient";
 import {useRouter} from "next/navigation";
-import {ArrowRight,CarFront,LogOut,ShieldCheck,UserRound} from "lucide-react";
+import {ArrowRight,CarFront,LogOut,ShieldCheck,UserRound,MessagesSquare} from "lucide-react";
 
 export default function MonCompte(){
   const router=useRouter();
   const [email,setEmail]=useState("");
   const [charge,setCharge]=useState(false);
   const [erreur,setErreur]=useState("");
+  const [nonLus,setNonLus]=useState(0);
 
   useEffect(()=>{
     let actif=true;
@@ -21,6 +22,21 @@ export default function MonCompte(){
     });
     return ()=>{actif=false;subscription.unsubscribe()};
   },[]);
+
+  useEffect(()=>{
+    if(!email)return;
+    let actif=true;
+    async function compter(){
+      const {data:{user}}=await supabase.auth.getUser();
+      if(!actif||!user)return;
+      const {count,error}=await supabase.from("market_notifications")
+        .select("id",{count:"exact",head:true}).eq("destinataire_id",user.id).eq("lu",false);
+      if(actif&&!error)setNonLus(count||0);
+    }
+    void compter();
+    const id=window.setInterval(()=>void compter(),15000);
+    return ()=>{actif=false;window.clearInterval(id)};
+  },[email]);
 
   async function deconnexion(){
     const {error}=await supabase.auth.signOut();
@@ -37,6 +53,7 @@ export default function MonCompte(){
         <div style={{padding:"18px 20px",background:"#f1f6ff",borderRadius:14,margin:"22px 0"}}>
           <CarFront size={22} style={{verticalAlign:"middle",marginRight:8}}/>
           <a href="/compte/mes-annonces" style={{display:"inline-flex",gap:8,alignItems:"center",marginRight:16,color:"#0648ba",fontWeight:800,textDecoration:"none"}}>Mes annonces <ArrowRight size={16}/></a>
+          <a href="/compte/messages" style={{display:"inline-flex",gap:7,alignItems:"center",marginRight:16,color:"#0648ba",fontWeight:800,textDecoration:"none"}}><MessagesSquare size={18}/> Mes messages {nonLus>0&&<span style={{background:"#ffce2a",color:"#12325d",padding:"3px 7px",borderRadius:12,fontSize:11}}>{nonLus}</span>}</a>
           <a href="/deposer" style={{color:"#0648ba",fontWeight:800,textDecoration:"none"}}>Déposer une annonce <ArrowRight size={16} style={{verticalAlign:"middle"}}/></a>
         </div>
         <button onClick={deconnexion} type="button" style={{display:"inline-flex",alignItems:"center",gap:8,background:"#fff4e0",color:"#754400",padding:"13px 17px",borderRadius:10,border:"1px solid #f0d38a",cursor:"pointer",fontWeight:800}}>
