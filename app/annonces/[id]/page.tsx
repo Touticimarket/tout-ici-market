@@ -136,9 +136,9 @@ export default function FicheAnnonce(){
               <strong>{Array.isArray(valeur)?valeur.join(" · "):typeof valeur==="boolean"?(valeur?"Oui":"Non"):String(valeur)}</strong>
             </div>)}</div>
           </section>}
+          {annonce.categorie==="automobile"&&<LiensHistoriqueVehicule />}
         </div>
         <aside>
-          {annonce.categorie==="automobile"&&<LiensHistoriqueVehicule compact />}
           <div className="fiche-panel">
             <div className="fiche-price">{prixFmt(annonce.prix)}</div>
             <p style={{fontSize:14,color:"#68798e"}}><ShieldCheck size={18} style={{verticalAlign:"middle",marginRight:5}}/> Annonce publiée sur TOUT ICI MARKET.</p>
