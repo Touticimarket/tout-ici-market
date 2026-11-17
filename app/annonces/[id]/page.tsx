@@ -5,6 +5,7 @@ import {useParams} from "next/navigation";
 import {ArrowLeft,CalendarDays,MapPin,ShieldCheck,Tag,Plus} from "lucide-react";
 import {supabase} from "../../lib/supabaseClient";
 import {depotCategories} from "../../deposer/categories";
+import LiensHistoriqueVehicule from "../../components/LiensHistoriqueVehicule";
 
 type AnnonceDetail={
   id:string;categorie:string;sous_categorie:string;titre:string;description:string;
@@ -137,6 +138,7 @@ export default function FicheAnnonce(){
           </section>}
         </div>
         <aside>
+          {annonce.categorie==="automobile"&&<LiensHistoriqueVehicule compact />}
           <div className="fiche-panel">
             <div className="fiche-price">{prixFmt(annonce.prix)}</div>
             <p style={{fontSize:14,color:"#68798e"}}><ShieldCheck size={18} style={{verticalAlign:"middle",marginRight:5}}/> Annonce publiée sur TOUT ICI MARKET.</p>
