@@ -6,7 +6,6 @@ import {
   Truck,UserRound
 } from "lucide-react";
 import {supabase} from "../lib/supabaseClient";
-import LiensHistoriqueVehicule from "../components/LiensHistoriqueVehicule";
 
 type Annonce={
   source?:"auto"|"market";titre?:string;id:string;type_vehicule:string|null;marque:string|null;modele:string|null;finition:string|null;
@@ -289,7 +288,6 @@ export default function AutomobilePage(){
           </div>}
         <p className="mv-note">Seules les annonces effectivement publiées dans notre base sont affichées ici. Les photographies des rubriques sont des illustrations, pas des offres de vente.</p>
       </section>
-      <LiensHistoriqueVehicule />
     </div>
   </main>;
 }
