@@ -2,7 +2,7 @@
 
 import {useEffect,useState} from "react";
 import {useParams} from "next/navigation";
-import {ArrowLeft,CalendarDays,MapPin,ShieldCheck,Tag,Plus} from "lucide-react";
+import {ArrowLeft,CalendarDays,MapPin,ShieldCheck,Tag,Plus,Printer} from "lucide-react";
 import {supabase} from "../../lib/supabaseClient";
 import {depotCategories} from "../../deposer/categories";
 import LiensHistoriqueVehicule from "../../components/LiensHistoriqueVehicule";
@@ -143,6 +143,12 @@ export default function FicheAnnonce(){
         <aside>
           <div className="fiche-panel">
             <div className="fiche-price">{prixFmt(annonce.prix)}</div>
+            <a href={"/annonces/"+id+"/imprimer"} target="_blank" rel="noopener noreferrer"
+              style={{display:"inline-flex",alignItems:"center",gap:7,marginBottom:14,padding:"9px 12px",
+                border:"1px solid #cbdcf3",borderRadius:9,background:"#f7faff",
+                color:"#114a9c",textDecoration:"none",fontWeight:750,fontSize:12}}>
+              <Printer size={16}/> Imprimer / Enregistrer en PDF
+            </a>
             <p style={{fontSize:14,color:"#68798e"}}><ShieldCheck size={18} style={{verticalAlign:"middle",marginRight:5}}/> Annonce publiée sur TOUT ICI MARKET.</p>
             <p style={{fontSize:13,color:"#62738b",lineHeight:1.6}}>Pour votre sécurité, évitez de communiquer des codes bancaires ou de payer en dehors d'un moyen sécurisé.</p>
             {annonce.user_id?<a href={"/compte/messages?annonce="+(id.startsWith("auto-")?"auto:":"market:")+annonce.id} className="fiche-cta">Contacter le vendeur par message</a>:
