@@ -136,7 +136,7 @@ export default function ImprimerAnnonce(){
       @page{size:A4;margin:13mm}
       @media print{
         html,body{background:#fff!important;margin:0!important;padding:0!important}
-        body > header,.ti-brand-link,.ti-print-actions{display:none!important}
+        body > header,.ti-brand-link,.ti-print-actions,body > button[aria-label="Revenir à la page précédente"]{display:none!important}
         .ti-print-root{background:#fff!important;min-height:0;padding:0;margin:0;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}
         .ti-print-paper{max-width:none;border:0;box-shadow:none;padding:0;margin:0}
         .ti-print-title{font-size:24px}
@@ -187,7 +187,7 @@ export default function ImprimerAnnonce(){
           {annonce.photos[0]?<img src={annonce.photos[0]} alt={"Photo principale : "+annonce.titre}/>:<span>Annonce sans photo</span>}
         </div>
         {annonce.photos.length>1&&<div className="ti-print-photos">
-          {annonce.photos.slice(1,7).map((url,index)=><img key={index} src={url} alt={"Photo complémentaire "+(index+2)}/>)}
+          {annonce.photos.slice(1).map((url,index)=><img key={index} src={url} alt={"Photo complémentaire "+(index+2)}/>)}
         </div>}
         <section className="ti-print-section">
           <h2>Description</h2>
