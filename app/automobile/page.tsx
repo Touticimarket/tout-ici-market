@@ -20,6 +20,9 @@ export default function AutomobilePage() {
         .auto-nav a{white-space:nowrap;color:#fff;text-decoration:none;font-weight:700;padding:14px 16px;border-radius:30px}
         .auto-nav .active{background:#ffd00b;color:#06173b}
         .auto-intro{padding:52px clamp(20px,4vw,65px) 66px;background:linear-gradient(90deg,rgba(0,13,45,.98),rgba(0,30,72,.7)),url("https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=2000&q=85") center/cover}
+        .auto-hero-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:30px;align-items:center;max-width:1600px;margin:auto}
+        .auto-hero-visual{justify-self:end;width:100%;max-width:690px;overflow:hidden;border-radius:18px;border:1px solid rgba(255,255,255,.28);box-shadow:0 12px 30px rgba(0,0,0,.3)}
+        .auto-hero-visual img{display:block;width:100%;height:auto;object-fit:contain}
         .auto-intro h1{font-size:clamp(32px,4vw,58px);margin:0 0 18px}
         .auto-intro p{font-size:20px;max-width:670px;line-height:1.5}
         .auto-list{max-width:1480px;padding:32px 24px 70px;margin:auto}
@@ -38,6 +41,7 @@ export default function AutomobilePage() {
         .auto-info{color:#e7efff;font-weight:700}
         .auto-quick{margin-top:20px;display:flex;flex-wrap:wrap;gap:12px}
         .auto-quick a{padding:10px 16px;border:1px solid #92c9f8;border-radius:25px;color:#fff;text-decoration:none;font-weight:700}
+        @media(max-width:850px){.auto-hero-layout{grid-template-columns:1fr}.auto-hero-visual{justify-self:center;max-width:100%}}
         @media(max-width:1200px){.auto-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
         @media(max-width:720px){.auto-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-tile img{height:135px}.auto-tile h3{font-size:18px}}
         @media(max-width:440px){.auto-grid{grid-template-columns:1fr}.auto-tile img{height:175px}}
@@ -46,8 +50,14 @@ export default function AutomobilePage() {
         {navigation.map(([name,href])=><a key={href} href={href} className={href==="/automobile"?"active":""}>{name}</a>)}
       </nav>
       <section className="auto-intro">
-        <span className="auto-tagline">TOUT ICI MARKET · Annonces gratuites</span><h1>Automobile &amp; Véhicules</h1>
-        <p>Voitures, motos, utilitaires, camping-cars et bien plus. Toutes les catégories en un seul endroit, pour acheter ou vendre facilement.</p><div className="auto-actions"><a className="auto-cta" href="/automobile/deposer">＋ Déposer une annonce</a><span className="auto-info">✓ Gratuit &nbsp; ✓ Simple &nbsp; ✓ Particuliers et professionnels</span></div>
+        <div className="auto-hero-layout">
+          <div className="auto-hero-copy">
+            <span className="auto-tagline">TOUT ICI MARKET · Annonces gratuites</span><h1>Automobile &amp; Véhicules</h1>
+            <p>Voitures, motos, utilitaires, camping-cars et bien plus. Toutes les catégories en un seul endroit, pour acheter ou vendre facilement.</p>
+            <div className="auto-actions"><a className="auto-cta" href="/automobile/deposer">＋ Déposer une annonce</a><span className="auto-info">✓ Gratuit &nbsp; ✓ Simple &nbsp; ✓ Particuliers et professionnels</span></div>
+          </div>
+          <div className="auto-hero-visual"><img src="/banniere-automobile-apercu.svg" alt="Automobile — voitures neuves et d’occasion, vendre, acheter, échanger" /></div>
+        </div>
       </section>
       <section className="auto-list">
         <h2>Que recherchez-vous ?</h2><p style={{fontSize:18,color:"#dce9ff",marginBottom:24}}>Sélectionnez une catégorie pour afficher ses annonces et ses filtres.</p>
