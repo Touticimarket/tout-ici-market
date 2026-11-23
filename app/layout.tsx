@@ -10,7 +10,13 @@ export default function RootLayout({
       <body style={{ margin: 0 }}>
         <header
           style={{
-            height: "0px",
+            width: "100%",
+            minHeight: "94px",
+            boxSizing: "border-box",
+            backgroundColor: "#0047BB",
+            display: "flex",
+            alignItems: "center",
+            padding: "8px clamp(14px, 3vw, 40px)",
             position: "relative",
             zIndex: 20,
           }}
@@ -19,14 +25,10 @@ export default function RootLayout({
             href="/"
             aria-label="Accueil TOUT ICI MARKET"
             style={{
-              position: "absolute",
-              top: "36px",
-              left: "16px",
-              transform: "translateY(-50%)",
-              display: "flex",
+              display: "inline-flex",
               alignItems: "center",
               textDecoration: "none",
-              zIndex: 20,
+              maxWidth: "100%",
             }}
           >
             <img
@@ -34,7 +36,8 @@ export default function RootLayout({
               alt="TOUT ICI MARKET"
               style={{
                 width: "230px",
-                maxHeight: "85px",
+                maxWidth: "min(230px, 72vw)",
+                maxHeight: "80px",
                 height: "auto",
                 objectFit: "contain",
                 display: "block",
