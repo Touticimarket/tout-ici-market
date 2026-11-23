@@ -1,46 +1,41 @@
 import type { ReactNode } from "react";
 
-export default function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr">
       <body style={{ margin: 0 }}>
-        <header
-          style={{
-            width: "100%",
-            minHeight: "94px",
-            boxSizing: "border-box",
-            backgroundColor: "#0047BB",
+        <header style={{
+          width: "100%",
+          minHeight: 100,
+          boxSizing: "border-box",
+          background: "#030c46",
+          display: "flex",
+          alignItems: "center",
+          padding: "12px clamp(16px, 3vw, 42px)",
+          position: "relative",
+          zIndex: 20,
+        }}>
+          <a href="/" aria-label="Accueil TOUT ICI MARKET" style={{
             display: "flex",
             alignItems: "center",
-            padding: "8px clamp(14px, 3vw, 40px)",
-            position: "relative",
-            zIndex: 20,
-          }}
-        >
-          <a
-            href="/"
-            aria-label="Accueil TOUT ICI MARKET"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              textDecoration: "none",
-              maxWidth: "100%",
-            }}
-          >
+            justifyContent: "center",
+            width: "clamp(180px, 26vw, 310px)",
+            maxWidth: "100%",
+            minHeight: 72,
+            flexShrink: 0,
+            overflow: "hidden",
+            textDecoration: "none",
+          }}>
             <img
               src="/toutici market.png"
               alt="TOUT ICI MARKET"
               style={{
-                width: "230px",
-                maxWidth: "min(230px, 72vw)",
-                maxHeight: "80px",
-                height: "auto",
-                objectFit: "contain",
                 display: "block",
+                width: "100%",
+                height: "auto",
+                maxHeight: 92,
+                objectFit: "contain",
+                objectPosition: "center",
               }}
             />
           </a>
