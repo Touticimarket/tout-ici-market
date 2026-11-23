@@ -35,22 +35,10 @@ const [loading,setLoading]=useState(true);const [error,setError]=useState("");
 useEffect(()=>{if(slug!=="voitures"){setLoading(false);return;}let mounted=true;
 async function load(){setLoading(true);const [m,a]=await Promise.all([
 supabase.from("marques_auto").select("id,nom").order("nom").limit(1000),
-supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description").eq("statut","publiee").limit(200)
+supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description,couleur,nombre_portes,nombre_places,carrosserie").eq("statut","publiee").limit(200)
 ]);if(!mounted)return;
 if(m.error||a.error)setError("Impossible de récupérer toutes les données. Vérifiez la connexion et les autorisations de lecture Supabase.");
-setMarques(m.data??[]);
-if(!a.error && a.data){
-  const extra=await supabase.from("annonces_auto").select("id,couleur,nombre_portes,nombre_places,carrosserie").eq("statut","publiee").limit(200);
-  if(!mounted)return;
-  if(extra.error){
-    setError("Les nouveaux filtres couleur, portes, places et carrosserie nécessitent la mise à jour de la base Supabase.");
-    setAnnonces(a.data);
-  } else {
-    const more=new Map((extra.data??[]).map(x=>[String(x.id),x]));
-    setAnnonces(a.data.map(x=>({...x,...(more.get(String(x.id))??{})})));
-  }
-} else setAnnonces(a.data??[]);
-setLoading(false);}
+setMarques(m.data??[]);setAnnonces(a.data??[]);setLoading(false);}
 void load();return()=>{mounted=false;};},[slug]);
 useEffect(()=>{let mounted=true;setModeles([]);setModeleId("");setFinitions([]);setFinitionId("");if(!marqueId)return;
 async function loadModels(){const {data,error}=await supabase.from("modeles_auto").select("id,nom").eq("marque_id",marqueId).order("nom").limit(1000);
