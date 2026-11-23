@@ -3,7 +3,7 @@ import {useEffect,useMemo,useState} from "react";
 import {useParams} from "next/navigation";
 import {supabase} from "../../lib/supabaseClient";
 type Option={id:string;nom:string};
-type Annonce={id:string;marque:string|null;modele:string|null;finition:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;carburant:string|null;boite:string|null};
+type Annonce={id:string;marque:string|null;modele:string|null;finition:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;carburant:string|null;boite:string|null;puissance_ch:number|null;departement:string|null;options:string[]|null;description:string|null};
 const categories:Record<string,{title:string;icon:string}>={
 "voitures":{title:"Voitures",icon:"🚘"},"motos":{title:"Motos & Scooters",icon:"🏍️"},
 "utilitaires":{title:"Utilitaires",icon:"🚐"},"camping-cars":{title:"Camping-cars & Caravaning",icon:"🚍"},
@@ -20,14 +20,19 @@ const [marqueId,setMarqueId]=useState("");const [modeleId,setModeleId]=useState(
 const [finitionId,setFinitionId]=useState("");
 const [prixMin,setPrixMin]=useState("");const [prixMax,setPrixMax]=useState("");
 const [anneeMin,setAnneeMin]=useState("");const [anneeMax,setAnneeMax]=useState("");
-const [kmMax,setKmMax]=useState("");const [carburant,setCarburant]=useState("");
+const [kmMin,setKmMin]=useState("");const [kmMax,setKmMax]=useState("");const [carburant,setCarburant]=useState("");
+const [puissanceMin,setPuissanceMin]=useState("");const [puissanceMax,setPuissanceMax]=useState("");
+const [departement,setDepartement]=useState("");const [motCle,setMotCle]=useState("");
+const [equipements,setEquipements]=useState<string[]>([]);
+const listeEquipements=["GPS","Apple CarPlay","Android Auto","Caméra recul","Caméra 360","Radar arrière","Sièges chauffants","Toit panoramique","Régulateur adaptatif","Attelage","Feux LED","Jantes alu"];
+const toggleEquipement=(item:string)=>setEquipements(old=>old.includes(item)?old.filter(x=>x!==item):[...old,item]);
 const [boite,setBoite]=useState("");const [ville,setVille]=useState("");const [tri,setTri]=useState("recent");
-const reset=()=>{setMarqueId("");setModeleId("");setFinitionId("");setPrixMin("");setPrixMax("");setAnneeMin("");setAnneeMax("");setKmMax("");setCarburant("");setBoite("");setVille("");setTri("recent")};
+const reset=()=>{setMarqueId("");setModeleId("");setFinitionId("");setPrixMin("");setPrixMax("");setAnneeMin("");setAnneeMax("");setKmMin("");setKmMax("");setCarburant("");setBoite("");setVille("");setTri("recent");setPuissanceMin("");setPuissanceMax("");setDepartement("");setMotCle("");setEquipements([])};
 const [loading,setLoading]=useState(true);const [error,setError]=useState("");
 useEffect(()=>{if(slug!=="voitures"){setLoading(false);return;}let mounted=true;
 async function load(){setLoading(true);const [m,a]=await Promise.all([
 supabase.from("marques_auto").select("id,nom").order("nom").limit(1000),
-supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite").eq("statut","publiee").limit(200)
+supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description").eq("statut","publiee").limit(200)
 ]);if(!mounted)return;
 if(m.error||a.error)setError("Impossible de récupérer toutes les données. Vérifiez la connexion et les autorisations de lecture Supabase.");
 setMarques(m.data??[]);setAnnonces(a.data??[]);setLoading(false);}
@@ -50,12 +55,18 @@ const filtered=useMemo(()=>annonces.filter(a=>
 (!prixMax||(a.prix!==null&&a.prix<=Number(prixMax)))&&
 (!anneeMin||(a.annee!==null&&a.annee>=Number(anneeMin)))&&
 (!anneeMax||(a.annee!==null&&a.annee<=Number(anneeMax)))&&
+(!kmMin||(a.kilometrage!==null&&a.kilometrage>=Number(kmMin)))&&
 (!kmMax||(a.kilometrage!==null&&a.kilometrage<=Number(kmMax)))&&
+(!puissanceMin||(a.puissance_ch!==null&&a.puissance_ch>=Number(puissanceMin)))&&
+(!puissanceMax||(a.puissance_ch!==null&&a.puissance_ch<=Number(puissanceMax)))&&
+(!departement||a.departement?.toLocaleLowerCase("fr").includes(departement.toLocaleLowerCase("fr")))&&
+(!motCle||[a.marque,a.modele,a.finition,a.description].filter(Boolean).join(" ").toLocaleLowerCase("fr").includes(motCle.toLocaleLowerCase("fr")))&&
+equipements.every(e=>a.options?.some(o=>o.toLocaleLowerCase("fr")===e.toLocaleLowerCase("fr")))&&
 (!carburant||a.carburant===carburant)&&
 (!boite||a.boite===boite)&&
 (!ville||a.ville?.toLocaleLowerCase("fr").includes(ville.toLocaleLowerCase("fr")))
 ).sort((a,b)=>tri==="prix-asc"?(a.prix??Infinity)-(b.prix??Infinity):tri==="prix-desc"?(b.prix??0)-(a.prix??0):tri==="annee-desc"?(b.annee??0)-(a.annee??0):0),
-[annonces,marque,modele,finition,prixMin,prixMax,anneeMin,anneeMax,kmMax,carburant,boite,ville,tri]);
+[annonces,marque,modele,finition,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,carburant,boite,ville,tri,puissanceMin,puissanceMax,departement,motCle,equipements]);
 if(!category)return <main style={{padding:40}}><h1>Catégorie introuvable</h1><a href="/automobile">Retour aux catégories</a></main>;
 return <main className="vehicles-sub">
 <style>{`
@@ -69,6 +80,15 @@ return <main className="vehicles-sub">
 .vehicles-sub .search-sidebar{background:white;border-radius:18px;padding:22px;box-shadow:0 5px 20px #122b4d14;position:sticky;top:16px}
 .vehicles-sub .filters{display:grid;grid-template-columns:1fr;gap:17px}
 .vehicles-sub .search-results{min-width:0}
+.vehicles-sub .filter-group{border:1px solid #dbe5f1;border-radius:13px;overflow:hidden;background:#fff;margin-bottom:12px}
+.vehicles-sub .filter-group summary{cursor:pointer;list-style:none;padding:15px 14px;font-weight:900;color:#073777;display:flex;justify-content:space-between;align-items:center;background:#f5f8fe}
+.vehicles-sub .filter-group summary::-webkit-details-marker{display:none}
+.vehicles-sub .filter-group summary::after{content:"⌄";font-size:21px}
+.vehicles-sub .filter-group[open] summary::after{content:"⌃"}
+.vehicles-sub .filter-group .filters{padding:14px;gap:13px}
+.vehicles-sub .equip-list{padding:14px;display:grid;gap:10px}
+.vehicles-sub .equip-list label{display:flex;flex-direction:row;gap:10px;align-items:center;font-size:13px;font-weight:600}
+.vehicles-sub .equip-list input{width:16px;height:16px;flex-shrink:0}
 .vehicles-sub label{font-weight:700;display:flex;flex-direction:column;gap:8px}
 .vehicles-sub select,.vehicles-sub input{border:1px solid #becde1;border-radius:10px;padding:14px;width:100%;font-size:15px;background:white;color:#071d42}
 .vehicles-sub .ads{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
@@ -95,19 +115,35 @@ return <main className="vehicles-sub">
 {slug==="voitures"?<div className="search-layout">
 <aside className="search-sidebar" aria-label="Filtres de recherche automobile">
 <div className="filter-heading"><h2>Affiner votre recherche</h2><button type="button" className="reset" onClick={reset}>↺ Réinitialiser les filtres</button></div>
-<div className="filters">
+<details className="filter-group" open><summary>Marque, modèle et finition</summary><div className="filters">
 <label>Marque<select aria-label="Marque" value={marqueId} onChange={e=>setMarqueId(e.target.value)}><option value="">Toutes les marques</option>{marques.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
 <label>Modèle<select aria-label="Modèle" value={modeleId} onChange={e=>setModeleId(e.target.value)} disabled={!marqueId}><option value="">{marqueId?"Tous les modèles":"Choisir une marque"}</option>{modeles.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
 <label>Finition<select aria-label="Finition" value={finitionId} onChange={e=>setFinitionId(e.target.value)} disabled={!modeleId}><option value="">{modeleId?"Toutes les finitions":"Choisir un modèle"}</option>{finitions.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
+</div></details>
+<details className="filter-group" open><summary>Prix, année et kilomètres</summary><div className="filters">
 <label>Prix minimum (€)<input type="number" min="0" placeholder="Prix minimum" value={prixMin} onChange={e=>setPrixMin(e.target.value)}/></label>
-<label>Prix maximum (€)<input type="number" min="0" placeholder="Tous les prix" value={prixMax} onChange={e=>setPrixMax(e.target.value)}/></label>
-<label>Année maximum<input type="number" min="1900" max="2100" placeholder="Toutes années" value={anneeMax} onChange={e=>setAnneeMax(e.target.value)}/></label>
-<label>Année minimum<input type="number" min="1900" max="2100" placeholder="Toutes années" value={anneeMin} onChange={e=>setAnneeMin(e.target.value)}/></label>
-<label>Kilométrage maximum<input type="number" min="0" placeholder="Kilométrage maximum" value={kmMax} onChange={e=>setKmMax(e.target.value)}/></label>
-<label>Énergie<select value={carburant} onChange={e=>setCarburant(e.target.value)}><option value="">Toutes énergies</option>{["Essence","Diesel","Hybride","Hybride rechargeable","Électrique","GPL"].map(x=><option key={x}>{x}</option>)}</select></label>
+<label>Prix maximum (€)<input type="number" min="0" placeholder="Prix maximum" value={prixMax} onChange={e=>setPrixMax(e.target.value)}/></label>
+<label>Année minimum<input type="number" min="1900" max="2100" placeholder="Année min." value={anneeMin} onChange={e=>setAnneeMin(e.target.value)}/></label>
+<label>Année maximum<input type="number" min="1900" max="2100" placeholder="Année max." value={anneeMax} onChange={e=>setAnneeMax(e.target.value)}/></label>
+<label>Kilométrage minimum<input type="number" min="0" placeholder="Km minimum" value={kmMin} onChange={e=>setKmMin(e.target.value)}/></label>
+<label>Kilométrage maximum<input type="number" min="0" placeholder="Km maximum" value={kmMax} onChange={e=>setKmMax(e.target.value)}/></label>
+</div></details>
+<details className="filter-group"><summary>Motorisation</summary><div className="filters">
+<label>Énergie<select value={carburant} onChange={e=>setCarburant(e.target.value)}><option value="">Toutes les énergies</option>{["Essence","Diesel","Hybride","Hybride rechargeable","Électrique","GPL"].map(x=><option key={x}>{x}</option>)}</select></label>
 <label>Boîte de vitesses<select value={boite} onChange={e=>setBoite(e.target.value)}><option value="">Toutes</option><option>Automatique</option><option>Manuelle</option></select></label>
+<label>Puissance minimum (ch)<input type="number" min="0" placeholder="Puissance min." value={puissanceMin} onChange={e=>setPuissanceMin(e.target.value)}/></label>
+<label>Puissance maximum (ch)<input type="number" min="0" placeholder="Puissance max." value={puissanceMax} onChange={e=>setPuissanceMax(e.target.value)}/></label>
+</div></details>
+<details className="filter-group"><summary>Localisation</summary><div className="filters">
 <label>Ville<input value={ville} onChange={e=>setVille(e.target.value)} placeholder="Ville recherchée"/></label>
-</div>
+<label>Département<input value={departement} onChange={e=>setDepartement(e.target.value)} placeholder="Nom ou numéro de département"/></label>
+</div></details>
+<details className="filter-group"><summary>Options et équipements</summary><div className="equip-list">
+{listeEquipements.map(e=><label key={e}><input type="checkbox" checked={equipements.includes(e)} onChange={()=>toggleEquipement(e)}/>{e}</label>)}
+</div></details>
+<details className="filter-group"><summary>Recherche par mot-clé</summary><div className="filters">
+<label>Mot-clé<input value={motCle} onChange={e=>setMotCle(e.target.value)} placeholder="Ex. GT, sport, première main"/></label>
+</div></details>
 </aside>
 <section className="search-results" aria-label="Annonces de voitures">
 {error&&<p role="alert">{error}</p>}
