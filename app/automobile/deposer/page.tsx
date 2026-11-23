@@ -56,6 +56,10 @@ export default function DeposerAutoPage() {
     ville: "",
     departement: "",
     description: "",
+    couleur: "",
+    nombre_portes: "",
+    nombre_places: "",
+    carrosserie: "",
   });
 
   useEffect(() => {
@@ -118,6 +122,10 @@ export default function DeposerAutoPage() {
       ville: form.ville,
       departement: form.departement,
       description: form.description,
+      couleur: form.couleur || null,
+      nombre_portes: form.nombre_portes ? Number(form.nombre_portes) : null,
+      nombre_places: form.nombre_places ? Number(form.nombre_places) : null,
+      carrosserie: form.carrosserie || null,
       options,
       statut: "publiee",
       mia_verifie: true,
@@ -163,6 +171,33 @@ export default function DeposerAutoPage() {
           <input style={inputStyle} placeholder="Département" onChange={(e) => setForm({ ...form, departement: e.target.value })} />
         </div>
 
+        <h2 style={{ color: "#0047BB", marginTop: 30 }}>Carrosserie et caractéristiques</h2>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:16}}>
+          <label>Type de carrosserie
+            <select style={inputStyle} value={form.carrosserie} onChange={e=>setForm({...form,carrosserie:e.target.value})}>
+              <option value="">Sélectionner</option>
+              {["Citadine","Berline","Break","SUV","Crossover","Coupé","Cabriolet","Monospace","4x4","Pick-up","Autre"].map(v=><option key={v}>{v}</option>)}
+            </select>
+          </label>
+          <label>Couleur
+            <select style={inputStyle} value={form.couleur} onChange={e=>setForm({...form,couleur:e.target.value})}>
+              <option value="">Sélectionner</option>
+              {["Blanc","Noir","Gris","Argent","Bleu","Rouge","Vert","Jaune","Orange","Marron","Beige","Autre"].map(v=><option key={v}>{v}</option>)}
+            </select>
+          </label>
+          <label>Nombre de portes
+            <select style={inputStyle} value={form.nombre_portes} onChange={e=>setForm({...form,nombre_portes:e.target.value})}>
+              <option value="">Sélectionner</option>
+              {[2,3,4,5,6].map(v=><option key={v} value={v}>{v}</option>)}
+            </select>
+          </label>
+          <label>Nombre de places
+            <select style={inputStyle} value={form.nombre_places} onChange={e=>setForm({...form,nombre_places:e.target.value})}>
+              <option value="">Sélectionner</option>
+              {[2,3,4,5,6,7,8,9].map(v=><option key={v} value={v}>{v}</option>)}
+            </select>
+          </label>
+        </div>
         <h2 style={{ color: "#0047BB", marginTop: 30 }}>Options & équipements</h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 10 }}>
           {optionsAuto.map((option) => (
