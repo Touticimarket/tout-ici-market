@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "clamp(180px, 26vw, 310px)",
+            width: "clamp(195px, 23vw, 265px)",
             maxWidth: "100%",
             minHeight: 72,
             flexShrink: 0,
@@ -27,13 +27,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             textDecoration: "none",
           }}>
             <img
-              src="/toutici market.png"
+              src="/tout-ici-market-officiel.svg"
               alt="TOUT ICI MARKET"
               style={{
                 display: "block",
                 width: "100%",
                 height: "auto",
-                maxHeight: 92,
+                maxHeight: 110,
                 objectFit: "contain",
                 objectPosition: "center",
               }}
