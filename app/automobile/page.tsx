@@ -3,7 +3,7 @@
 import {useEffect,useMemo,useState} from "react";
 import {
   ArrowLeft,ArrowRight, Bike,CarFront,ChevronRight,Heart,Home,MapPin,Package,Plus,Search,
-  Truck,UserRound
+  Truck,UserRound,Mail,ShieldCheck,Users,Tag
 } from "lucide-react";
 import {supabase} from "../lib/supabaseClient";
 
@@ -175,66 +175,178 @@ export default function AutomobilePage(){
       @media(max-width:1210px){.mv-categories{grid-template-columns:repeat(4,minmax(0,1fr))}.mv-listing-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.mv-header{padding-left:205px}.mv-hero-inner{grid-template-columns:310px minmax(0,1fr)}}
       @media(max-width:940px){.mv-header{padding:80px 14px 13px}.mv-actions{justify-content:center;flex:1 1 100%}.mv-search{max-width:none}.mv-hero-inner{grid-template-columns:1fr}.mv-hero h1{white-space:normal}.mv-hero-showcase{height:145px}.mv-categories{grid-template-columns:repeat(3,minmax(0,1fr))}}
       @media(max-width:620px){.mv-header{padding:77px 11px 11px}.mv-actions{gap:10px}.mv-actions a{font-size:11px}.mv-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.mv-nav a{font-size:12px;padding:11px 9px}.mv-hero-inner{padding:25px 13px}.mv-hero-showcase{height:105px;gap:5px}.mv-hero-showcase span{font-size:9px}.mv-wrap{padding:15px 11px 60px}.mv-categories{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.mv-category-image{height:111px}.mv-category-title{font-size:13px}.mv-category-body p{font-size:11px}.mv-listing-grid{grid-template-columns:1fr}.mv-listing-section{padding:17px 12px}}
+
+      /* Présentation Automobile & Véhicules approuvée : bleu nuit, accents orange et photographies. */
+      .market-vehicles{background:radial-gradient(ellipse at 50% 10%,#0b3766 0%,#051d3e 42%,#020e2e 100%);color:#fff}
+      .mv-header{min-height:139px;background:#020d29!important;border-bottom:1px solid #194778!important;padding:20px 24px 20px 300px;display:flex;justify-content:space-between;align-items:center;gap:25px}
+      .mv-header-slogan{font-size:clamp(17px,1.62vw,27px);line-height:1.17;font-weight:800;color:#fff;letter-spacing:-.5px;position:relative}
+      .mv-header-slogan:after{content:"";display:block;background:linear-gradient(90deg,#ffb70e,#ff7800,transparent);height:5px;border-radius:100%;margin-top:12px;transform:skew(-25deg)}
+      .mv-actions{gap:clamp(11px,1.6vw,30px)}
+      .mv-actions a:not(.mv-primary){color:#fff!important;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px;text-align:center;font-weight:750}
+      .mv-actions a:hover{opacity:.9;text-decoration:none}
+      .mv-actions .mv-primary{background:linear-gradient(125deg,#ffe229,#ff9d00 70%,#ff7a00);border-radius:35px;color:#061835!important;box-shadow:0 4px 15px #0005;font-weight:900;font-size:15px;padding:17px 22px}
+      .mv-nav{min-height:59px;background:linear-gradient(180deg,#122c51,#04112f);border-top:1px solid #254c78;border-bottom:2px solid #d97b0b;gap:1px;padding:0 14px;flex-wrap:nowrap;justify-content:space-between;overflow-x:auto;scrollbar-width:thin}
+      .mv-nav a{font-size:clamp(10px,1vw,15px);white-space:nowrap;flex-shrink:0;padding:13px clamp(7px,1.1vw,18px);border-radius:0;border-bottom:0}
+      .mv-nav a.active{border-radius:27px;background:linear-gradient(120deg,#ffd72c,#ffa400);color:#031631;box-shadow:0 4px 10px #d3751e45;font-weight:900}
+      .mv-nav a:hover:not(.active){background:#132d51}
+      .mv-hero{background:linear-gradient(90deg,rgba(0,14,40,.97),rgba(0,15,42,.86) 36%,rgba(3,31,60,.25) 72%,rgba(5,23,48,.2)),url("https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=1800") center 52%/cover;min-height:355px;border-bottom:1px solid #d58019;color:#fff}
+      .mv-hero-inner{max-width:1710px;padding:28px 31px 23px;min-height:355px;display:grid;grid-template-columns:minmax(350px,.85fr) minmax(500px,1.15fr);grid-template-rows:1fr auto;column-gap:20px;row-gap:13px;align-items:center}
+      .mv-hero-copy{position:relative;z-index:1}
+      .mv-hero h1{white-space:normal;display:block;background:none;color:#fff;transform:none;padding:0;margin:0 0 18px;box-shadow:none;font-size:clamp(29px,3vw,51px);letter-spacing:-1.3px;line-height:1.12;text-shadow:0 2px 8px #04122dcc}
+      .mv-hero h1 span{color:#ff9d1c}
+      .mv-hero h1:after{content:"";display:block;height:5px;margin-top:12px;background:linear-gradient(90deg,#ffd021,#ff910a,transparent);border-radius:50%;max-width:320px;transform:skew(-17deg)}
+      .mv-hero p{font-size:clamp(17px,1.8vw,24px);line-height:1.4;max-width:none;font-weight:600}
+      .mv-benefits{margin-top:25px;display:flex;align-items:center;gap:17px}
+      .mv-benefits span{color:#fff;font-weight:800;line-height:1.2;font-size:clamp(10px,1vw,15px);display:flex;align-items:center;gap:7px;border-right:1px solid #bbc7dc88;padding-right:14px;white-space:nowrap}
+      .mv-benefits span:last-child{border:0}
+      .mv-benefits svg{color:#ffae16;flex:none}
+      .mv-hero-photo-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-height:232px;align-self:center}
+      .mv-hero-photo-grid img{width:100%;height:clamp(148px,12vw,221px);object-fit:cover;border-radius:13px;border:1px solid #a4b0c3;box-shadow:0 12px 28px #000b}
+      .mv-hero-search{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.9fr) minmax(210px,.68fr) minmax(170px,.54fr);gap:12px;width:min(100%,1350px);align-items:stretch}
+      .mv-hero-query,.mv-hero-location{display:flex;align-items:center;gap:12px;background:#fff;color:#05254f;padding:0 20px;min-height:58px}
+      .mv-hero-query{border-radius:34px 0 0 34px}
+      .mv-hero-query svg,.mv-hero-location svg{flex-shrink:0;color:#062a63}
+      .mv-hero-query input{flex:1;min-width:0;width:100%;border:0;background:#fff;padding:14px 3px;outline-offset:4px;font:inherit;font-size:15px;color:#12315a}
+      .mv-hero-location{border-radius:0 34px 34px 0;font-size:15px;font-weight:800;white-space:nowrap;margin-left:-12px;border-left:1px solid #d8e0ec}
+      .mv-hero-search button{border:0;border-radius:32px;color:#071b41;background:linear-gradient(120deg,#ffd629,#ff9900);font-size:20px;font-weight:900;display:flex;gap:13px;align-items:center;justify-content:center;cursor:pointer}
+      .mv-wrap{max-width:1710px;padding:16px 25px 80px}
+      .mv-categories-section{margin:0}
+      .mv-categories{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:15px}
+      .mv-category{border:1px solid #e59a43;border-radius:16px;background:#061a3a;color:#fff;box-shadow:0 3px 15px #f18c203d}
+      .mv-category:hover,.mv-category:focus-visible{border-color:#ffcc20;box-shadow:0 4px 20px #ff9d2870;transform:translateY(-3px)}
+      .mv-category-image{height:clamp(112px,8.9vw,175px);background:#203956}
+      .mv-category-image img{object-position:center center}
+      .mv-category-body{padding:0}
+      .mv-category-title{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:14px 17px;margin:0;line-height:1.25;font-weight:850;font-size:clamp(12px,1.18vw,18px);color:#fff;background:linear-gradient(90deg,#061632,#092145)}
+      .mv-category-title svg{flex:none;color:#fff}
+      .mv-categories-more{display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:15px 4px 0;color:#bfcfe5;font-size:12px}
+      .mv-categories-more a{color:#f9d7a4;text-decoration:none;border:1px solid #556687;border-radius:20px;padding:5px 10px}
+      .mv-categories-more a:hover{background:#193354}
+      .mv-recent-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:27px 3px 17px}
+      .mv-recent-head h2{font-weight:900;font-size:clamp(23px,2.6vw,38px);color:#fff;margin:0;line-height:1.2}
+      .mv-recent-head h2:before{content:"";display:inline-block;width:6px;height:clamp(23px,2.6vw,35px);margin-right:16px;background:linear-gradient(#ffdc27,#fc8d07);border-radius:5px;vertical-align:middle}
+      .mv-recent-head a{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:900;white-space:nowrap;padding:12px 17px;border:2px solid #f9aa36;border-radius:40px}
+      .mv-recent-head a:hover{background:#162f56}
+      .mv-listing-section{margin:0;background:#ffffff0b;border:1px solid #50627d;border-radius:16px;padding:22px;color:#fff}
+      .mv-listing-section .mv-heading h2{color:#fff;font-size:21px}
+      .mv-listing-section .mv-heading p{color:#d3deef}
+      .mv-listing-section .mv-heading a{color:#ffcb65!important}
+      .mv-listing-section .mv-pills .mv-pill{background:#152e50;color:#e9f1fb;border-color:#416084}
+      .mv-listing-section .mv-pills .mv-pill.active{background:linear-gradient(90deg,#ffcb26,#ff9900);color:#061d3b;border-color:#ffab1c}
+      .mv-listing{color:#071f43;box-shadow:0 5px 17px #0003}
+      .mv-note{color:#c9d9ec}
+      @media(max-width:1170px){
+        .mv-header{padding-left:260px;gap:9px}
+        .mv-hero-inner{grid-template-columns:1fr 1.05fr}
+        .mv-hero-photo-grid{grid-template-columns:repeat(2,1fr);max-height:none}
+        .mv-hero-photo-grid img{height:95px}
+        .mv-benefits{gap:7px;flex-wrap:wrap}
+      }
+      @media(max-width:940px){
+        .mv-header{padding:90px 15px 12px;flex-direction:column;gap:11px}
+        .mv-header-slogan{text-align:center}
+        .mv-actions{justify-content:center}
+        .mv-hero-inner{grid-template-columns:1fr;grid-template-rows:auto;padding:26px 16px;min-height:0}
+        .mv-hero-photo-grid{grid-template-columns:repeat(4,1fr)}
+        .mv-hero-photo-grid img{height:122px}
+        .mv-hero-search{grid-column:1;grid-template-columns:1fr 190px}
+        .mv-hero-query{border-radius:30px 0 0 30px}
+        .mv-hero-location{border-radius:0 30px 30px 0}
+        .mv-hero-search button{grid-column:1/-1;min-height:48px}
+        .mv-categories{grid-template-columns:repeat(3,minmax(0,1fr))}
+        .mv-nav{justify-content:flex-start}
+      }
+      @media(max-width:620px){
+        .mv-header{padding:85px 12px 12px!important;min-height:0}
+        .mv-header-slogan{font-size:17px}
+        .mv-actions a:not(.mv-primary){font-size:10px}
+        .mv-actions .mv-primary{padding:10px 11px;font-size:12px}
+        .mv-nav a{padding:10px 12px;font-size:12px}
+        .mv-hero h1{font-size:30px}
+        .mv-hero p{font-size:16px}
+        .mv-benefits{margin-top:15px}
+        .mv-benefits span{font-size:10px;gap:4px}
+        .mv-hero-photo-grid{grid-template-columns:repeat(2,1fr);gap:7px}
+        .mv-hero-photo-grid img{height:100px}
+        .mv-hero-search{grid-template-columns:1fr;gap:7px}
+        .mv-hero-query,.mv-hero-location{border-radius:24px;margin:0;min-height:48px}
+        .mv-hero-search button{grid-column:1;min-height:49px;font-size:17px}
+        .mv-wrap{padding:11px 11px 55px}
+        .mv-categories{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+        .mv-category-image{height:100px}
+        .mv-category-title{padding:10px 11px}
+        .mv-recent-head{align-items:flex-start;flex-direction:column}
+        .mv-recent-head a{font-size:12px;padding:9px 12px}
+      }
     `}</style>
     <header className="mv-header">
-      <form className="mv-search" role="search" onSubmit={e=>{e.preventDefault();document.getElementById("annonces-vehicules")?.scrollIntoView({behavior:"smooth"});}}>
-        <input aria-label="Rechercher dans les annonces de véhicules" type="search" value={texte}
-          onChange={e=>setTexte(e.target.value)} placeholder="Rechercher une annonce, un véhicule, une marque…"/>
-        <button type="submit" aria-label="Rechercher"><Search size={22}/></button>
-      </form>
+      <div className="mv-header-slogan">Le site des petites annonces<br/><strong>gratuites pour tous !</strong></div>
       <div className="mv-actions">
-        <a href="/compte"><UserRound size={19}/> Mon compte</a>
-        <a href="/compte/inscription">Créer un compte</a>
-        <a href="/automobile#annonces-vehicules"><Heart size={19}/> Annonces</a>
-        <a className="mv-primary" href="/deposer"><Plus size={19}/> Déposer une annonce</a>
+        <a href="/compte" title="Accéder à votre espace personnel et à vos favoris"><Heart size={23}/> <span>Mes favoris</span></a>
+        <a href="/compte/messages"><Mail size={23}/> <span>Messages</span></a>
+        <a href="/compte"><UserRound size={23}/> <span>Mon compte</span></a>
+        <a className="mv-primary" href="/deposer"><Plus size={21}/> Déposer une annonce</a>
       </div>
     </header>
     <nav className="mv-nav" aria-label="Navigation principale">
       <a href="/"><Home size={19}/> Accueil</a>
-      <a href="/automobile" className="active" aria-current="page"><CarFront size={19}/> Automobile & Véhicules</a>
-      <a href="/deposer/immobilier">Immobilier</a>
-      <a href="/deposer/emploi">Emploi & Services</a>
-      <a href="/deposer">Toutes les catégories</a>
+      <a href="/automobile" className="active" aria-current="page"><CarFront size={20}/> Automobile & Véhicules</a>
+      <a href="/immobilier"><Home size={19}/> Immobilier</a>
+      <a href="/emploi"><Users size={19}/> Emploi & Services</a>
+      <a href="/maison-jardin"><Package size={19}/> Maison & Jardin</a>
+      <a href="/mode">Mode</a>
+      <a href="/telephones">High-Tech</a>
+      <a href="/vacances-loisirs">Loisirs</a>
+      <a href="/autres">Autres</a>
     </nav>
-    <section className="mv-hero">
+    <section className="mv-hero" aria-label="Automobile & Véhicules">
       <div className="mv-hero-inner">
-        <div>
-          <h1>Automobile & Véhicules</h1>
-          <p>Découvrez et consultez toutes les annonces de véhicules.</p>
+        <div className="mv-hero-copy">
+          <h1>Automobile &amp; <span>Véhicules</span></h1>
+          <p>Voitures, motos, utilitaires, camping-cars<br/>et tous types de véhicules</p>
+          <div className="mv-benefits" aria-label="Les avantages de TOUT ICI MARKET">
+            <span><Tag size={26}/> Annonces<br/>gratuites</span>
+            <span><ShieldCheck size={27}/> Simple<br/>et sécurisé</span>
+            <span><Users size={28}/> Entre particuliers<br/>et professionnels</span>
+          </div>
         </div>
-        <div className="mv-hero-showcase">
-          {categories.filter(c=>["voiture","moto","utilitaire","van"].includes(c.slug)).map(c=><a
-            key={c.slug} href={"/automobile?categorie="+c.slug+"#annonces-vehicules"} title={"Voir les annonces "+c.nom}>
-            <img src={c.photo} alt="" onError={e=>e.currentTarget.style.display="none"}/>
-            <span>{c.nom}</span>
-          </a>)}
+        <div className="mv-hero-photo-grid" aria-hidden="true">
+          {categories.filter(c=>["voiture","moto","utilitaire","caravaning"].includes(c.slug)).map(c=>
+            <img key={c.slug} src={c.photo} alt="" loading="eager" onError={e=>e.currentTarget.style.display="none"}/>)}
         </div>
+        <form className="mv-hero-search" role="search" onSubmit={e=>{e.preventDefault();document.getElementById("annonces-vehicules")?.scrollIntoView({behavior:"smooth"});}}>
+          <div className="mv-hero-query"><Search size={24}/>
+            <input aria-label="Rechercher un véhicule" type="search" value={texte} onChange={e=>setTexte(e.target.value)}
+              placeholder="Rechercher un véhicule (marque, modèle, mot-clé…)"/>
+          </div>
+          <div className="mv-hero-location"><MapPin size={23}/> Toute la France</div>
+          <button type="submit"><Search size={22}/> Rechercher</button>
+        </form>
       </div>
     </section>
-
     <div className="mv-wrap">
-      <a href="/" className="mv-back"><ArrowLeft size={16}/> Retour à l'accueil</a>
-      <div className="mv-heading"><div>
-        <h2>Parcourez les annonces par type de véhicule</h2>
-        <p>Cliquez sur une photo pour découvrir les annonces de cette catégorie.</p>
+      <section className="mv-categories-section" aria-label="Choisir un type de véhicule">
+        <div className="mv-categories">
+          {categories.filter(c=>["voiture","moto","utilitaire","caravaning","remorque"].includes(c.slug)).map(c=>
+            <a key={c.slug} className="mv-category" href={"/automobile?categorie="+c.slug+"#annonces-vehicules"}>
+              <div className="mv-category-image">
+                <img src={c.photo} alt="" loading="lazy" onError={e=>e.currentTarget.style.display="none"}/>
+              </div>
+              <div className="mv-category-body">
+                <div className="mv-category-title"><span>{c.slug==="voiture"?"Voitures":c.slug==="remorque"?"Autres véhicules":c.slug==="caravaning"?"Camping-cars & Caravaning":c.nom}</span><ChevronRight size={24}/></div>
+              </div>
+            </a>)}
+        </div>
+        <div className="mv-categories-more">
+          <span>Également :</span>
+          {categories.filter(c=>!["voiture","moto","utilitaire","caravaning","remorque"].includes(c.slug)).map(c=>
+            <a href={"/automobile?categorie="+c.slug+"#annonces-vehicules"} key={c.slug}>{c.nom}</a>)}
+        </div>
+      </section>
+      <div className="mv-recent-head">
+        <h2>Annonces récentes – Automobile &amp; Véhicules</h2>
+        <a href="#annonces-vehicules" onClick={()=>setCategorie("tous")}>Voir toutes les annonces <ChevronRight size={19}/></a>
       </div>
-        <a href="/deposer/automobile" style={{color:"#0750b8",textDecoration:"none",fontSize:13,fontWeight:800}}>
-          Vous souhaitez vendre ? Déposer une annonce <ArrowRight size={15} style={{verticalAlign:"middle"}}/>
-        </a>
-      </div>
-      <div className="mv-categories" aria-label="Catégories de véhicules à consulter">
-        {categories.map(c=><a key={c.slug} className="mv-category" href={"/automobile?categorie="+c.slug+"#annonces-vehicules"}>
-          <div className="mv-category-image">
-            <span aria-hidden="true">{c.icone}</span>
-            <img src={c.photo} alt="" loading="lazy" onError={e=>e.currentTarget.style.display="none"}/>
-          </div>
-          <div className="mv-category-body">
-            <div className="mv-category-title"><span>{c.nom}</span><span className="arrow"><ChevronRight size={15}/></span></div>
-            <p>{c.description}</p>
-          </div>
-        </a>)}
-      </div>
-
       <section className="mv-listing-section" id="annonces-vehicules" aria-label="Résultats des annonces de véhicules">
         <div className="mv-heading"><div>
           <h2>{selection?"Annonces — "+selection.nom:"Toutes les annonces Automobile & Véhicules"}</h2>
