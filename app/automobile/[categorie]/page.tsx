@@ -65,13 +65,17 @@ return <main className="vehicles-sub">
 .vehicles-sub .hero a{color:#ffdb20;text-decoration:none;font-weight:700}
 .vehicles-sub h1{font-size:clamp(34px,4vw,54px);margin:18px 0}
 .vehicles-sub .inner{max-width:1350px;margin:auto;padding:30px 20px}
-.vehicles-sub .filters{background:white;padding:24px;border-radius:18px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;box-shadow:0 5px 20px #122b4d14}
+.vehicles-sub .search-layout{display:grid;grid-template-columns:minmax(260px,310px) minmax(0,1fr);gap:26px;align-items:start}
+.vehicles-sub .search-sidebar{background:white;border-radius:18px;padding:22px;box-shadow:0 5px 20px #122b4d14;position:sticky;top:16px}
+.vehicles-sub .filters{display:grid;grid-template-columns:1fr;gap:17px}
+.vehicles-sub .search-results{min-width:0}
 .vehicles-sub label{font-weight:700;display:flex;flex-direction:column;gap:8px}
 .vehicles-sub select,.vehicles-sub input{border:1px solid #becde1;border-radius:10px;padding:14px;width:100%;font-size:15px;background:white;color:#071d42}
 .vehicles-sub .ads{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
 .vehicles-sub article,.vehicles-sub .notice{background:white;padding:24px;border-radius:17px;box-shadow:0 4px 16px #122b4d13}
 .vehicles-sub .price{color:#0756b7;font-size:26px;font-weight:900}
-.vehicles-sub .filter-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:22px 0 12px}
+.vehicles-sub .filter-heading{display:flex;flex-direction:column;align-items:stretch;gap:12px;margin:0 0 20px}
+.vehicles-sub .filter-heading h2{font-size:24px;margin:0}
 .vehicles-sub .reset{padding:12px 18px;background:#e4eeff;border:1px solid #adc7ee;border-radius:25px;font-weight:800;color:#082454;cursor:pointer}
 .vehicles-sub .results-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:28px 0 18px}
 .vehicles-sub .results-bar h2{margin:0}
@@ -80,15 +84,16 @@ return <main className="vehicles-sub">
 .vehicles-sub article h3{font-size:21px}
 .vehicles-sub .placeholder-photo{height:145px;background:linear-gradient(125deg,#e7f0fd,#d4e0f2);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#496b9b;font-size:52px}
 .vehicles-sub .gold{display:inline-block;background:#ffcf06;color:#061636!important;padding:14px 22px;border-radius:40px;text-decoration:none;font-weight:900}
-@media(max-width:700px){.vehicles-sub .filters{grid-template-columns:1fr 1fr}}
-@media(max-width:460px){.vehicles-sub .filters{grid-template-columns:1fr}}
+@media(max-width:900px){.vehicles-sub .search-layout{grid-template-columns:1fr}.vehicles-sub .search-sidebar{position:static}.vehicles-sub .filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.vehicles-sub .filters{grid-template-columns:1fr}.vehicles-sub .results-bar select{min-width:0;width:100%}}
 `}</style>
 <section className="hero"><a href="/automobile">← Automobile &amp; Véhicules / Toutes les catégories</a>
 <h1>{category.icon} {category.title}</h1>
 <p>Consultez les annonces et affinez votre recherche.</p>
 <a className="gold" href="/automobile/deposer">＋ Déposer une annonce</a></section>
 <div className="inner">
-{slug==="voitures"?<>
+{slug==="voitures"?<div className="search-layout">
+<aside className="search-sidebar" aria-label="Filtres de recherche automobile">
 <div className="filter-heading"><h2>Affiner votre recherche</h2><button type="button" className="reset" onClick={reset}>↺ Réinitialiser les filtres</button></div>
 <div className="filters">
 <label>Marque<select aria-label="Marque" value={marqueId} onChange={e=>setMarqueId(e.target.value)}><option value="">Toutes les marques</option>{marques.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
@@ -103,9 +108,11 @@ return <main className="vehicles-sub">
 <label>Boîte de vitesses<select value={boite} onChange={e=>setBoite(e.target.value)}><option value="">Toutes</option><option>Automatique</option><option>Manuelle</option></select></label>
 <label>Ville<input value={ville} onChange={e=>setVille(e.target.value)} placeholder="Ville recherchée"/></label>
 </div>
+</aside>
+<section className="search-results" aria-label="Annonces de voitures">
 {error&&<p role="alert">{error}</p>}
 <div className="results-bar"><h2>Annonces de voitures ({filtered.length})</h2><label>Trier par <select value={tri} onChange={e=>setTri(e.target.value)}><option value="recent">Ordre d'affichage</option><option value="prix-asc">Prix croissant</option><option value="prix-desc">Prix décroissant</option><option value="annee-desc">Année récente</option></select></label></div>
 {loading?<p>Chargement des annonces…</p>:filtered.length? <div className="ads">{filtered.map(a=><article key={a.id}><div className="placeholder-photo" aria-label="Photo non disponible">🚘</div><h3>{a.marque} {a.modele}</h3><div className="price">{a.prix==null?"Prix non renseigné":a.prix.toLocaleString("fr-FR")+" €"}</div><p>{[a.finition,a.annee,a.carburant,a.kilometrage==null?null:a.kilometrage.toLocaleString("fr-FR")+" km"].filter(Boolean).join(" · ")}</p><p>📍 {a.ville??"Lieu non renseigné"}</p></article>)}</div>:<div className="notice">Aucune annonce de voiture pour ces critères actuellement.</div>}
-</>:<div className="notice"><h2>{category.title}</h2><p>Cette rubrique possède maintenant sa propre page. Les annonces de cette catégorie seront connectées dès que les données correspondantes seront disponibles dans la base.</p><a href="/automobile">Voir les autres catégories</a></div>}
+</section></div>:<div className="notice"><h2>{category.title}</h2><p>Cette rubrique possède maintenant sa propre page. Les annonces de cette catégorie seront connectées dès que les données correspondantes seront disponibles dans la base.</p><a href="/automobile">Voir les autres catégories</a></div>}
 </div></main>;
 }
