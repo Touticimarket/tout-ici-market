@@ -19,36 +19,45 @@ export default function AutomobilePage() {
         .auto-nav{background:#061b49;border-bottom:2px solid #2489c9;display:flex;gap:4px;overflow-x:auto;padding:8px 16px}
         .auto-nav a{white-space:nowrap;color:#fff;text-decoration:none;font-weight:700;padding:14px 16px;border-radius:30px}
         .auto-nav .active{background:#ffd00b;color:#06173b}
-        .auto-intro{padding:42px clamp(20px,4vw,65px);background:linear-gradient(90deg,rgba(0,18,57,.97),rgba(0,28,67,.72)),url("https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=2000&q=85") center/cover}
-        .auto-intro h1{font-size:clamp(32px,4vw,58px);margin:0 0 12px}
+        .auto-intro{padding:52px clamp(20px,4vw,65px) 66px;background:linear-gradient(90deg,rgba(0,13,45,.98),rgba(0,30,72,.7)),url("https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=2000&q=85") center/cover}
+        .auto-intro h1{font-size:clamp(32px,4vw,58px);margin:0 0 18px}
         .auto-intro p{font-size:20px;max-width:670px;line-height:1.5}
         .auto-list{max-width:1480px;padding:32px 24px 70px;margin:auto}
         .auto-list h2{font-size:clamp(25px,3vw,38px);border-left:7px solid #ffd00b;padding-left:16px}
-        .auto-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+        .auto-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
         .auto-tile{color:#fff;text-decoration:none;border:2px solid #62b2e8;background:#061e53;border-radius:20px;overflow:hidden;transition:transform .15s,border-color .15s}
         .auto-tile:hover,.auto-tile:focus-visible{transform:translateY(-3px);border-color:#ffd00b}
-        .auto-tile img{height:180px;width:100%;object-fit:cover;display:block}
+        .auto-tile img{height:185px;width:100%;object-fit:cover;display:block}
         .auto-tile .details{padding:18px}
         .auto-tile h3{font-size:23px;margin:0 0 10px}
-        .auto-tile p{color:#d8e4fa;line-height:1.45;min-height:42px;margin:0 0 14px}
+        .auto-tile p{color:#d8e4fa;line-height:1.45;min-height:58px;margin:0 0 14px}
         .auto-tile strong{color:#ffda21}
+.auto-tagline{display:inline-block;color:#ffce00;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+        .auto-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:22px}
+        .auto-cta{display:inline-block;background:#ffcf06;color:#081c41;font-size:18px;font-weight:900;padding:16px 24px;border-radius:45px;text-decoration:none;box-shadow:0 5px 15px #0005}
+        .auto-info{color:#e7efff;font-weight:700}
+        .auto-quick{margin-top:20px;display:flex;flex-wrap:wrap;gap:12px}
+        .auto-quick a{padding:10px 16px;border:1px solid #92c9f8;border-radius:25px;color:#fff;text-decoration:none;font-weight:700}
+        @media(max-width:1200px){.auto-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+        @media(max-width:720px){.auto-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-tile img{height:135px}.auto-tile h3{font-size:18px}}
+        @media(max-width:440px){.auto-grid{grid-template-columns:1fr}.auto-tile img{height:175px}}
       `}</style>
       <nav className="auto-nav" aria-label="Rubriques principales">
         {navigation.map(([name,href])=><a key={href} href={href} className={href==="/automobile"?"active":""}>{name}</a>)}
       </nav>
       <section className="auto-intro">
-        <h1>Automobile &amp; Véhicules</h1>
-        <p>Voitures, motos, utilitaires, camping-cars et bien plus. Choisissez d’abord le type de véhicule que vous recherchez.</p>
+        <span className="auto-tagline">TOUT ICI MARKET · Annonces gratuites</span><h1>Automobile &amp; Véhicules</h1>
+        <p>Voitures, motos, utilitaires, camping-cars et bien plus. Toutes les catégories en un seul endroit, pour acheter ou vendre facilement.</p><div className="auto-actions"><a className="auto-cta" href="/automobile/deposer">＋ Déposer une annonce</a><span className="auto-info">✓ Gratuit &nbsp; ✓ Simple &nbsp; ✓ Particuliers et professionnels</span></div>
       </section>
       <section className="auto-list">
-        <h2>Choisissez une catégorie</h2>
+        <h2>Que recherchez-vous ?</h2><p style={{fontSize:18,color:"#dce9ff",marginBottom:24}}>Sélectionnez une catégorie pour afficher ses annonces et ses filtres.</p>
         <div className="auto-grid">
           {sections.map(s=><a className="auto-tile" key={s.slug} href={`/automobile/${s.slug}`}>
             <img src={s.image} alt="" loading="lazy" />
             <div className="details"><h3>{s.icon} {s.name}</h3><p>{s.description}</p><strong>Voir les annonces →</strong></div>
           </a>)}
         </div>
-        <p style={{marginTop:36}}>Vous souhaitez vendre un véhicule ? <a href="/automobile/deposer" style={{color:"#ffd00b",fontWeight:800}}>Déposer une annonce automobile →</a></p>
+        <div className="auto-quick"><a href="/automobile/voitures">Rechercher une voiture →</a><a href="/automobile/motos">Rechercher une moto →</a><a href="/automobile/deposer">Vendre mon véhicule →</a></div>
       </section>
     </main>
   );
