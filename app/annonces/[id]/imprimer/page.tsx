@@ -173,7 +173,7 @@ export default function ImprimerAnnonce(){
       !annonce?<div className="ti-print-message" role="alert">{erreur||"Annonce indisponible."}</div>:
       <article className="ti-print-paper">
         <header className="ti-print-head">
-          <img src="/toutici market.png" alt="TOUT ICI MARKET"/>
+          <img src="/logo-tout-ici-market-premium.webp" alt="TOUT ICI MARKET"/>
           <small>Fiche de petite annonce</small>
         </header>
         <p className="ti-print-tag">{categorie}{annonce.sousCategorie?" · "+annonce.sousCategorie:""}</p>
