@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { supabase } from "../lib/supabaseClient";
+type Choice = { id: string; nom: string };
 
 const sections = [
   { name: "Voitures", icon: "🚘", key: "voitures", image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=85" },
@@ -34,12 +36,60 @@ export default function AutomobilePage() {
   const [submittedSearch, setSubmittedSearch] = useState("");
   const [category, setCategory] = useState("tous");
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [marques, setMarques] = useState<Choice[]>([]);
+  const [modeles, setModeles] = useState<Choice[]>([]);
+  const [marqueId, setMarqueId] = useState("");
+  const [modeleId, setModeleId] = useState("");
+  const [marqueNom, setMarqueNom] = useState("");
+  const [modeleNom, setModeleNom] = useState("");
+  const [loadingMarques, setLoadingMarques] = useState(true);
+  const [loadingModeles, setLoadingModeles] = useState(false);
+  const [catalogError, setCatalogError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    async function chargerMarques() {
+      const { data, error } = await supabase.from("marques_auto").select("id, nom").order("nom").limit(1000);
+      if (!active) return;
+      if (error) setCatalogError("Les marques sont momentanément indisponibles.");
+      else setMarques(data ?? []);
+      setLoadingMarques(false);
+    }
+    void chargerMarques();
+    return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    setModeles([]);
+    setModeleId("");
+    setModeleNom("");
+    if (!marqueId) { setLoadingModeles(false); return; }
+    setLoadingModeles(true);
+    async function chargerModeles() {
+      const { data, error } = await supabase.from("modeles_auto")
+        .select("id, nom").eq("marque_id", marqueId).order("nom").limit(1000);
+      if (!active) return;
+      if (error) setCatalogError("Les modèles ne sont pas disponibles pour le moment.");
+      else { setModeles(data ?? []); setCatalogError(""); }
+      setLoadingModeles(false);
+    }
+    void chargerModeles();
+    return () => { active = false; };
+  }, [marqueId]);
+
+  const resetFilters = () => {
+    setCategory("tous"); setSearch(""); setSubmittedSearch("");
+    setMarqueId(""); setModeleId(""); setMarqueNom(""); setModeleNom("");
+  };
 
   const filtered = useMemo(() => annonces.filter(a => {
     const matchCategory = category === "tous" || category === a.category;
     const matchText = !submittedSearch || (a.title + " " + a.details + " " + a.location).toLocaleLowerCase("fr").includes(submittedSearch.toLocaleLowerCase("fr"));
-    return matchCategory && matchText;
-  }), [category, submittedSearch]);
+    const matchMarque = !marqueNom || a.title.toLowerCase().includes(marqueNom.toLowerCase());
+    const matchModele = !modeleNom || a.title.toLowerCase().includes(modeleNom.toLowerCase());
+    return matchCategory && matchText && matchMarque && matchModele;
+  }), [category, submittedSearch, marqueNom, modeleNom]);
 
   const doSearch = () => setSubmittedSearch(search.trim());
 
@@ -60,7 +110,7 @@ export default function AutomobilePage() {
         .vehicle-page .trust-list span:last-child {border:0;}
         .vehicle-page .trust-list b {color:#ffcf06; font-size:28px;}
         .vehicle-page .vehicle-body {padding:0 clamp(20px,2%,38px) 55px; margin-top:-18px; position:relative; z-index:2;}
-        .vehicle-page .searchbar {display:grid; grid-template-columns:minmax(0,1fr) 210px 210px; gap:12px; max-width:1320px; margin:0 auto 24px;}
+        .vehicle-page .searchbar {display:grid; grid-template-columns:minmax(180px,1.4fr) minmax(130px,1fr) minmax(130px,1fr) 180px 160px; gap:12px; max-width:1320px; margin:0 auto 24px;}
         .vehicle-page .searchbar input,.vehicle-page .searchbar select {width:100%;height:56px;border:1px solid #d1d8e8;border-radius:34px; background:#fff;color:#111e38;font-size:16px;padding:0 24px;outline:0;}
         .vehicle-page .searchbar button,.vehicle-page .gold-button {background:#ffcf06;color:#06183b;border:0;border-radius:34px;font-weight:900;font-size:18px;cursor:pointer;padding:12px 24px;text-decoration:none;text-align:center;}
         .vehicle-page .categories {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-bottom:30px;}
@@ -107,10 +157,30 @@ export default function AutomobilePage() {
       <div className="vehicle-body">
         <form className="searchbar" onSubmit={e => { e.preventDefault(); doSearch(); }}>
           <input aria-label="Rechercher un véhicule" placeholder="⌕  Rechercher un véhicule (marque, modèle, mot-clé…)" value={search} onChange={e => setSearch(e.target.value)} />
+          <select aria-label="Marque" value={marqueId} disabled={loadingMarques}
+            onChange={e => {
+              const id = e.target.value;
+              setMarqueId(id);
+              setMarqueNom(marques.find(m => m.id === id)?.nom ?? "");
+              setCatalogError("");
+            }}>
+            <option value="">{loadingMarques ? "Chargement des marques…" : "Toutes les marques"}</option>
+            {marques.map(m => <option key={m.id} value={m.id}>{m.nom}</option>)}
+          </select>
+          <select aria-label="Modèle" value={modeleId} disabled={!marqueId || loadingModeles}
+            onChange={e => {
+              const id = e.target.value;
+              setModeleId(id);
+              setModeleNom(modeles.find(m => m.id === id)?.nom ?? "");
+            }}>
+            <option value="">{loadingModeles ? "Chargement…" : marqueId ? "Tous les modèles" : "Choisir la marque d’abord"}</option>
+            {modeles.map(m => <option key={m.id} value={m.id}>{m.nom}</option>)}
+          </select>
           <select aria-label="Zone géographique" defaultValue="france"><option value="france">📍 Toute la France</option></select>
           <button type="submit">⌕ Rechercher</button>
         </form>
 
+        {catalogError && <p role="alert" style={{color:"#ffdc4d",fontWeight:700}}>{catalogError}</p>}
         <div className="categories" aria-label="Types de véhicules">
           {sections.map(s => (
             <button key={s.key} type="button" onClick={() => { setCategory(category === s.key ? "tous" : s.key); setSubmittedSearch(""); setSearch(""); }} className={`category-card ${category === s.key ? "selected" : ""}`} aria-pressed={category === s.key}>
@@ -122,7 +192,7 @@ export default function AutomobilePage() {
 
         <div className="section-heading">
           <h2>Annonces récentes – Automobile &amp; Véhicules</h2>
-          <a className="outline-button" href="/automobile" onClick={() => { setCategory("tous"); setSearch(""); setSubmittedSearch(""); }}>Voir toutes les annonces ❯</a>
+          <a className="outline-button" href="/automobile" onClick={resetFilters}>Voir toutes les annonces ❯</a>
         </div>
 
         {filtered.length ? (
@@ -142,7 +212,7 @@ export default function AutomobilePage() {
               </article>
             ))}
           </div>
-        ) : <p className="empty">Aucune annonce correspondante dans les exemples affichés pour le moment. <button style={{background:"none",border:0,color:"#ffcf06",cursor:"pointer",fontWeight:700}} onClick={() => { setCategory("tous"); setSubmittedSearch(""); setSearch(""); }}>Voir toutes les annonces</button></p>}
+        ) : <p className="empty">Aucune annonce correspondante dans les exemples affichés pour le moment. <button style={{background:"none",border:0,color:"#ffcf06",cursor:"pointer",fontWeight:700}} onClick={resetFilters}>Voir toutes les annonces</button></p>}
         <div style={{textAlign:"center",marginTop:36}}>
           <a href="/automobile/deposer" className="gold-button">＋ Déposer une annonce automobile</a>
         </div>
