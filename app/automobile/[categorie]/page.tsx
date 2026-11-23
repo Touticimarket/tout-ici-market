@@ -3,7 +3,7 @@ import {useEffect,useMemo,useState} from "react";
 import {useParams} from "next/navigation";
 import {supabase} from "../../lib/supabaseClient";
 type Option={id:string;nom:string};
-type Annonce={id:string;marque:string|null;modele:string|null;finition:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;carburant:string|null;boite:string|null;puissance_ch:number|null;departement:string|null;options:string[]|null;description:string|null};
+type Annonce={id:string;marque:string|null;modele:string|null;finition:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;carburant:string|null;boite:string|null;puissance_ch:number|null;departement:string|null;options:string[]|null;description:string|null;couleur?:string|null;nombre_portes?:number|null;nombre_places?:number|null;carrosserie?:string|null};
 const categories:Record<string,{title:string;icon:string}>={
 "voitures":{title:"Voitures",icon:"🚘"},"motos":{title:"Motos & Scooters",icon:"🏍️"},
 "utilitaires":{title:"Utilitaires",icon:"🚐"},"camping-cars":{title:"Camping-cars & Caravaning",icon:"🚍"},
@@ -24,10 +24,13 @@ const [kmMin,setKmMin]=useState("");const [kmMax,setKmMax]=useState("");const [c
 const [puissanceMin,setPuissanceMin]=useState("");const [puissanceMax,setPuissanceMax]=useState("");
 const [departement,setDepartement]=useState("");const [motCle,setMotCle]=useState("");
 const [equipements,setEquipements]=useState<string[]>([]);
+const [couleur,setCouleur]=useState("");const [portes,setPortes]=useState("");const [places,setPlaces]=useState("");const [carrosserie,setCarrosserie]=useState("");
+const carrosseries=["Citadine","Berline","Break","SUV","Crossover","Coupé","Cabriolet","Monospace","4x4","Pick-up","Autre"];
+const couleurs=["Blanc","Noir","Gris","Argent","Bleu","Rouge","Vert","Jaune","Orange","Marron","Beige","Autre"];
 const listeEquipements=["GPS","Apple CarPlay","Android Auto","Caméra recul","Caméra 360","Radar arrière","Sièges chauffants","Toit panoramique","Régulateur adaptatif","Attelage","Feux LED","Jantes alu"];
 const toggleEquipement=(item:string)=>setEquipements(old=>old.includes(item)?old.filter(x=>x!==item):[...old,item]);
 const [boite,setBoite]=useState("");const [ville,setVille]=useState("");const [tri,setTri]=useState("recent");
-const reset=()=>{setMarqueId("");setModeleId("");setFinitionId("");setPrixMin("");setPrixMax("");setAnneeMin("");setAnneeMax("");setKmMin("");setKmMax("");setCarburant("");setBoite("");setVille("");setTri("recent");setPuissanceMin("");setPuissanceMax("");setDepartement("");setMotCle("");setEquipements([])};
+const reset=()=>{setMarqueId("");setModeleId("");setFinitionId("");setPrixMin("");setPrixMax("");setAnneeMin("");setAnneeMax("");setKmMin("");setKmMax("");setCarburant("");setBoite("");setVille("");setTri("recent");setPuissanceMin("");setPuissanceMax("");setDepartement("");setMotCle("");setEquipements([]);setCouleur("");setPortes("");setPlaces("");setCarrosserie("")};
 const [loading,setLoading]=useState(true);const [error,setError]=useState("");
 useEffect(()=>{if(slug!=="voitures"){setLoading(false);return;}let mounted=true;
 async function load(){setLoading(true);const [m,a]=await Promise.all([
@@ -35,7 +38,19 @@ supabase.from("marques_auto").select("id,nom").order("nom").limit(1000),
 supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description").eq("statut","publiee").limit(200)
 ]);if(!mounted)return;
 if(m.error||a.error)setError("Impossible de récupérer toutes les données. Vérifiez la connexion et les autorisations de lecture Supabase.");
-setMarques(m.data??[]);setAnnonces(a.data??[]);setLoading(false);}
+setMarques(m.data??[]);
+if(!a.error && a.data){
+  const extra=await supabase.from("annonces_auto").select("id,couleur,nombre_portes,nombre_places,carrosserie").eq("statut","publiee").limit(200);
+  if(!mounted)return;
+  if(extra.error){
+    setError("Les nouveaux filtres couleur, portes, places et carrosserie nécessitent la mise à jour de la base Supabase.");
+    setAnnonces(a.data);
+  } else {
+    const more=new Map((extra.data??[]).map(x=>[String(x.id),x]));
+    setAnnonces(a.data.map(x=>({...x,...(more.get(String(x.id))??{})})));
+  }
+} else setAnnonces(a.data??[]);
+setLoading(false);}
 void load();return()=>{mounted=false;};},[slug]);
 useEffect(()=>{let mounted=true;setModeles([]);setModeleId("");setFinitions([]);setFinitionId("");if(!marqueId)return;
 async function loadModels(){const {data,error}=await supabase.from("modeles_auto").select("id,nom").eq("marque_id",marqueId).order("nom").limit(1000);
@@ -62,11 +77,15 @@ const filtered=useMemo(()=>annonces.filter(a=>
 (!departement||a.departement?.toLocaleLowerCase("fr").includes(departement.toLocaleLowerCase("fr")))&&
 (!motCle||[a.marque,a.modele,a.finition,a.description].filter(Boolean).join(" ").toLocaleLowerCase("fr").includes(motCle.toLocaleLowerCase("fr")))&&
 equipements.every(e=>a.options?.some(o=>o.toLocaleLowerCase("fr")===e.toLocaleLowerCase("fr")))&&
+(!couleur||a.couleur?.toLocaleLowerCase("fr")===couleur.toLocaleLowerCase("fr"))&&
+(!portes||a.nombre_portes===Number(portes))&&
+(!places||a.nombre_places===Number(places))&&
+(!carrosserie||a.carrosserie?.toLocaleLowerCase("fr")===carrosserie.toLocaleLowerCase("fr"))&&
 (!carburant||a.carburant===carburant)&&
 (!boite||a.boite===boite)&&
 (!ville||a.ville?.toLocaleLowerCase("fr").includes(ville.toLocaleLowerCase("fr")))
 ).sort((a,b)=>tri==="prix-asc"?(a.prix??Infinity)-(b.prix??Infinity):tri==="prix-desc"?(b.prix??0)-(a.prix??0):tri==="annee-desc"?(b.annee??0)-(a.annee??0):0),
-[annonces,marque,modele,finition,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,carburant,boite,ville,tri,puissanceMin,puissanceMax,departement,motCle,equipements]);
+[annonces,marque,modele,finition,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,carburant,boite,ville,tri,puissanceMin,puissanceMax,departement,motCle,equipements,couleur,portes,places,carrosserie]);
 if(!category)return <main style={{padding:40}}><h1>Catégorie introuvable</h1><a href="/automobile">Retour aux catégories</a></main>;
 return <main className="vehicles-sub">
 <style>{`
@@ -127,6 +146,12 @@ return <main className="vehicles-sub">
 <label>Année maximum<input type="number" min="1900" max="2100" placeholder="Année max." value={anneeMax} onChange={e=>setAnneeMax(e.target.value)}/></label>
 <label>Kilométrage minimum<input type="number" min="0" placeholder="Km minimum" value={kmMin} onChange={e=>setKmMin(e.target.value)}/></label>
 <label>Kilométrage maximum<input type="number" min="0" placeholder="Km maximum" value={kmMax} onChange={e=>setKmMax(e.target.value)}/></label>
+</div></details>
+<details className="filter-group"><summary>Carrosserie et caractéristiques</summary><div className="filters">
+<label>Type de carrosserie<select value={carrosserie} onChange={e=>setCarrosserie(e.target.value)}><option value="">Toutes les carrosseries</option>{carrosseries.map(x=><option key={x}>{x}</option>)}</select></label>
+<label>Couleur<select value={couleur} onChange={e=>setCouleur(e.target.value)}><option value="">Toutes les couleurs</option>{couleurs.map(x=><option key={x}>{x}</option>)}</select></label>
+<label>Nombre de portes<select value={portes} onChange={e=>setPortes(e.target.value)}><option value="">Toutes</option>{[2,3,4,5,6].map(x=><option key={x} value={x}>{x}</option>)}</select></label>
+<label>Nombre de places<select value={places} onChange={e=>setPlaces(e.target.value)}><option value="">Toutes</option>{[2,3,4,5,6,7,8,9].map(x=><option key={x} value={x}>{x}</option>)}</select></label>
 </div></details>
 <details className="filter-group"><summary>Motorisation</summary><div className="filters">
 <label>Énergie<select value={carburant} onChange={e=>setCarburant(e.target.value)}><option value="">Toutes les énergies</option>{["Essence","Diesel","Hybride","Hybride rechargeable","Électrique","GPL"].map(x=><option key={x}>{x}</option>)}</select></label>
