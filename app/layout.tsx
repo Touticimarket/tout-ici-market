@@ -8,6 +8,7 @@ const rubriques = [
   {nom:"Loisirs & Voyages",href:"/vacances-loisirs",icone:"✈"},
   {nom:"Bon plan",href:"/bon-plan",icone:"★"},
   {nom:"Famille",href:"/famille",icone:"♡"},
+  {nom:"Matériel pro",href:"/materiel-pro",icone:"🛠"},
   {nom:"Autres",href:"/autres",icone:"▦"}
 ];
 export default function RootLayout({children}:{children:ReactNode}){
@@ -66,6 +67,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/vacances-loisirs">Loisirs &amp; Voyages</a>
       <a href="/bon-plan">Bon plan</a>
       <a href="/famille">Famille</a>
+      <a href="/materiel-pro">Matériel pro</a>
       <a href="/autres">Autres</a>
     </nav>
     <div className="tim-shell">
