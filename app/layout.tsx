@@ -1,4 +1,3 @@
-import SocialNetworkIcons from "./components/SocialNetworkIcons";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 export const metadata:Metadata={
@@ -64,7 +63,6 @@ export default function RootLayout({children}:{children:ReactNode}){
       <nav className="tim-header-links" aria-label="Espace utilisateur">
         <a href="/compte">♙ Mon compte</a>
         <a href="/favoris">♡ Mes favoris</a>
-        <SocialNetworkIcons/>
         <a className="tim-post" href="/automobile/deposer">＋ Déposer une annonce</a>
       </nav>
     </header>
