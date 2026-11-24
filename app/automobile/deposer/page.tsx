@@ -205,8 +205,8 @@ export default function DeposerAutoPage() {
         .depot-auto{color:#0a2452;background:#f1f6fd;font-family:Arial,Helvetica,sans-serif;min-height:100vh;padding-bottom:50px}
         .depot-auto *{box-sizing:border-box}
         .depot-auto .banner{width:100%;min-height:210px;background:linear-gradient(90deg,rgba(0,25,65,.9),rgba(0,41,98,.14)),url("/bandeau-depot-bmw.svg") center/cover;display:flex;align-items:center;padding:30px clamp(16px,3vw,48px);border-radius:15px;overflow:hidden}
-        .depot-auto .banner{display:block!important;min-height:0!important;height:auto!important;padding:0!important;background:none!important;border-radius:13px}
-        .depot-auto .banner img{display:block;width:100%;height:auto;aspect-ratio:1066 / 164;object-fit:fill}
+        .depot-auto .banner{display:block!important;min-height:0!important;height:auto!important;padding:0!important;background:none!important;border-radius:13px;overflow:hidden;margin-bottom:12px;box-shadow:0 4px 18px rgba(0,24,68,.16)}
+        .depot-auto .banner img{display:block;width:100%;height:auto;aspect-ratio:1600 / 533;object-fit:contain;image-rendering:auto}
                 .depot-auto .banner-copy{max-width:520px;color:white}
         .depot-auto .banner h1{font-size:clamp(26px,3vw,42px);line-height:1.13;margin:0 0 12px}
         .depot-auto .banner p{font-size:18px;line-height:1.45;margin:0}
@@ -249,7 +249,7 @@ export default function DeposerAutoPage() {
         .depot-auto .checkbox-row label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
         .depot-auto .video-input{margin-top:20px;padding:16px;border:1px dashed #8cafe1;border-radius:12px;background:#f7fbff}
         .depot-auto .video-input input{width:100%;margin-top:10px}
-        .depot-auto .page-grid{display:grid;grid-template-columns:235px minmax(0,1fr);gap:12px;align-items:start}
+        .depot-auto .page-grid{display:grid;grid-template-columns:195px minmax(0,1fr);gap:10px;align-items:start}
         .depot-auto .depot-progress{background:#fff;border:1px solid #dce6f5;border-radius:12px;padding:14px;position:sticky;top:14px}
         .depot-auto .depot-progress h3{font-size:16px;color:#003dcc;margin:0 0 12px}
         .depot-auto .progress-link{display:flex;align-items:center;width:100%;text-align:left;gap:10px;background:transparent;border:0;border-bottom:1px solid #eff2f9;padding:12px 4px;font-weight:800;font-size:13px;color:#0b2452;cursor:pointer}
@@ -275,7 +275,7 @@ export default function DeposerAutoPage() {
         .depot-auto .equip-list label{padding:8px;font-size:12px}
         .depot-auto .checkbox-row{gap:7px}
         .depot-auto .step-actions{margin-top:12px}
-        @media(max-width:1250px){.depot-auto .page-grid{grid-template-columns:190px minmax(0,1fr)}.depot-auto .fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:1250px){.depot-auto .page-grid{grid-template-columns:165px minmax(0,1fr)}.depot-auto .fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(max-width:800px){.depot-auto .page-grid{grid-template-columns:1fr}.depot-auto .depot-progress{position:static}.depot-auto .fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(max-width:480px){.depot-auto .fields,.depot-auto .equip-list{grid-template-columns:1fr}}
         .depot-auto .feedback{background:#e9f5ff;padding:15px;border-radius:10px;font-weight:800}
