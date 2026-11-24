@@ -144,7 +144,7 @@ export default function DeposerAutoPage() {
 
   return (
     <main className="depot-auto">
-      <style>{\`
+      <style>{`
         .depot-auto{color:#0a2452;background:#f1f6fd;font-family:Arial,Helvetica,sans-serif;min-height:100vh;padding-bottom:50px}
         .depot-auto *{box-sizing:border-box}
         .depot-auto .banner{width:100%;min-height:210px;background:linear-gradient(90deg,rgba(0,25,65,.9),rgba(0,41,98,.14)),url("/banniere-automobile-apercu.svg") center/cover;display:flex;align-items:center;padding:30px clamp(16px,3vw,48px);border-radius:15px;overflow:hidden}
@@ -175,7 +175,7 @@ export default function DeposerAutoPage() {
         .depot-auto .feedback{background:#e9f5ff;padding:15px;border-radius:10px;font-weight:800}
         @media(max-width:800px){.depot-auto .fields{grid-template-columns:1fr}.depot-auto .equip-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(max-width:500px){.depot-auto .form-section,.depot-auto .intro{padding:18px}.depot-auto .equip-list{grid-template-columns:1fr}.depot-auto .banner{min-height:180px}.depot-auto .banner p{font-size:15px}}
-      \`}</style>
+      `}</style>
       <section className="banner">
         <div className="banner-copy">
           <h1>Déposer une annonce automobile</h1>
