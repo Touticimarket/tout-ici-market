@@ -30,7 +30,7 @@ return <div className="fr-location">
  <div className="map-tools"><button type="button" onClick={()=>setZoom(z=>Math.max(5,z-1))} aria-label="Dézoomer">−</button><button type="button" onClick={()=>setZoom(z=>Math.min(17,z+1))} aria-label="Zoomer">＋</button></div></div>
  {selected&&<a href={"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(selected.latitude+","+selected.longitude)} target="_blank" rel="noopener noreferrer" style={{display:"inline-flex",alignItems:"center",marginTop:12,gap:7,color:"#084bd8",fontWeight:800,textDecoration:"underline"}}>↗ Ouvrir dans Google Maps</a>}
  <iframe title="Carte de localisation du véhicule" src={url} loading="lazy"/>
- <p style={{fontSize:12,color:"#536680"}}>Le repère indique le centre de la commune choisie, sans révéler l’adresse exacte du vendeur. Vous pouvez déplacer la carte et zoomer.</p>
+ <p style={{fontSize:12,color:"#536680"}}>Le repère correspond à la mairie de la commune (ou à son centre géographique si la mairie n’est pas disponible), sans révéler l’adresse du vendeur. Vous pouvez déplacer la carte et zoomer.</p>
  </div>
 }
 export function OrderedPhotos({files,onChange}:{files:File[];onChange:(f:File[])=>void}){
