@@ -1,74 +1,62 @@
-const sections = [
-  { name: "Voitures", description: "Citadines, berlines, SUV, électriques et hybrides", slug: "voitures", icon: "🚘", image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=85" },
-  { name: "Motos & Scooters", description: "Motos, scooters et deux-roues", slug: "motos", icon: "🏍️", image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=85" },
-  { name: "Utilitaires", description: "Fourgons, camionnettes et véhicules professionnels", slug: "utilitaires", icon: "🚐", image: "https://images.unsplash.com/photo-1566933293069-b55c7f326dd4?auto=format&fit=crop&w=900&q=85" },
-  { name: "Camping-cars & Caravaning", description: "Camping-cars, vans aménagés et caravanes", slug: "camping-cars", icon: "🚍", image: "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=900&q=85" },
-  { name: "Autres véhicules", description: "Remorques, quads et autres véhicules", slug: "autres-vehicules", icon: "🚜", image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=85" },
+const categories=[
+ {name:"Automobiles",description:"Voitures, berlines, SUV, citadines, etc.",slug:"voitures",image:"voitures"},
+ {name:"Utilitaires",description:"Fourgons, fourgonnettes, camionnettes, pick-up...",slug:"utilitaires",image:"utilitaires"},
+ {name:"Camions",description:"Poids lourds, tracteurs, porteurs, remorques...",slug:"camions",image:"camions"},
+ {name:"Caravaning",description:"Camping-cars, caravanes, cellules, vans aménagés...",slug:"caravaning",image:"caravaning"},
+ {name:"Remorques",description:"Bagagères, porte-voitures, plateaux, spéciales...",slug:"remorques",image:"remorques"},
+ {name:"Motos & Scooters",description:"Motos, scooters, 3 roues, quads...",slug:"motos",image:"motos"},
+ {name:"Vélos",description:"Vélos, VAE, VTT, route, enfants, accessoires...",slug:"velos",image:"velos"},
+ {name:"Nautisme",description:"Bateaux, jet-skis, voiliers, remorques bateau...",slug:"nautisme",image:"nautisme"},
+ {name:"Vans & Aménagés",description:"Vans, fourgons aménagés, minibus, loisirs...",slug:"vans-amenages",image:"vans-amenages"},
+ {name:"Autres véhicules",description:"Tracteurs, engins, véhicules spécifiques, collection...",slug:"autres-vehicules",image:"autres-vehicules"},
 ];
-const navigation = [
-  ["Accueil", "/"], ["Automobile & Véhicules", "/automobile"], ["Immobilier", "/immobilier"],
-  ["Emploi & Services", "/emploi"], ["Maison & Jardin", "/maison-jardin"], ["Mode", "/mode"],
-  ["High-Tech", "/telephones"], ["Loisirs", "/vacances-loisirs"], ["Autres", "/autres"],
+const equipements=[
+ {name:"Équipement auto",icon:"◉",slug:"equipement-auto"},
+ {name:"Équipement caravaning",icon:"▣",slug:"equipement-caravaning"},
+ {name:"Équipement nautisme",icon:"⛵",slug:"equipement-nautisme"},
+ {name:"Équipements vélos",icon:"♧",slug:"equipement-velos"},
+ {name:"Services de réparation mécanique",icon:"⚒",slug:"services-mecaniques"},
+ {name:"Pneus & Jantes",icon:"◎",slug:"pneus-jantes"},
+ {name:"Pièces & Accessoires",icon:"⚙",slug:"pieces-accessoires"},
+ {name:"Entretien & Consommables",icon:"♢",slug:"entretien-consommables"}
 ];
-export default function AutomobilePage() {
-  return (
-    <main className="auto-categories">
-      <style>{`
-        .auto-categories{min-height:100vh;background:#041943;color:white;font-family:Arial,Helvetica,sans-serif}
-        .auto-categories *{box-sizing:border-box}
-        .auto-nav{background:#061b49;border-bottom:2px solid #2489c9;display:flex;gap:4px;overflow-x:auto;padding:8px 16px}
-        .auto-nav a{white-space:nowrap;color:#fff;text-decoration:none;font-weight:700;padding:14px 16px;border-radius:30px}
-        .auto-nav .active{background:#ffd00b;color:#06173b}
-        .auto-intro{padding:52px clamp(20px,4vw,65px) 66px;background:linear-gradient(90deg,rgba(0,13,45,.98),rgba(0,30,72,.7)),url("https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=2000&q=85") center/cover}
-        .auto-hero-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:30px;align-items:center;max-width:1600px;margin:auto}
-        .auto-hero-visual{justify-self:end;width:100%;max-width:690px;overflow:hidden;border-radius:18px;border:1px solid rgba(255,255,255,.28);box-shadow:0 12px 30px rgba(0,0,0,.3)}
-        .auto-hero-visual img{display:block;width:100%;height:auto;object-fit:contain}
-        .auto-intro h1{font-size:clamp(32px,4vw,58px);margin:0 0 18px}
-        .auto-intro p{font-size:20px;max-width:670px;line-height:1.5}
-        .auto-list{max-width:1480px;padding:32px 24px 70px;margin:auto}
-        .auto-list h2{font-size:clamp(25px,3vw,38px);border-left:7px solid #ffd00b;padding-left:16px}
-        .auto-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
-        .auto-tile{color:#fff;text-decoration:none;border:2px solid #62b2e8;background:#061e53;border-radius:20px;overflow:hidden;transition:transform .15s,border-color .15s}
-        .auto-tile:hover,.auto-tile:focus-visible{transform:translateY(-3px);border-color:#ffd00b}
-        .auto-tile img{height:185px;width:100%;object-fit:cover;display:block}
-        .auto-tile .details{padding:18px}
-        .auto-tile h3{font-size:23px;margin:0 0 10px}
-        .auto-tile p{color:#d8e4fa;line-height:1.45;min-height:58px;margin:0 0 14px}
-        .auto-tile strong{color:#ffda21}
-.auto-tagline{display:inline-block;color:#ffce00;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
-        .auto-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:22px}
-        .auto-cta{display:inline-block;background:#ffcf06;color:#081c41;font-size:18px;font-weight:900;padding:16px 24px;border-radius:45px;text-decoration:none;box-shadow:0 5px 15px #0005}
-        .auto-info{color:#e7efff;font-weight:700}
-        .auto-quick{margin-top:20px;display:flex;flex-wrap:wrap;gap:12px}
-        .auto-quick a{padding:10px 16px;border:1px solid #92c9f8;border-radius:25px;color:#fff;text-decoration:none;font-weight:700}
-        @media(max-width:850px){.auto-hero-layout{grid-template-columns:1fr}.auto-hero-visual{justify-self:center;max-width:100%}}
-        @media(max-width:1200px){.auto-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-        @media(max-width:720px){.auto-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-tile img{height:135px}.auto-tile h3{font-size:18px}}
-        @media(max-width:440px){.auto-grid{grid-template-columns:1fr}.auto-tile img{height:175px}}
-      `}</style>
-      <nav className="auto-nav" aria-label="Rubriques principales">
-        {navigation.map(([name,href])=><a key={href} href={href} className={href==="/automobile"?"active":""}>{name}</a>)}
-      </nav>
-      <section className="auto-intro">
-        <div className="auto-hero-layout">
-          <div className="auto-hero-copy">
-            <span className="auto-tagline">TOUT ICI MARKET · Annonces gratuites</span><h1>Automobile &amp; Véhicules</h1>
-            <p>Voitures, motos, utilitaires, camping-cars et bien plus. Toutes les catégories en un seul endroit, pour acheter ou vendre facilement.</p>
-            <div className="auto-actions"><a className="auto-cta" href="/automobile/deposer">＋ Déposer une annonce</a><span className="auto-info">✓ Gratuit &nbsp; ✓ Simple &nbsp; ✓ Particuliers et professionnels</span></div>
-          </div>
-          <div className="auto-hero-visual"><img src="/banniere-automobile-apercu.svg" alt="Automobile — voitures neuves et d’occasion, vendre, acheter, échanger" /></div>
-        </div>
-      </section>
-      <section className="auto-list">
-        <h2>Que recherchez-vous ?</h2><p style={{fontSize:18,color:"#dce9ff",marginBottom:24}}>Sélectionnez une catégorie pour afficher ses annonces et ses filtres.</p>
-        <div className="auto-grid">
-          {sections.map(s=><a className="auto-tile" key={s.slug} href={`/automobile/${s.slug}`}>
-            <img src={s.image} alt="" loading="lazy" />
-            <div className="details"><h3>{s.icon} {s.name}</h3><p>{s.description}</p><strong>Voir les annonces →</strong></div>
-          </a>)}
-        </div>
-        <div className="auto-quick"><a href="/automobile/voitures">Rechercher une voiture →</a><a href="/automobile/motos">Rechercher une moto →</a><a href="/automobile/deposer">Vendre mon véhicule →</a></div>
-      </section>
-    </main>
-  );
+export default function AutomobilePage(){
+ return <main className="auto-home">
+ <style>{`
+ .auto-home{font-family:Arial,Helvetica,sans-serif;background:#f7fafe;color:#081d49;min-height:100vh;margin:-12px -12px 0 -12px;padding-bottom:35px}
+ .auto-home *{box-sizing:border-box}
+ .auto-home .hero{margin:0 0 0 calc(-205px - 12px);width:calc(100% + 205px + 12px);overflow:hidden;background:#0b3268}
+ .auto-home .hero img{display:block;width:100%;height:auto;aspect-ratio:1448/238;object-fit:cover}
+ .auto-home .main-panel{background:#fff;margin:0 12px 0 0;border:1px solid #deebfb;border-radius:20px;padding:16px 18px 22px;box-shadow:0 3px 14px #17365f0d}
+ .auto-home h1{font-size:clamp(22px,2.2vw,29px);margin:0 0 4px;color:#091c47}
+ .auto-home .subtitle{color:#51617d;font-size:15px;font-weight:700;margin:0 0 15px}
+ .auto-home .cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+ .auto-home .category{display:block;min-width:0;border:1px solid #d6e5f8;border-radius:16px;overflow:hidden;background:linear-gradient(#fff,#f3f8ff);text-decoration:none;color:#071c44;transition:box-shadow .15s,transform .15s}
+ .auto-home .category:hover,.auto-home .category:focus-visible{box-shadow:0 6px 18px #0a36862d;transform:translateY(-2px);outline:2px solid #ffcf06}
+ .auto-home .category img{display:block;width:100%;aspect-ratio:2.03/1;object-fit:cover}
+ .auto-home .tile-copy{padding:10px 11px 12px}
+ .auto-home .tile-title{display:flex;justify-content:space-between;align-items:center;gap:4px;font-size:15px;font-weight:900}
+ .auto-home .arrow{font-size:22px}
+ .auto-home .tile-description{font-size:11px;line-height:1.4;margin:5px 0 0;min-height:31px}
+ .auto-home .equip-section{margin-top:23px;padding-top:15px;border-top:1px solid #e5edf8}
+ .auto-home .equip-section h2{font-size:25px;margin:0 0 12px;color:#091c47}
+ .auto-home .equip-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px}
+ .auto-home .equip-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:108px;padding:9px 5px;background:linear-gradient(150deg,#eaf5ff,#dceefe);border-radius:15px;color:#081b45;text-align:center;text-decoration:none;font-size:12px;font-weight:800}
+ .auto-home .equip-tile:hover,.auto-home .equip-tile:focus-visible{background:#ffdc35}
+ .auto-home .equip-icon{font-size:30px;line-height:1}
+ @media(max-width:1100px){.auto-home .cards{grid-template-columns:repeat(3,minmax(0,1fr))}.auto-home .equip-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+ @media(max-width:980px){.auto-home .hero{margin-left:calc(-180px - 12px);width:calc(100% + 180px + 12px)}}
+ @media(max-width:760px){.auto-home .hero{margin-left:0;width:100%}.auto-home .cards{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-home .main-panel{margin:0 8px;padding:13px}.auto-home .hero img{height:180px;object-position:center}}
+ @media(max-width:480px){.auto-home .cards{grid-template-columns:1fr}.auto-home .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-home .hero img{height:155px;object-position:center}}
+ `}</style>
+ <div className="hero"><img src="/auto-visuels/bandeau-auto-final.svg" alt="Automobile et véhicules : voiture bleue, utilitaire, moto, camping-car, bateau et vélo devant un lac de montagne" /></div>
+ <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
+ <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
+ <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
+ <img src={"/auto-visuels/"+c.image+".svg"} alt={c.name} loading="lazy"/>
+ <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow">›</span></div><p className="tile-description">{c.description}</p></div>
+ </a>)}</div>
+ <div className="equip-section"><h2>Équipements &amp; Services</h2>
+ <div className="equip-grid">{equipements.map(e=><a href={"/automobile/"+e.slug} key={e.slug} className="equip-tile"><span className="equip-icon" aria-hidden="true">{e.icon}</span><span>{e.name}</span></a>)}</div></div>
+ </section></main>
 }
