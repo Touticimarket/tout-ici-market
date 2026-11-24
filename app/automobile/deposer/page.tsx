@@ -247,6 +247,35 @@ export default function DeposerAutoPage() {
         .depot-auto .checkbox-row label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
         .depot-auto .video-input{margin-top:20px;padding:16px;border:1px dashed #8cafe1;border-radius:12px;background:#f7fbff}
         .depot-auto .video-input input{width:100%;margin-top:10px}
+        .depot-auto .page-grid{display:grid;grid-template-columns:235px minmax(0,1fr);gap:12px;align-items:start}
+        .depot-auto .depot-progress{background:#fff;border:1px solid #dce6f5;border-radius:12px;padding:14px;position:sticky;top:14px}
+        .depot-auto .depot-progress h3{font-size:16px;color:#003dcc;margin:0 0 12px}
+        .depot-auto .progress-link{display:flex;align-items:center;width:100%;text-align:left;gap:10px;background:transparent;border:0;border-bottom:1px solid #eff2f9;padding:12px 4px;font-weight:800;font-size:13px;color:#0b2452;cursor:pointer}
+        .depot-auto .progress-link.active{background:#e8f1ff;color:#003bd2;border-radius:10px}
+        .depot-auto .step-dot{display:inline-flex;justify-content:center;align-items:center;border:1px solid #9fb6d6;width:28px;height:28px;border-radius:50%;font-size:14px;flex-shrink:0}
+        .depot-auto .progress-link.active .step-dot{background:#0644e8;color:white;border-color:#0644e8}
+        .depot-auto .form-section{padding:16px 18px;margin-bottom:11px;border-radius:13px}
+        .depot-auto .section-title{color:#0036c6;margin-bottom:12px;font-size:19px}
+        .depot-auto .section-number{background:#e7efff;color:#0445e8}
+        .depot-auto .fields{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+        .depot-auto .field{font-size:12px;gap:5px}
+        .depot-auto select,.depot-auto .field input,.depot-auto textarea{min-height:36px;padding:9px;font-size:13px;border-radius:7px}
+        .depot-auto .immat-lookup{margin-bottom:12px;padding:13px;border-radius:9px}
+        .depot-auto .immat-lookup h3{font-size:15px}
+        .depot-auto .banner{min-height:205px;margin-bottom:10px;background-image:linear-gradient(90deg,rgba(0,16,48,.91),rgba(0,21,62,.12)),url("/banniere-automobile-apercu.svg");background-position:center;background-size:cover}
+        .depot-auto .banner-copy{max-width:570px}
+        .depot-auto .banner h1{font-size:clamp(24px,2.9vw,39px)}
+        .depot-auto .depot-main{min-width:0}
+        .depot-auto .step-navigation{display:none}
+        .depot-auto .intro{padding:16px 20px;margin-bottom:11px}
+        .depot-auto .intro h2{font-size:20px}
+        .depot-auto .equip-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+        .depot-auto .equip-list label{padding:8px;font-size:12px}
+        .depot-auto .checkbox-row{gap:7px}
+        .depot-auto .step-actions{margin-top:12px}
+        @media(max-width:1250px){.depot-auto .page-grid{grid-template-columns:190px minmax(0,1fr)}.depot-auto .fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:800px){.depot-auto .page-grid{grid-template-columns:1fr}.depot-auto .depot-progress{position:static}.depot-auto .fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:480px){.depot-auto .fields,.depot-auto .equip-list{grid-template-columns:1fr}}
         .depot-auto .feedback{background:#e9f5ff;padding:15px;border-radius:10px;font-weight:800}
         @media(max-width:800px){.depot-auto .fields{grid-template-columns:1fr}.depot-auto .equip-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(max-width:500px){.depot-auto .immat-controls{flex-direction:column}.depot-auto .immat-controls button{padding:13px}
@@ -258,8 +287,19 @@ export default function DeposerAutoPage() {
           <p>Vendez votre voiture simplement sur TOUT ICI MARKET, avec toutes les caractéristiques utiles aux acheteurs.</p>
         </div>
       </section>
-      <div className="crumb"><a href="/automobile">Automobile &amp; Véhicules</a> / Déposer une annonce</div>
-      <div className="intro">
+      <div className="page-grid">
+       <aside className="depot-progress" aria-label="Étapes du dépôt automobile">
+         <h3>Déposer une annonce auto</h3>
+         {etapes.map((nom,i)=><button key={nom} type="button" className={"progress-link "+(etape===i+1?"active":"")} onClick={()=>aller(i+1)}>
+           <span className="step-dot">{i+1}</span><span>{nom}</span>
+         </button>)}
+         <div style={{marginTop:20,padding:13,background:"#edf8f0",borderRadius:10,fontSize:12}}>
+           <strong style={{color:"#0f6c31"}}>✓ Conseils de sécurité</strong>
+           <p>Ne payez jamais sans avoir vu le véhicule. Privilégiez les échanges sécurisés.</p>
+         </div>
+       </aside>
+       <div className="depot-main">
+       <div className="intro">
         <h2>Présentez votre véhicule</h2>
         <p>Renseignez la marque, le modèle et la finition, puis les caractéristiques de votre voiture. Les listes utilisent notre base automobile.</p>
         <div className="step-navigation" aria-label="Navigation entre les sept étapes">{etapes.map((nom,i)=><button type="button" className={etape===i+1?"active":""} key={nom} onClick={()=>aller(i+1)}>{i+1}. {nom}</button>)}</div>
@@ -443,7 +483,8 @@ export default function DeposerAutoPage() {
         {message&&<p className="feedback" role="status">{message}</p>}
         <div className="step-actions"><button className="previous" type="button" onClick={()=>aller(6)}>← Modifier le récapitulatif</button></div>
       </section>
-          </main>
+      </div></div>
+    </main>
   );
 }
 
