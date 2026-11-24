@@ -2,13 +2,12 @@ import type { ReactNode } from "react";
 const rubriques = [
   {nom:"Automobile & Véhicules",href:"/automobile",icone:"🚘"},
   {nom:"Immobilier",href:"/immobilier",icone:"⌂"},
-  {nom:"Emploi & Services",href:"/emploi",icone:"▣"},
-  {nom:"Maison & Jardin",href:"/maison-jardin",icone:"▤"},
-  {nom:"Téléphonie & Informatique",href:"/telephones",icone:"▥"},
-  {nom:"Mode & Accessoires",href:"/mode",icone:"♧"},
-  {nom:"Jeux & Loisirs",href:"/vacances-loisirs",icone:"♧"},
-  {nom:"Animaux",href:"/animaux",icone:"♧"},
-  {nom:"Autres catégories",href:"/autres",icone:"▦"}
+  {nom:"Emploi",href:"/emploi",icone:"▣"},
+  {nom:"Maison, Bricolage & Jardin",href:"/maison-jardin",icone:"▤"},
+  {nom:"TV, Téléphonie & Informatique",href:"/telephones",icone:"▥"},
+  {nom:"Loisirs & Voyages",href:"/vacances-loisirs",icone:"✈"},
+  {nom:"Bons plans",href:"/bon-plan",icone:"★"},
+  {nom:"Famille",href:"/famille",icone:"♡"}
 ];
 export default function RootLayout({children}:{children:ReactNode}){
   return <html lang="fr"><body style={{margin:0,background:"#f2f6fb",fontFamily:"Arial,Helvetica,sans-serif"}}>
@@ -57,11 +56,15 @@ export default function RootLayout({children}:{children:ReactNode}){
       </nav>
     </header>
     <nav className="tim-navbar" aria-label="Navigation principale">
-      <a href="/">Accueil</a><a href="/automobile">Automobile &amp; Véhicules</a>
-      <a href="/mode">Mode &amp; Accessoires</a><a href="/immobilier">Immobilier</a>
-      <a href="/emploi">Emploi &amp; Services</a><a href="/maison-jardin">Maison &amp; Jardin</a>
+      <a href="/">Accueil</a>
+      <a href="/automobile">Automobile &amp; Véhicules</a>
+      <a href="/immobilier">Immobilier</a>
+      <a href="/emploi">Emploi</a>
+      <a href="/maison-jardin">Maison, Bricolage &amp; Jardin</a>
       <a href="/telephones">TV, Téléphonie &amp; Informatique</a>
-      <a href="/vacances-loisirs">Loisirs</a><a href="/autres">Autres</a>
+      <a href="/vacances-loisirs">Loisirs &amp; Voyages</a>
+      <a href="/bon-plan">Bons plans</a>
+      <a href="/famille">Famille</a>
     </nav>
     <div className="tim-shell">
       <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
