@@ -7,7 +7,8 @@ const rubriques = [
   {nom:"TV, Téléphonie & Informatique",href:"/telephones",icone:"▥"},
   {nom:"Loisirs & Voyages",href:"/vacances-loisirs",icone:"✈"},
   {nom:"Bon plan",href:"/bon-plan",icone:"★"},
-  {nom:"Famille",href:"/famille",icone:"♡"}
+  {nom:"Famille",href:"/famille",icone:"♡"},
+  {nom:"Autres",href:"/autres",icone:"▦"}
 ];
 export default function RootLayout({children}:{children:ReactNode}){
   return <html lang="fr"><body style={{margin:0,background:"#f2f6fb",fontFamily:"Arial,Helvetica,sans-serif"}}>
@@ -65,6 +66,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/vacances-loisirs">Loisirs &amp; Voyages</a>
       <a href="/bon-plan">Bon plan</a>
       <a href="/famille">Famille</a>
+      <a href="/autres">Autres</a>
     </nav>
     <div className="tim-shell">
       <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
