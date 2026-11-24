@@ -23,7 +23,8 @@ const categories:Record<string,{title:string;icon:string;dbTypes:string[]}>={
 "services-mecaniques":{title:"Services de réparation mécanique",icon:"🛠️",dbTypes:["services-mecaniques"]},
 "pneus-jantes":{title:"Pneus & Jantes",icon:"⚙️",dbTypes:["pneus-jantes"]},
 "pieces-accessoires":{title:"Pièces & Accessoires",icon:"🔧",dbTypes:["pieces-accessoires"]},
-"entretien-consommables":{title:"Entretien & Consommables",icon:"🧰",dbTypes:["entretien-consommables"]}
+"entretien-consommables":{title:"Entretien & Consommables",icon:"🧰",dbTypes:["entretien-consommables"]},
+"autres-equipements":{title:"Autres équipements & services",icon:"⚙️",dbTypes:["autres-equipements"]}
 };
 export default function CategorieVehicules(){
 const params=useParams();const slug=typeof params.categorie==="string"?params.categorie:"";
