@@ -206,7 +206,7 @@ export default function DeposerAutoPage() {
         .depot-auto *{box-sizing:border-box}
         .depot-auto .banner{width:100%;min-height:210px;background:linear-gradient(90deg,rgba(0,25,65,.9),rgba(0,41,98,.14)),url("/bandeau-depot-bmw.svg") center/cover;display:flex;align-items:center;padding:30px clamp(16px,3vw,48px);border-radius:15px;overflow:hidden}
         .depot-auto .banner{display:block!important;min-height:0!important;height:auto!important;padding:0!important;background:none!important;border-radius:13px;overflow:hidden;margin-bottom:12px;box-shadow:0 4px 18px rgba(0,24,68,.16)}
-        .depot-auto .banner img{display:block;width:100%;height:auto;aspect-ratio:1600 / 533;object-fit:contain;image-rendering:auto}
+        .depot-auto .banner img{display:block;width:100%;height:auto;aspect-ratio:3.4 / 1;object-fit:cover;object-position:center center;image-rendering:auto}
                 .depot-auto .banner-copy{max-width:520px;color:white}
         .depot-auto .banner h1{font-size:clamp(26px,3vw,42px);line-height:1.13;margin:0 0 12px}
         .depot-auto .banner p{font-size:18px;line-height:1.45;margin:0}
