@@ -15,7 +15,7 @@ export default function VacancesLoisirsPage() {
           marginBottom: "10px",
         }}
       >
-        🌴 Vacances & Loisirs
+        🌴 Loisirs & Voyages
       </h1>
 
       <p style={{ fontSize: "22px", color: "#555" }}>
