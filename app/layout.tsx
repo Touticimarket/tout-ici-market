@@ -58,7 +58,7 @@ export default function RootLayout({children}:{children:ReactNode}){
     </header>
     <nav className="tim-navbar" aria-label="Navigation principale">
       <a href="/">Accueil</a><a href="/automobile">Automobile &amp; Véhicules</a>
-      <a href="/automobile/motos">Moto</a><a href="/immobilier">Immobilier</a>
+      <a href="/mode">Mode &amp; Accessoires</a><a href="/immobilier">Immobilier</a>
       <a href="/emploi">Emploi &amp; Services</a><a href="/maison-jardin">Maison &amp; Jardin</a>
       <a href="/telephones">TV, Téléphonie &amp; Informatique</a>
       <a href="/vacances-loisirs">Loisirs</a><a href="/autres">Autres</a>
