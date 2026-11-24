@@ -1,3 +1,4 @@
+import ShareLinks from "./components/ShareLinks";
 import type { ReactNode } from "react";
 const rubriques = [
   {nom:"Automobile & Véhicules",href:"/automobile",icone:"🚘"},
@@ -55,6 +56,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <nav className="tim-header-links" aria-label="Espace utilisateur">
         <a href="/compte">♙ Mon compte</a>
         <a href="/favoris">♡ Mes favoris</a>
+        <ShareLinks url="https://tout-ici-market.vercel.app/" title="TOUT ICI MARKET — Site d’annonces gratuites pour les particuliers" label="Partager le site" compact/>
         <a className="tim-post" href="/automobile/deposer">＋ Déposer une annonce</a>
       </nav>
     </header>
