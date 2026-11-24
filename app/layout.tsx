@@ -17,6 +17,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-header{background:#041837;color:white;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:9px clamp(15px,3vw,45px)}
       .tim-logo{display:block;width:clamp(175px,19vw,275px);flex-shrink:0}
       .tim-logo img{display:block;width:100%;height:auto;max-height:95px;object-fit:contain}
+      .tim-logo-caption{display:block;color:#fff;font-size:clamp(10px,1.05vw,13px);font-weight:700;text-align:center;line-height:1.35;margin-top:3px}
       .tim-search{display:flex;flex:1;max-width:560px;height:48px;border-radius:32px;background:#fff;overflow:hidden}
       .tim-search input{flex:1;width:0;min-width:0;border:0;outline:0;padding:0 20px;font-size:15px}
       .tim-search button{border:0;background:#ffcf06;padding:0 20px;font-size:21px;cursor:pointer}
@@ -49,7 +50,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       @media(max-width:760px){.tim-sidebar-title{flex-shrink:0;white-space:nowrap}.tim-shell{grid-template-columns:1fr}.tim-sidebar{position:static;display:flex;overflow-x:auto;white-space:nowrap;padding:5px}.tim-sidebar a{border:0;flex-shrink:0;font-size:13px}.tim-sidebar .tim-sidebar-chevron{display:none}.tim-header{gap:10px;flex-wrap:wrap}.tim-header-links{margin-left:auto}.tim-header-links a:not(.tim-post){display:none}.tim-header-links .tim-post{padding:12px;font-size:12px}}
     `}</style>
     <header className="tim-header">
-      <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI MARKET"><img src="/tout-ici-market-officiel.svg" alt="TOUT ICI MARKET"/></a>
+      <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI MARKET"><img src="/tout-ici-market-officiel.svg" alt="TOUT ICI MARKET"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
       <form className="tim-search" action="/automobile/voitures"><input type="search" name="q" aria-label="Rechercher une annonce" placeholder="Rechercher une annonce, un véhicule, un bien..."/><button aria-label="Rechercher" type="submit">⌕</button></form>
       <nav className="tim-header-links" aria-label="Espace utilisateur">
         <a href="/compte">♙ Mon compte</a>
