@@ -1,4 +1,4 @@
-import ShareLinks from "./components/ShareLinks";
+import SocialNetworkIcons from "./components/SocialNetworkIcons";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 export const metadata:Metadata={
@@ -27,10 +27,10 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-logo{display:block;width:clamp(175px,19vw,275px);flex-shrink:0}
       .tim-logo img{display:block;width:100%;height:auto;max-height:95px;object-fit:contain}
       .tim-logo-caption{display:block;color:#fff;font-size:clamp(10px,1.05vw,13px);font-weight:700;text-align:center;line-height:1.35;margin-top:3px}
-      .tim-search{display:flex;flex:1;max-width:560px;height:48px;border-radius:32px;background:#fff;overflow:hidden}
+      .tim-search{display:flex;flex:1;max-width:420px;height:42px;border-radius:32px;background:#fff;overflow:hidden}
       .tim-search input{flex:1;width:0;min-width:0;border:0;outline:0;padding:0 20px;font-size:15px}
       .tim-search button{border:0;background:#ffcf06;padding:0 20px;font-size:21px;cursor:pointer}
-      .tim-header-links{display:flex;align-items:center;gap:20px;white-space:nowrap}
+      .tim-header-links{display:flex;align-items:center;gap:10px;white-space:nowrap}
       .tim-header-links a{color:#fff;text-decoration:none;font-weight:700;font-size:14px}
       .tim-header-links .tim-post{background:#ffcf06;color:#001942;padding:15px 20px;border-radius:19px}
       .tim-navbar{display:flex;background:#052453;overflow-x:auto;padding:0 12px;gap:4px;scrollbar-width:thin;justify-content:space-between}
@@ -64,7 +64,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <nav className="tim-header-links" aria-label="Espace utilisateur">
         <a href="/compte">♙ Mon compte</a>
         <a href="/favoris">♡ Mes favoris</a>
-        <ShareLinks url="https://tout-ici-market.vercel.app/" title="TOUT ICI MARKET — Site d’annonces gratuites pour les particuliers" label="Partager le site" compact/>
+        <SocialNetworkIcons/>
         <a className="tim-post" href="/automobile/deposer">＋ Déposer une annonce</a>
       </nav>
     </header>
