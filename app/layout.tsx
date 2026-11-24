@@ -22,19 +22,20 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-header-links{display:flex;align-items:center;gap:20px;white-space:nowrap}
       .tim-header-links a{color:#fff;text-decoration:none;font-weight:700;font-size:14px}
       .tim-header-links .tim-post{background:#ffcf06;color:#001942;padding:15px 20px;border-radius:19px}
-      .tim-navbar{display:flex;background:#052453;overflow-x:auto;padding:0 20px;gap:4px}
-      .tim-navbar a{white-space:nowrap;color:#fff;text-decoration:none;padding:17px 20px;font-weight:700;font-size:14px}
+      .tim-navbar{display:flex;background:#052453;overflow-x:auto;padding:0 12px;gap:4px;scrollbar-width:thin;justify-content:space-between}
+      .tim-navbar a{white-space:nowrap;color:#fff;text-decoration:none;padding:14px 12px;font-weight:700;font-size:13px}
       .tim-navbar a:hover{background:#0a4b9e}
-      .tim-shell{display:grid;grid-template-columns:minmax(225px,310px) minmax(0,1fr);gap:16px;max-width:1800px;margin:auto;padding:16px 14px}
-      .tim-sidebar{background:#f8fbff;border:1px solid #e0e9f5;border-radius:20px;padding:9px;position:sticky;top:16px;align-self:start}
-      .tim-sidebar a{display:flex;align-items:center;gap:12px;color:#091d45;text-decoration:none;padding:15px 13px;border-bottom:1px solid #dfebf7;font-size:15px;font-weight:800;border-radius:12px}
+      .tim-shell{display:grid;grid-template-columns:205px minmax(0,1fr);gap:12px;max-width:1800px;margin:auto;padding:12px 12px}
+      .tim-sidebar{background:#f8fbff;border:1px solid #e0e9f5;border-radius:14px;padding:6px;position:sticky;top:16px;align-self:start}
+      .tim-sidebar a{display:flex;align-items:center;gap:12px;color:#091d45;text-decoration:none;padding:12px 7px;border-bottom:1px solid #dfebf7;font-size:12px;font-weight:800;border-radius:9px}
       .tim-sidebar a:last-child{border-bottom:0}
-      .tim-sidebar-title{background:#ffd10d;color:#081a40;font-size:16px;font-weight:900;border-radius:12px;padding:13px 11px;margin-bottom:7px}
+      .tim-sidebar-title{background:#ffd10d;color:#081a40;font-size:13px;font-weight:900;border-radius:9px;padding:11px 7px;margin-bottom:7px}
       .tim-sidebar a:first-of-type{background:#073fe7;color:#fff}
       .tim-sidebar a:hover{background:#ffe04e}
-      .tim-sidebar .tim-sidebar-icon{font-size:23px;width:27px;flex-shrink:0;text-align:center}
+      .tim-sidebar .tim-sidebar-icon{font-size:17px;width:20px;flex-shrink:0;text-align:center}
       .tim-sidebar .tim-sidebar-chevron{margin-left:auto}
       .tim-content{min-width:0}
+      @media(min-width:761px) and (max-width:980px){.tim-shell{grid-template-columns:180px minmax(0,1fr)}.tim-navbar{justify-content:flex-start}}
       @media(max-width:1050px){.tim-search{display:none}.tim-header-links{gap:10px}}
       @media(max-width:760px){.tim-sidebar-title{flex-shrink:0;white-space:nowrap}.tim-shell{grid-template-columns:1fr}.tim-sidebar{position:static;display:flex;overflow-x:auto;white-space:nowrap;padding:5px}.tim-sidebar a{border:0;flex-shrink:0;font-size:13px}.tim-sidebar .tim-sidebar-chevron{display:none}.tim-header{gap:10px;flex-wrap:wrap}.tim-header-links{margin-left:auto}.tim-header-links a:not(.tim-post){display:none}.tim-header-links .tim-post{padding:12px;font-size:12px}}
     `}</style>
@@ -49,8 +50,10 @@ export default function RootLayout({children}:{children:ReactNode}){
     </header>
     <nav className="tim-navbar" aria-label="Navigation principale">
       <a href="/">⌂ Accueil</a><a href="/automobile">🚘 Automobile &amp; Véhicules</a>
+      <a href="/automobile/voitures">🚗 Voitures</a><a href="/automobile/motos">🏍️ Moto</a>
       <a href="/immobilier">⌂ Immobilier</a><a href="/emploi">▣ Emploi &amp; Services</a>
-      <a href="/autres">▦ Toutes les catégories</a>
+      <a href="/maison-jardin">▤ Maison &amp; Jardin</a><a href="/vacances-loisirs">♧ Loisirs</a>
+      <a href="/autres">▦ Autres</a>
     </nav>
     <div className="tim-shell">
       <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
