@@ -44,6 +44,21 @@ export default function DeposerAutoPage() {
   const [photos, setPhotos] = useState<File[]>([]);
   const [localisation, setLocalisation] = useState<Commune|null>(null);
   const [publicationEnCours,setPublicationEnCours] = useState(false);
+  const [video,setVideo]=useState<File|null>(null);
+  const [titre,setTitre]=useState("");
+  const [etat,setEtat]=useState("Occasion");
+  const [garantieMois,setGarantieMois]=useState("");
+  const [tva,setTva]=useState("non");
+  const [carnet,setCarnet]=useState(false);
+  const [factures,setFactures]=useState(false);
+  const [importe,setImporte]=useState(false);
+  const [ct,setCt]=useState(false);
+  const [telephone,setTelephone]=useState("");
+  const [email,setEmail]=useState("");
+  const [confirm,setConfirm]=useState(false);
+  const [etape,setEtape]=useState(1);
+  const etapes=["Véhicule","Équipements & options","Photos & vidéo","Description","Localisation & coordonnées","Récapitulatif","Publication"];
+  const aller=(n:number)=>{setEtape(n);document.getElementById("etape-"+n)?.scrollIntoView({behavior:"smooth",block:"start"});};
 
   const [form, setForm] = useState({
     marqueId: "",
@@ -114,6 +129,7 @@ export default function DeposerAutoPage() {
       setMessage("Vérifiez l’année, le kilométrage et le prix indiqués.");
       return;
     }
+    if(!confirm){setMessage("Confirmez les informations et les conditions avant publication.");aller(7);return;}
     const { data: userData } = await supabase.auth.getUser();
 
     if (!userData.user) {
@@ -141,6 +157,17 @@ export default function DeposerAutoPage() {
       latitude: localisation!.latitude,
       longitude: localisation!.longitude,
       description: form.description,
+      titre: titre.trim() || [form.marque,form.modele,form.annee].filter(Boolean).join(" "),
+      etat_vehicule:etat,
+      garantie_duree_mois:garantieMois?Number(garantieMois):null,
+      garantie:!!garantieMois,
+      tva_recuperable:tva==="oui",
+      carnet_entretien:carnet,
+      factures_entretien:factures,
+      vehicule_importe:importe,
+      controle_technique_ok:ct,
+      email_contact:email||null,
+      telephone_contact:telephone||null,
       couleur: form.couleur || null,
       nombre_portes: form.nombre_portes ? Number(form.nombre_portes) : null,
       nombre_places: form.nombre_places ? Number(form.nombre_places) : null,
@@ -159,7 +186,15 @@ export default function DeposerAutoPage() {
       if(uploadError){setMessage("Brouillon enregistré, mais l’envoi des photos a échoué : "+uploadError.message);setPublicationEnCours(false);return;}
       uploaded.push(supabase.storage.from("annonces-auto").getPublicUrl(key).data.publicUrl);
     }
-    const {error:publishError}=await supabase.from("annonces_auto").update({photos:uploaded,statut:"publiee"}).eq("id",draft.id).eq("user_id",userData.user.id);
+    let videoUrl:string|null=null;
+    if(video){
+      const ext=video.name.split(".").pop()?.toLowerCase()||"mp4";
+      const key=userData.user.id+"/"+draft.id+"/video-"+crypto.randomUUID()+"."+ext;
+      const {error:videoError}=await supabase.storage.from("annonces-auto-videos").upload(key,video,{contentType:video.type,upsert:false});
+      if(videoError){setMessage("Annonce en brouillon : échec de la vidéo : "+videoError.message);setPublicationEnCours(false);return;}
+      videoUrl=supabase.storage.from("annonces-auto-videos").getPublicUrl(key).data.publicUrl;
+    }
+    const {error:publishError}=await supabase.from("annonces_auto").update({photos:uploaded,video_url:videoUrl,statut:"publiee"}).eq("id",draft.id).eq("user_id",userData.user.id);
     setPublicationEnCours(false);
     setMessage(publishError?"Brouillon enregistré, mais publication non terminée : "+publishError.message:"Annonce publiée avec succès ✅");
   }
@@ -201,6 +236,17 @@ export default function DeposerAutoPage() {
         .depot-auto .equip-list input{accent-color:#044994;width:16px;height:16px;flex-shrink:0}
         .depot-auto .publish{border:0;border-radius:34px;background:#ffce09;color:#06183e;font-weight:900;font-size:18px;padding:16px 30px;cursor:pointer}
         .depot-auto .note{font-size:13px;color:#58708a;line-height:1.5;margin-top:14px}
+        .depot-auto .step-navigation{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 22px}
+        .depot-auto .step-navigation button{border:1px solid #bfd2ef;border-radius:20px;background:#eaf2ff;color:#0b3275;padding:9px 14px;cursor:pointer;font-weight:800}
+        .depot-auto .step-navigation .active{background:#ffcf06;color:#061c44}
+        .depot-auto .form-section{scroll-margin-top:18px}
+        .depot-auto .step-actions{display:flex;justify-content:space-between;gap:10px;margin-top:22px;flex-wrap:wrap}
+        .depot-auto .step-actions button{background:#064bd1;color:white;border:0;border-radius:24px;padding:11px 19px;cursor:pointer;font-weight:800}
+        .depot-auto .step-actions .previous{background:#e4eefc;color:#06346f}
+        .depot-auto .checkbox-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:15px}
+        .depot-auto .checkbox-row label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
+        .depot-auto .video-input{margin-top:20px;padding:16px;border:1px dashed #8cafe1;border-radius:12px;background:#f7fbff}
+        .depot-auto .video-input input{width:100%;margin-top:10px}
         .depot-auto .feedback{background:#e9f5ff;padding:15px;border-radius:10px;font-weight:800}
         @media(max-width:800px){.depot-auto .fields{grid-template-columns:1fr}.depot-auto .equip-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(max-width:500px){.depot-auto .immat-controls{flex-direction:column}.depot-auto .immat-controls button{padding:13px}
@@ -216,9 +262,9 @@ export default function DeposerAutoPage() {
       <div className="intro">
         <h2>Présentez votre véhicule</h2>
         <p>Renseignez la marque, le modèle et la finition, puis les caractéristiques de votre voiture. Les listes utilisent notre base automobile.</p>
-        <div className="steps"><span>1 · Véhicule</span><span>2 · Caractéristiques</span><span>3 · Équipements</span><span>4 · Publication</span></div>
+        <div className="step-navigation" aria-label="Navigation entre les sept étapes">{etapes.map((nom,i)=><button type="button" className={etape===i+1?"active":""} key={nom} onClick={()=>aller(i+1)}>{i+1}. {nom}</button>)}</div>
       </div>
-      <section className="form-section">
+      <section className="form-section" id="etape-1">
         <h2 className="section-title"><span className="section-number">1</span> Informations de votre véhicule</h2>
         <div className="immat-lookup">
           <h3>1. Rechercher votre véhicule par immatriculation</h3>
@@ -281,14 +327,11 @@ export default function DeposerAutoPage() {
           <label className="field">Puissance (ch)
             <input type="number" value={form.puissance_ch} min="0" placeholder="Ex. 130" onChange={e=>setForm({...form,puissance_ch:e.target.value})}/>
           </label>
-          <label className="field">Prix de vente (€) *
-            <input type="number" value={form.prix} min="1" placeholder="Ex. 16900" onChange={e=>setForm({...form,prix:e.target.value})}/>
-          </label>
+
         </div>
-      </section>
-      <section className="form-section">
-        <h2 className="section-title"><span className="section-number">2</span> Caractéristiques et localisation</h2>
-        <div className="fields">
+
+        <h3 style={{margin:"25px 0 16px"}}>Caractéristiques du véhicule</h3>
+                <div className="fields">
           <label className="field">Carrosserie
             <select value={form.carrosserie} onChange={e=>setForm({...form,carrosserie:e.target.value})}>
               <option value="">Choisir</option>{["Citadine","Berline","Break","SUV","Crossover","Coupé","Cabriolet","Monospace","4x4","Pick-up","Autre"].map(v=><option key={v}>{v}</option>)}
@@ -309,28 +352,98 @@ export default function DeposerAutoPage() {
               <option value="">Choisir</option>{[2,3,4,5,6,7,8,9].map(v=><option key={v} value={v}>{v}</option>)}
             </select>
           </label>
-          <label className="field full">Description de votre annonce
-            <textarea rows={5} value={form.description} placeholder="État du véhicule, entretien, travaux effectués, informations utiles…" onChange={e=>setForm({...form,description:e.target.value})}/>
+
+        </div>
+        <div className="fields" style={{marginTop:18}}>
+          <label className="field">État du véhicule
+            <select value={etat} onChange={e=>setEtat(e.target.value)}>{["0 km","À réparer","Neuf","Non roulant","Pour pièces","Occasion","Reconditionné"].map(v=><option key={v}>{v}</option>)}</select>
+          </label>
+          <label className="field">Garantie (mois)
+            <input type="number" min="0" max="120" placeholder="Ex. 12" value={garantieMois} onChange={e=>setGarantieMois(e.target.value)}/>
+          </label>
+          <label className="field">TVA récupérable
+            <select value={tva} onChange={e=>setTva(e.target.value)}><option value="non">Non</option><option value="oui">Oui</option></select>
           </label>
         </div>
-        <FranceLocation selected={localisation} onChange={setLocalisation}/>
-      </section>
-      <section className="form-section">
-        <h2 className="section-title"><span className="section-number">3</span> Options et équipements</h2>
+        <div className="checkbox-row">
+          <label><input type="checkbox" checked={carnet} onChange={e=>setCarnet(e.target.checked)}/> Carnet d’entretien</label>
+          <label><input type="checkbox" checked={factures} onChange={e=>setFactures(e.target.checked)}/> Factures d’entretien</label>
+          <label><input type="checkbox" checked={importe} onChange={e=>setImporte(e.target.checked)}/> Véhicule importé</label>
+          <label><input type="checkbox" checked={ct} onChange={e=>setCt(e.target.checked)}/> Contrôle technique OK</label>
+        </div>
+        <div className="step-actions"><span/><button type="button" onClick={()=>aller(2)}>Suivant : équipements →</button></div>
+            </section>
+      <section className="form-section" id="etape-2">
+        <h2 className="section-title"><span className="section-number">2</span> Équipements et options</h2>
         <div className="equip-list">{optionsAuto.map(option=><label key={option}><input type="checkbox" checked={options.includes(option)} onChange={()=>toggleOption(option)}/>{option}</label>)}</div>
+        <div className="step-actions"><button className="previous" type="button" onClick={()=>aller(1)}>← Précédent</button><button type="button" onClick={()=>aller(3)}>Suivant : photos →</button></div>
       </section>
-      <section className="form-section">
-        <h2 className="section-title"><span className="section-number">4</span> Photos du véhicule</h2>
+      <section className="form-section" id="etape-3">
+        <h2 className="section-title"><span className="section-number">3</span> Photos et vidéo du véhicule</h2>
         <OrderedPhotos files={photos} onChange={setPhotos}/>
+        <div className="video-input"><strong>Ajouter une vidéo (facultatif, 1 maximum)</strong>
+          <input type="file" accept="video/mp4,video/webm,video/quicktime" onChange={e=>{
+            const f=e.target.files?.[0]??null;
+            if(f&&f.size>200*1024*1024){setMessage("La vidéo ne doit pas dépasser 200 Mo.");setVideo(null);return;}
+            setVideo(f);
+          }}/>
+          {video&&<p>Vidéo sélectionnée : {video.name} <button type="button" onClick={()=>setVideo(null)}>Retirer</button></p>}
+          <p>MP4, MOV ou WebM — 200 Mo maximum.</p>
+        </div>
+        <div className="step-actions"><button className="previous" type="button" onClick={()=>aller(2)}>← Précédent</button><button type="button" onClick={()=>aller(4)}>Suivant : description →</button></div>
       </section>
-      <section className="form-section">
-        <h2 className="section-title"><span className="section-number">5</span> Publier votre annonce</h2>
-        <p>Vérifiez les informations avant publication. Vous devez être connecté pour publier.</p>
+      <section className="form-section" id="etape-4">
+        <h2 className="section-title"><span className="section-number">4</span> Description et prix</h2>
+        <div className="fields">
+          <label className="field">Titre de l'annonce
+            <input value={titre} maxLength={120} placeholder="Ex. BMW X5 xDrive 30d — 2022" onChange={e=>setTitre(e.target.value)}/>
+          </label>
+          <label className="field">Prix demandé (€) *
+            <input type="number" value={form.prix} min="1" placeholder="Ex. 16900" onChange={e=>setForm({...form,prix:e.target.value})}/>
+          </label>
+          <label className="field full">Description de votre voiture
+            <textarea rows={7} maxLength={2000} value={form.description} placeholder="État général, historique, entretien, informations utiles…" onChange={e=>setForm({...form,description:e.target.value})}/>
+            <span>{form.description.length} / 2000 caractères</span>
+          </label>
+        </div>
+        <div className="step-actions"><button className="previous" type="button" onClick={()=>aller(3)}>← Précédent</button><button type="button" onClick={()=>aller(5)}>Suivant : localisation →</button></div>
+      </section>
+      <section className="form-section" id="etape-5">
+        <h2 className="section-title"><span className="section-number">5</span> Coordonnées et localisation en France</h2>
+        <p>Choisissez une commune française : le code postal et la carte se remplissent automatiquement. La localisation publique est celle du centre de la commune.</p>
+        <FranceLocation selected={localisation} onChange={setLocalisation}/>
+        <div className="fields" style={{marginTop:18}}>
+          <label className="field">Téléphone (facultatif)<input type="tel" value={telephone} placeholder="Votre téléphone" onChange={e=>setTelephone(e.target.value)}/></label>
+          <label className="field">E-mail de contact (facultatif)<input type="email" value={email} placeholder="Votre e-mail" onChange={e=>setEmail(e.target.value)}/></label>
+        </div>
+        <div className="step-actions"><button className="previous" type="button" onClick={()=>aller(4)}>← Précédent</button><button type="button" onClick={()=>aller(6)}>Suivant : récapitulatif →</button></div>
+      </section>
+      <section className="form-section" id="etape-6">
+        <h2 className="section-title"><span className="section-number">6</span> Récapitulatif avant publication</h2>
+        <div style={{background:"#f2f7ff",padding:20,borderRadius:14,lineHeight:1.9}}>
+          <strong>{titre||[form.marque,form.modele,form.finition].filter(Boolean).join(" ")||"Votre annonce automobile"}</strong>
+          <div>Marque / modèle : {form.marque||"À compléter"} — {form.modele||"À compléter"}</div>
+          <div>Année : {form.annee||"—"} · Kilométrage : {form.kilometrage||"—"} km · Énergie : {form.carburant||"—"}</div>
+          <div>État : {etat} · Garantie : {garantieMois?garantieMois+" mois":"Non renseignée"} · TVA récupérable : {tva==="oui"?"Oui":"Non"}</div>
+          <div>Équipements : {options.length} sélectionnés · Photos : {photos.length}/10 · Vidéo : {video?"Oui":"Non"}</div>
+          <div>Prix : {form.prix?Number(form.prix).toLocaleString("fr-FR")+" €":"À compléter"}</div>
+          <div>Localisation : {localisation?localisation.nom+" ("+localisation.codePostal+")":"À sélectionner — France uniquement"}</div>
+        </div>
+        <p>Vous pouvez revenir à chaque étape pour modifier les informations avant publication.</p>
+        <div className="step-actions"><button className="previous" type="button" onClick={()=>aller(5)}>← Précédent</button><button type="button" onClick={()=>aller(7)}>Suivant : publication →</button></div>
+      </section>
+      <section className="form-section" id="etape-7">
+        <h2 className="section-title"><span className="section-number">7</span> Publication de votre annonce</h2>
+        <label style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:20,fontWeight:700}}>
+          <input type="checkbox" checked={confirm} onChange={e=>setConfirm(e.target.checked)}/>
+          Je confirme l'exactitude des informations fournies et j'accepte les conditions de publication.
+        </label>
+        <p>La publication nécessite un compte connecté. Les photos sont enregistrées dans l'ordre choisi.</p>
         <button className="publish" type="button" disabled={publicationEnCours} onClick={publier}>{publicationEnCours?"Enregistrement en cours…":"＋ Publier mon annonce"}</button>
-        <p className="note">La publication est liée à votre compte et enregistrée dans la base TOUT ICI MARKET.</p>
         {message&&<p className="feedback" role="status">{message}</p>}
+        <div className="step-actions"><button className="previous" type="button" onClick={()=>aller(6)}>← Modifier le récapitulatif</button></div>
       </section>
-    </main>
+          </main>
   );
 }
 
