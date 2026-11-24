@@ -23,7 +23,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-header-links a{color:#fff;text-decoration:none;font-weight:700;font-size:14px}
       .tim-header-links .tim-post{background:#ffcf06;color:#001942;padding:15px 20px;border-radius:19px}
       .tim-navbar{display:flex;background:#052453;overflow-x:auto;padding:0 12px;gap:4px;scrollbar-width:thin;justify-content:space-between}
-      .tim-navbar a{white-space:nowrap;color:#fff;text-decoration:none;padding:14px 12px;font-weight:700;font-size:13px}
+      .tim-navbar a{white-space:nowrap;color:#fff;text-decoration:none;padding:14px 10px;font-weight:700;font-size:13px}
       .tim-navbar a:hover{background:#0a4b9e}
       .tim-shell{display:grid;grid-template-columns:205px minmax(0,1fr);gap:12px;max-width:1800px;margin:auto;padding:12px 12px}
       .tim-sidebar{background:#f8fbff;border:1px solid #e0e9f5;border-radius:14px;padding:6px;position:sticky;top:16px;align-self:start}
@@ -57,11 +57,12 @@ export default function RootLayout({children}:{children:ReactNode}){
       </nav>
     </header>
     <nav className="tim-navbar" aria-label="Navigation principale">
-      <a href="/">⌂ Accueil</a><a href="/automobile">🚘 Automobile &amp; Véhicules</a>
-      <a href="/automobile/voitures">🚗 Voitures</a><a href="/automobile/motos">🏍️ Moto</a>
-      <a href="/immobilier">⌂ Immobilier</a><a href="/emploi">▣ Emploi &amp; Services</a>
-      <a href="/maison-jardin">▤ Maison &amp; Jardin</a><a href="/vacances-loisirs">♧ Loisirs</a>
-      <a href="/autres">▦ Autres</a>
+      <a href="/">Accueil</a><a href="/automobile">Automobile &amp; Véhicules</a>
+      <a href="/automobile/motos">Moto</a><a href="/immobilier">Immobilier</a>
+      <a href="/emploi">Emploi &amp; Services</a><a href="/maison-jardin">Maison &amp; Jardin</a>
+      <a href="/telephones">Téléphonie</a><a href="/telephones?categorie=tv">TV</a>
+      <a href="/telephones?categorie=informatique">Informatique</a>
+      <a href="/vacances-loisirs">Loisirs</a><a href="/autres">Autres</a>
     </nav>
     <div className="tim-shell">
       <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
