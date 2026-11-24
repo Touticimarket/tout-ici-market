@@ -31,8 +31,8 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-sidebar a{display:flex;align-items:center;gap:12px;color:#091d45;text-decoration:none;padding:12px 7px;border-bottom:1px solid #dfebf7;font-size:12px;font-weight:800;border-radius:9px}
       .tim-sidebar a:last-child{border-bottom:0}
       .tim-sidebar-title{background:#ffd10d;color:#081a40;font-size:13px;font-weight:900;border-radius:9px;padding:11px 7px;margin-bottom:7px}
-      .tim-sidebar a:first-of-type{background:#073fe7;color:#fff}
-      .tim-sidebar a:hover{background:#ffe04e}
+      .tim-sidebar a:first-of-type{background:#fff;color:#091d45}
+      .tim-sidebar a:hover,.tim-sidebar a:focus-visible,.tim-sidebar a:first-of-type:hover,.tim-sidebar a:first-of-type:focus-visible{background:#ffe04e;color:#091d45}
       .tim-sidebar .tim-sidebar-icon{font-size:17px;width:20px;flex-shrink:0;text-align:center}
       .tim-sidebar .tim-sidebar-chevron{margin-left:auto}
       .tim-content{min-width:0}
