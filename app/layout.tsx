@@ -29,12 +29,14 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-sidebar{background:#f8fbff;border:1px solid #e0e9f5;border-radius:20px;padding:9px;position:sticky;top:16px;align-self:start}
       .tim-sidebar a{display:flex;align-items:center;gap:12px;color:#091d45;text-decoration:none;padding:15px 13px;border-bottom:1px solid #dfebf7;font-size:15px;font-weight:800;border-radius:12px}
       .tim-sidebar a:last-child{border-bottom:0}
+      .tim-sidebar-title{background:#ffd10d;color:#081a40;font-size:16px;font-weight:900;border-radius:12px;padding:13px 11px;margin-bottom:7px}
+      .tim-sidebar a:first-of-type{background:#073fe7;color:#fff}
       .tim-sidebar a:hover{background:#ffe04e}
       .tim-sidebar .tim-sidebar-icon{font-size:23px;width:27px;flex-shrink:0;text-align:center}
       .tim-sidebar .tim-sidebar-chevron{margin-left:auto}
       .tim-content{min-width:0}
       @media(max-width:1050px){.tim-search{display:none}.tim-header-links{gap:10px}}
-      @media(max-width:760px){.tim-shell{grid-template-columns:1fr}.tim-sidebar{position:static;display:flex;overflow-x:auto;white-space:nowrap;padding:5px}.tim-sidebar a{border:0;flex-shrink:0;font-size:13px}.tim-sidebar .tim-sidebar-chevron{display:none}.tim-header{gap:10px;flex-wrap:wrap}.tim-header-links{margin-left:auto}.tim-header-links a:not(.tim-post){display:none}.tim-header-links .tim-post{padding:12px;font-size:12px}}
+      @media(max-width:760px){.tim-sidebar-title{flex-shrink:0;white-space:nowrap}.tim-shell{grid-template-columns:1fr}.tim-sidebar{position:static;display:flex;overflow-x:auto;white-space:nowrap;padding:5px}.tim-sidebar a{border:0;flex-shrink:0;font-size:13px}.tim-sidebar .tim-sidebar-chevron{display:none}.tim-header{gap:10px;flex-wrap:wrap}.tim-header-links{margin-left:auto}.tim-header-links a:not(.tim-post){display:none}.tim-header-links .tim-post{padding:12px;font-size:12px}}
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI MARKET"><img src="/tout-ici-market-officiel.svg" alt="TOUT ICI MARKET"/></a>
@@ -51,7 +53,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/autres">▦ Toutes les catégories</a>
     </nav>
     <div className="tim-shell">
-      <aside className="tim-sidebar" aria-label="Toutes les rubriques">
+      <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
         {rubriques.map(r=><a key={r.href} href={r.href}><span className="tim-sidebar-icon" aria-hidden="true">{r.icone}</span><span>{r.nom}</span><span className="tim-sidebar-chevron" aria-hidden="true">›</span></a>)}
       </aside>
       <div className="tim-content">{children}</div>
