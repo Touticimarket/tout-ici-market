@@ -3,7 +3,7 @@ import {useEffect,useMemo,useState} from "react";
 import {useParams} from "next/navigation";
 import {supabase} from "../../lib/supabaseClient";
 type Option={id:string;nom:string};
-type Annonce={id:string;marque:string|null;modele:string|null;finition:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;carburant:string|null;boite:string|null;puissance_ch:number|null;departement:string|null;options:string[]|null;description:string|null;couleur?:string|null;nombre_portes?:number|null;nombre_places?:number|null;carrosserie?:string|null};
+type Annonce={id:string;marque:string|null;modele:string|null;finition:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;carburant:string|null;boite:string|null;puissance_ch:number|null;departement:string|null;options:string[]|null;description:string|null;photos?:string[]|null;code_postal?:string|null;couleur?:string|null;nombre_portes?:number|null;nombre_places?:number|null;carrosserie?:string|null};
 const categories:Record<string,{title:string;icon:string}>={
 "voitures":{title:"Voitures",icon:"🚘"},"motos":{title:"Motos & Scooters",icon:"🏍️"},
 "utilitaires":{title:"Utilitaires",icon:"🚐"},"camping-cars":{title:"Camping-cars & Caravaning",icon:"🚍"},
@@ -35,7 +35,7 @@ const [loading,setLoading]=useState(true);const [error,setError]=useState("");
 useEffect(()=>{if(slug!=="voitures"){setLoading(false);return;}let mounted=true;
 async function load(){setLoading(true);const [m,a]=await Promise.all([
 supabase.from("marques_auto").select("id,nom").order("nom").limit(1000),
-supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description,couleur,nombre_portes,nombre_places,carrosserie").eq("statut","publiee").limit(200)
+supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description,couleur,nombre_portes,nombre_places,carrosserie,photos,code_postal").eq("statut","publiee").limit(200)
 ]);if(!mounted)return;
 if(m.error||a.error)setError("Impossible de récupérer toutes les données. Vérifiez la connexion et les autorisations de lecture Supabase.");
 setMarques(m.data??[]);setAnnonces(a.data??[]);setLoading(false);}
@@ -161,7 +161,7 @@ return <main className="vehicles-sub">
 <section className="search-results" aria-label="Annonces de voitures">
 {error&&<p role="alert">{error}</p>}
 <div className="results-bar"><h2>Annonces de voitures ({filtered.length})</h2><label>Trier par <select value={tri} onChange={e=>setTri(e.target.value)}><option value="recent">Ordre d'affichage</option><option value="prix-asc">Prix croissant</option><option value="prix-desc">Prix décroissant</option><option value="annee-desc">Année récente</option></select></label></div>
-{loading?<p>Chargement des annonces…</p>:filtered.length? <div className="ads">{filtered.map(a=><article key={a.id}><div className="placeholder-photo" aria-label="Photo non disponible">🚘</div><h3>{a.marque} {a.modele}</h3><div className="price">{a.prix==null?"Prix non renseigné":a.prix.toLocaleString("fr-FR")+" €"}</div><p>{[a.finition,a.annee,a.carburant,a.kilometrage==null?null:a.kilometrage.toLocaleString("fr-FR")+" km"].filter(Boolean).join(" · ")}</p><p>📍 {a.ville??"Lieu non renseigné"}</p></article>)}</div>:<div className="notice">Aucune annonce de voiture pour ces critères actuellement.</div>}
+{loading?<p>Chargement des annonces…</p>:filtered.length? <div className="ads">{filtered.map(a=><article key={a.id}>{a.photos?.[0]?<img src={a.photos[0]} alt={"Photo du véhicule "+(a.marque??"")+" "+(a.modele??"")} style={{width:"100%",height:145,objectFit:"cover",borderRadius:12}}/>:<div className="placeholder-photo" aria-label="Photo non disponible">🚘</div>}<h3>{a.marque} {a.modele}</h3><div className="price">{a.prix==null?"Prix non renseigné":a.prix.toLocaleString("fr-FR")+" €"}</div><p>{[a.finition,a.annee,a.carburant,a.kilometrage==null?null:a.kilometrage.toLocaleString("fr-FR")+" km"].filter(Boolean).join(" · ")}</p><p>📍 {a.ville??"Lieu non renseigné"} {a.code_postal??""}</p></article>)}</div>:<div className="notice">Aucune annonce de voiture pour ces critères actuellement.</div>}
 </section></div>:<div className="notice"><h2>{category.title}</h2><p>Cette rubrique possède maintenant sa propre page. Les annonces de cette catégorie seront connectées dès que les données correspondantes seront disponibles dans la base.</p><a href="/automobile">Voir les autres catégories</a></div>}
 </div></main>;
 }
