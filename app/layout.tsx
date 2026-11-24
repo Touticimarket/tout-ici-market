@@ -13,7 +13,7 @@ const rubriques = [
 export default function RootLayout({children}:{children:ReactNode}){
   return <html lang="fr"><body style={{margin:0,background:"#f2f6fb",fontFamily:"Arial,Helvetica,sans-serif"}}>
     <style>{`
-      .tim-header{background:#031b4b;color:white;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:9px clamp(15px,3vw,45px)}
+      .tim-header{background:#041837;color:white;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:9px clamp(15px,3vw,45px)}
       .tim-logo{display:block;width:clamp(175px,19vw,275px);flex-shrink:0}
       .tim-logo img{display:block;width:100%;height:auto;max-height:95px;object-fit:contain}
       .tim-search{display:flex;flex:1;max-width:560px;height:48px;border-radius:32px;background:#fff;overflow:hidden}
@@ -22,7 +22,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-header-links{display:flex;align-items:center;gap:20px;white-space:nowrap}
       .tim-header-links a{color:#fff;text-decoration:none;font-weight:700;font-size:14px}
       .tim-header-links .tim-post{background:#ffcf06;color:#001942;padding:15px 20px;border-radius:19px}
-      .tim-navbar{display:flex;background:#073477;overflow-x:auto;padding:0 20px;gap:4px}
+      .tim-navbar{display:flex;background:#052453;overflow-x:auto;padding:0 20px;gap:4px}
       .tim-navbar a{white-space:nowrap;color:#fff;text-decoration:none;padding:17px 20px;font-weight:700;font-size:14px}
       .tim-navbar a:hover{background:#0a4b9e}
       .tim-shell{display:grid;grid-template-columns:minmax(225px,310px) minmax(0,1fr);gap:16px;max-width:1800px;margin:auto;padding:16px 14px}
