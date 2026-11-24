@@ -1,50 +1,42 @@
-export default function Home() {
-  const links = [
-    { href: "/automobile/deposer", left: "73%", top: "2.2%", width: "11%" },
-    { href: "/automobile", left: "4.5%", top: "42.8%", width: "16%" },
-    { href: "/moto", left: "21.2%", top: "42.8%", width: "16%" },
-    { href: "/immobilier", left: "38%", top: "42.8%", width: "16%" },
-    { href: "/emploi", left: "54.7%", top: "42.8%", width: "16%" },
-    { href: "/mode", left: "71.5%", top: "42.8%", width: "20%" },
-    { href: "/telephones", left: "4.5%", top: "48.7%", width: "15%" },
-    { href: "/maison-jardin", left: "20.7%", top: "48.7%", width: "15%" },
-    { href: "/vacances-loisirs", left: "36.7%", top: "48.7%", width: "16%" },
-    { href: "/bricolage", left: "53.2%", top: "48.7%", width: "13%" },
-    { href: "/jeux-consoles", left: "66.8%", top: "48.7%", width: "14%" },
-    { href: "/autres", left: "81.2%", top: "48.7%", width: "14%" },
-  ];
-
-  return (
-    <main
-      style={{
-        position: "relative",
-        width: "100%",
-      }}
-    >
-      <img
-        src="/public/banner-home.png"
-        alt="TOUT ICI Market"
-        style={{
-          width: "100%",
-          display: "block",
-        }}
-      />
-
-      {links.map((link) => (
-        <a
-          key={link.href}
-          href={link.href}
-          style={{
-            position: "absolute",
-            left: link.left,
-            top: link.top,
-            width: link.width,
-            height: "5.5%",
-            zIndex: 10,
-            cursor: "pointer",
-          }}
-        />
-      ))}
-    </main>
-  );
+const categories=[
+ {name:"Automobile & Véhicules",href:"/automobile",image:"automobile",alt:"Voiture bleue devant un paysage de montagne"},
+ {name:"Immobilier",href:"/immobilier",image:"immobilier",alt:"Maison contemporaine avec jardin"},
+ {name:"Emploi",href:"/emploi",image:"emploi",alt:"Professionnel souriant à son bureau"},
+ {name:"Matériel pro",href:"/materiel-pro",image:"materiel-pro",alt:"Mini-pelle et outillage professionnel"},
+ {name:"Maison, Bricolage & Jardin",href:"/maison-jardin",image:"maison-jardin",alt:"Jardin aménagé, terrasse et matériel de jardinage"},
+ {name:"TV, Téléphonie & Informatique",href:"/telephones",image:"telephones",alt:"Télévision, ordinateur, smartphone et équipement numérique"},
+ {name:"Loisirs & Voyages",href:"/vacances-loisirs",image:"vacances-loisirs",alt:"Valise de voyage et appareil photo devant la mer"},
+ {name:"Famille",href:"/famille",image:"famille",alt:"Famille avec enfants et matériel de puériculture"},
+ {name:"Bon plan",href:"/bon-plan",image:"bon-plan",alt:"Sacs shopping, cadeau et tirelire représentant les bonnes affaires"},
+ {name:"Autres",href:"/autres",image:"autres",alt:"Objets variés, instrument de musique, livres et appareil photo"}
+];
+export default function Home(){
+ return <main className="tim-home">
+ <style>{`
+ .tim-home{font-family:Arial,Helvetica,sans-serif;color:#061e49;background:#f7faff;padding:15px 15px 34px;border:1px solid #e0e9f6;border-radius:18px;min-height:72vh}
+ .tim-home *{box-sizing:border-box}
+ .tim-home .intro{background:linear-gradient(110deg,#08265c,#0c4f9b);color:white;border-radius:15px;padding:24px clamp(18px,3vw,32px);margin-bottom:22px}
+ .tim-home .intro h1{font-size:clamp(26px,3vw,39px);margin:0 0 7px;font-weight:900}
+ .tim-home .intro p{font-size:clamp(14px,1.5vw,18px);margin:0;line-height:1.5}
+ .tim-home .intro strong{color:#ffdc26}
+ .tim-home h2{font-size:clamp(23px,2.2vw,29px);margin:0 0 15px}
+ .tim-home .category-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:13px}
+ .tim-home .category-card{display:flex;flex-direction:column;background:white;color:#091e45;text-decoration:none;border:1px solid #d5e5f7;border-radius:15px;overflow:hidden;transition:box-shadow .16s,transform .16s}
+ .tim-home .category-card:hover,.tim-home .category-card:focus-visible{transform:translateY(-2px);box-shadow:0 9px 21px #0a2d6428;outline:2px solid #ffcf06}
+ .tim-home .category-card img{display:block;width:100%;height:174px;object-fit:cover;object-position:center center;background:#e9f3fd}
+ .tim-home .category-card .caption{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 11px;min-height:66px;background:linear-gradient(180deg,#fff,#f4f8fe)}
+ .tim-home .category-card .caption strong{font-size:14px;line-height:1.28}
+ .tim-home .category-card .caption span{color:#064da4;font-size:21px;font-weight:900}
+ @media(max-width:1170px){.tim-home .category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+ @media(max-width:650px){.tim-home .category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tim-home .category-card img{height:150px}}
+ @media(max-width:410px){.tim-home .category-grid{grid-template-columns:1fr}.tim-home .category-card img{height:185px}}
+ `}</style>
+ <section className="intro"><h1>Bienvenue sur <strong>TOUT ICI MARKET</strong></h1><p>Tout acheter, tout vendre, tout trouver. Site d’annonces gratuites pour les particuliers.</p></section>
+ <section aria-label="Catégories d’annonces"><h2>Choisissez une catégorie</h2><div className="category-grid">
+ {categories.map(c=><a href={c.href} key={c.href} className="category-card">
+ <img src={"/categories-accueil/"+c.image+".svg"} alt={c.alt} loading="lazy"/>
+ <div className="caption"><strong>{c.name}</strong><span aria-hidden="true">›</span></div>
+ </a>)}
+ </div></section>
+ </main>
 }
