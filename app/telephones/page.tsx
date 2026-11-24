@@ -15,7 +15,7 @@ export default function TelephonesPage() {
           marginBottom: "10px",
         }}
       >
-        📱 Téléphones & High-Tech
+        📺 TV, Téléphonie & Informatique
       </h1>
 
       <p style={{ fontSize: "22px", color: "#555" }}>
@@ -34,7 +34,7 @@ export default function TelephonesPage() {
       >
         <h2>À venir 🚀</h2>
         <p>
-          Téléphones, TV, gaming, consoles, informatique,
+          TV, téléphonie, informatique, gaming, consoles,
           multimédia et dépôt d’annonce high-tech.
         </p>
       </div>
