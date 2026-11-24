@@ -3,12 +3,12 @@ const rubriques = [
   {nom:"Automobile & Véhicules",href:"/automobile",icone:"🚘"},
   {nom:"Immobilier",href:"/immobilier",icone:"⌂"},
   {nom:"Emploi",href:"/emploi",icone:"▣"},
+  {nom:"Matériel pro",href:"/materiel-pro",icone:"🛠"},
   {nom:"Maison, Bricolage & Jardin",href:"/maison-jardin",icone:"▤"},
   {nom:"TV, Téléphonie & Informatique",href:"/telephones",icone:"▥"},
   {nom:"Loisirs & Voyages",href:"/vacances-loisirs",icone:"✈"},
-  {nom:"Bon plan",href:"/bon-plan",icone:"★"},
   {nom:"Famille",href:"/famille",icone:"♡"},
-  {nom:"Matériel pro",href:"/materiel-pro",icone:"🛠"},
+  {nom:"Bon plan",href:"/bon-plan",icone:"★"},
   {nom:"Autres",href:"/autres",icone:"▦"}
 ];
 export default function RootLayout({children}:{children:ReactNode}){
@@ -62,12 +62,12 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/automobile">Automobile &amp; Véhicules</a>
       <a href="/immobilier">Immobilier</a>
       <a href="/emploi">Emploi</a>
+      <a href="/materiel-pro">Matériel pro</a>
       <a href="/maison-jardin">Maison, Bricolage &amp; Jardin</a>
       <a href="/telephones">TV, Téléphonie &amp; Informatique</a>
       <a href="/vacances-loisirs">Loisirs &amp; Voyages</a>
-      <a href="/bon-plan">Bon plan</a>
       <a href="/famille">Famille</a>
-      <a href="/materiel-pro">Matériel pro</a>
+      <a href="/bon-plan">Bon plan</a>
       <a href="/autres">Autres</a>
     </nav>
     <div className="tim-shell">
