@@ -38,6 +38,8 @@ export default function DeposerAutoPage() {
   const [motorisations, setMotorisations] = useState<any[]>([]);
   const [options, setOptions] = useState<string[]>([]);
   const [message, setMessage] = useState("");
+  const [immatriculation, setImmatriculation] = useState("");
+  const [immatMessage, setImmatMessage] = useState("");
 
   const [form, setForm] = useState({
     marqueId: "",
@@ -162,6 +164,13 @@ export default function DeposerAutoPage() {
         .depot-auto .form-section{background:#fff;border:1px solid #dce9f8;border-radius:20px;padding:24px 26px;margin-bottom:18px;box-shadow:0 4px 15px rgba(0,36,90,.04)}
         .depot-auto .section-title{display:flex;align-items:center;gap:11px;font-size:22px;font-weight:900;margin:0 0 20px}
         .depot-auto .section-number{display:flex;align-items:center;justify-content:center;background:#ffd318;border-radius:50%;width:34px;height:34px;font-size:17px}
+        .depot-auto .immat-lookup{border:2px solid #d4e5fb;background:#f3f8ff;border-radius:15px;padding:19px;margin:0 0 24px}
+        .depot-auto .immat-lookup h3{font-size:19px;margin:0 0 8px}
+        .depot-auto .immat-lookup p{margin:0 0 14px;color:#435675;line-height:1.45}
+        .depot-auto .immat-controls{display:flex;gap:12px;align-items:stretch}
+        .depot-auto .immat-controls input{min-width:0;flex:1;border:1px solid #aabfdd;border-radius:10px;padding:14px;font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#0a2452}
+        .depot-auto .immat-controls button{background:#084bd8;color:#fff;border:0;border-radius:10px;padding:0 24px;font-size:16px;font-weight:800;cursor:pointer}
+        .depot-auto .immat-status{margin:12px 0 0!important;color:#184a83!important;font-weight:700}
         .depot-auto .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
         .depot-auto .field{font-weight:750;font-size:14px;display:flex;flex-direction:column;gap:8px}
         .depot-auto select,.depot-auto .field input,.depot-auto textarea{width:100%;padding:14px;border:1px solid #bfcfe5;background:#fff;color:#0b2454;border-radius:12px;font:inherit;min-height:49px}
@@ -174,7 +183,8 @@ export default function DeposerAutoPage() {
         .depot-auto .note{font-size:13px;color:#58708a;line-height:1.5;margin-top:14px}
         .depot-auto .feedback{background:#e9f5ff;padding:15px;border-radius:10px;font-weight:800}
         @media(max-width:800px){.depot-auto .fields{grid-template-columns:1fr}.depot-auto .equip-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
-        @media(max-width:500px){.depot-auto .form-section,.depot-auto .intro{padding:18px}.depot-auto .equip-list{grid-template-columns:1fr}.depot-auto .banner{min-height:180px}.depot-auto .banner p{font-size:15px}}
+        @media(max-width:500px){.depot-auto .immat-controls{flex-direction:column}.depot-auto .immat-controls button{padding:13px}
+        .depot-auto .form-section,.depot-auto .intro{padding:18px}.depot-auto .equip-list{grid-template-columns:1fr}.depot-auto .banner{min-height:180px}.depot-auto .banner p{font-size:15px}}
       `}</style>
       <section className="banner">
         <div className="banner-copy">
@@ -189,7 +199,20 @@ export default function DeposerAutoPage() {
         <div className="steps"><span>1 · Véhicule</span><span>2 · Caractéristiques</span><span>3 · Équipements</span><span>4 · Publication</span></div>
       </div>
       <section className="form-section">
-        <h2 className="section-title"><span className="section-number">1</span> Votre véhicule</h2>
+        <h2 className="section-title"><span className="section-number">1</span> Informations de votre véhicule</h2>
+        <div className="immat-lookup">
+          <h3>1. Rechercher votre véhicule par immatriculation</h3>
+          <p>Commencez par saisir votre plaque. Vous pourrez ensuite renseigner les informations du véhicule manuellement.</p>
+          <div className="immat-controls">
+            <input aria-label="Immatriculation" placeholder="AA-123-BB" maxLength={12}
+              value={immatriculation} onChange={e=>{setImmatriculation(e.target.value.toUpperCase());setImmatMessage("");}}/>
+            <button type="button" onClick={()=>setImmatMessage(immatriculation.trim()
+              ? "Recherche automatique indisponible pour le moment : aucun service de consultation des immatriculations n'est connecté. Complétez les champs ci-dessous."
+              : "Saisissez d'abord une immatriculation.")}>Rechercher</button>
+          </div>
+          {immatMessage&&<p className="immat-status" role="status">{immatMessage}</p>}
+        </div>
+        <h3 style={{color:"#0b2c69",margin:"0 0 16px"}}>2. Marque, modèle et caractéristiques</h3>
         <div className="fields">
           <label className="field">Marque *
             <select value={form.marqueId} onChange={e=>choisirMarque(e.target.value)} required>
