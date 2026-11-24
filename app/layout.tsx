@@ -6,7 +6,7 @@ const rubriques = [
   {nom:"Maison, Bricolage & Jardin",href:"/maison-jardin",icone:"▤"},
   {nom:"TV, Téléphonie & Informatique",href:"/telephones",icone:"▥"},
   {nom:"Loisirs & Voyages",href:"/vacances-loisirs",icone:"✈"},
-  {nom:"Bons plans",href:"/bon-plan",icone:"★"},
+  {nom:"Bon plan",href:"/bon-plan",icone:"★"},
   {nom:"Famille",href:"/famille",icone:"♡"}
 ];
 export default function RootLayout({children}:{children:ReactNode}){
@@ -63,7 +63,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/maison-jardin">Maison, Bricolage &amp; Jardin</a>
       <a href="/telephones">TV, Téléphonie &amp; Informatique</a>
       <a href="/vacances-loisirs">Loisirs &amp; Voyages</a>
-      <a href="/bon-plan">Bons plans</a>
+      <a href="/bon-plan">Bon plan</a>
       <a href="/famille">Famille</a>
     </nav>
     <div className="tim-shell">
