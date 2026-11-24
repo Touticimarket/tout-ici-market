@@ -18,7 +18,8 @@ const equipements=[
  {name:"Services de réparation mécanique",icon:"⚒",slug:"services-mecaniques"},
  {name:"Pneus & Jantes",icon:"◎",slug:"pneus-jantes"},
  {name:"Pièces & Accessoires",icon:"⚙",slug:"pieces-accessoires"},
- {name:"Entretien & Consommables",icon:"♢",slug:"entretien-consommables"}
+ {name:"Entretien & Consommables",icon:"♢",slug:"entretien-consommables"},
+ {name:"Autres",icon:"⋯",slug:"autres-equipements"}
 ];
 export default function AutomobilePage(){
  return <main className="auto-home">
@@ -33,14 +34,14 @@ export default function AutomobilePage(){
  .auto-home .cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
  .auto-home .category{display:block;min-width:0;border:1px solid #d6e5f8;border-radius:16px;overflow:hidden;background:linear-gradient(#fff,#f3f8ff);text-decoration:none;color:#071c44;transition:box-shadow .15s,transform .15s}
  .auto-home .category:hover,.auto-home .category:focus-visible{box-shadow:0 6px 18px #0a36862d;transform:translateY(-2px);outline:2px solid #ffcf06}
- .auto-home .category img{display:block;width:100%;aspect-ratio:2.03/1;object-fit:cover}
+ .auto-home .category img{display:block;width:100%;aspect-ratio:2.03/1;object-fit:contain;object-position:center center;background:#edf5fe}
  .auto-home .tile-copy{padding:10px 11px 12px}
  .auto-home .tile-title{display:flex;justify-content:space-between;align-items:center;gap:4px;font-size:15px;font-weight:900}
  .auto-home .arrow{font-size:22px}
  .auto-home .tile-description{font-size:11px;line-height:1.4;margin:5px 0 0;min-height:31px}
  .auto-home .equip-section{margin-top:23px;padding-top:15px;border-top:1px solid #e5edf8}
  .auto-home .equip-section h2{font-size:25px;margin:0 0 12px;color:#091c47}
- .auto-home .equip-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px}
+ .auto-home .equip-grid{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:7px}
  .auto-home .equip-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:108px;padding:9px 5px;background:linear-gradient(150deg,#eaf5ff,#dceefe);border-radius:15px;color:#081b45;text-align:center;text-decoration:none;font-size:12px;font-weight:800}
  .auto-home .equip-tile:hover,.auto-home .equip-tile:focus-visible{background:#ffdc35}
  .auto-home .equip-icon{font-size:30px;line-height:1}
