@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import {FranceLocation, OrderedPhotos, type Commune} from "./PhotosLocalisation";
 
 type Item = { id: string; nom: string };
 
@@ -40,6 +41,9 @@ export default function DeposerAutoPage() {
   const [message, setMessage] = useState("");
   const [immatriculation, setImmatriculation] = useState("");
   const [immatMessage, setImmatMessage] = useState("");
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [localisation, setLocalisation] = useState<Commune|null>(null);
+  const [publicationEnCours,setPublicationEnCours] = useState(false);
 
   const [form, setForm] = useState({
     marqueId: "",
@@ -102,8 +106,8 @@ export default function DeposerAutoPage() {
 
   async function publier() {
     setMessage("");
-    if(!form.marqueId || !form.modeleId || !form.annee || !form.kilometrage || !form.prix || !form.ville.trim() || !form.departement.trim()){
-      setMessage("Complétez les champs obligatoires : marque, modèle, année, kilométrage, prix, ville et département.");
+    if(!form.marqueId || !form.modeleId || !form.annee || !form.kilometrage || !form.prix || !localisation){
+      setMessage("Complétez la marque, le modèle, l’année, le kilométrage, le prix et choisissez une commune française.");
       return;
     }
     if(Number(form.annee)<1900 || Number(form.annee)>new Date().getFullYear()+1 || Number(form.kilometrage)<0 || Number(form.prix)<=0){
@@ -117,7 +121,8 @@ export default function DeposerAutoPage() {
       return;
     }
 
-    const { error } = await supabase.from("annonces_auto").insert({
+    setPublicationEnCours(true);
+    const { data: draft, error: draftError } = await supabase.from("annonces_auto").insert({
       user_id: userData.user.id,
       marque: form.marque,
       modele: form.modele,
@@ -129,19 +134,34 @@ export default function DeposerAutoPage() {
       boite: form.boite,
       puissance_ch: Number(form.puissance_ch || 0),
       prix: Number(form.prix),
-      ville: form.ville,
-      departement: form.departement,
+      ville: localisation!.nom,
+      departement: localisation!.departement,
+      code_postal: localisation!.codePostal,
+      code_insee: localisation!.code,
+      latitude: localisation!.latitude,
+      longitude: localisation!.longitude,
       description: form.description,
       couleur: form.couleur || null,
       nombre_portes: form.nombre_portes ? Number(form.nombre_portes) : null,
       nombre_places: form.nombre_places ? Number(form.nombre_places) : null,
       carrosserie: form.carrosserie || null,
       options,
-      statut: "publiee",
-      mia_verifie: true,
-    });
-
-    setMessage(error ? "Erreur : " + error.message : "Annonce publiée avec succès ✅");
+      statut: "brouillon",
+      mia_verifie: false,
+    }).select("id").single();
+    if(draftError || !draft) {setMessage("Impossible de créer le brouillon : "+(draftError?.message||"erreur inconnue"));setPublicationEnCours(false);return;}
+    const uploaded:string[]=[];
+    for(let i=0;i<photos.length;i++){
+      const file=photos[i];
+      const ext=file.name.split(".").pop()?.toLowerCase()||"jpg";
+      const key=userData.user.id+"/"+draft.id+"/"+String(i+1).padStart(2,"0")+"-"+crypto.randomUUID()+"."+ext;
+      const {error:uploadError}=await supabase.storage.from("annonces-auto").upload(key,file,{contentType:file.type,upsert:false});
+      if(uploadError){setMessage("Brouillon enregistré, mais l’envoi des photos a échoué : "+uploadError.message);setPublicationEnCours(false);return;}
+      uploaded.push(supabase.storage.from("annonces-auto").getPublicUrl(key).data.publicUrl);
+    }
+    const {error:publishError}=await supabase.from("annonces_auto").update({photos:uploaded,statut:"publiee"}).eq("id",draft.id).eq("user_id",userData.user.id);
+    setPublicationEnCours(false);
+    setMessage(publishError?"Brouillon enregistré, mais publication non terminée : "+publishError.message:"Annonce publiée avec succès ✅");
   }
 
   return (
@@ -289,25 +309,24 @@ export default function DeposerAutoPage() {
               <option value="">Choisir</option>{[2,3,4,5,6,7,8,9].map(v=><option key={v} value={v}>{v}</option>)}
             </select>
           </label>
-          <label className="field">Ville *
-            <input value={form.ville} placeholder="Ex. Colmar" onChange={e=>setForm({...form,ville:e.target.value})}/>
-          </label>
-          <label className="field">Département *
-            <input value={form.departement} placeholder="Ex. 68" onChange={e=>setForm({...form,departement:e.target.value})}/>
-          </label>
           <label className="field full">Description de votre annonce
             <textarea rows={5} value={form.description} placeholder="État du véhicule, entretien, travaux effectués, informations utiles…" onChange={e=>setForm({...form,description:e.target.value})}/>
           </label>
         </div>
+        <FranceLocation selected={localisation} onChange={setLocalisation}/>
       </section>
       <section className="form-section">
         <h2 className="section-title"><span className="section-number">3</span> Options et équipements</h2>
         <div className="equip-list">{optionsAuto.map(option=><label key={option}><input type="checkbox" checked={options.includes(option)} onChange={()=>toggleOption(option)}/>{option}</label>)}</div>
       </section>
       <section className="form-section">
-        <h2 className="section-title"><span className="section-number">4</span> Publier votre annonce</h2>
+        <h2 className="section-title"><span className="section-number">4</span> Photos du véhicule</h2>
+        <OrderedPhotos files={photos} onChange={setPhotos}/>
+      </section>
+      <section className="form-section">
+        <h2 className="section-title"><span className="section-number">5</span> Publier votre annonce</h2>
         <p>Vérifiez les informations avant publication. Vous devez être connecté pour publier.</p>
-        <button className="publish" type="button" onClick={publier}>＋ Publier mon annonce</button>
+        <button className="publish" type="button" disabled={publicationEnCours} onClick={publier}>{publicationEnCours?"Enregistrement en cours…":"＋ Publier mon annonce"}</button>
         <p className="note">La publication est liée à votre compte et enregistrée dans la base TOUT ICI MARKET.</p>
         {message&&<p className="feedback" role="status">{message}</p>}
       </section>
