@@ -4,10 +4,26 @@ import {useParams} from "next/navigation";
 import {supabase} from "../../lib/supabaseClient";
 type Option={id:string;nom:string};
 type Annonce={id:string;marque:string|null;modele:string|null;finition:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;carburant:string|null;boite:string|null;puissance_ch:number|null;departement:string|null;options:string[]|null;description:string|null;photos?:string[]|null;code_postal?:string|null;couleur?:string|null;nombre_portes?:number|null;nombre_places?:number|null;carrosserie?:string|null};
-const categories:Record<string,{title:string;icon:string}>={
-"voitures":{title:"Voitures",icon:"🚘"},"motos":{title:"Motos & Scooters",icon:"🏍️"},
-"utilitaires":{title:"Utilitaires",icon:"🚐"},"camping-cars":{title:"Camping-cars & Caravaning",icon:"🚍"},
-"autres-vehicules":{title:"Autres véhicules",icon:"🚜"}
+const categories:Record<string,{title:string;icon:string;dbTypes:string[]}>={
+"voitures":{title:"Automobiles",icon:"🚘",dbTypes:["voiture","voitures","automobile"]},
+"utilitaires":{title:"Utilitaires",icon:"🚐",dbTypes:["utilitaire","utilitaires"]},
+"camions":{title:"Camions",icon:"🚚",dbTypes:["camion","camions","poids-lourd"]},
+"caravaning":{title:"Caravaning",icon:"🚍",dbTypes:["caravaning","camping-car","camping-cars","caravane"]},
+"camping-cars":{title:"Caravaning",icon:"🚍",dbTypes:["caravaning","camping-car","camping-cars","caravane"]},
+"remorques":{title:"Remorques",icon:"🛻",dbTypes:["remorque","remorques"]},
+"motos":{title:"Motos & Scooters",icon:"🏍️",dbTypes:["moto","motos","scooter","scooters","quad"]},
+"velos":{title:"Vélos",icon:"🚲",dbTypes:["velo","velos","vélo","vélos","vae"]},
+"nautisme":{title:"Nautisme",icon:"⛵",dbTypes:["nautisme","bateau","bateaux","jet-ski","voilier"]},
+"vans-amenages":{title:"Vans & Aménagés",icon:"🚐",dbTypes:["van","van-amenage","vans-amenages","fourgon-amenage"]},
+"autres-vehicules":{title:"Autres véhicules",icon:"🚜",dbTypes:["autres-vehicules","tracteur","tracteurs","engin"]},
+"equipement-auto":{title:"Équipement auto",icon:"⚙️",dbTypes:["equipement-auto"]},
+"equipement-caravaning":{title:"Équipement caravaning",icon:"🚍",dbTypes:["equipement-caravaning"]},
+"equipement-nautisme":{title:"Équipement nautisme",icon:"⛵",dbTypes:["equipement-nautisme"]},
+"equipement-velos":{title:"Équipements vélos",icon:"🚲",dbTypes:["equipement-velos"]},
+"services-mecaniques":{title:"Services de réparation mécanique",icon:"🛠️",dbTypes:["services-mecaniques"]},
+"pneus-jantes":{title:"Pneus & Jantes",icon:"⚙️",dbTypes:["pneus-jantes"]},
+"pieces-accessoires":{title:"Pièces & Accessoires",icon:"🔧",dbTypes:["pieces-accessoires"]},
+"entretien-consommables":{title:"Entretien & Consommables",icon:"🧰",dbTypes:["entretien-consommables"]}
 };
 export default function CategorieVehicules(){
 const params=useParams();const slug=typeof params.categorie==="string"?params.categorie:"";
@@ -32,10 +48,10 @@ const toggleEquipement=(item:string)=>setEquipements(old=>old.includes(item)?old
 const [boite,setBoite]=useState("");const [ville,setVille]=useState("");const [tri,setTri]=useState("recent");
 const reset=()=>{setMarqueId("");setModeleId("");setFinitionId("");setPrixMin("");setPrixMax("");setAnneeMin("");setAnneeMax("");setKmMin("");setKmMax("");setCarburant("");setBoite("");setVille("");setTri("recent");setPuissanceMin("");setPuissanceMax("");setDepartement("");setMotCle("");setEquipements([]);setCouleur("");setPortes("");setPlaces("");setCarrosserie("")};
 const [loading,setLoading]=useState(true);const [error,setError]=useState("");
-useEffect(()=>{if(slug!=="voitures"){setLoading(false);return;}let mounted=true;
+useEffect(()=>{if(!category){setLoading(false);return;}let mounted=true;
 async function load(){setLoading(true);const [m,a]=await Promise.all([
 supabase.from("marques_auto").select("id,nom").order("nom").limit(1000),
-supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description,couleur,nombre_portes,nombre_places,carrosserie,photos,code_postal").eq("statut","publiee").limit(200)
+supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description,couleur,nombre_portes,nombre_places,carrosserie,photos,code_postal").eq("statut","publiee").in("type_vehicule",category.dbTypes).order("created_at",{ascending:false}).limit(200)
 ]);if(!mounted)return;
 if(m.error||a.error)setError("Impossible de récupérer toutes les données. Vérifiez la connexion et les autorisations de lecture Supabase.");
 setMarques(m.data??[]);setAnnonces(a.data??[]);setLoading(false);}
@@ -119,7 +135,7 @@ return <main className="vehicles-sub">
 <p>Consultez les annonces et affinez votre recherche.</p>
 <a className="gold" href="/automobile/deposer">＋ Déposer une annonce</a></section>
 <div className="inner">
-{slug==="voitures"?<div className="search-layout">
+{<div className="search-layout">
 <aside className="search-sidebar" aria-label="Filtres de recherche automobile">
 <div className="filter-heading"><h2>Affiner votre recherche</h2><button type="button" className="reset" onClick={reset}>↺ Réinitialiser les filtres</button></div>
 <details className="filter-group" open><summary>Marque, modèle et finition</summary><div className="filters">
@@ -158,10 +174,10 @@ return <main className="vehicles-sub">
 <label>Mot-clé<input value={motCle} onChange={e=>setMotCle(e.target.value)} placeholder="Ex. GT, sport, première main"/></label>
 </div></details>
 </aside>
-<section className="search-results" aria-label="Annonces de voitures">
+<section className="search-results" aria-label={"Annonces "+category.title}>
 {error&&<p role="alert">{error}</p>}
-<div className="results-bar"><h2>Annonces de voitures ({filtered.length})</h2><label>Trier par <select value={tri} onChange={e=>setTri(e.target.value)}><option value="recent">Ordre d'affichage</option><option value="prix-asc">Prix croissant</option><option value="prix-desc">Prix décroissant</option><option value="annee-desc">Année récente</option></select></label></div>
-{loading?<p>Chargement des annonces…</p>:filtered.length? <div className="ads">{filtered.map(a=><article key={a.id}>{a.photos?.[0]?<img src={a.photos[0]} alt={"Photo du véhicule "+(a.marque??"")+" "+(a.modele??"")} style={{width:"100%",height:145,objectFit:"cover",borderRadius:12}}/>:<div className="placeholder-photo" aria-label="Photo non disponible">🚘</div>}<h3>{a.marque} {a.modele}</h3><div className="price">{a.prix==null?"Prix non renseigné":a.prix.toLocaleString("fr-FR")+" €"}</div><p>{[a.finition,a.annee,a.carburant,a.kilometrage==null?null:a.kilometrage.toLocaleString("fr-FR")+" km"].filter(Boolean).join(" · ")}</p><p>📍 {a.ville??"Lieu non renseigné"} {a.code_postal??""}</p></article>)}</div>:<div className="notice">Aucune annonce de voiture pour ces critères actuellement.</div>}
-</section></div>:<div className="notice"><h2>{category.title}</h2><p>Cette rubrique possède maintenant sa propre page. Les annonces de cette catégorie seront connectées dès que les données correspondantes seront disponibles dans la base.</p><a href="/automobile">Voir les autres catégories</a></div>}
+<div className="results-bar"><h2>Annonces — {category.title} ({filtered.length})</h2><label>Trier par <select value={tri} onChange={e=>setTri(e.target.value)}><option value="recent">Ordre d'affichage</option><option value="prix-asc">Prix croissant</option><option value="prix-desc">Prix décroissant</option><option value="annee-desc">Année récente</option></select></label></div>
+{loading?<p>Chargement des annonces…</p>:filtered.length? <div className="ads">{filtered.map(a=><article key={a.id}>{a.photos?.[0]?<img src={a.photos[0]} alt={"Photo du véhicule "+(a.marque??"")+" "+(a.modele??"")} style={{width:"100%",height:145,objectFit:"cover",borderRadius:12}}/>:<div className="placeholder-photo" aria-label="Photo non disponible">🚘</div>}<h3>{a.marque} {a.modele}</h3><div className="price">{a.prix==null?"Prix non renseigné":a.prix.toLocaleString("fr-FR")+" €"}</div><p>{[a.finition,a.annee,a.carburant,a.kilometrage==null?null:a.kilometrage.toLocaleString("fr-FR")+" km"].filter(Boolean).join(" · ")}</p><p>📍 {a.ville??"Lieu non renseigné"} {a.code_postal??""}</p></article>)}</div>:<div className="notice">Aucune annonce publiée dans cette catégorie pour le moment. Modifiez vos filtres ou revenez plus tard.</div>}
+</section></div>}
 </div></main>;
 }
