@@ -37,6 +37,14 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-content{min-width:0}
       @media(min-width:761px) and (max-width:980px){.tim-shell{grid-template-columns:180px minmax(0,1fr)}.tim-navbar{justify-content:flex-start}}
       @media(max-width:1050px){.tim-search{display:none}.tim-header-links{gap:10px}}
+      /* Automobile : bandeau sur toute la largeur, rubriques à gauche seulement sous l’image. */
+      .tim-shell:has(.auto-home){grid-template-areas:"auto-hero auto-hero" "auto-side auto-main";align-items:start}
+      .tim-shell:has(.auto-home)>.tim-sidebar{grid-area:auto-side}
+      .tim-shell:has(.auto-home)>.tim-content{display:contents}
+      .tim-shell:has(.auto-home) .auto-home{display:contents}
+      .tim-shell:has(.auto-home) .auto-home .hero{grid-area:auto-hero;margin:0;width:100%;border-radius:12px;overflow:hidden}
+      .tim-shell:has(.auto-home) .auto-home .main-panel{grid-area:auto-main;margin:0}
+      @media(max-width:760px){.tim-shell:has(.auto-home){grid-template-columns:minmax(0,1fr);grid-template-areas:"auto-hero" "auto-side" "auto-main"}}
       @media(max-width:760px){.tim-sidebar-title{flex-shrink:0;white-space:nowrap}.tim-shell{grid-template-columns:1fr}.tim-sidebar{position:static;display:flex;overflow-x:auto;white-space:nowrap;padding:5px}.tim-sidebar a{border:0;flex-shrink:0;font-size:13px}.tim-sidebar .tim-sidebar-chevron{display:none}.tim-header{gap:10px;flex-wrap:wrap}.tim-header-links{margin-left:auto}.tim-header-links a:not(.tim-post){display:none}.tim-header-links .tim-post{padding:12px;font-size:12px}}
     `}</style>
     <header className="tim-header">
