@@ -15,7 +15,7 @@ export default function Home(){
  <style>{`
  .tim-home{font-family:Arial,Helvetica,sans-serif;color:#061e49;background:#f7faff;padding:15px 15px 34px;border:1px solid #e0e9f6;border-radius:18px;min-height:72vh}
  .tim-home *{box-sizing:border-box}
- .tim-home .intro{background:#c9e5fb;border-radius:15px;margin-bottom:22px;overflow:hidden;min-height:250px}\n .tim-home .intro img{display:block;width:100%;height:clamp(240px,23vw,330px);object-fit:cover;object-position:center}
+ .tim-home .intro{background:#c9e5fb;border-radius:15px;margin-bottom:22px;overflow:hidden;min-height:250px}\n .tim-home .intro img{display:block;width:100%;height:auto;object-fit:contain;object-position:center}
  .tim-home .intro h1{font-size:clamp(26px,3vw,39px);margin:0 0 7px;font-weight:900}
  .tim-home .intro p{font-size:clamp(14px,1.5vw,18px);margin:0;line-height:1.5}
  .tim-home .intro strong{color:#ffdc26}
