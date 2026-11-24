@@ -54,7 +54,7 @@ export default function AutomobilePage(){
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
- <img src={"/auto-visuels/"+c.image+".svg"} alt={c.name} loading="lazy"/>
+ <img src={"/auto-visuels/"+c.image+".svg?v=3"} alt={c.name} loading="lazy"/>
  <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow">›</span></div><p className="tile-description">{c.description}</p></div>
  </a>)}</div>
  <div className="equip-section"><h2>Équipements &amp; Services</h2>
