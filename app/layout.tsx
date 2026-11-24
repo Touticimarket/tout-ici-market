@@ -1,5 +1,13 @@
 import ShareLinks from "./components/ShareLinks";
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
+export const metadata:Metadata={
+ title:"TOUT ICI MARKET — Annonces gratuites pour les particuliers",
+ description:"Tout acheter, tout vendre, tout trouver. Site d’annonces gratuites pour les particuliers : automobile, immobilier, maison, loisirs et plus encore.",
+ metadataBase:new URL("https://tout-ici-market.vercel.app"),
+ openGraph:{title:"TOUT ICI MARKET — Annonces gratuites",description:"Tout acheter, tout vendre, tout trouver. Découvrez les annonces gratuites pour les particuliers.",url:"https://tout-ici-market.vercel.app",siteName:"TOUT ICI MARKET",type:"website"},
+ twitter:{card:"summary",title:"TOUT ICI MARKET — Annonces gratuites",description:"Tout acheter, tout vendre, tout trouver."}
+};
 const rubriques = [
   {nom:"Automobile & Véhicules",href:"/automobile",icone:"🚘"},
   {nom:"Immobilier",href:"/immobilier",icone:"⌂"},
