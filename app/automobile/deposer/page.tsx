@@ -70,7 +70,7 @@ export default function DeposerAutoPage() {
 
   async function choisirMarque(id: string) {
     const marque = marques.find((m) => m.id === id);
-    setForm({ ...form, marqueId: id, marque: marque?.nom || "", modeleId: "", modele: "", finitionId: "", finition: "" });
+    setForm({ ...form, marqueId: id, marque: marque?.nom || "", modeleId: "", modele: "", finitionId: "", finition: "", motorisation: "" });
     const { data } = await supabase.from("modeles_auto").select("id, nom").eq("marque_id", id).order("nom");
     setModeles(data || []);
     setFinitions([]);
@@ -79,7 +79,7 @@ export default function DeposerAutoPage() {
 
   async function choisirModele(id: string) {
     const modele = modeles.find((m) => m.id === id);
-    setForm({ ...form, modeleId: id, modele: modele?.nom || "", finitionId: "", finition: "" });
+    setForm({ ...form, modeleId: id, modele: modele?.nom || "", finitionId: "", finition: "", motorisation: "" });
     const { data } = await supabase.from("finitions_auto").select("id, nom").eq("modele_id", id).order("nom");
     setFinitions(data || []);
     setMotorisations([]);
@@ -100,6 +100,14 @@ export default function DeposerAutoPage() {
 
   async function publier() {
     setMessage("");
+    if(!form.marqueId || !form.modeleId || !form.annee || !form.kilometrage || !form.prix || !form.ville.trim() || !form.departement.trim()){
+      setMessage("Complétez les champs obligatoires : marque, modèle, année, kilométrage, prix, ville et département.");
+      return;
+    }
+    if(Number(form.annee)<1900 || Number(form.annee)>new Date().getFullYear()+1 || Number(form.kilometrage)<0 || Number(form.prix)<=0){
+      setMessage("Vérifiez l’année, le kilométrage et le prix indiqués.");
+      return;
+    }
     const { data: userData } = await supabase.auth.getUser();
 
     if (!userData.user) {
@@ -135,87 +143,150 @@ export default function DeposerAutoPage() {
   }
 
   return (
-    <main style={{ fontFamily: "Arial", background: "#f8f9fb", minHeight: "100vh", padding: "40px 5%" }}>
-      <section style={{ maxWidth: 1150, margin: "0 auto", background: "white", borderRadius: 28, padding: 36, boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }}>
-        <h1 style={{ color: "#0047BB", fontSize: 44 }}>🚗 Déposer une annonce automobile</h1>
-        <p style={{ fontSize: 18, color: "#555" }}>Formulaire intelligent avec marques, modèles, finitions, motorisations et options.</p>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 16 }}>
-          <select style={inputStyle} onChange={(e) => choisirMarque(e.target.value)}>
-            <option>Marque</option>
-            {marques.map((m) => <option key={m.id} value={m.id}>{m.nom}</option>)}
-          </select>
-
-          <select style={inputStyle} onChange={(e) => choisirModele(e.target.value)}>
-            <option>Modèle</option>
-            {modeles.map((m) => <option key={m.id} value={m.id}>{m.nom}</option>)}
-          </select>
-
-          <select style={inputStyle} onChange={(e) => choisirFinition(e.target.value)}>
-            <option>Finition</option>
-            {finitions.map((f) => <option key={f.id} value={f.id}>{f.nom}</option>)}
-          </select>
-
-          <select style={inputStyle} onChange={(e) => {
-            const mot = motorisations.find((m) => m.nom === e.target.value);
-            setForm({ ...form, motorisation: mot?.nom || "", carburant: mot?.carburant || "", boite: mot?.boite || "", puissance_ch: String(mot?.puissance_ch || "") });
-          }}>
-            <option>Motorisation</option>
-            {motorisations.map((m) => <option key={m.id}>{m.nom}</option>)}
-          </select>
-
-          <input style={inputStyle} placeholder="Année" onChange={(e) => setForm({ ...form, annee: e.target.value })} />
-          <input style={inputStyle} placeholder="Kilométrage" onChange={(e) => setForm({ ...form, kilometrage: e.target.value })} />
-          <input style={inputStyle} placeholder="Prix" onChange={(e) => setForm({ ...form, prix: e.target.value })} />
-          <input style={inputStyle} placeholder="Ville" onChange={(e) => setForm({ ...form, ville: e.target.value })} />
-          <input style={inputStyle} placeholder="Département" onChange={(e) => setForm({ ...form, departement: e.target.value })} />
+    <main className="depot-auto">
+      <style>{\`
+        .depot-auto{color:#0a2452;background:#f1f6fd;font-family:Arial,Helvetica,sans-serif;min-height:100vh;padding-bottom:50px}
+        .depot-auto *{box-sizing:border-box}
+        .depot-auto .banner{width:100%;min-height:210px;background:linear-gradient(90deg,rgba(0,25,65,.9),rgba(0,41,98,.14)),url("/banniere-automobile-apercu.svg") center/cover;display:flex;align-items:center;padding:30px clamp(16px,3vw,48px);border-radius:15px;overflow:hidden}
+        .depot-auto .banner-copy{max-width:520px;color:white}
+        .depot-auto .banner h1{font-size:clamp(26px,3vw,42px);line-height:1.13;margin:0 0 12px}
+        .depot-auto .banner p{font-size:18px;line-height:1.45;margin:0}
+        .depot-auto .crumb{margin:18px 0;color:#4c6288;font-size:14px}
+        .depot-auto .crumb a{color:#0754ac;text-decoration:none;font-weight:700}
+        .depot-auto .intro{background:#fff;border-radius:20px;padding:24px 28px;border:1px solid #deebfa;margin-bottom:20px}
+        .depot-auto .intro h2{font-size:clamp(23px,2.5vw,34px);margin:0 0 9px}
+        .depot-auto .intro p{margin:0;color:#4b5d76;line-height:1.5}
+        .depot-auto .steps{display:flex;flex-wrap:wrap;gap:10px;margin-top:19px}
+        .depot-auto .steps span{padding:9px 13px;background:#eaf3ff;color:#04336e;font-weight:800;border-radius:24px;font-size:13px}
+        .depot-auto .steps span:first-child{background:#ffd324;color:#10234a}
+        .depot-auto .form-section{background:#fff;border:1px solid #dce9f8;border-radius:20px;padding:24px 26px;margin-bottom:18px;box-shadow:0 4px 15px rgba(0,36,90,.04)}
+        .depot-auto .section-title{display:flex;align-items:center;gap:11px;font-size:22px;font-weight:900;margin:0 0 20px}
+        .depot-auto .section-number{display:flex;align-items:center;justify-content:center;background:#ffd318;border-radius:50%;width:34px;height:34px;font-size:17px}
+        .depot-auto .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+        .depot-auto .field{font-weight:750;font-size:14px;display:flex;flex-direction:column;gap:8px}
+        .depot-auto select,.depot-auto .field input,.depot-auto textarea{width:100%;padding:14px;border:1px solid #bfcfe5;background:#fff;color:#0b2454;border-radius:12px;font:inherit;min-height:49px}
+        .depot-auto select:disabled{color:#76849b;background:#f2f4f8}
+        .depot-auto .full{grid-column:1/-1}
+        .depot-auto .equip-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+        .depot-auto .equip-list label{background:#f4f8fd;border:1px solid #e5edf6;border-radius:10px;padding:10px;display:flex;align-items:center;gap:9px;font-size:13px;font-weight:650;cursor:pointer}
+        .depot-auto .equip-list input{accent-color:#044994;width:16px;height:16px;flex-shrink:0}
+        .depot-auto .publish{border:0;border-radius:34px;background:#ffce09;color:#06183e;font-weight:900;font-size:18px;padding:16px 30px;cursor:pointer}
+        .depot-auto .note{font-size:13px;color:#58708a;line-height:1.5;margin-top:14px}
+        .depot-auto .feedback{background:#e9f5ff;padding:15px;border-radius:10px;font-weight:800}
+        @media(max-width:800px){.depot-auto .fields{grid-template-columns:1fr}.depot-auto .equip-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:500px){.depot-auto .form-section,.depot-auto .intro{padding:18px}.depot-auto .equip-list{grid-template-columns:1fr}.depot-auto .banner{min-height:180px}.depot-auto .banner p{font-size:15px}}
+      \`}</style>
+      <section className="banner">
+        <div className="banner-copy">
+          <h1>Déposer une annonce automobile</h1>
+          <p>Vendez votre voiture simplement sur TOUT ICI MARKET, avec toutes les caractéristiques utiles aux acheteurs.</p>
         </div>
-
-        <h2 style={{ color: "#0047BB", marginTop: 30 }}>Carrosserie et caractéristiques</h2>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:16}}>
-          <label>Type de carrosserie
-            <select style={inputStyle} value={form.carrosserie} onChange={e=>setForm({...form,carrosserie:e.target.value})}>
-              <option value="">Sélectionner</option>
-              {["Citadine","Berline","Break","SUV","Crossover","Coupé","Cabriolet","Monospace","4x4","Pick-up","Autre"].map(v=><option key={v}>{v}</option>)}
+      </section>
+      <div className="crumb"><a href="/automobile">Automobile &amp; Véhicules</a> / Déposer une annonce</div>
+      <div className="intro">
+        <h2>Présentez votre véhicule</h2>
+        <p>Renseignez la marque, le modèle et la finition, puis les caractéristiques de votre voiture. Les listes utilisent notre base automobile.</p>
+        <div className="steps"><span>1 · Véhicule</span><span>2 · Caractéristiques</span><span>3 · Équipements</span><span>4 · Publication</span></div>
+      </div>
+      <section className="form-section">
+        <h2 className="section-title"><span className="section-number">1</span> Votre véhicule</h2>
+        <div className="fields">
+          <label className="field">Marque *
+            <select value={form.marqueId} onChange={e=>choisirMarque(e.target.value)} required>
+              <option value="">Choisir une marque</option>
+              {marques.map(m=><option key={m.id} value={m.id}>{m.nom}</option>)}
             </select>
           </label>
-          <label>Couleur
-            <select style={inputStyle} value={form.couleur} onChange={e=>setForm({...form,couleur:e.target.value})}>
-              <option value="">Sélectionner</option>
-              {["Blanc","Noir","Gris","Argent","Bleu","Rouge","Vert","Jaune","Orange","Marron","Beige","Autre"].map(v=><option key={v}>{v}</option>)}
+          <label className="field">Modèle *
+            <select value={form.modeleId} onChange={e=>choisirModele(e.target.value)} disabled={!form.marqueId} required>
+              <option value="">Choisir un modèle</option>
+              {modeles.map(m=><option key={m.id} value={m.id}>{m.nom}</option>)}
             </select>
           </label>
-          <label>Nombre de portes
-            <select style={inputStyle} value={form.nombre_portes} onChange={e=>setForm({...form,nombre_portes:e.target.value})}>
-              <option value="">Sélectionner</option>
-              {[2,3,4,5,6].map(v=><option key={v} value={v}>{v}</option>)}
+          <label className="field">Finition
+            <select value={form.finitionId} onChange={e=>choisirFinition(e.target.value)} disabled={!form.modeleId}>
+              <option value="">Toutes les finitions / non précisée</option>
+              {finitions.map(f=><option key={f.id} value={f.id}>{f.nom}</option>)}
             </select>
           </label>
-          <label>Nombre de places
-            <select style={inputStyle} value={form.nombre_places} onChange={e=>setForm({...form,nombre_places:e.target.value})}>
-              <option value="">Sélectionner</option>
-              {[2,3,4,5,6,7,8,9].map(v=><option key={v} value={v}>{v}</option>)}
+          <label className="field">Motorisation
+            <select value={form.motorisation} onChange={e=>{
+              const m=motorisations.find(m=>m.nom===e.target.value);
+              setForm({...form,motorisation:m?.nom||"",carburant:m?.carburant||form.carburant,boite:m?.boite||form.boite,puissance_ch:String(m?.puissance_ch||form.puissance_ch)});
+            }} disabled={!form.finitionId}>
+              <option value="">Choisir une motorisation</option>
+              {motorisations.map(m=><option key={m.id} value={m.nom}>{m.nom}</option>)}
             </select>
           </label>
+          <label className="field">Année *
+            <input type="number" value={form.annee} min="1900" max="2100" placeholder="Ex. 2021" onChange={e=>setForm({...form,annee:e.target.value})}/>
+          </label>
+          <label className="field">Kilométrage *
+            <input type="number" value={form.kilometrage} min="0" placeholder="Ex. 65000" onChange={e=>setForm({...form,kilometrage:e.target.value})}/>
+          </label>
+          <label className="field">Énergie
+            <select value={form.carburant} onChange={e=>setForm({...form,carburant:e.target.value})}>
+              <option value="">Choisir une énergie</option>
+              {["Essence","Diesel","Hybride","Hybride rechargeable","Électrique","GPL"].map(v=><option key={v}>{v}</option>)}
+            </select>
+          </label>
+          <label className="field">Boîte de vitesses
+            <select value={form.boite} onChange={e=>setForm({...form,boite:e.target.value})}>
+              <option value="">Choisir une boîte</option><option>Manuelle</option><option>Automatique</option>
+            </select>
+          </label>
+          <label className="field">Puissance (ch)
+            <input type="number" value={form.puissance_ch} min="0" placeholder="Ex. 130" onChange={e=>setForm({...form,puissance_ch:e.target.value})}/>
+          </label>
+          <label className="field">Prix de vente (€) *
+            <input type="number" value={form.prix} min="1" placeholder="Ex. 16900" onChange={e=>setForm({...form,prix:e.target.value})}/>
+          </label>
         </div>
-        <h2 style={{ color: "#0047BB", marginTop: 30 }}>Options & équipements</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 10 }}>
-          {optionsAuto.map((option) => (
-            <label key={option} style={{ background: "#f5f7fb", borderRadius: 12, padding: 10 }}>
-              <input type="checkbox" onChange={() => toggleOption(option)} /> {option}
-            </label>
-          ))}
+      </section>
+      <section className="form-section">
+        <h2 className="section-title"><span className="section-number">2</span> Caractéristiques et localisation</h2>
+        <div className="fields">
+          <label className="field">Carrosserie
+            <select value={form.carrosserie} onChange={e=>setForm({...form,carrosserie:e.target.value})}>
+              <option value="">Choisir</option>{["Citadine","Berline","Break","SUV","Crossover","Coupé","Cabriolet","Monospace","4x4","Pick-up","Autre"].map(v=><option key={v}>{v}</option>)}
+            </select>
+          </label>
+          <label className="field">Couleur
+            <select value={form.couleur} onChange={e=>setForm({...form,couleur:e.target.value})}>
+              <option value="">Choisir</option>{["Blanc","Noir","Gris","Argent","Bleu","Rouge","Vert","Jaune","Orange","Marron","Beige","Autre"].map(v=><option key={v}>{v}</option>)}
+            </select>
+          </label>
+          <label className="field">Nombre de portes
+            <select value={form.nombre_portes} onChange={e=>setForm({...form,nombre_portes:e.target.value})}>
+              <option value="">Choisir</option>{[2,3,4,5,6].map(v=><option key={v} value={v}>{v}</option>)}
+            </select>
+          </label>
+          <label className="field">Nombre de places
+            <select value={form.nombre_places} onChange={e=>setForm({...form,nombre_places:e.target.value})}>
+              <option value="">Choisir</option>{[2,3,4,5,6,7,8,9].map(v=><option key={v} value={v}>{v}</option>)}
+            </select>
+          </label>
+          <label className="field">Ville *
+            <input value={form.ville} placeholder="Ex. Colmar" onChange={e=>setForm({...form,ville:e.target.value})}/>
+          </label>
+          <label className="field">Département *
+            <input value={form.departement} placeholder="Ex. 68" onChange={e=>setForm({...form,departement:e.target.value})}/>
+          </label>
+          <label className="field full">Description de votre annonce
+            <textarea rows={5} value={form.description} placeholder="État du véhicule, entretien, travaux effectués, informations utiles…" onChange={e=>setForm({...form,description:e.target.value})}/>
+          </label>
         </div>
-
-        <textarea style={{ ...inputStyle, marginTop: 24, minHeight: 140 }} placeholder="Description" onChange={(e) => setForm({ ...form, description: e.target.value })} />
-
-        <div style={{ background: "#eaf8ef", color: "#087a3d", padding: 18, borderRadius: 18, marginTop: 20, fontWeight: "bold" }}>
-          🟢 MIA vérifiera la cohérence de votre annonce.
-        </div>
-
-        <button onClick={publier} style={buttonStyle}>Publier mon annonce</button>
-
-        {message && <p style={{ fontWeight: "bold", marginTop: 20 }}>{message}</p>}
+      </section>
+      <section className="form-section">
+        <h2 className="section-title"><span className="section-number">3</span> Options et équipements</h2>
+        <div className="equip-list">{optionsAuto.map(option=><label key={option}><input type="checkbox" checked={options.includes(option)} onChange={()=>toggleOption(option)}/>{option}</label>)}</div>
+      </section>
+      <section className="form-section">
+        <h2 className="section-title"><span className="section-number">4</span> Publier votre annonce</h2>
+        <p>Vérifiez les informations avant publication. Vous devez être connecté pour publier.</p>
+        <button className="publish" type="button" onClick={publier}>＋ Publier mon annonce</button>
+        <p className="note">La publication est liée à votre compte et enregistrée dans la base TOUT ICI MARKET.</p>
+        {message&&<p className="feedback" role="status">{message}</p>}
       </section>
     </main>
   );
