@@ -15,7 +15,7 @@ export default function Home(){
  <style>{`
  .tim-home{font-family:Arial,Helvetica,sans-serif;color:#061e49;background:#f7faff;padding:15px 15px 34px;border:1px solid #e0e9f6;border-radius:18px;min-height:72vh}
  .tim-home *{box-sizing:border-box}
- .tim-home .intro{background:linear-gradient(110deg,#08265c,#0c4f9b);color:white;border-radius:15px;padding:24px clamp(18px,3vw,32px);margin-bottom:22px}
+ .tim-home .intro{background:#c9e5fb;border-radius:15px;margin-bottom:22px;overflow:hidden;min-height:250px}\n .tim-home .intro img{display:block;width:100%;height:clamp(240px,23vw,330px);object-fit:cover;object-position:center}
  .tim-home .intro h1{font-size:clamp(26px,3vw,39px);margin:0 0 7px;font-weight:900}
  .tim-home .intro p{font-size:clamp(14px,1.5vw,18px);margin:0;line-height:1.5}
  .tim-home .intro strong{color:#ffdc26}
@@ -31,7 +31,7 @@ export default function Home(){
  @media(max-width:650px){.tim-home .category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tim-home .category-card img{height:150px}}
  @media(max-width:410px){.tim-home .category-grid{grid-template-columns:1fr}.tim-home .category-card img{height:185px}}
  `}</style>
- <section className="intro"><h1>Bienvenue sur <strong>TOUT ICI MARKET</strong></h1><p>Tout acheter, tout vendre, tout trouver. Site d’annonces gratuites pour les particuliers.</p></section>
+ <section className="intro" aria-label="Tout acheter, tout vendre, tout trouver tout ici"><img src="/banniere-accueil-tout-trouver.svg" alt="Tout acheter, tout vendre, tout trouver tout ici — annonces entre particuliers" /></section>
  <section aria-label="Catégories d’annonces"><h2>Choisissez une catégorie</h2><div className="category-grid">
  {categories.map(c=><a href={c.href} key={c.href} className="category-card">
  <img src={"/categories-accueil/"+c.image+".svg"} alt={c.alt} loading="lazy"/>
