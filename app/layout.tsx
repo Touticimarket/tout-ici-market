@@ -60,8 +60,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/">Accueil</a><a href="/automobile">Automobile &amp; Véhicules</a>
       <a href="/automobile/motos">Moto</a><a href="/immobilier">Immobilier</a>
       <a href="/emploi">Emploi &amp; Services</a><a href="/maison-jardin">Maison &amp; Jardin</a>
-      <a href="/telephones">Téléphonie</a><a href="/telephones?categorie=tv">TV</a>
-      <a href="/telephones?categorie=informatique">Informatique</a>
+      <a href="/telephones">TV, Téléphonie &amp; Informatique</a>
       <a href="/vacances-loisirs">Loisirs</a><a href="/autres">Autres</a>
     </nav>
     <div className="tim-shell">
