@@ -34,7 +34,7 @@ export default function AutomobilePage(){
  .auto-home .cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
  .auto-home .category{display:block;min-width:0;border:1px solid #d6e5f8;border-radius:16px;overflow:hidden;background:linear-gradient(#fff,#f3f8ff);text-decoration:none;color:#071c44;transition:box-shadow .15s,transform .15s}
  .auto-home .category:hover,.auto-home .category:focus-visible{box-shadow:0 6px 18px #0a36862d;transform:translateY(-2px);outline:2px solid #ffcf06}
- .auto-home .category img{display:block;width:88%;height:115px;max-height:115px;object-fit:contain;object-position:center center;background:#edf5fe;border-radius:12px;margin:8px auto 6px}
+ .auto-home .category img{display:block;width:100%;height:118px;max-height:118px;object-fit:contain;object-position:center center;background:#edf5fe;border-radius:12px 12px 0 0;margin:0 auto}
  .auto-home .tile-copy{padding:10px 11px 12px}
  .auto-home .tile-title{display:flex;justify-content:space-between;align-items:center;gap:4px;font-size:15px;font-weight:900}
  .auto-home .arrow{font-size:22px}
@@ -54,7 +54,7 @@ export default function AutomobilePage(){
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
- <img src={"/auto-visuels/"+c.image+".svg?v=3"} alt={c.name} loading="lazy"/>
+ <img src={"/auto-visuels/"+c.image+".svg?v=4"} alt={c.name} loading="lazy"/>
  <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow">›</span></div><p className="tile-description">{c.description}</p></div>
  </a>)}</div>
  <div className="equip-section"><h2>Équipements &amp; Services</h2>
