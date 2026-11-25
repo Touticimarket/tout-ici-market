@@ -84,7 +84,7 @@ export default function RootLayout({children}:{children:ReactNode}){
     </nav>
     <div className="tim-shell">
       <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
-        {rubriques.map(r=><a key={r.href} href={r.href}><span className="tim-sidebar-icon" aria-hidden="true">{r.icone}</span><img className="tim-sidebar-image" src={"/accueil-valide/"+r.href.slice(1)+".svg"} alt="" aria-hidden="true"/><span>{r.nom}</span><span className="tim-sidebar-chevron" aria-hidden="true">›</span></a>)}
+        {rubriques.map(r=><a key={r.href} href={r.href}><span className="tim-sidebar-icon" aria-hidden="true">{r.icone}</span><img className="tim-sidebar-image" src={"/accueil-reel/"+({"automobile":"automobile","immobilier":"immobilier","emploi":"emploi","materiel-pro":"materiel-pro","maison-jardin":"maison-jardin","telephones":"telephones","vacances-loisirs":"vacances-loisirs","famille":"famille","bon-plan":"bon-plan","autres":"autres"} as Record<string,string>)[r.href.slice(1)]+".svg"} alt="" aria-hidden="true"/><span>{r.nom}</span><span className="tim-sidebar-chevron" aria-hidden="true">›</span></a>)}
       </aside>
       <div className="tim-content">{children}</div>
     </div>
