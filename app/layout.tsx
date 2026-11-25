@@ -22,9 +22,9 @@ const rubriques = [
 export default function RootLayout({children}:{children:ReactNode}){
   return <html lang="fr"><body style={{margin:0,background:"#f2f6fb",fontFamily:"Arial,Helvetica,sans-serif"}}>
     <style>{`
-      .tim-header{background:#041837;color:white;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:9px clamp(15px,3vw,45px)}
-      .tim-logo{display:block;width:clamp(210px,24vw,330px);flex-shrink:0}
-      .tim-logo img{display:block;width:100%;height:auto;max-height:125px;object-fit:contain}
+      .tim-header{background:#041837;color:white;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px clamp(15px,3vw,45px)}
+      .tim-logo{display:block;width:clamp(250px,27vw,395px);flex-shrink:0}
+      .tim-logo img{display:block;width:100%;height:auto;max-height:155px;object-fit:contain}
       .tim-logo-caption{display:block;color:#fff;font-size:clamp(10px,1.05vw,13px);font-weight:700;text-align:center;line-height:1.35;margin-top:3px}
       .tim-search{display:flex;flex:1;max-width:420px;height:42px;border-radius:32px;background:#fff;overflow:hidden}
       .tim-search input{flex:1;width:0;min-width:0;border:0;outline:0;padding:0 20px;font-size:15px}
@@ -48,7 +48,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-sidebar .tim-sidebar-chevron{margin-left:auto}
       .tim-content{min-width:0}
       @media(min-width:761px) and (max-width:980px){.tim-shell{grid-template-columns:180px minmax(0,1fr)}.tim-navbar{justify-content:flex-start}}
-      @media(max-width:1050px){.tim-search{display:none}.tim-header-links{gap:10px}}
+      @media(max-width:1050px){.tim-search{display:none}.tim-header{flex-wrap:wrap}.tim-home-search{order:3;max-width:none;flex-basis:100%}.tim-header-links{gap:10px}}
       /* Automobile : bandeau sur toute la largeur, rubriques à gauche seulement sous l’image. */
       .tim-shell:has(.auto-home){grid-template-areas:"auto-hero auto-hero" "auto-side auto-main";align-items:start}
       .tim-shell:has(.auto-home)>.tim-sidebar{grid-area:auto-side}
