@@ -1,3 +1,14 @@
+import {createClient} from "@supabase/supabase-js";
+import FavoriteAnnonceButton from "./components/FavoriteAnnonceButton";
+export const dynamic="force-dynamic";
+type HomeAnnonce={id:string;marque:string|null;modele:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;photos:string[]|null;carburant:string|null};
+async function latestAds():Promise<HomeAnnonce[]>{
+ const url=process.env.NEXT_PUBLIC_SUPABASE_URL;const key=process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+ if(!url||!key)return [];
+ try{const db=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
+ const {data,error}=await db.from("annonces_auto").select("id,marque,modele,prix,annee,kilometrage,ville,photos,carburant").eq("statut","publiee").order("created_at",{ascending:false}).limit(5);
+ if(error)return [];return (data??[]) as HomeAnnonce[];}catch{return []}
+}
 const categories = [
   { name:"Automobile & Véhicules", href:"/automobile", image:"automobile" },
   { name:"Immobilier", href:"/immobilier", image:"immobilier" },
@@ -11,7 +22,8 @@ const categories = [
   { name:"Autres", href:"/autres", image:"autres" }
 ];
 
-export default function Home(){
+export default async function Home(){
+  const popularAds=await latestAds();
   return <main className="tim-home">
     <style>{`
       body:has(.tim-home){background:#f6f9fd!important}
@@ -54,9 +66,19 @@ export default function Home(){
       .tim-home .popular h2{font-size:clamp(19px,1.8vw,25px);color:#08185a;margin:0;font-weight:900}
       .tim-home .popular h2::after{content:'';display:inline-block;width:48px;height:5px;border-radius:4px;background:#ffc800;margin:0 0 5px 11px}
       .tim-home .popular-head a{font-size:14px;color:#0030be;text-decoration:none;font-weight:800}
+      .tim-home .popular-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:15px}
+      .tim-home .popular-item{min-width:0;border:1px solid #d6e0ee;border-radius:12px;overflow:hidden;background:white;box-shadow:0 1px 2px #15294c19}
+      .tim-home .popular-photo{width:100%;height:98px;object-fit:cover;display:block;background:#edf3fb}
+      .tim-home .popular-content{padding:7px 10px 10px;font-size:12px;display:flex;flex-direction:column;gap:4px}
+      .tim-home .popular-content a{text-decoration:none;color:#101e48}
+      .tim-home .popular-price{color:#003fc2;font-weight:900;font-size:17px}
+      .tim-home .popular-title{font-weight:800}
+      .tim-home .popular-favorite{position:absolute;top:5px;right:5px}
+      .tim-home .popular-favorite button{font-size:0!important;border-radius:50%!important;padding:8px!important;box-shadow:0 1px 4px #021b4d55}
+      .tim-home .popular-favorite button::before{content:"♡";font-size:22px}
       .tim-home .empty-popular{border:1px solid #e1e8f1;border-radius:12px;padding:22px 16px;color:#425477;background:#fafcff;font-size:14px}
-      @media(max-width:1230px){body:has(.tim-home) .tim-header{flex-wrap:wrap}body:has(.tim-home) .tim-header-links{margin-left:auto}.tim-home .category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-      @media(max-width:760px){body:has(.tim-home) .tim-shell{display:flex;flex-direction:column;padding:8px}body:has(.tim-home) .tim-sidebar{position:static;max-width:100%;white-space:nowrap;overflow:auto}body:has(.tim-home) .tim-sidebar-title{display:none}body:has(.tim-home) .tim-sidebar-image{width:34px;height:28px}body:has(.tim-home) .tim-sidebar a{min-height:35px;border-bottom:0}body:has(.tim-home) .tim-home-search{order:3;flex-basis:100%;max-width:none}body:has(.tim-home) .tim-header{min-height:auto}body:has(.tim-home) .tim-header-links{margin-left:auto}body:has(.tim-home) .tim-navbar{min-height:52px;justify-content:flex-start}.tim-home .category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tim-home .popular-head{flex-wrap:wrap}}
+      @media(max-width:1230px){.tim-home .popular-grid{grid-template-columns:repeat(3,minmax(0,1fr))}body:has(.tim-home) .tim-header{flex-wrap:wrap}body:has(.tim-home) .tim-header-links{margin-left:auto}.tim-home .category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+      @media(max-width:760px){.tim-home .popular-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body:has(.tim-home) .tim-shell{display:flex;flex-direction:column;padding:8px}body:has(.tim-home) .tim-sidebar{position:static;max-width:100%;white-space:nowrap;overflow:auto}body:has(.tim-home) .tim-sidebar-title{display:none}body:has(.tim-home) .tim-sidebar-image{width:34px;height:28px}body:has(.tim-home) .tim-sidebar a{min-height:35px;border-bottom:0}body:has(.tim-home) .tim-home-search{order:3;flex-basis:100%;max-width:none}body:has(.tim-home) .tim-header{min-height:auto}body:has(.tim-home) .tim-header-links{margin-left:auto}body:has(.tim-home) .tim-navbar{min-height:52px;justify-content:flex-start}.tim-home .category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tim-home .popular-head{flex-wrap:wrap}}
       @media(max-width:390px){.tim-home .category-grid{grid-template-columns:1fr}}
     `}</style>
     <section className="hero" aria-label="Tout vendre, tout trouver, tout ici">
@@ -72,7 +94,15 @@ export default function Home(){
     </section>
     <section className="popular" aria-labelledby="tim-popular-title">
       <div className="popular-head"><h2 id="tim-popular-title">Annonces populaires</h2><a href="/automobile/voitures">Voir toutes les annonces →</a></div>
-      <p className="empty-popular">Les premières annonces publiées apparaîtront ici.</p>
+      {popularAds.length?<div className="popular-grid">{popularAds.map(a=><article className="popular-item" key={a.id}>
+        <div style={{position:"relative"}}><a href={"/annonce/"+a.id} aria-label={"Voir l'annonce "+[a.marque,a.modele].filter(Boolean).join(" ")}>{a.photos?.[0]?<img className="popular-photo" src={a.photos[0]} alt={[a.marque,a.modele].filter(Boolean).join(" ")}/>:<div className="popular-photo" style={{display:"grid",placeItems:"center",fontSize:35}}>🚘</div>}</a>
+        <div className="popular-favorite"><FavoriteAnnonceButton annonceId={a.id}/></div></div>
+        <div className="popular-content">
+          <a href={"/annonce/"+a.id}><span className="popular-price">{a.prix===null?"Prix non renseigné":a.prix.toLocaleString("fr-FR")+" €"}</span>
+          <div className="popular-title">{[a.marque,a.modele].filter(Boolean).join(" ")||"Annonce automobile"}</div>
+          <div>{[a.annee,a.carburant,a.kilometrage!==null?a.kilometrage.toLocaleString("fr-FR")+" km":null].filter(Boolean).join(" · ")}</div>
+          <div>📍 {a.ville||"Ville non renseignée"}</div></a>
+        </div></article>)}</div>:<p className="empty-popular">Les premières annonces publiées apparaîtront ici.</p>}
     </section>
   </main>
 }
