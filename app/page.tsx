@@ -48,7 +48,7 @@ export default function Home(){
       .tim-home .category-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:0 7px}
       .tim-home .category-card{display:block;overflow:hidden;border:1px solid #d9e2ee;border-radius:14px;background:#fff;text-decoration:none;box-shadow:0 1px 2px #0b346b13;transition:transform .15s,box-shadow .15s}
       .tim-home .category-card:hover,.tim-home .category-card:focus-visible{transform:translateY(-2px);box-shadow:0 6px 17px #0b346b24;outline:2px solid #ffd007}
-      .tim-home .category-card img{width:100%;height:auto;display:block;aspect-ratio:2.26 / 1;object-fit:fill}
+      .tim-home .category-card img{width:100%;height:auto;display:block;aspect-ratio:261 / 119;object-fit:fill}
       .tim-home .popular{padding:0 8px}
       .tim-home .popular-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:14px 0 10px}
       .tim-home .popular h2{font-size:clamp(19px,1.8vw,25px);color:#08185a;margin:0;font-weight:900}
@@ -60,13 +60,13 @@ export default function Home(){
       @media(max-width:390px){.tim-home .category-grid{grid-template-columns:1fr}}
     `}</style>
     <section className="hero" aria-label="Tout vendre, tout trouver, tout ici">
-      <img src="/accueil-valide/bandeau.svg" alt="Tout vendre, tout trouver, tout ici — voiture, moto, immobilier, maison et loisirs" />
+      <img src="/accueil-reel/bandeau.svg" alt="Tout acheter, tout vendre, tout trouver tout ici — voiture, moto, maison, bateau, salon, télévision et vélo" />
     </section>
     <section aria-labelledby="tim-categories-title">
       <h1 className="heading" id="tim-categories-title">Toutes les catégories</h1>
       <div className="category-grid">
         {categories.map(c=><a className="category-card" key={c.href} href={c.href} aria-label={c.name}>
-          <img src={'/accueil-valide/'+c.image+'.svg'} alt={c.name} loading="lazy" />
+          <img src={'/accueil-reel/'+c.image+'.svg'} alt={c.name} loading="lazy" />
         </a>)}
       </div>
     </section>
