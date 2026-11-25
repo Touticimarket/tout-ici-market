@@ -49,6 +49,13 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-content{min-width:0}
       @media(min-width:761px) and (max-width:980px){.tim-shell{grid-template-columns:180px minmax(0,1fr)}.tim-navbar{justify-content:flex-start}}
       @media(max-width:1050px){.tim-search{display:none}.tim-header{flex-wrap:wrap}.tim-home-search{order:3;max-width:none;flex-basis:100%}.tim-header-links{gap:10px}}
+      .tim-auto-sidebar-post{display:none}
+      .tim-shell:has(.auto-home) .tim-auto-sidebar-post{display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(#073e9c,#052b79);color:#fff;font-size:16px;font-weight:900;border-radius:13px;padding:15px 8px;margin:1px 2px 10px;text-decoration:none}
+      .tim-shell:has(.auto-home) .tim-sidebar{background:linear-gradient(#fff,#f3f8ff);border:1px solid #d8e5f6;border-radius:15px;padding:8px}
+      .tim-shell:has(.auto-home) .tim-sidebar-title{background:transparent;padding:12px 8px;color:#0a235d}
+      .tim-shell:has(.auto-home) .tim-sidebar a:not(.tim-auto-sidebar-post){background:transparent;font-size:13px;min-height:43px}
+      .tim-shell:has(.auto-home) .tim-sidebar a[href="/automobile"]{background:#ffcf0a;font-weight:900;border-radius:13px}
+      .tim-shell:has(.auto-home) .tim-sidebar-image{display:none}
       /* Automobile : bandeau sur toute la largeur, rubriques à gauche seulement sous l’image. */
       .tim-shell:has(.auto-home){grid-template-areas:"auto-hero auto-hero" "auto-side auto-main";align-items:start}
       .tim-shell:has(.auto-home)>.tim-sidebar{grid-area:auto-side}
@@ -84,6 +91,7 @@ export default function RootLayout({children}:{children:ReactNode}){
     </nav>
     <div className="tim-shell">
       <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
+        <a className="tim-auto-sidebar-post" href="/automobile/deposer">➤ Déposer une annonce</a>
         {rubriques.map(r=><a key={r.href} href={r.href}><span className="tim-sidebar-icon" aria-hidden="true">{r.icone}</span><img className="tim-sidebar-image" src={"/accueil-reel/"+({"automobile":"automobile","immobilier":"immobilier","emploi":"emploi","materiel-pro":"materiel-pro","maison-jardin":"maison-jardin","telephones":"telephones","vacances-loisirs":"vacances-loisirs","famille":"famille","bon-plan":"bon-plan","autres":"autres"} as Record<string,string>)[r.href.slice(1)]+".svg"} alt="" aria-hidden="true"/><span>{r.nom}</span><span className="tim-sidebar-chevron" aria-hidden="true">›</span></a>)}
       </aside>
       <div className="tim-content">{children}</div>
