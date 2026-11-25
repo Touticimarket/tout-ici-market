@@ -1,5 +1,6 @@
 "use client";
-import {useEffect,useMemo,useState} from "react";
+import {useEffect,useMemo,useRef,useState} from "react";
+import SaveSearchButton from "../../components/SaveSearchButton";
 import {useParams} from "next/navigation";
 import {supabase} from "../../lib/supabaseClient";
 import ShareLinks from "../../components/ShareLinks";
@@ -50,6 +51,24 @@ const toggleEquipement=(item:string)=>setEquipements(old=>old.includes(item)?old
 const [boite,setBoite]=useState("");const [ville,setVille]=useState("");const [tri,setTri]=useState("recent");
 const reset=()=>{setMarqueId("");setModeleId("");setFinitionId("");setPrixMin("");setPrixMax("");setAnneeMin("");setAnneeMax("");setKmMin("");setKmMax("");setCarburant("");setBoite("");setVille("");setTri("recent");setPuissanceMin("");setPuissanceMax("");setDepartement("");setMotCle("");setEquipements([]);setCouleur("");setPortes("");setPlaces("");setCarrosserie("")};
 const [loading,setLoading]=useState(true);const [error,setError]=useState("");
+const restoreModelId=useRef("");const restoreFinitionId=useRef("");
+const [exactCount,setExactCount]=useState<number|null>(null);
+const [countLoading,setCountLoading]=useState(true);
+useEffect(()=>{
+ const search=new URLSearchParams(window.location.search).get("f");if(!search)return;
+ try{
+ const x=JSON.parse(search) as Record<string,unknown>;
+ const read=(key:string)=>typeof x[key]==="string"?String(x[key]):"";
+ restoreModelId.current=read("modeleId");restoreFinitionId.current=read("finitionId");
+ setMarqueId(read("marqueId"));setPrixMin(read("prixMin"));setPrixMax(read("prixMax"));
+ setAnneeMin(read("anneeMin"));setAnneeMax(read("anneeMax"));setKmMin(read("kmMin"));setKmMax(read("kmMax"));
+ setCarburant(read("carburant"));setBoite(read("boite"));setVille(read("ville"));setDepartement(read("departement"));
+ setPuissanceMin(read("puissanceMin"));setPuissanceMax(read("puissanceMax"));setMotCle(read("motCle"));
+ setCouleur(read("couleur"));setPortes(read("portes"));setPlaces(read("places"));setCarrosserie(read("carrosserie"));
+ if(Array.isArray(x.equipements))setEquipements(x.equipements.filter((e):e is string=>typeof e==="string"));
+ }catch{setError("Les critères de la recherche enregistrée sont invalides.");}
+},[]);
+
 useEffect(()=>{if(!category){setLoading(false);return;}let mounted=true;
 async function load(){setLoading(true);const [m,a]=await Promise.all([
 supabase.from("marques_auto").select("id,nom").order("nom").limit(1000),
@@ -60,14 +79,15 @@ setMarques(m.data??[]);setAnnonces(a.data??[]);setLoading(false);}
 void load();return()=>{mounted=false;};},[slug]);
 useEffect(()=>{let mounted=true;setModeles([]);setModeleId("");setFinitions([]);setFinitionId("");if(!marqueId)return;
 async function loadModels(){const {data,error}=await supabase.from("modeles_auto").select("id,nom").eq("marque_id",marqueId).order("nom").limit(1000);
-if(!mounted)return;if(error)setError("Impossible de charger les modèles.");else setModeles(data??[]);}
+if(!mounted)return;if(error)setError("Impossible de charger les modèles.");else {setModeles(data??[]);if(restoreModelId.current){setModeleId(restoreModelId.current);restoreModelId.current="";}}}
 void loadModels();return()=>{mounted=false;};},[marqueId]);
 useEffect(()=>{let mounted=true;setFinitions([]);setFinitionId("");if(!modeleId)return;
-async function loadFinitions(){const {data,error}=await supabase.from("finitions_auto").select("id,nom").eq("modele_id",modeleId).order("nom").limit(1000);if(!mounted)return;if(error)setError("Impossible de charger les finitions.");else setFinitions(data??[]);}
+async function loadFinitions(){const {data,error}=await supabase.from("finitions_auto").select("id,nom").eq("modele_id",modeleId).order("nom").limit(1000);if(!mounted)return;if(error)setError("Impossible de charger les finitions.");else {setFinitions(data??[]);if(restoreFinitionId.current){setFinitionId(restoreFinitionId.current);restoreFinitionId.current="";}}}
 void loadFinitions();return()=>{mounted=false;};},[modeleId]);
 const finition=finitions.find(x=>x.id===finitionId)?.nom.toLocaleLowerCase("fr")??"";
 const marque=marques.find(x=>x.id===marqueId)?.nom.toLocaleLowerCase("fr")??"";
 const modele=modeles.find(x=>x.id===modeleId)?.nom.toLocaleLowerCase("fr")??"";
+const criteres=useMemo(()=>({marqueId,modeleId,finitionId,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,puissanceMin,puissanceMax,carburant,boite,ville,departement,motCle,equipements,couleur,portes,places,carrosserie}),[marqueId,modeleId,finitionId,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,puissanceMin,puissanceMax,carburant,boite,ville,departement,motCle,equipements,couleur,portes,places,carrosserie]);
 const filtered=useMemo(()=>annonces.filter(a=>
 (!marque||a.marque?.toLocaleLowerCase("fr")===marque)&&
 (!modele||a.modele?.toLocaleLowerCase("fr")===modele)&&
@@ -92,6 +112,29 @@ equipements.every(e=>a.options?.some(o=>o.toLocaleLowerCase("fr")===e.toLocaleLo
 (!ville||a.ville?.toLocaleLowerCase("fr").includes(ville.toLocaleLowerCase("fr")))
 ).sort((a,b)=>tri==="prix-asc"?(a.prix??Infinity)-(b.prix??Infinity):tri==="prix-desc"?(b.prix??0)-(a.prix??0):tri==="annee-desc"?(b.annee??0)-(a.annee??0):0),
 [annonces,marque,modele,finition,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,carburant,boite,ville,tri,puissanceMin,puissanceMax,departement,motCle,equipements,couleur,portes,places,carrosserie]);
+useEffect(()=>{if(!category)return;let cancelled=false;setCountLoading(true);
+ const timeout=setTimeout(async()=>{
+  let q=supabase.from("annonces_auto").select("id",{head:true,count:"exact"}).eq("statut","publiee").in("type_vehicule",category.dbTypes);
+  if(marque)q=q.ilike("marque",marque);
+  if(modele)q=q.ilike("modele",modele);
+  if(finition)q=q.ilike("finition",finition);
+  if(carburant)q=q.eq("carburant",carburant);
+  if(boite)q=q.eq("boite",boite);
+  if(ville)q=q.ilike("ville","%"+ville+"%");
+  if(departement)q=q.ilike("departement","%"+departement+"%");
+  if(prixMin)q=q.gte("prix",Number(prixMin));if(prixMax)q=q.lte("prix",Number(prixMax));
+  if(anneeMin)q=q.gte("annee",Number(anneeMin));if(anneeMax)q=q.lte("annee",Number(anneeMax));
+  if(kmMin)q=q.gte("kilometrage",Number(kmMin));if(kmMax)q=q.lte("kilometrage",Number(kmMax));
+  if(puissanceMin)q=q.gte("puissance_ch",Number(puissanceMin));if(puissanceMax)q=q.lte("puissance_ch",Number(puissanceMax));
+  if(couleur)q=q.ilike("couleur",couleur);if(carrosserie)q=q.ilike("carrosserie",carrosserie);
+  if(portes)q=q.eq("nombre_portes",Number(portes));if(places)q=q.eq("nombre_places",Number(places));
+  if(equipements.length)q=q.contains("options",equipements);
+  if(motCle)q=q.or("marque.ilike.%"+motCle+"%,modele.ilike.%"+motCle+"%,finition.ilike.%"+motCle+"%,description.ilike.%"+motCle+"%");
+  const {count,error:countError}=await q;
+  if(!cancelled){setExactCount(countError?null:count);setCountLoading(false);}
+ },260);
+ return()=>{cancelled=true;clearTimeout(timeout)};
+},[slug,marque,modele,finition,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,carburant,boite,ville,departement,motCle,equipements,couleur,portes,places,carrosserie,puissanceMin,puissanceMax]);
 if(!category)return <main style={{padding:40}}><h1>Catégorie introuvable</h1><a href="/automobile">Retour aux catégories</a></main>;
 return <main className="vehicles-sub">
 <style>{`
@@ -139,7 +182,12 @@ return <main className="vehicles-sub">
 <div className="inner">
 {<div className="search-layout">
 <aside className="search-sidebar" aria-label="Filtres de recherche automobile">
-<div className="filter-heading"><h2>Affiner votre recherche</h2><button type="button" className="reset" onClick={reset}>↺ Réinitialiser les filtres</button></div>
+<div className="filter-heading"><h2>Affiner votre recherche</h2>
+ <div style={{border:"1px solid #d5e5f7",borderRadius:12,padding:14,background:"#f6faff"}}>
+ <div style={{fontSize:12,color:"#435878",fontWeight:700}}>Véhicules correspondant à vos critères</div>
+ <strong aria-live="polite" style={{display:"block",fontSize:30,color:"#073b81",marginTop:4}}>{countLoading?"…":exactCount===null?"Indisponible":exactCount.toLocaleString("fr-FR")}</strong></div>
+ <SaveSearchButton categorie={slug} criteres={criteres} titre={[category.title,marques.find(x=>x.id===marqueId)?.nom,modeles.find(x=>x.id===modeleId)?.nom,carburant,boite,ville||departement].filter(Boolean).join(" · ")}/>
+ <button type="button" className="reset" onClick={reset}>↺ Réinitialiser les filtres</button></div>
 <details className="filter-group" open><summary>Marque, modèle et finition</summary><div className="filters">
 <label>Marque<select aria-label="Marque" value={marqueId} onChange={e=>setMarqueId(e.target.value)}><option value="">Toutes les marques</option>{marques.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
 <label>Modèle<select aria-label="Modèle" value={modeleId} onChange={e=>setModeleId(e.target.value)} disabled={!marqueId}><option value="">{marqueId?"Tous les modèles":"Choisir une marque"}</option>{modeles.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
@@ -178,7 +226,7 @@ return <main className="vehicles-sub">
 </aside>
 <section className="search-results" aria-label={"Annonces "+category.title}>
 {error&&<p role="alert">{error}</p>}
-<div className="results-bar"><h2>Annonces — {category.title} ({filtered.length})</h2><label>Trier par <select value={tri} onChange={e=>setTri(e.target.value)}><option value="recent">Ordre d'affichage</option><option value="prix-asc">Prix croissant</option><option value="prix-desc">Prix décroissant</option><option value="annee-desc">Année récente</option></select></label></div>
+<div className="results-bar"><h2>Annonces — {category.title} ({countLoading?"…":exactCount===null?filtered.length:exactCount})</h2><label>Trier par <select value={tri} onChange={e=>setTri(e.target.value)}><option value="recent">Ordre d'affichage</option><option value="prix-asc">Prix croissant</option><option value="prix-desc">Prix décroissant</option><option value="annee-desc">Année récente</option></select></label></div>
 {loading?<p>Chargement des annonces…</p>:filtered.length? <div className="ads">{filtered.map(a=><article key={a.id}>{a.photos?.[0]?<img src={a.photos[0]} alt={"Photo du véhicule "+(a.marque??"")+" "+(a.modele??"")} style={{width:"100%",height:145,objectFit:"cover",borderRadius:12}}/>:<div className="placeholder-photo" aria-label="Photo non disponible">🚘</div>}<h3>{a.marque} {a.modele}</h3><div className="price">{a.prix==null?"Prix non renseigné":a.prix.toLocaleString("fr-FR")+" €"}</div><p>{[a.finition,a.annee,a.carburant,a.kilometrage==null?null:a.kilometrage.toLocaleString("fr-FR")+" km"].filter(Boolean).join(" · ")}</p><p>📍 {a.ville??"Lieu non renseigné"} {a.code_postal??""}</p><div style={{display:"flex",flexWrap:"wrap",gap:8,alignItems:"center",justifyContent:"space-between",marginTop:14}}><a href={"/annonce/"+a.id} style={{display:"inline-block",borderRadius:10,background:"#e1ecfd",color:"#07417b",padding:"9px 12px",fontWeight:800,textDecoration:"none",fontSize:13}}>Voir l’annonce →</a><ShareLinks compact url={"/annonce/"+a.id} title={[a.marque,a.modele,a.finition].filter(Boolean).join(" ")+" — TOUT ICI MARKET"} label="Partager"/></div></article>)}</div>:<div className="notice">Aucune annonce publiée dans cette catégorie pour le moment. Modifiez vos filtres ou revenez plus tard.</div>}
 </section></div>}
 </div></main>;
