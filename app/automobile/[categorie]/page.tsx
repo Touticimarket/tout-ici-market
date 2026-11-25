@@ -2,6 +2,7 @@
 import {useEffect,useMemo,useRef,useState} from "react";
 import SaveSearchButton from "../../components/SaveSearchButton";
 import FavoriteAnnonceButton from "../../components/FavoriteAnnonceButton";
+import BrandAutocomplete from "../../components/BrandAutocomplete";
 import {useParams} from "next/navigation";
 import {supabase} from "../../lib/supabaseClient";
 import ShareLinks from "../../components/ShareLinks";
@@ -190,7 +191,7 @@ return <main className="vehicles-sub">
  <SaveSearchButton categorie={slug} criteres={criteres} titre={[category.title,marques.find(x=>x.id===marqueId)?.nom,modeles.find(x=>x.id===modeleId)?.nom,carburant,boite,ville||departement].filter(Boolean).join(" · ")}/>
  <button type="button" className="reset" onClick={reset}>↺ Réinitialiser les filtres</button></div>
 <details className="filter-group" open><summary>Marque, modèle et finition</summary><div className="filters">
-<label>Marque<select aria-label="Marque" value={marqueId} onChange={e=>setMarqueId(e.target.value)}><option value="">Toutes les marques</option>{marques.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
+<label>Marque<BrandAutocomplete brands={marques} value={marqueId} onChange={setMarqueId}/></label>
 <label>Modèle<select aria-label="Modèle" value={modeleId} onChange={e=>setModeleId(e.target.value)} disabled={!marqueId}><option value="">{marqueId?"Tous les modèles":"Choisir une marque"}</option>{modeles.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
 <label>Finition<select aria-label="Finition" value={finitionId} onChange={e=>setFinitionId(e.target.value)} disabled={!modeleId}><option value="">{modeleId?"Toutes les finitions":"Choisir un modèle"}</option>{finitions.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
 </div></details>
