@@ -27,7 +27,11 @@ export default function AutomobilePage(){
  .auto-home{font-family:Arial,Helvetica,sans-serif;background:#f7fafe;color:#081d49;min-height:100vh;margin:-12px -12px 0 -12px;padding-bottom:35px}
  .auto-home *{box-sizing:border-box}
  .auto-home .hero{margin:0 0 0 calc(-205px - 12px);width:calc(100% + 205px + 12px);overflow:hidden;background:#0b3268}
- .auto-home .hero img{display:block;width:100%;height:auto;aspect-ratio:1448/238;object-fit:cover}
+ .auto-home .hero{position:relative}
+ .auto-home .hero-title{position:absolute;z-index:1;top:19%;left:2.2%;padding:12px 18px;background:linear-gradient(90deg,#071b44dc,#071b4480);border-radius:12px;max-width:39%;color:white}
+ .auto-home .hero-title strong{display:block;font-size:clamp(19px,2.5vw,38px);color:#ffda11;font-weight:900;line-height:1.1}
+ .auto-home .hero-title span{display:block;font-size:clamp(11px,1.1vw,17px);font-weight:700;margin-top:8px;line-height:1.3}
+ .auto-home .hero img{display:block;width:100%;height:auto;aspect-ratio:1448/296;object-fit:cover}
  .auto-home .main-panel{background:#fff;margin:0 12px 0 0;border:1px solid #deebfb;border-radius:20px;padding:16px 18px 22px;box-shadow:0 3px 14px #17365f0d}
  .auto-home h1{font-size:clamp(22px,2.2vw,29px);margin:0 0 4px;color:#091c47}
  .auto-home .subtitle{color:#51617d;font-size:15px;font-weight:700;margin:0 0 15px}
@@ -47,14 +51,14 @@ export default function AutomobilePage(){
  .auto-home .equip-icon{font-size:30px;line-height:1}
  @media(max-width:1100px){.auto-home .cards{grid-template-columns:repeat(3,minmax(0,1fr))}.auto-home .equip-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
  @media(max-width:980px){.auto-home .hero{margin-left:calc(-180px - 12px);width:calc(100% + 180px + 12px)}}
- @media(max-width:760px){.auto-home .hero{margin-left:0;width:100%}.auto-home .cards{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-home .main-panel{margin:0 8px;padding:13px}.auto-home .hero img{height:180px;object-position:center}}
+ @media(max-width:760px){.auto-home .hero{margin-left:0;width:100%}.auto-home .cards{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-home .main-panel{margin:0 8px;padding:13px}.auto-home .hero img{height:180px;object-position:center}.auto-home .hero-title{top:10%;left:2%;max-width:58%;padding:7px}.auto-home .hero-title span{font-size:10px}}
  @media(max-width:480px){.auto-home .cards{grid-template-columns:1fr}.auto-home .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-home .hero img{height:155px;object-position:center}}
  `}</style>
- <div className="hero"><img src="/auto-visuels/bandeau-auto-final.svg" alt="Automobile et véhicules : voiture bleue, utilitaire, moto, camping-car, bateau et vélo devant un lac de montagne" /></div>
+ <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Automobile &amp; Véhicules</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
- <img src={"/auto-visuels/"+c.image+".svg?v=4"} alt={c.name} loading="lazy"/>
+ <img src={"/auto-reel/"+c.image+".svg"} alt={c.name} loading="lazy"/>
  <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow">›</span></div><p className="tile-description">{c.description}</p></div>
  </a>)}</div>
  <div className="equip-section"><h2>Équipements &amp; Services</h2>
