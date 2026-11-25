@@ -2,6 +2,7 @@ import {createClient} from "@supabase/supabase-js";
 import {notFound} from "next/navigation";
 import type {Metadata} from "next";
 import ShareLinks from "../../components/ShareLinks";
+import {TrackAutoView} from "../../components/FavoriteAnnonceButton";
 
 type Props={params:Promise<{id:string}>};
 type AutoAd={
@@ -34,7 +35,7 @@ export default async function AnnoncePage({params}:Props){
  const {id}=await params;const a=await getAd(id);if(!a)notFound();
  const title=titleOf(a);
  const details=[["Année",a.annee],["Kilométrage",a.kilometrage!=null?a.kilometrage.toLocaleString("fr-FR")+" km":null],["Énergie",a.carburant],["Boîte de vitesses",a.boite],["Puissance",a.puissance_ch!=null?a.puissance_ch+" ch":null],["Couleur",a.couleur],["Carrosserie",a.carrosserie],["Catégorie",a.type_vehicule]];
- return <main style={{background:"#f4f8fe",color:"#091c42",fontFamily:"Arial,Helvetica,sans-serif",padding:"clamp(16px,3vw,36px)",minHeight:"65vh"}}>
+ return <><TrackAutoView annonceId={a.id}/><main style={{background:"#f4f8fe",color:"#091c42",fontFamily:"Arial,Helvetica,sans-serif",padding:"clamp(16px,3vw,36px)",minHeight:"65vh"}}>
    <a href="/automobile" style={{color:"#0956a5",fontWeight:700,textDecoration:"none"}}>← Retour à Automobile & Véhicules</a>
    <div style={{background:"white",padding:"clamp(18px,3vw,30px)",borderRadius:18,marginTop:16,boxShadow:"0 8px 24px #122e5714"}}>
     <h1 style={{fontSize:"clamp(27px,3vw,38px)",margin:"0 0 12px"}}>{title}</h1>
@@ -48,5 +49,5 @@ export default async function AnnoncePage({params}:Props){
     <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(175px,1fr))",gap:10}}>{details.filter(([,value])=>value!==null&&value!==undefined&&value!=="").map(([label,value])=><div key={String(label)} style={{background:"#f1f6fd",borderRadius:10,padding:12}}><div style={{color:"#5e6c83",fontSize:12,fontWeight:700}}>{label}</div><div style={{fontWeight:800,marginTop:5}}>{value}</div></div>)}</div>
     {a.description&&<><h2 style={{fontSize:22,marginTop:27}}>Description</h2><p style={{whiteSpace:"pre-wrap",lineHeight:1.65}}>{a.description}</p></>}
    </div>
- </main>;
+ </main></>;
 }
