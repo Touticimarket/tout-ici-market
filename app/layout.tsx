@@ -29,6 +29,8 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-search{display:flex;flex:1;max-width:420px;height:42px;border-radius:32px;background:#fff;overflow:hidden}
       .tim-search input{flex:1;width:0;min-width:0;border:0;outline:0;padding:0 20px;font-size:15px}
       .tim-search button{border:0;background:#ffcf06;padding:0 20px;font-size:21px;cursor:pointer}
+      .tim-home-search{display:none}
+      .tim-sidebar-image{display:none}
       .tim-header-links{display:flex;align-items:center;gap:10px;white-space:nowrap}
       .tim-header-links a{color:#fff;text-decoration:none;font-weight:700;font-size:14px}
       .tim-header-links .tim-post{background:#ffcf06;color:#001942;padding:15px 20px;border-radius:19px}
@@ -59,6 +61,7 @@ export default function RootLayout({children}:{children:ReactNode}){
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI MARKET"><img src="/tout-ici-market-officiel.svg" alt="TOUT ICI MARKET"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
+      <form className="tim-home-search" action="/automobile/voitures" role="search"><span className="search-symbol" aria-hidden="true">⌕</span><input type="search" name="q" aria-label="Que recherchez-vous ?" placeholder="Que recherchez-vous ?" /><button type="submit">Rechercher</button></form>
       
       <nav className="tim-header-links" aria-label="Espace utilisateur">
         <a href="/compte">♙ Mon compte</a>
@@ -81,7 +84,7 @@ export default function RootLayout({children}:{children:ReactNode}){
     </nav>
     <div className="tim-shell">
       <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
-        {rubriques.map(r=><a key={r.href} href={r.href}><span className="tim-sidebar-icon" aria-hidden="true">{r.icone}</span><span>{r.nom}</span><span className="tim-sidebar-chevron" aria-hidden="true">›</span></a>)}
+        {rubriques.map(r=><a key={r.href} href={r.href}><span className="tim-sidebar-icon" aria-hidden="true">{r.icone}</span><img className="tim-sidebar-image" src={"/accueil-valide/"+r.href.slice(1)+".svg"} alt="" aria-hidden="true"/><span>{r.nom}</span><span className="tim-sidebar-chevron" aria-hidden="true">›</span></a>)}
       </aside>
       <div className="tim-content">{children}</div>
     </div>
