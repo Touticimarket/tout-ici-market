@@ -1,76 +1,78 @@
-const categories=[
- {name:"Automobile & Véhicules",href:"/automobile",image:"automobile"},
- {name:"Immobilier",href:"/immobilier",image:"immobilier"},
- {name:"Emploi",href:"/emploi",image:"emploi"},
- {name:"Matériel pro",href:"/materiel-pro",image:"materiel-pro"},
- {name:"Maison, Bricolage & Jardin",href:"/maison-jardin",image:"maison-jardin"},
- {name:"TV, Téléphonie & Informatique",href:"/telephones",image:"telephones"},
- {name:"Loisirs & Voyages",href:"/vacances-loisirs",image:"vacances-loisirs"},
- {name:"Famille",href:"/famille",image:"famille"},
- {name:"Bon plan",href:"/bon-plan",image:"bon-plan"},
- {name:"Autres",href:"/autres",image:"autres"}
+const categories = [
+  { name:"Automobile & Véhicules", href:"/automobile", image:"automobile" },
+  { name:"Immobilier", href:"/immobilier", image:"immobilier" },
+  { name:"Emploi", href:"/emploi", image:"emploi" },
+  { name:"Matériel pro", href:"/materiel-pro", image:"materiel-pro" },
+  { name:"Maison, Bricolage & Jardin", href:"/maison-jardin", image:"maison-jardin" },
+  { name:"TV, Téléphonie & Informatique", href:"/telephones", image:"telephones" },
+  { name:"Loisirs & Voyages", href:"/vacances-loisirs", image:"vacances-loisirs" },
+  { name:"Famille", href:"/famille", image:"famille" },
+  { name:"Bon plan", href:"/bon-plan", image:"bon-plan" },
+  { name:"Autres", href:"/autres", image:"autres" }
 ];
-const exemples=[
- {label:"Audi A3 Sportback",price:"14 500 €",detail:"2020 · Diesel · 78 000 km",location:"Lyon (69000)"},
- {label:"Appartement T3",price:"235 000 €",detail:"68 m² · 2 chambres",location:"Bordeaux (33000)"},
- {label:"iPhone 13 128 Go",price:"650 €",detail:"128 Go · Très bon état",location:"Marseille (13000)"},
- {label:"Canapé 3 places luxe",price:"1 250 €",detail:"Tissu bon état",location:"Toulouse (31000)"},
- {label:"Vélo tout chemin",price:"180 €",detail:"21 vitesses · Taille M",location:"Nantes (44000)"}
-];
+
 export default function Home(){
- return <main className="tim-home">
- <style>{`
- /* La présentation de cette page correspond à la référence de l'accueil uniquement. */
- body:has(.tim-home) .tim-shell{grid-template-columns:265px minmax(0,1fr);gap:10px;max-width:none;padding:10px 5px 20px}
- body:has(.tim-home) .tim-content{min-width:0}
- body:has(.tim-home) .tim-sidebar{background:linear-gradient(#fff,#f5f8ff);padding:8px 7px;border-radius:15px;border:1px solid #d9e4f5;position:static}
- body:has(.tim-home) .tim-sidebar-title{background:#fff;color:#11254a;font-size:15px;text-align:left;padding:13px 9px;margin-bottom:3px}
- body:has(.tim-home) .tim-sidebar a{font-size:12px;gap:10px;min-height:52px;padding:5px 6px;border-bottom:1px solid #e2e7ef}
- body:has(.tim-home) .tim-sidebar .tim-sidebar-icon{display:block;flex:0 0 50px;width:50px;height:42px;border-radius:8px;font-size:0;background-position:center;background-size:cover}
- ${categories.map((c,i)=>`body:has(.tim-home) .tim-sidebar a:nth-of-type(${i+1}) .tim-sidebar-icon{background-image:url("/home-reference/sidebar-${c.image}.svg")}`).join("\n")}
- body:has(.tim-home) .tim-header{min-height:89px;padding:3px 34px}
- body:has(.tim-home) .tim-logo{width:290px;max-width:290px}
- body:has(.tim-home) .tim-logo img{width:100%;max-height:85px;object-fit:contain}
- body:has(.tim-home) .tim-logo-caption{display:none}
- body:has(.tim-home) .tim-header-links{gap:18px}
- body:has(.tim-home) .tim-search{display:flex;max-width:560px;height:46px;border-radius:12px}
- body:has(.tim-home) .tim-search input{font-size:14px}
- body:has(.tim-home) .tim-search button{font-size:13px;font-weight:800;padding:0 20px;border-radius:10px}
- body:has(.tim-home) .tim-navbar{min-height:47px;align-items:center;border-bottom:3px solid #ffcf06;padding:0 12px}
- body:has(.tim-home) .tim-navbar a:first-child{font-size:0;min-width:72px;text-align:center}
- body:has(.tim-home) .tim-navbar a:first-child:before{content:"⌂";font-size:27px;line-height:20px}
- .tim-home{box-sizing:border-box;background:#fff;color:#091d45;font-family:Arial,Helvetica,sans-serif;min-height:80vh}
- .tim-home *{box-sizing:border-box}
- .tim-home .hero{border-radius:16px;overflow:hidden;background:#cde7fc}
- .tim-home .hero img{display:block;width:100%;height:auto;min-height:240px;object-fit:cover}
- .tim-home .category-title{display:flex;align-items:center;justify-content:center;gap:15px;margin:14px 0 14px;font-size:26px;color:#061b4f}
- .tim-home .category-title:before,.tim-home .category-title:after{content:"";background:#ffbc05;width:40px;height:4px;border-radius:4px}
- .tim-home .category-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 5px}
- .tim-home .category{display:block;min-width:0;position:relative;overflow:hidden;border-radius:14px;border:1px solid #d6dfed;background:#fff;text-decoration:none;color:#091b48;box-shadow:0 2px 3px #1c3c6415;transition:transform .15s,box-shadow .15s}
- .tim-home .category:hover,.tim-home .category:focus-visible{transform:translateY(-2px);outline:2px solid #ffce09;box-shadow:0 6px 16px #17335a2a}
- .tim-home .category img{width:100%;height:85px;object-fit:cover;display:block;background:#eaf3ff}
- .tim-home .category-label{min-height:33px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:12px;margin:-1px 10px 3px;position:relative;font-size:13px;font-weight:900;text-align:center;padding:5px 3px;line-height:1.1}
- .tim-home .popular-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:16px 7px 10px}
- .tim-home .popular-heading h2{font-size:23px;margin:0;color:#081e50}
- .tim-home .popular-heading a{color:#144ac7;font-size:12px;font-weight:700;text-decoration:none}
- .tim-home .preview-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:13px;margin:0 5px}
- .tim-home .preview{border:1px solid #dce2ec;border-radius:13px;overflow:hidden;background:#fff;box-shadow:0 2px 3px #1c3c640d}
- .tim-home .preview img{width:100%;height:66px;object-fit:cover;display:block}
- .tim-home .preview-content{padding:7px 10px 12px;font-size:11px}
- .tim-home .preview-price{color:#1145d0;font-size:14px;font-weight:900}
- .tim-home .preview-name{font-size:11px;font-weight:800;margin:4px 0}
- .tim-home .preview-detail{margin:5px 0;color:#3a4557}
- .tim-home .example-label{font-size:11px;color:#566981;margin:7px 7px 0}
- @media(max-width:1200px){.tim-home .category-grid,.tim-home .preview-cards{grid-template-columns:repeat(3,minmax(0,1fr))}body:has(.tim-home) .tim-header{padding:5px 14px}body:has(.tim-home) .tim-logo{width:235px}}
- @media(max-width:800px){body:has(.tim-home) .tim-shell{grid-template-columns:1fr}body:has(.tim-home) .tim-sidebar{display:flex;overflow-x:auto;white-space:nowrap}body:has(.tim-home) .tim-sidebar a{flex-shrink:0}body:has(.tim-home) .tim-sidebar .tim-sidebar-icon{flex:0 0 38px;width:38px;height:33px}body:has(.tim-home) .tim-search{display:none}.tim-home .category-grid,.tim-home .preview-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.tim-home .hero img{min-height:180px}}
- @media(max-width:470px){.tim-home .category-grid,.tim-home .preview-cards{gap:8px}.tim-home .category-label{font-size:11px}.tim-home .category-title{font-size:21px}.tim-home .category-title:before,.tim-home .category-title:after{width:20px}.tim-home .preview-content{padding:7px}}
- `}</style>
- <div className="hero"><img src="/banniere-accueil-tout-trouver.svg" alt="Tout acheter, tout vendre, tout trouver tout ici : voiture, moto, immobilier, maison, téléviseur et vélo"/></div>
- <section aria-label="Toutes les catégories"><h1 className="category-title">Toutes les catégories</h1>
- <div className="category-grid">{categories.map(c=><a className="category" href={c.href} key={c.href}><img src={"/home-reference/"+c.image+".svg"} alt="" loading="lazy"/><span className="category-label">{c.name}</span></a>)}</div></section>
- <section aria-label="Annonces populaires"><div className="popular-heading"><h2>Annonces populaires</h2><a href="/automobile/voitures">Voir les annonces →</a></div>
- <div className="preview-cards">{exemples.map((a,i)=><div className="preview" key={a.label}><img src={"/home-reference/apercu-"+(i+1)+".svg"} alt="Illustration de "+a.label loading="lazy"/><div className="preview-content"><span className="preview-price">{a.price}</span><p className="preview-name">{a.label}</p><p className="preview-detail">{a.detail}</p><p className="preview-detail">📍 {a.location}</p></div></div>)}</div>
- <p className="example-label">Aperçu visuel de la présentation : ces exemples ne sont pas des annonces actuellement publiées.</p>
- </section>
- </main>;
+  return <main className="tim-home">
+    <style>{`
+      body:has(.tim-home){background:#f6f9fd!important}
+      body:has(.tim-home) .tim-header{min-height:122px;box-sizing:border-box;padding:13px clamp(15px,2.7vw,46px);gap:clamp(12px,2vw,32px);background:linear-gradient(105deg,#031b54 0%,#00296c 50%,#061444 100%);border-bottom:1px solid #7c9fd2}
+      body:has(.tim-home) .tim-logo{width:clamp(220px,23vw,355px)}
+      body:has(.tim-home) .tim-logo img{max-height:110px}
+      body:has(.tim-home) .tim-logo-caption{display:none}
+      body:has(.tim-home) .tim-home-search{display:flex;align-items:center;flex:1;max-width:580px;min-width:160px;height:48px;border:2px solid #dce6ff;border-radius:15px;background:white;box-shadow:0 1px 3px #00143444;overflow:hidden}
+      body:has(.tim-home) .tim-home-search .search-symbol{color:#051c45;font-size:24px;margin:0 12px 0 17px}
+      body:has(.tim-home) .tim-home-search input{font-size:17px;font-weight:700;color:#09215e;min-width:0;flex:1;width:0;outline:none;border:0;background:transparent}
+      body:has(.tim-home) .tim-home-search input::placeholder{color:#09215e;opacity:1}
+      body:has(.tim-home) .tim-home-search button{background:#ffdb05;color:#071c40;font-weight:800;border:0;border-radius:11px;padding:12px 23px;margin-right:4px;cursor:pointer;font-size:15px}
+      body:has(.tim-home) .tim-header-links{gap:17px}
+      body:has(.tim-home) .tim-header-links a{font-size:14px}
+      body:has(.tim-home) .tim-header-links .tim-post{border-radius:12px;padding:15px 17px}
+      body:has(.tim-home) .tim-navbar{min-height:62px;align-items:stretch;gap:0;background:linear-gradient(180deg,#062a70,#041b4c);border-bottom:4px solid #ffd20b;padding:0 clamp(12px,2.4vw,42px)}
+      body:has(.tim-home) .tim-navbar a{display:flex;align-items:center;justify-content:center;font-size:13px;padding:12px 10px}
+      body:has(.tim-home) .tim-navbar a:first-child{font-size:0}
+      body:has(.tim-home) .tim-navbar a:first-child::before{content:'⌂';font-size:32px;line-height:1}
+      body:has(.tim-home) .tim-shell{grid-template-columns:minmax(220px,260px) minmax(0,1fr);max-width:1800px;gap:12px;padding:13px 6px 32px}
+      body:has(.tim-home) .tim-sidebar{border-radius:16px;border:1px solid #d6e0ee;background:linear-gradient(180deg,#fff,#f5f8fe);padding:7px 9px;box-shadow:0 2px 5px #153b6a12}
+      body:has(.tim-home) .tim-sidebar-title{background:transparent;font-size:17px;font-weight:900;padding:12px 5px 16px;margin:0;color:#0a1946}
+      body:has(.tim-home) .tim-sidebar a,body:has(.tim-home) .tim-sidebar a:first-of-type{background:transparent;color:#111c35;border-radius:0;border-bottom:1px solid #dde4f0;padding:7px 3px;gap:9px;font-size:12px;min-height:46px}
+      body:has(.tim-home) .tim-sidebar a:last-child{border-bottom:0}
+      body:has(.tim-home) .tim-sidebar-icon{display:none}
+      body:has(.tim-home) .tim-sidebar-image{display:block;width:49px;height:37px;object-fit:cover;object-position:top center;border-radius:8px;flex-shrink:0}
+      body:has(.tim-home) .tim-sidebar-chevron{font-size:20px;color:#05183e}
+      .tim-home{background:#fff;color:#051b55;font-family:Arial,Helvetica,sans-serif;min-width:0;padding:0 0 28px}
+      .tim-home *{box-sizing:border-box}
+      .tim-home .hero{border-radius:15px;overflow:hidden;background:#b4e5fb}
+      .tim-home .hero img{display:block;width:100%;height:auto}
+      .tim-home .heading{display:flex;justify-content:center;align-items:center;gap:14px;margin:11px 0 11px;color:#09155b;font-size:clamp(22px,2.2vw,29px);font-weight:900;line-height:1.15}
+      .tim-home .heading::before,.tim-home .heading::after{content:'';display:block;background:#ffca08;width:50px;height:5px;border-radius:5px}
+      .tim-home .category-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:0 7px}
+      .tim-home .category-card{display:block;overflow:hidden;border:1px solid #d9e2ee;border-radius:14px;background:#fff;text-decoration:none;box-shadow:0 1px 2px #0b346b13;transition:transform .15s,box-shadow .15s}
+      .tim-home .category-card:hover,.tim-home .category-card:focus-visible{transform:translateY(-2px);box-shadow:0 6px 17px #0b346b24;outline:2px solid #ffd007}
+      .tim-home .category-card img{width:100%;height:auto;display:block;aspect-ratio:2.26 / 1;object-fit:fill}
+      .tim-home .popular{padding:0 8px}
+      .tim-home .popular-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:14px 0 10px}
+      .tim-home .popular h2{font-size:clamp(19px,1.8vw,25px);color:#08185a;margin:0;font-weight:900}
+      .tim-home .popular h2::after{content:'';display:inline-block;width:48px;height:5px;border-radius:4px;background:#ffc800;margin:0 0 5px 11px}
+      .tim-home .popular-head a{font-size:14px;color:#0030be;text-decoration:none;font-weight:800}
+      .tim-home .empty-popular{border:1px solid #e1e8f1;border-radius:12px;padding:22px 16px;color:#425477;background:#fafcff;font-size:14px}
+      @media(max-width:1230px){body:has(.tim-home) .tim-header{flex-wrap:wrap}body:has(.tim-home) .tim-header-links{margin-left:auto}.tim-home .category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+      @media(max-width:760px){body:has(.tim-home) .tim-shell{display:flex;flex-direction:column;padding:8px}body:has(.tim-home) .tim-sidebar{position:static;max-width:100%;white-space:nowrap;overflow:auto}body:has(.tim-home) .tim-sidebar-title{display:none}body:has(.tim-home) .tim-sidebar-image{width:34px;height:28px}body:has(.tim-home) .tim-sidebar a{min-height:35px;border-bottom:0}body:has(.tim-home) .tim-home-search{order:3;flex-basis:100%;max-width:none}body:has(.tim-home) .tim-header{min-height:auto}body:has(.tim-home) .tim-header-links{margin-left:auto}body:has(.tim-home) .tim-navbar{min-height:52px;justify-content:flex-start}.tim-home .category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tim-home .popular-head{flex-wrap:wrap}}
+      @media(max-width:390px){.tim-home .category-grid{grid-template-columns:1fr}}
+    `}</style>
+    <section className="hero" aria-label="Tout vendre, tout trouver, tout ici">
+      <img src="/accueil-valide/bandeau.svg" alt="Tout vendre, tout trouver, tout ici — voiture, moto, immobilier, maison et loisirs" />
+    </section>
+    <section aria-labelledby="tim-categories-title">
+      <h1 className="heading" id="tim-categories-title">Toutes les catégories</h1>
+      <div className="category-grid">
+        {categories.map(c=><a className="category-card" key={c.href} href={c.href} aria-label={c.name}>
+          <img src={'/accueil-valide/'+c.image+'.svg'} alt={c.name} loading="lazy" />
+        </a>)}
+      </div>
+    </section>
+    <section className="popular" aria-labelledby="tim-popular-title">
+      <div className="popular-head"><h2 id="tim-popular-title">Annonces populaires</h2><a href="/automobile/voitures">Voir toutes les annonces →</a></div>
+      <p className="empty-popular">Les premières annonces publiées apparaîtront ici.</p>
+    </section>
+  </main>
 }
