@@ -29,7 +29,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-search{display:flex;flex:1;max-width:420px;height:42px;border-radius:32px;background:#fff;overflow:hidden}
       .tim-search input{flex:1;width:0;min-width:0;border:0;outline:0;padding:0 20px;font-size:15px}
       .tim-search button{border:0;background:#ffcf06;padding:0 20px;font-size:21px;cursor:pointer}
-      .tim-home-search{display:none}
+      .tim-home-search{display:flex;align-items:center;flex:1;max-width:500px;min-width:200px;height:48px;border-radius:25px;background:#fff;padding:5px;gap:8px}.tim-home-search .search-symbol{font-size:23px;color:#09234e;padding-left:12px}.tim-home-search input{flex:1;width:0;min-width:0;border:0;outline:0;padding:9px;font-size:15px}.tim-home-search button{background:#ffcf06;color:#09234e;border:0;border-radius:22px;padding:11px 17px;font-weight:800;cursor:pointer}
       .tim-sidebar-image{display:none}
       .tim-header-links{display:flex;align-items:center;gap:10px;white-space:nowrap}
       .tim-header-links a{color:#fff;text-decoration:none;font-weight:700;font-size:14px}
