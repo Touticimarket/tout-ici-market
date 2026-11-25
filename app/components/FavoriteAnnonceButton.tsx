@@ -21,5 +21,5 @@ export async function recordAutoEvent(id:string,type:"vue"|"clic"){
  try{let visitor=sessionStorage.getItem("tim_visiteur");if(!visitor){visitor=crypto.randomUUID();sessionStorage.setItem("tim_visiteur",visitor);}await supabase.rpc("enregistrer_interaction_auto",{p_annonce_id:id,p_type:type,p_visiteur_id:visitor});}catch{}
 }
 export function TrackAutoView({annonceId}:{annonceId:string}){
- useEffect(()=>{void recordAutoEvent(annonceId,"vue")},[annonceId]);return null;
+ useEffect(()=>{try{if(sessionStorage.getItem("tim_pending_click")===annonceId){sessionStorage.removeItem("tim_pending_click");void recordAutoEvent(annonceId,"clic")}}catch{}void recordAutoEvent(annonceId,"vue")},[annonceId]);return null;
 }
