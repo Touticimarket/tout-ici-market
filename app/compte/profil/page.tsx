@@ -1,6 +1,6 @@
 "use client";
 import {useEffect,useState} from "react";
-import {supabase} from "../lib/supabaseClient";
+import {supabase} from "../../lib/supabaseClient";
 type Profile={nom:string;prenom:string;telephone:string;adresse:string;code_postal:string;ville:string};
 const empty:Profile={nom:"",prenom:"",telephone:"",adresse:"",code_postal:"",ville:""};
 export default function MonProfil(){
