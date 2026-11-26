@@ -282,6 +282,44 @@ export default function DeposerAutoPage() {
         @media(max-width:800px){.depot-auto .fields{grid-template-columns:1fr}.depot-auto .equip-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(max-width:500px){.depot-auto .immat-controls{flex-direction:column}.depot-auto .immat-controls button{padding:13px}
         .depot-auto .form-section,.depot-auto .intro{padding:18px}.depot-auto .equip-list{grid-template-columns:1fr}.depot-auto .banner{min-height:180px}.depot-auto .banner p{font-size:15px}}
+
+        /* Lisibilité du formulaire automobile : textes et commandes agrandis. */
+        .depot-auto{font-size:18px;line-height:1.55}
+        .depot-auto .page-grid{grid-template-columns:235px minmax(0,1fr);gap:18px}
+        .depot-auto .depot-progress{padding:18px}
+        .depot-auto .depot-progress h3{font-size:21px;line-height:1.3}
+        .depot-auto .progress-link{font-size:17px;padding:15px 7px;gap:12px;line-height:1.3}
+        .depot-auto .step-dot{width:34px;height:34px;font-size:17px}
+        .depot-auto .intro{padding:24px 28px}
+        .depot-auto .intro h2{font-size:30px}
+        .depot-auto .intro p,.depot-auto .form-section p{font-size:17px;line-height:1.6}
+        .depot-auto .form-section{padding:24px 28px;margin-bottom:17px}
+        .depot-auto .section-title{font-size:25px;line-height:1.35;margin-bottom:20px}
+        .depot-auto .section-number{width:42px;height:42px;font-size:21px;flex-shrink:0}
+        .depot-auto .fields{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+        .depot-auto .field{font-size:18px;font-weight:750;gap:9px}
+        .depot-auto select,.depot-auto .field input,.depot-auto textarea{font-size:18px!important;min-height:56px;padding:14px 15px;border-radius:11px}
+        .depot-auto select option{font-size:18px}
+        .depot-auto input::placeholder,.depot-auto textarea::placeholder{font-size:17px}
+        .depot-auto .immat-lookup{padding:22px}
+        .depot-auto .immat-lookup h3{font-size:22px}
+        .depot-auto .immat-controls input{font-size:21px;min-height:57px}
+        .depot-auto .immat-controls button{font-size:19px;padding:12px 26px}
+        .depot-auto .equip-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+        .depot-auto .equip-list label{font-size:17px;padding:13px 12px;line-height:1.35;min-height:50px}
+        .depot-auto .equip-list input,.depot-auto .checkbox-row input{width:21px;height:21px;flex-shrink:0}
+        .depot-auto .checkbox-row{gap:14px}
+        .depot-auto .checkbox-row label{font-size:17px;line-height:1.5}
+        .depot-auto .note,.depot-auto .feedback{font-size:17px}
+        .depot-auto .step-actions{margin-top:22px}
+        .depot-auto .step-actions button,.depot-auto .step-navigation button{font-size:18px;padding:15px 23px;line-height:1.25}
+        .depot-auto .publish{font-size:21px;padding:19px 32px}
+        .depot-auto .fr-location{font-size:18px}
+        .depot-auto .fr-location input{font-size:18px;padding:15px;min-height:54px}
+        .depot-auto .fr-location .choices button,.depot-auto .fr-location .map-tools button{font-size:17px}
+        @media(max-width:1250px){.depot-auto .page-grid{grid-template-columns:205px minmax(0,1fr)}.depot-auto .fields,.depot-auto .equip-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:800px){.depot-auto .page-grid{grid-template-columns:1fr}.depot-auto .depot-progress{position:static}.depot-auto .fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:520px){.depot-auto .fields,.depot-auto .equip-list{grid-template-columns:1fr}.depot-auto .form-section{padding:19px}.depot-auto .section-title{font-size:22px}.depot-auto .intro h2{font-size:25px}.depot-auto .field{font-size:17px}}
       `}</style>
       <section className="banner" aria-label="Déposez votre annonce automobile en quelques minutes — BMW et encart MIA">
         <img src="/bandeau-depot-bmw.svg" alt="Déposez votre annonce automobile en quelques minutes, visuel BMW et informations MIA" />
