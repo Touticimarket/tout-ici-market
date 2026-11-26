@@ -1,4 +1,4 @@
-import {CarFront, Caravan, Sailboat, Bike, Wrench, CircleDot, Armchair, FileDroplet, ChevronRight} from "lucide-react";
+import {CarFront, Caravan, Sailboat, Bike, Wrench, CircleDot, Armchair, Droplet, ChevronRight} from "lucide-react";
 const categories=[
  {name:"Automobiles",description:"Voitures, berlines, SUV, citadines, etc.",slug:"voitures",image:"https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=85"},
  {name:"Utilitaires",description:"Fourgons, fourgonnettes, camionnettes, pick-up...",slug:"utilitaires",image:"https://images.unsplash.com/photo-1768400554801-2002b63e0591?auto=format&fit=crop&w=1200&q=85"},
@@ -19,7 +19,7 @@ const equipements=[
  {name:"Services de réparation mécanique",icon:<Wrench size={40}/>,slug:"services-mecaniques"},
  {name:"Pneus & Jantes",icon:<CircleDot size={40}/>,slug:"pneus-jantes"},
  {name:"Pièces & Accessoires",icon:<Armchair size={40}/>,slug:"pieces-accessoires"},
- {name:"Entretien & Consommables",icon:<FileDroplet size={40}/>,slug:"entretien-consommables"},
+ {name:"Entretien & Consommables",icon:<Droplet size={40}/>,slug:"entretien-consommables"},
 ];
 export default function AutomobilePage(){
  return <main className="auto-home">
