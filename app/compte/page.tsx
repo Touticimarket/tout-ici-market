@@ -1,72 +1,160 @@
 "use client";
-import {useEffect,useState} from "react";
+import {useEffect,useMemo,useState} from "react";
 import {supabase} from "../lib/supabaseClient";
-type Profile={nom:string;prenom:string;telephone:string;adresse:string;code_postal:string;ville:string};
-const empty:Profile={nom:"",prenom:"",telephone:"",adresse:"",code_postal:"",ville:""};
-export default function Compte(){
- const [email,setEmail]=useState("");const [userId,setUserId]=useState("");const [provider,setProvider]=useState("");
- const [profile,setProfile]=useState<Profile>(empty);const [status,setStatus]=useState("");const [saving,setSaving]=useState(false);const [password,setPassword]=useState("");
- useEffect(()=>{let mounted=true;async function load(){const {data:{user}}=await supabase.auth.getUser();if(!mounted)return;if(!user)return;setUserId(user.id);setEmail(user.email??"");setProvider(user.app_metadata?.provider??"");const {data}=await supabase.from("profiles").select("nom,prenom,telephone,adresse,code_postal,ville").eq("id",user.id).maybeSingle();if(mounted&&data)setProfile({nom:data.nom??"",prenom:data.prenom??"",telephone:data.telephone??"",adresse:data.adresse??"",code_postal:data.code_postal??"",ville:data.ville??""});}void load();const {data:sub}=supabase.auth.onAuthStateChange((_e,s)=>{if(!s?.user){setUserId("");setEmail("")}});return()=>{mounted=false;sub.subscription.unsubscribe()}},[]);
- async function connect(){const {error}=await supabase.auth.signInWithOAuth({provider:"google",options:{redirectTo:window.location.origin+"/compte"}});if(error)setStatus(error.message)}
- async function save(){if(!userId)return;setSaving(true);setStatus("");const {error}=await supabase.from("profiles").upsert({id:userId,...profile,email},{onConflict:"id"});setStatus(error?"Enregistrement impossible : "+error.message:"Vos coordonnées ont été enregistrées.");setSaving(false)}
- async function changePassword(){if(password.length<8){setStatus("Choisissez un mot de passe d’au moins 8 caractères.");return;}const {error}=await supabase.auth.updateUser({password});setStatus(error?"Modification impossible : "+error.message:"Mot de passe modifié.");setPassword("")}
- const change=(key:keyof Profile,value:string)=>setProfile(x=>({...x,[key]:value}));
- const field=(label:string,key:keyof Profile)=><label className="account-field">{label}<input value={profile[key]} onChange={e=>change(key,e.target.value)} autoComplete={key==="prenom"?"given-name":key==="nom"?"family-name":key==="telephone"?"tel":key==="adresse"?"street-address":key==="code_postal"?"postal-code":"address-level2"} /></label>;
- return <main className="account-home">
+
+type Ad={id:string;titre:string;prix:number|null;statut:string;photos:string[];created_at:string;source:"auto"|"marketplace";ville:string};
+type Favorite={id:string;annonce_id:string};
+type FavAd={id:string;marque?:string|null;modele?:string|null;titre?:string|null;prix:number|null;photos:string[]|null;ville:string|null};
+type Daily={annonce_id:string;jour:string;vues:number;clics:number};
+type Profile={nom:string|null;prenom:string|null;type_compte:string|null;created_at:string|null};
+const isLive=(s:string)=>["publiee","publiée","en_ligne","en ligne","active","actif"].includes(s.toLowerCase());
+const price=(v:number|null)=>v==null?"Prix non renseigné":Number(v).toLocaleString("fr-FR")+" €";
+export default function MonCompte(){
+ const [userId,setUserId]=useState("");const [email,setEmail]=useState("");const [person,setPerson]=useState<Profile|null>(null);
+ const [ads,setAds]=useState<Ad[]>([]);const [favCount,setFavCount]=useState(0);const [favorites,setFavorites]=useState<FavAd[]>([]);const [conversationCount,setConversationCount]=useState(0);const [savedCount,setSavedCount]=useState(0);const [stats,setStats]=useState<Daily[]>([]);
+ const [busy,setBusy]=useState(true);const [issue,setIssue]=useState("");const [signingOut,setSigningOut]=useState(false);
+ useEffect(()=>{let mounted=true;async function load(){
+   try{
+    const {data:{user}}=await supabase.auth.getUser();if(!mounted)return;
+    if(!user){setBusy(false);return}
+    setUserId(user.id);setEmail(user.email??"");
+    const [profile,auto,market,favs,convos,saved,statistics]=await Promise.all([
+      supabase.from("profiles").select("nom,prenom,type_compte,created_at").eq("id",user.id).maybeSingle(),
+      supabase.from("annonces_auto").select("id,titre,marque,modele,prix,statut,photos,created_at,ville").eq("user_id",user.id).order("created_at",{ascending:false}).limit(150),
+      supabase.from("annonces_marketplace").select("id,titre,prix,statut,photos,created_at,ville").eq("user_id",user.id).order("created_at",{ascending:false}).limit(150),
+      supabase.from("favoris").select("id,annonce_id").eq("user_id",user.id).order("created_at",{ascending:false}).limit(100),
+      supabase.from("conversations_auto").select("id",{count:"exact",head:true}).or("acheteur_id.eq."+user.id+",vendeur_id.eq."+user.id),
+      supabase.from("recherches_sauvegardees").select("id",{count:"exact",head:true}).eq("user_id",user.id),
+      supabase.rpc("mes_statistiques_annonces_auto")
+    ]);
+    if(!mounted)return;
+    setPerson((profile.data??null) as Profile|null);
+    const vehicles=(auto.data??[]).map((a:{id:string;titre:string|null;marque:string|null;modele:string|null;prix:number|null;statut:string;photos:string[]|null;created_at:string;ville:string|null})=>({id:a.id,titre:a.titre||[a.marque,a.modele].filter(Boolean).join(" ")||"Annonce véhicule",prix:a.prix,statut:a.statut,photos:a.photos??[],created_at:a.created_at,ville:a.ville??"",source:"auto" as const}));
+    const others=(market.data??[]).map((a:{id:string;titre:string;prix:number|null;statut:string;photos:string[]|null;created_at:string;ville:string|null})=>({id:a.id,titre:a.titre,prix:a.prix,statut:a.statut,photos:a.photos??[],created_at:a.created_at,ville:a.ville??"",source:"marketplace" as const}));
+    setAds([...vehicles,...others].sort((a,b)=>b.created_at.localeCompare(a.created_at)));
+    setFavCount((favs.data??[]).length);setConversationCount(convos.count??0);setSavedCount(saved.count??0);
+    setStats((statistics.data??[]) as Daily[]);
+    const ids=(favs.data??[] as Favorite[]).map(x=>x.annonce_id).slice(0,8);
+    if(ids.length){
+      const {data}=await supabase.from("annonces_auto").select("id,marque,modele,titre,prix,photos,ville").eq("statut","publiee").in("id",ids);
+      if(mounted)setFavorites((data??[]) as FavAd[]);
+    } else setFavorites([]);
+    if(auto.error||market.error||favs.error)setIssue("Certaines informations sont momentanément indisponibles.");
+   }catch{if(mounted)setIssue("Impossible de charger toutes les données du compte.")}
+   finally{if(mounted)setBusy(false)}
+  }void load();return()=>{mounted=false}},[]);
+ const online=useMemo(()=>ads.filter(a=>isLive(a.statut)),[ads]);
+ const totalViews=stats.reduce((v,s)=>v+Number(s.vues??0),0),totalClicks=stats.reduce((v,s)=>v+Number(s.clics??0),0);
+ const displayName=[person?.prenom,person?.nom].filter(Boolean).join(" ")||email.split("@")[0]||"Mon compte";
+ const initials=[person?.prenom?.[0],person?.nom?.[0]].filter(Boolean).join("").toUpperCase()||"👤";
+ const isPro=["pro","professionnel","entreprise"].includes((person?.type_compte??"").toLowerCase());
+ const menu=[
+  {name:"Tableau de bord",href:"/compte",icon:"⌂",current:true},
+  {name:"Mes favoris",href:"/favoris",icon:"♡"},
+  {name:"Mes annonces",href:"/compte/annonces",icon:"▣"},
+  {name:"Mes messages",href:"/compte/messages",icon:"✉",number:conversationCount},
+  {name:"Mes recherches enregistrées",href:"/compte/recherches",icon:"⌕",number:savedCount},
+  {name:"Mon profil et coordonnées",href:"/compte/profil",icon:"♙"},
+  {name:"Sécurité du compte",href:"/compte/profil",icon:"♧"},
+  {name:"Déposer une annonce",href:"/deposer",icon:"＋"}
+ ];
+ async function logout(){setSigningOut(true);await supabase.auth.signOut();setUserId("");setSigningOut(false);window.location.href="/compte";}
+ return <main className="tim-account-dashboard">
  <style>{`
- body:has(.account-home) .tim-sidebar{background:#f8fbff}
- body:has(.account-home) .tim-sidebar-image{display:block;width:56px;height:43px;object-fit:cover;border-radius:8px;flex-shrink:0}
- body:has(.account-home) .tim-sidebar-icon{display:none}
- body:has(.account-home) .tim-sidebar-title{background:#edf3fc;color:#071c49;font-size:17px;padding:15px 10px}
- .account-home{color:#071c49;font-family:Arial,Helvetica,sans-serif}
- .account-home *{box-sizing:border-box}
- .account-hero{min-height:134px;display:flex;align-items:center;background:linear-gradient(90deg,#fff 0%,#ffffffed 38%,#ffffff00 68%),url('/auto-visuels/bandeau-auto-final.svg') center/cover;border-radius:14px;padding:20px 28px;margin-bottom:14px}
- .account-hero h1{font-size:clamp(30px,3.2vw,46px);margin:0;color:#06154b}
- .account-hero p{margin:8px 0;font-size:15px}
- .account-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:14px}
- .account-col{display:flex;flex-direction:column;gap:14px;min-width:0}
- .account-box{border:1px solid #d3def0;border-radius:17px;background:#fff;overflow:hidden;box-shadow:0 2px 7px #071d3710}
- .account-box h2{background:#f0f5ff;margin:0;padding:14px 19px;font-size:23px;color:#071b60}
- .account-box .inside{padding:18px 20px}
- .account-fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}
- .account-field{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:14px}
- .account-field input{width:100%;min-width:0;padding:12px;border:1px solid #abbad0;border-radius:8px;font-size:15px}
- .account-field.wide{grid-column:1/-1}
- .account-action{background:#ffcc07;color:#071a44;border:0;border-radius:10px;padding:12px 19px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block}
- .account-subaction{display:inline-block;text-decoration:none;color:#09265d;font-weight:800;padding:12px 16px;background:#f0f5fe;border-radius:10px}
- .account-quicklinks{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
- .account-quicklinks a{border:1px solid #cad8e9;border-radius:15px;padding:18px;background:#fff;text-decoration:none;color:#091b51;font-weight:800;font-size:20px}
- .account-quicklinks small{display:block;font-size:13px;font-weight:400;color:#405471;margin-top:7px}
- .account-ad-links{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}
- @media(max-width:950px){.account-grid{grid-template-columns:1fr}}
- @media(max-width:500px){.account-fields,.account-quicklinks{grid-template-columns:1fr}.account-hero{background-position:center right}}
+ body:has(.tim-account-dashboard) .tim-sidebar{display:none!important}
+ body:has(.tim-account-dashboard) .tim-shell{display:block!important;max-width:1700px!important;width:100%!important;padding:0 12px!important;margin:0 auto!important}
+ body:has(.tim-account-dashboard) .tim-content{width:100%!important;min-width:0!important}
+ .tim-account-dashboard{color:#0a1c49;font-family:Arial,Helvetica,sans-serif;padding:13px 0 30px}
+ .tim-account-dashboard *{box-sizing:border-box}
+ .tim-account-dashboard a{text-decoration:none;color:inherit}
+ .tim-account-dashboard .dash-hero{position:relative;background:linear-gradient(90deg,#f9fcff 0%,#f9fcffea 40%,#f9fcff15 85%),url('/accueil-reel/bandeau.svg') center/cover;border-radius:20px;min-height:217px;padding:24px 28px;display:grid;grid-template-columns:1fr minmax(330px,530px);gap:20px;align-items:center;margin-bottom:16px;overflow:hidden}
+ .tim-account-dashboard .dash-hero h1{font-size:clamp(34px,4vw,47px);margin:0 0 12px;font-weight:900;color:#061a49}
+ .tim-account-dashboard .dash-hero p{max-width:390px;font-size:17px;line-height:1.55;margin:0}
+ .tim-account-dashboard .identity{display:flex;align-items:center;gap:18px;border:1px solid #e0e6f0;border-radius:17px;background:#ffffffec;box-shadow:0 3px 12px #11284c1b;padding:21px}
+ .tim-account-dashboard .avatar{width:75px;height:75px;border-radius:50%;background:#0b358f;color:white;display:grid;place-items:center;font-size:27px;font-weight:900;flex-shrink:0}
+ .tim-account-dashboard .identity h2{margin:0 0 6px;font-size:23px}
+ .tim-account-dashboard .identity .id-small{font-size:12px;color:#4f6281;line-height:1.6}
+ .tim-account-dashboard .profile-link{display:block;margin-left:auto;border:1px solid #abc0e4;padding:10px 12px;border-radius:9px;font-weight:800;color:#1643a0;font-size:12px;white-space:nowrap}
+ .tim-account-dashboard .workarea{display:grid;grid-template-columns:245px minmax(0,1fr);gap:18px}
+ .tim-account-dashboard .dash-nav{border:1px solid #dfe7f3;background:#fff;border-radius:16px;padding:12px;align-self:start;display:flex;flex-direction:column;gap:5px}
+ .tim-account-dashboard .dash-nav a{display:flex;align-items:center;gap:12px;padding:13px 12px;border-radius:10px;font-size:14px;font-weight:750}
+ .tim-account-dashboard .dash-nav a.active{background:#e8efff;color:#0744bb}
+ .tim-account-dashboard .dash-nav a:hover,.tim-account-dashboard .dash-nav a:focus-visible{background:#f0f5ff}
+ .tim-account-dashboard .dash-nav .symbol{font-size:22px;display:block;width:26px;text-align:center;color:#0b42b5}
+ .tim-account-dashboard .dash-nav .count{margin-left:auto;background:#0b3cc5;color:white;border-radius:14px;font-size:11px;padding:3px 7px}
+ .tim-account-dashboard .work-content{min-width:0}
+ .tim-account-dashboard .overview{font-size:14px;font-weight:900;margin:6px 0 13px}
+ .tim-account-dashboard .stats-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin-bottom:16px}
+ .tim-account-dashboard .stat{display:flex;align-items:center;gap:12px;border:1px solid #e1e8f4;border-radius:12px;padding:15px 11px;background:#f7fbff;min-width:0}
+ .tim-account-dashboard .stat:nth-child(2){background:#f1fcf5}.tim-account-dashboard .stat:nth-child(3){background:#f8f6ff}.tim-account-dashboard .stat:nth-child(4){background:#fffaf0}.tim-account-dashboard .stat:nth-child(5){background:#f7faff}
+ .tim-account-dashboard .stat-icon{display:grid;place-items:center;width:39px;height:39px;background:#ffffffcc;border-radius:50%;font-size:22px;flex-shrink:0}
+ .tim-account-dashboard .stat b{font-size:24px;display:block;font-weight:900;line-height:1.15}
+ .tim-account-dashboard .stat small{color:#4d607c;font-size:11px;line-height:1.45;display:block}
+ .tim-account-dashboard .dash-columns{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(290px,1fr);gap:15px}
+ .tim-account-dashboard .panel{border:1px solid #e1e8f1;background:white;border-radius:13px;padding:15px;margin-bottom:14px;min-width:0}
+ .tim-account-dashboard .panel h2{font-size:17px;margin:0}
+ .tim-account-dashboard .panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+ .tim-account-dashboard .panel-header a{font-size:12px;color:#0d47ac;font-weight:850}
+ .tim-account-dashboard .adrow{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #e7edf5}
+ .tim-account-dashboard .adrow:last-child{border:0}
+ .tim-account-dashboard .adrow img{width:105px;height:69px;object-fit:cover;border-radius:9px}
+ .tim-account-dashboard .picture-empty{width:105px;height:69px;flex-shrink:0;display:grid;place-items:center;background:#eaf1fa;border-radius:9px}
+ .tim-account-dashboard .adtext{flex:1;min-width:0}
+ .tim-account-dashboard .adtext strong{font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .tim-account-dashboard .adtext b{display:block;font-size:14px;color:#0a3fbc;margin:5px 0}
+ .tim-account-dashboard .adtext small{font-size:11px;color:#526682}
+ .tim-account-dashboard .ad-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+ .tim-account-dashboard .ad-actions a{border:1px solid #c8d6ed;border-radius:8px;padding:9px 10px;font-size:12px;color:#08439f;font-weight:850}
+ .tim-account-dashboard .ad-actions a:hover{background:#f1f6ff}
+ .tim-account-dashboard .favgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+ .tim-account-dashboard .fav-card{border:1px solid #e0e8f3;border-radius:10px;overflow:hidden;min-width:0}
+ .tim-account-dashboard .fav-card img{height:94px;object-fit:cover;width:100%;display:block}
+ .tim-account-dashboard .fav-card div{padding:9px}
+ .tim-account-dashboard .fav-card strong{display:block;font-size:11px;line-height:1.4;min-height:30px}
+ .tim-account-dashboard .fav-card b{font-size:12px;color:#0b44ae}
+ .tim-account-dashboard .mia{background:linear-gradient(125deg,#ecfff1,#f8fffb);border:1px solid #d3ebd8;border-radius:13px;padding:18px;display:flex;gap:12px;align-items:center}
+ .tim-account-dashboard .mia-symbol{font-size:36px}
+ .tim-account-dashboard .mia strong{font-size:17px;color:#057339}
+ .tim-account-dashboard .mia p{font-size:12px;line-height:1.55}
+ .tim-account-dashboard .empty{color:#50627b;font-size:13px;line-height:1.55}
+ .tim-account-dashboard .trust{background:#f0f6ff;border-radius:12px;padding:18px 12px;margin-top:8px;text-align:center;color:#16419a;font-size:13px;font-weight:800}
+ @media(max-width:1250px){.tim-account-dashboard .stats-grid{grid-template-columns:repeat(3,1fr)}.tim-account-dashboard .dash-columns{grid-template-columns:1fr}.tim-account-dashboard .fav-card img{height:135px}}
+ @media(max-width:820px){.tim-account-dashboard .dash-hero{grid-template-columns:1fr;padding:22px}.tim-account-dashboard .workarea{grid-template-columns:1fr}.tim-account-dashboard .dash-nav{flex-direction:row;overflow-x:auto;padding:7px;position:static}.tim-account-dashboard .dash-nav a{flex-shrink:0;font-size:12px;padding:10px}.tim-account-dashboard .dash-nav .symbol{font-size:17px;width:18px}.tim-account-dashboard .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+ @media(max-width:520px){.tim-account-dashboard .dash-hero{padding:17px;gap:15px}.tim-account-dashboard .identity{flex-wrap:wrap;padding:13px}.tim-account-dashboard .avatar{width:57px;height:57px}.tim-account-dashboard .identity h2{font-size:17px}.tim-account-dashboard .stats-grid{gap:7px}.tim-account-dashboard .stat{padding:9px 7px;gap:6px}.tim-account-dashboard .stat b{font-size:19px}.tim-account-dashboard .stat-icon{height:30px;width:30px;font-size:17px}.tim-account-dashboard .adrow{flex-wrap:wrap}.tim-account-dashboard .ad-actions{margin-left:0;width:100%}.tim-account-dashboard .fav-card img{height:75px}}
  `}</style>
- <div className="account-hero"><div><h1>◉ Mon compte</h1><p>Gérez vos informations et vos annonces</p></div></div>
- {!userId?<section className="account-box"><h2>Connexion à votre espace</h2><div className="inside"><p>Connectez-vous pour gérer vos coordonnées, vos annonces et vos favoris.</p><button className="account-action" onClick={connect}>Se connecter avec Google</button></div></section>:<>
- <div className="account-grid">
-  <section className="account-box"><h2>♙ Mes coordonnées</h2><div className="inside"><div className="account-fields">
-  {field("Nom", "nom")}{field("Prénom","prenom")}
-  <div style={{gridColumn:"1/-1"}}>{field("Téléphone","telephone")}</div>
-  <div style={{gridColumn:"1/-1"}}>{field("Adresse","adresse")}</div>
-  {field("Code postal","code_postal")}{field("Ville","ville")}
-  <label className="account-field wide">Adresse e-mail<input type="email" value={email} readOnly aria-describedby="email-help"/></label>
-  </div><p id="email-help" style={{fontSize:12,color:"#59677f"}}>L’adresse e-mail dépend de votre mode de connexion et ne se modifie pas depuis ce formulaire.</p>
-  <button className="account-action" disabled={saving} onClick={save}>{saving?"Enregistrement…":"▣ Enregistrer mes coordonnées"}</button></div></section>
-  <div className="account-col">
-   <section className="account-box"><h2>♙ Sécurité du compte</h2><div className="inside"><p>{provider==="google"?"Votre connexion est gérée par Google. Le mot de passe Google se modifie dans votre compte Google.":"Vous pouvez modifier le mot de passe de ce compte."}</p>
-    {provider!=="google"&&<div style={{display:"flex",gap:9,flexWrap:"wrap"}}><input type="password" value={password} onChange={e=>setPassword(e.target.value)} autoComplete="new-password" aria-label="Nouveau mot de passe" placeholder="Nouveau mot de passe" style={{padding:12,borderRadius:9,border:"1px solid #aab9d0",minWidth:200}}/><button className="account-subaction" onClick={changePassword}>Modifier mon mot de passe</button></div>}</div></section>
-   <section className="account-box"><h2>◈ Mes annonces</h2><div className="inside"><p>Retrouvez vos annonces en ligne, terminées ou archivées, avec leur historique et leurs statistiques.</p>
-    <div className="account-ad-links"><a className="account-action" href="/compte/annonces">Voir mes annonces →</a><a className="account-subaction" href="/automobile/deposer">＋ Déposer une annonce</a></div>
-   </div></section>
-  </div>
+ <section className="dash-hero"><div><h1>Mon compte</h1><p>Gérez facilement vos annonces, messages, recherches et favoris au même endroit.</p></div>
+ {userId&&<div className="identity"><div className="avatar">{initials}</div><div style={{minWidth:0}}><h2>{displayName}</h2><div className="id-small">{isPro?"Compte professionnel":"Compte particulier"}<div>{email}</div>{person?.created_at&&<div>Membre depuis {new Date(person.created_at).toLocaleDateString("fr-FR",{month:"long",year:"numeric"})}</div>}</div></div><a className="profile-link" href="/compte/profil">✎ Modifier le profil</a></div>}
+ </section>
+ {busy?<div className="panel" role="status">Chargement de votre espace personnel…</div>:!userId?
+ <section className="panel"><h2>Bienvenue dans votre espace personnel</h2><p>Connectez-vous pour retrouver vos annonces, vos favoris et vos conversations.</p><a href="/compte/profil" style={{display:"inline-block",background:"#ffcf06",padding:"13px 20px",borderRadius:9,fontWeight:850}}>Se connecter à mon compte →</a></section>:
+ <div className="workarea"><nav className="dash-nav" aria-label="Menu de mon compte">
+ {menu.map(x=><a href={x.href} key={x.name} className={x.current?"active":""}><span className="symbol">{x.icon}</span>{x.name}{x.number? <span className="count">{x.number}</span>:null}</a>)}
+ <button type="button" disabled={signingOut} onClick={logout} style={{textAlign:"left",border:0,background:"transparent",color:"#c52222",padding:"13px 12px",cursor:"pointer",fontWeight:850}}>↪ Déconnexion</button>
+ </nav><div className="work-content"><div className="overview">Vue d’ensemble {isPro?"— Espace professionnel":""}</div>
+ {issue&&<p role="status" style={{color:"#a34113"}}>{issue}</p>}
+ <div className="stats-grid">
+ <div className="stat"><span className="stat-icon">◉</span><div><b>{totalViews.toLocaleString("fr-FR")}</b><small>Vues de mes annonces auto*</small></div></div>
+ <div className="stat"><span className="stat-icon">♡</span><div><b>{favCount}</b><small>Favoris enregistrés</small></div></div>
+ <div className="stat"><span className="stat-icon">✉</span><div><b>{conversationCount}</b><small>Conversations auto</small></div></div>
+ <div className="stat"><span className="stat-icon">⌕</span><div><b>{savedCount}</b><small>Recherches sauvegardées</small></div></div>
+ <div className="stat"><span className="stat-icon">▣</span><div><b>{online.length}</b><small>Annonces actuellement en ligne</small></div></div>
  </div>
- <div className="account-quicklinks">
-  <a href="/compte/recherches">⌕ Mes recherches enregistrées<small>Retrouvez vos recherches sauvegardées.</small></a>
-  <a href="/favoris">♡ Mes annonces favorites<small>Consultez les annonces mises de côté.</small></a>
-  <a href="/compte/messages">✉ Mes messages<small>Conversations privées avec acheteurs et vendeurs.</small></a>
- </div>
- <div style={{marginTop:18}}><button onClick={async()=>{await supabase.auth.signOut();setUserId("");setEmail("")}} className="account-subaction">Se déconnecter</button></div>
- </>}
- {status&&<p role="status" style={{padding:12,color:"#17427e"}}>{status}</p>}
- </main>
+ <div className="dash-columns">
+ <section className="panel"><div className="panel-header"><h2>Mes annonces</h2><a href="/compte/annonces">Voir toutes mes annonces →</a></div>
+ {ads.length===0?<p className="empty">Vous n’avez pas encore déposé d’annonce. <a href="/deposer" style={{color:"#114bb9",fontWeight:900}}>Déposer ma première annonce →</a></p>:ads.slice(0,5).map(a=><div className="adrow" key={a.source+a.id}>
+ {a.photos?.[0]?<img src={a.photos[0]} alt="Photographie de l'annonce" />:<span className="picture-empty">📷</span>}
+ <div className="adtext"><strong title={a.titre}>{a.titre}</strong><b>{price(a.prix)}</b><small>{isLive(a.statut)?"🟢 En ligne":a.statut} · {a.ville}</small></div>
+ <div className="ad-actions">{isLive(a.statut)&&<a href={a.source==="auto"?"/annonce/"+a.id:"/annonces/"+a.id}>Voir</a>}<a href="/compte/annonces">Gérer</a></div>
+ </div>)}
+ <div style={{textAlign:"center",paddingTop:13}}><a href="/compte/annonces" style={{color:"#1248b7",fontWeight:850,fontSize:13}}>Voir toutes mes annonces →</a></div>
+ </section>
+ <div style={{minWidth:0}}><section className="panel"><div className="panel-header"><h2>Mes favoris</h2><a href="/favoris">Voir tous mes favoris →</a></div>
+ {favorites.length===0?<p className="empty">Aucune annonce favorite disponible pour le moment.</p>:<div className="favgrid">{favorites.slice(0,3).map(a=><a className="fav-card" href={"/annonce/"+a.id} key={a.id}>{a.photos?.[0]?<img src={a.photos[0]} alt="Annonce favorite" />:<div style={{height:94,background:"#e8eff9",display:"grid",placeItems:"center"}}>📷</div>}<div><strong>{a.titre||[a.marque,a.modele].filter(Boolean).join(" ")||"Véhicule"}</strong><b>{price(a.prix)}</b></div></a>)}</div>}
+ </section>
+ <section className="mia"><span className="mia-symbol">🤖</span><div><strong>Conseil MIA</strong><p>Pour attirer davantage d'acheteurs, ajoutez des photos nettes, une description complète et toutes les caractéristiques du bien.</p><a href="/compte/annonces" style={{fontWeight:850,fontSize:13,color:"#087538"}}>Améliorer mes annonces →</a></div></section>
+ </div></div>
+ <p style={{fontSize:11,color:"#68788f",margin:"8px 0"}}>* Statistiques disponibles pour les annonces automobiles depuis l’activation du suivi. Aucune statistique n’est inventée.</p>
+ </div></div>}
+ <div className="trust">🔒 Espace personnel sécurisé &nbsp; · &nbsp; ♡ Annonces et favoris &nbsp; · &nbsp; ✉ Conversations privées &nbsp; · &nbsp; ✓ Dépôt gratuit pour les particuliers</div>
+ </main>;
 }
