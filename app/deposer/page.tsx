@@ -24,6 +24,7 @@ return <main className="depot-entry">
 .depot-entry .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .depot-entry .card{display:flex;flex-direction:column;min-width:0;text-decoration:none;color:#082353;background:#fff;border:1px solid #d7e2ee;border-radius:14px;overflow:hidden;box-shadow:0 3px 10px #15335b10;transition:transform .15s,border-color .15s}
 .depot-entry .card:hover,.depot-entry .card:focus-visible{transform:translateY(-3px);border-color:#ffbf00}
+.depot-entry .card .visual-fallback{height:122px;display:grid;place-items:center;background:linear-gradient(135deg,#e9f1ff,#fff7dc);font-size:58px}
 .depot-entry .card img{display:block;width:100%;height:122px;object-fit:cover;background:#f1f6fc}
 .depot-entry .card .copy{padding:12px;display:flex;flex-direction:column;gap:7px;flex:1}
 .depot-entry .card strong{font-size:16px}
@@ -45,7 +46,7 @@ return <main className="depot-entry">
 </div>
 <div className="heading" id="categories-depot"><h2>Choisissez une catégorie pour commencer</h2><p>Cliquez sur une des 12 catégories pour accéder à sa page de dépôt d'annonce.</p></div>
 <div className="cards">{depotCategories.map(c=><Link className="card" href={c.slug==="automobile"?"/automobile/deposer":"/deposer/"+c.slug} key={c.slug}>
-<img src={"/accueil-reel/"+c.image+".svg"} alt="" /><div className="copy"><strong>{c.icone} {c.nom}</strong><small>{c.resume}</small><span className="arrow">Ouvrir la page de dépôt →</span></div>
+{["mode","animaux"].includes(c.image)?<div className="visual-fallback" aria-hidden="true">{c.icone}</div>:<img src={"/accueil-reel/"+c.image+".svg"} alt="" />}<div className="copy"><strong>{c.icone} {c.nom}</strong><small>{c.resume}</small><span className="arrow">Ouvrir la page de dépôt →</span></div>
 </Link>)}</div>
 <p style={{fontSize:13,color:"#4c6080",marginTop:20}}>Les annonces sont liées à votre compte. Les informations demandées diffèrent selon la catégorie. Les badges de vérification sont attribués uniquement après contrôle réel.</p>
 </main>;
