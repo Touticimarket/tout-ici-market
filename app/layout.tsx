@@ -73,7 +73,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <nav className="tim-header-links" aria-label="Espace utilisateur">
         <a href="/compte">♙ Mon compte</a>
         <a href="/favoris">♡ Mes favoris</a>
-        <a className="tim-post" href="/automobile/deposer">＋ Déposer une annonce</a>
+        <a className="tim-post" href="/deposer">＋ Déposer une annonce</a>
       </nav>
     </header>
     <nav className="tim-navbar" aria-label="Navigation principale">
