@@ -3,7 +3,7 @@ import {useEffect,useState} from "react";
 
 type Props={url?:string;title?:string;label?:string;compact?:boolean};
 
-export default function ShareLinks({url,title="TOUT ICI MARKET — Site d’annonces gratuites pour les particuliers",label="Partager",compact=false}:Props){
+export default function ShareLinks({url,title="TOUT ICI ANNONCES — Site d’annonces gratuites pour les particuliers",label="Partager",compact=false}:Props){
  const [open,setOpen]=useState(false);
  const [notice,setNotice]=useState("");
  const [resolvedUrl,setResolvedUrl]=useState(url||"https://tout-ici-market.vercel.app/");
