@@ -78,7 +78,7 @@ body:has(.depot-entry) .tim-content{width:100%}
 @media(max-width:1200px){.depot-entry .cards{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:820px){.depot-entry .cards{grid-template-columns:repeat(3,minmax(0,1fr))}.depot-entry .hero{min-height:270px;grid-template-columns:39% minmax(0,61%)}.depot-entry .hero-copy{max-width:none}.depot-entry .steps{grid-template-columns:repeat(5,minmax(0,1fr))}.depot-entry .step{padding:5px}.depot-entry .step strong{font-size:12px}.depot-entry .step small{font-size:11px}}
 @media(max-width:600px){
-.depot-entry .reference-top{display:none}.depot-entry .hero{display:grid}.depot-entry .intro-heading{display:block}.depot-entry .steps{display:flex}
+.depot-entry .reference-top{display:block}
 .depot-entry{padding:0 8px 24px}
 .depot-entry .hero{min-height:0;border-radius:0 0 13px 13px;grid-template-columns:1fr}.depot-entry .hero-visual{order:2}.depot-entry .hero-visual img{width:100%;height:auto}.depot-entry .hero-stamp{font-size:10px;top:6px;right:6px;padding:7px;max-width:125px}
 .depot-entry .hero-copy{padding:20px 16px;max-width:100%;width:100%;order:1}
@@ -99,15 +99,6 @@ body:has(.depot-entry) .tim-content{width:100%}
 }
 `}</style>
 <div className="reference-top" aria-label="Présentation du dépôt d’annonce et ses cinq étapes"><img src="/depot/reference-haut.svg" alt="Publiez votre annonce en quelques minutes : voiture, maison, bateau, vélo et mobilier ; dépôt gratuit pour les particuliers" /><img src="/depot/reference-etapes.svg" alt="Comment déposer une annonce : choisir sa catégorie, ajouter photos et vidéo, remplir les informations, vérifier et publier" /></div>
-<section className="hero">
-<div className="hero-copy">
-<span className="eyebrow">100 % GRATUIT POUR LES PARTICULIERS</span>
-<h1>Publiez votre annonce en <em>quelques minutes</em></h1>
-<p>Vendez, louez ou proposez vos services facilement sur <strong>TOUT ICI MARKET</strong>.</p>
-<div className="benefits" aria-label="Les avantages"><span><b>⚡</b>Simple et rapide</span><span><b>♡</b>Sans frais pour les particuliers</span><span><b>🔒</b>Vos informations protégées</span></div>
-</div><div className="hero-visual"><img src="/depot/depot-photo.svg" alt="Photographie de la maison, de la voiture, du bateau, du vélo et du mobilier avec une personne prenant une photo" /><div className="hero-stamp">✓ MIA vous accompagne dans votre dépôt</div></div></section>
-<div className="section-title intro-heading"><h2>Être quelque part, commencer à déposer votre annonce ou déposez maintenant votre annonce.</h2><p>Consultez les rubriques ci-dessous, choisissez votre catégorie et publiez votre annonce en toute simplicité.</p></div>
-<div className="steps" aria-label="Les cinq étapes du dépôt d'annonce">{etapes.map((e,i)=><div className="step" key={e.titre}><span className="number">{i+1}</span><span className="step-icon" aria-hidden="true">{e.icone}</span><strong>{e.titre}</strong><small>{e.description}</small></div>)}</div>
 <div className="start-wrap"><a href="#categories-depot" className="start-button">📣 Commencer à déposer votre annonce <span aria-hidden="true">›</span></a></div>
 <section className="categories-wrap" id="categories-depot">
 <div className="section-title"><h2>Choisissez votre catégorie</h2><p>Cliquez sur une rubrique pour ouvrir sa page de dépôt spécialisée.</p></div>
