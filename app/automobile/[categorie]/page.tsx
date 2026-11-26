@@ -3,11 +3,12 @@ import {useEffect,useMemo,useRef,useState} from "react";
 import SaveSearchButton from "../../components/SaveSearchButton";
 import FavoriteAnnonceButton,{recordAutoEvent} from "../../components/FavoriteAnnonceButton";
 import BrandAutocomplete from "../../components/BrandAutocomplete";
+import CommuneSelect,{type CommuneOption} from "../../components/CommuneSelect";
 import {useParams} from "next/navigation";
 import {supabase} from "../../lib/supabaseClient";
 import ShareLinks from "../../components/ShareLinks";
 type Option={id:string;nom:string};
-type Annonce={id:string;marque:string|null;modele:string|null;finition:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;carburant:string|null;boite:string|null;puissance_ch:number|null;departement:string|null;options:string[]|null;description:string|null;photos?:string[]|null;code_postal?:string|null;couleur?:string|null;nombre_portes?:number|null;nombre_places?:number|null;carrosserie?:string|null};
+type Annonce={id:string;marque:string|null;modele:string|null;finition:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;carburant:string|null;boite:string|null;puissance_ch:number|null;departement:string|null;options:string[]|null;description:string|null;photos?:string[]|null;code_postal?:string|null;couleur?:string|null;nombre_portes?:number|null;nombre_places?:number|null;carrosserie?:string|null;latitude?:number|null;longitude?:number|null;type_vendeur?:string|null};
 const categories:Record<string,{title:string;icon:string;dbTypes:string[]}>={
 "voitures":{title:"Automobiles",icon:"🚘",dbTypes:["voiture","voitures","automobile"]},
 "utilitaires":{title:"Utilitaires",icon:"🚐",dbTypes:["utilitaire","utilitaires"]},
@@ -51,7 +52,8 @@ const couleurs=["Blanc","Noir","Gris","Argent","Bleu","Rouge","Vert","Jaune","Or
 const listeEquipements=["GPS","Apple CarPlay","Android Auto","Caméra recul","Caméra 360","Radar arrière","Sièges chauffants","Toit panoramique","Régulateur adaptatif","Attelage","Feux LED","Jantes alu"];
 const toggleEquipement=(item:string)=>setEquipements(old=>old.includes(item)?old.filter(x=>x!==item):[...old,item]);
 const [boite,setBoite]=useState("");const [ville,setVille]=useState("");const [tri,setTri]=useState("recent");
-const reset=()=>{setMarqueId("");setModeleId("");setFinitionId("");setPrixMin("");setPrixMax("");setAnneeMin("");setAnneeMax("");setKmMin("");setKmMax("");setCarburant("");setBoite("");setVille("");setTri("recent");setPuissanceMin("");setPuissanceMax("");setDepartement("");setMotCle("");setEquipements([]);setCouleur("");setPortes("");setPlaces("");setCarrosserie("")};
+const [typeVendeur,setTypeVendeur]=useState("");const [rayon,setRayon]=useState("france");const [commune,setCommune]=useState<CommuneOption|null>(null);
+const reset=()=>{setMarqueId("");setModeleId("");setFinitionId("");setPrixMin("");setPrixMax("");setAnneeMin("");setAnneeMax("");setKmMin("");setKmMax("");setCarburant("");setBoite("");setVille("");setTri("recent");setPuissanceMin("");setPuissanceMax("");setDepartement("");setMotCle("");setEquipements([]);setCouleur("");setPortes("");setPlaces("");setCarrosserie("");setTypeVendeur("");setRayon("france");setCommune(null)};
 const [loading,setLoading]=useState(true);const [error,setError]=useState("");
 const restoreModelId=useRef("");const restoreFinitionId=useRef("");
 const [exactCount,setExactCount]=useState<number|null>(null);
@@ -67,6 +69,8 @@ useEffect(()=>{
  setCarburant(read("carburant"));setBoite(read("boite"));setVille(read("ville"));setDepartement(read("departement"));
  setPuissanceMin(read("puissanceMin"));setPuissanceMax(read("puissanceMax"));setMotCle(read("motCle"));
  setCouleur(read("couleur"));setPortes(read("portes"));setPlaces(read("places"));setCarrosserie(read("carrosserie"));
+ setTypeVendeur(read("typeVendeur"));setRayon(read("rayon")||"france");
+ if(x.commune&&typeof x.commune==="object"){const c=x.commune as CommuneOption;if(typeof c.latitude==="number"&&typeof c.longitude==="number")setCommune(c);}
  if(Array.isArray(x.equipements))setEquipements(x.equipements.filter((e):e is string=>typeof e==="string"));
  }catch{setError("Les critères de la recherche enregistrée sont invalides.");}
 },[]);
@@ -74,7 +78,7 @@ useEffect(()=>{
 useEffect(()=>{if(!category){setLoading(false);return;}let mounted=true;
 async function load(){setLoading(true);const [m,a]=await Promise.all([
 supabase.from("marques_auto").select("id,nom").order("nom").limit(1000),
-supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description,couleur,nombre_portes,nombre_places,carrosserie,photos,code_postal").eq("statut","publiee").in("type_vehicule",category.dbTypes).order("created_at",{ascending:false}).limit(200)
+supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description,couleur,nombre_portes,nombre_places,carrosserie,photos,code_postal,latitude,longitude,type_vendeur").eq("statut","publiee").in("type_vehicule",category.dbTypes).order("created_at",{ascending:false}).limit(200)
 ]);if(!mounted)return;
 if(m.error||a.error)setError("Impossible de récupérer toutes les données. Vérifiez la connexion et les autorisations de lecture Supabase.");
 setMarques(m.data??[]);setAnnonces(a.data??[]);setLoading(false);}
@@ -89,8 +93,11 @@ void loadFinitions();return()=>{mounted=false;};},[modeleId]);
 const finition=finitions.find(x=>x.id===finitionId)?.nom.toLocaleLowerCase("fr")??"";
 const marque=marques.find(x=>x.id===marqueId)?.nom.toLocaleLowerCase("fr")??"";
 const modele=modeles.find(x=>x.id===modeleId)?.nom.toLocaleLowerCase("fr")??"";
-const criteres=useMemo(()=>({marqueId,modeleId,finitionId,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,puissanceMin,puissanceMax,carburant,boite,ville,departement,motCle,equipements,couleur,portes,places,carrosserie}),[marqueId,modeleId,finitionId,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,puissanceMin,puissanceMax,carburant,boite,ville,departement,motCle,equipements,couleur,portes,places,carrosserie]);
+const criteres=useMemo(()=>({marqueId,modeleId,finitionId,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,puissanceMin,puissanceMax,carburant,boite,ville,departement,motCle,equipements,couleur,portes,places,carrosserie,typeVendeur,rayon,commune}),[marqueId,modeleId,finitionId,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,puissanceMin,puissanceMax,carburant,boite,ville,departement,motCle,equipements,couleur,portes,places,carrosserie,typeVendeur,rayon,commune]);
+const distanceKm=(lat1:number,lon1:number,lat2:number,lon2:number)=>{const rad=Math.PI/180;const dLat=(lat2-lat1)*rad;const dLon=(lon2-lon1)*rad;const h=Math.sin(dLat/2)**2+Math.cos(lat1*rad)*Math.cos(lat2*rad)*Math.sin(dLon/2)**2;return 6371*2*Math.asin(Math.min(1,Math.sqrt(h)))};
 const filtered=useMemo(()=>annonces.filter(a=>
+(!typeVendeur||a.type_vendeur===typeVendeur)&&
+(rayon==="france"||!commune||(a.latitude!=null&&a.longitude!=null&&distanceKm(commune.latitude,commune.longitude,a.latitude,a.longitude)<=Number(rayon)))&&
 (!marque||a.marque?.toLocaleLowerCase("fr")===marque)&&
 (!modele||a.modele?.toLocaleLowerCase("fr")===modele)&&
 (!finition||a.finition?.toLocaleLowerCase("fr")===finition)&&
@@ -111,12 +118,18 @@ equipements.every(e=>a.options?.some(o=>o.toLocaleLowerCase("fr")===e.toLocaleLo
 (!carrosserie||a.carrosserie?.toLocaleLowerCase("fr")===carrosserie.toLocaleLowerCase("fr"))&&
 (!carburant||a.carburant===carburant)&&
 (!boite||a.boite===boite)&&
-(!ville||a.ville?.toLocaleLowerCase("fr").includes(ville.toLocaleLowerCase("fr")))
+(rayon!=="france"||!ville||a.ville?.toLocaleLowerCase("fr").includes(ville.toLocaleLowerCase("fr")))
 ).sort((a,b)=>tri==="prix-asc"?(a.prix??Infinity)-(b.prix??Infinity):tri==="prix-desc"?(b.prix??0)-(a.prix??0):tri==="annee-desc"?(b.annee??0)-(a.annee??0):0),
-[annonces,marque,modele,finition,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,carburant,boite,ville,tri,puissanceMin,puissanceMax,departement,motCle,equipements,couleur,portes,places,carrosserie]);
+[annonces,marque,modele,finition,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,carburant,boite,ville,tri,puissanceMin,puissanceMax,departement,motCle,equipements,couleur,portes,places,carrosserie,typeVendeur,rayon,commune]);
 useEffect(()=>{if(!category)return;let cancelled=false;setCountLoading(true);
  const timeout=setTimeout(async()=>{
+  if(rayon!=="france"){
+    if(!commune){if(!cancelled){setExactCount(null);setCountLoading(false)}return;}
+    const {data,error:radiusError}=await supabase.rpc("compter_annonces_auto_rayon",{p_types:category.dbTypes,p_lat:commune.latitude,p_lon:commune.longitude,p_rayon:Number(rayon),p_filtre:{marque,modele,finition,type_vendeur:typeVendeur,carburant,boite,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,puissanceMin,puissanceMax,couleur,carrosserie,portes,places,equipements,motCle}});
+    if(!cancelled){setExactCount(radiusError?null:Number(data));setCountLoading(false);}return;
+  }
   let q=supabase.from("annonces_auto").select("id",{head:true,count:"exact"}).eq("statut","publiee").in("type_vehicule",category.dbTypes);
+  if(typeVendeur)q=q.eq("type_vendeur",typeVendeur);
   if(marque)q=q.ilike("marque",marque);
   if(modele)q=q.ilike("modele",modele);
   if(finition)q=q.ilike("finition",finition);
@@ -136,7 +149,7 @@ useEffect(()=>{if(!category)return;let cancelled=false;setCountLoading(true);
   if(!cancelled){setExactCount(countError?null:count);setCountLoading(false);}
  },260);
  return()=>{cancelled=true;clearTimeout(timeout)};
-},[slug,marque,modele,finition,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,carburant,boite,ville,departement,motCle,equipements,couleur,portes,places,carrosserie,puissanceMin,puissanceMax]);
+},[slug,marque,modele,finition,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,carburant,boite,ville,departement,motCle,equipements,couleur,portes,places,carrosserie,puissanceMin,puissanceMax,typeVendeur,rayon,commune]);
 if(!category)return <main style={{padding:40}}><h1>Catégorie introuvable</h1><a href="/automobile">Retour aux catégories</a></main>;
 return <main className="vehicles-sub">
 <style>{`
@@ -215,12 +228,19 @@ return <main className="vehicles-sub">
 <label>Puissance minimum (ch)<input type="number" min="0" placeholder="Puissance min." value={puissanceMin} onChange={e=>setPuissanceMin(e.target.value)}/></label>
 <label>Puissance maximum (ch)<input type="number" min="0" placeholder="Puissance max." value={puissanceMax} onChange={e=>setPuissanceMax(e.target.value)}/></label>
 </div></details>
-<details className="filter-group"><summary>Localisation</summary><div className="filters">
+<details className="filter-group" open><summary>Localisation et distance</summary><div className="filters">
+<label>Rayon de recherche<select value={rayon} onChange={e=>{setRayon(e.target.value);if(e.target.value!=="france"){setVille("");setDepartement("")}}}>
+<option value="france">Toute la France</option>{[20,50,100,150,200].map(km=><option key={km} value={km}>À {km} km</option>)}</select></label>
+{rayon!=="france"?<><label>Commune de départ<CommuneSelect value={commune} onChange={setCommune}/></label>{!commune&&<small>Choisissez une commune pour appliquer le rayon.</small>}</>:<>
 <label>Ville<input value={ville} onChange={e=>setVille(e.target.value)} placeholder="Ville recherchée"/></label>
-<label>Département<input value={departement} onChange={e=>setDepartement(e.target.value)} placeholder="Nom ou numéro de département"/></label>
+<label>Département<input value={departement} onChange={e=>setDepartement(e.target.value)} placeholder="Nom ou numéro de département"/></label></>}
 </div></details>
 <details className="filter-group"><summary>Options et équipements</summary><div className="equip-list">
 {listeEquipements.map(e=><label key={e}><input type="checkbox" checked={equipements.includes(e)} onChange={()=>toggleEquipement(e)}/>{e}</label>)}
+</div></details>
+<details className="filter-group" open><summary>Type de vendeur</summary><div className="filters">
+<label>Annonce de <select value={typeVendeur} onChange={e=>setTypeVendeur(e.target.value)}>
+<option value="">Particuliers et professionnels</option><option value="particulier">Particulier</option><option value="professionnel">Professionnel</option></select></label>
 </div></details>
 <details className="filter-group"><summary>Recherche par mot-clé</summary><div className="filters">
 <label>Mot-clé<input value={motCle} onChange={e=>setMotCle(e.target.value)} placeholder="Ex. GT, sport, première main"/></label>
