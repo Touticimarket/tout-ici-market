@@ -63,7 +63,7 @@ export default function MesAnnonces(){
  <div style={{flex:1,minWidth:170}}><strong>{ad.titre}</strong><p style={{margin:"5px 0",fontSize:13}}>{ad.prix==null?"Prix non renseigné":ad.prix.toLocaleString("fr-FR")+" €"} · {new Date(ad.created_at).toLocaleDateString("fr-FR")}</p></div>
  <span className="status">{ad.statut}</span>
  {ad.origine==="auto"&&<button type="button" onClick={()=>setSelected(ad.id)}>▥ Statistiques</button>}
- {ad.origine==="auto"&&statusTab(ad.statut)==="en_ligne"&&<a href={"/annonce/"+ad.id}>Voir →</a>}
+ {ad.origine==="auto"&&statusTab(ad.statut)==="en_ligne"&&<><a href={"/annonce/"+ad.id}>Voir →</a><a href={"/annonce/"+ad.id+"#photos"} style={{display:"inline-flex",padding:"9px 12px",borderRadius:9,background:"#fff2c2",color:"#092452",fontWeight:800,textDecoration:"none"}}>📷 Gérer mes photos</a></>}
  {ad.origine==="marketplace"&&statusTab(ad.statut)==="en_ligne"&&<a href={"/annonces/"+ad.id}>Voir →</a>}
  </div>)}</div>
  {selectedAd&&<section className="panel"><h2>Statistiques : {selectedAd.titre}</h2><p>Les visites et clics sont comptabilisés depuis l’activation du suivi.</p>
