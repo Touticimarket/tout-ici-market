@@ -1,6 +1,7 @@
 "use client";
 import {useEffect,useMemo,useState} from "react";
 import {supabase} from "../lib/supabaseClient";
+import {Search,Heart,MessageSquare,UserRound,Plus,House,CarFront,Ship,BriefcaseBusiness,Sofa,Tag,Home,Eye,CalendarDays,Lightbulb,ChevronDown,ChartNoAxesCombined} from "lucide-react";
 
 type Ad={id:string;titre:string;prix:number|null;statut:string;photos:string[];created_at:string;source:"auto"|"marketplace";ville:string};
 type Favorite={id:string;annonce_id:string};
@@ -81,6 +82,25 @@ export default function MonCompte(){
  body:has(.tim-account-dashboard) .tim-shell{display:block!important;max-width:1700px!important;width:100%!important;padding:0 12px!important;margin:0 auto!important}
  body:has(.tim-account-dashboard) .tim-content{width:100%!important;min-width:0!important}
  .tim-account-dashboard{color:#0a1c49;font-family:Arial,Helvetica,sans-serif;padding:14px 0 30px}
+body:has(.tim-account-dashboard)>.tim-header,body:has(.tim-account-dashboard)>.tim-navbar{display:none!important}
+.tim-account-dashboard .account-site-header{position:relative;left:50%;transform:translateX(-50%);width:100vw;margin-top:-14px;background:#061d4c;color:white;z-index:5}
+.tim-account-dashboard .account-topbar{height:57px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 clamp(16px,3.2vw,55px);max-width:1920px;margin:auto}
+.tim-account-dashboard .account-brand{display:flex;align-items:center;gap:9px;flex:none;text-decoration:none;color:white;white-space:nowrap}
+.tim-account-dashboard .account-brand-main{font-weight:900;letter-spacing:-.045em;font-size:clamp(23px,2.3vw,32px);line-height:1}
+.tim-account-dashboard .account-brand-main em{font-size:.8em;color:#ffcc00;font-style:italic;font-weight:700;letter-spacing:-.05em}
+.tim-account-dashboard .account-search{flex:1;max-width:490px;min-width:130px;height:37px;border-radius:10px;background:white;display:flex;align-items:center;gap:10px;color:#122654;padding:0 12px}
+.tim-account-dashboard .account-search input{min-width:0;width:100%;border:0;background:transparent;outline:0;color:#213d6a;font-size:13px}
+.tim-account-dashboard .account-top-actions{display:flex;align-items:center;gap:24px;white-space:nowrap}
+.tim-account-dashboard .account-top-actions a{display:inline-flex;align-items:center;gap:6px;color:white;font-size:13px;font-weight:750}
+.tim-account-dashboard .account-top-actions .account-post{background:#ffd005;color:#061e4c;border-radius:7px;padding:11px 16px;font-weight:900}
+.tim-account-dashboard .account-top-actions .account-post:hover{background:#ffe16a}
+.tim-account-dashboard .account-catnav{height:44px;background:#fff;border-bottom:1px solid #dde6f2;display:flex;align-items:center;justify-content:space-around;gap:6px;padding:0 24px;overflow-x:auto}
+.tim-account-dashboard .account-catnav a{color:#0c2354;font-size:13px;font-weight:800;display:inline-flex;align-items:center;gap:10px;white-space:nowrap;padding:9px}
+.tim-account-dashboard .account-catnav .separator{width:1px;height:24px;background:#dbe4f2;flex-shrink:0}
+.tim-account-dashboard .account-catnav svg{color:#0b2759}
+@media(max-width:1100px){.tim-account-dashboard .account-top-actions{gap:10px}.tim-account-dashboard .account-top-actions a{font-size:11px}.tim-account-dashboard .account-brand-main{font-size:23px}}
+@media(max-width:760px){.tim-account-dashboard .account-topbar{height:auto;min-height:65px;flex-wrap:wrap;padding:10px}.tim-account-dashboard .account-brand-main{font-size:22px}.tim-account-dashboard .account-search{order:3;max-width:none;flex-basis:100%;height:40px}.tim-account-dashboard .account-catnav{justify-content:flex-start;padding:0 6px}.tim-account-dashboard .account-top-actions span.action-label{display:none}.tim-account-dashboard .account-top-actions{margin-left:auto}.tim-account-dashboard .account-top-actions .account-post{padding:9px}}
+
  .tim-account-dashboard *{box-sizing:border-box}
  .tim-account-dashboard a{text-decoration:none;color:inherit}
  .tim-account-dashboard .dash-hero{position:relative;background:linear-gradient(90deg,#f8fbfffa 0%,#f8fbfff4 25%,#f8fbffb0 42%,#f8fbff10 75%),url('/compte/paysage-reference.svg') center/cover;border-radius:20px;min-height:234px;padding:22px 40px;display:grid;grid-template-columns:1fr minmax(360px,550px);gap:25px;align-items:center;margin-bottom:16px;overflow:hidden}
@@ -136,7 +156,20 @@ export default function MonCompte(){
  .tim-account-dashboard .fav-card strong{display:block;font-size:11px;line-height:1.4;min-height:30px}
  .tim-account-dashboard .fav-card b{font-size:12px;color:#0b44ae}
  .tim-account-dashboard .mia{background:linear-gradient(125deg,#ecfff1,#f8fffb);border:1px solid #d3ebd8;border-radius:13px;padding:18px;display:flex;gap:12px;align-items:center}
- .tim-account-dashboard .mia-symbol{font-size:36px}
+ .tim-account-dashboard .mia-symbol{font-size:36px;flex-shrink:0}
+.tim-account-dashboard .mia-robot{height:123px;width:129px;object-fit:contain;align-self:flex-end;margin:-10px -8px -18px auto;mix-blend-mode:multiply}
+.tim-account-dashboard .stat:nth-child(1) .stat-icon{color:#1042da;background:#eaf1ff}
+.tim-account-dashboard .stat:nth-child(2) .stat-icon{color:#07904e;background:#eaf9ef}
+.tim-account-dashboard .stat:nth-child(3) .stat-icon{color:#5d22c4;background:#f3edff}
+.tim-account-dashboard .stat:nth-child(4) .stat-icon{color:#f0a000;background:#fff3e1}
+.tim-account-dashboard .stat:nth-child(5) .stat-icon{color:#112c60;background:#eef4fb}
+.tim-account-dashboard .stat:nth-child(2) b{color:#048847}
+.tim-account-dashboard .stat:nth-child(3) b{color:#5022a4}
+.tim-account-dashboard .stat:nth-child(4) b{color:#9f541c}
+.tim-account-dashboard .dash-nav .symbol{display:grid!important;place-items:center}
+.tim-account-dashboard .account-admetrics{min-width:95px;display:grid;gap:6px;font-size:11px;color:#0a2255}
+.tim-account-dashboard .account-admetrics span{display:flex;align-items:center;gap:6px}
+
  .tim-account-dashboard .mia strong{font-size:17px;color:#057339}
  .tim-account-dashboard .mia p{font-size:12px;line-height:1.55}
  .tim-account-dashboard .empty{color:#50627b;font-size:13px;line-height:1.55}
