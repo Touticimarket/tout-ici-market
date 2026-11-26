@@ -80,8 +80,9 @@ export default function MonCompte(){
  .tim-account-dashboard{color:#0a1c49;font-family:Arial,Helvetica,sans-serif;padding:14px 0 30px}
 body:has(.tim-account-dashboard)>.tim-header,body:has(.tim-account-dashboard)>.tim-navbar{display:none!important}
 .tim-account-dashboard .account-site-header{position:relative;left:50%;transform:translateX(-50%);width:100vw;margin-top:-14px;background:#061d4c;color:white;z-index:5}
-.tim-account-dashboard .account-topbar{height:57px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 clamp(16px,3.2vw,55px);max-width:1920px;margin:auto}
+.tim-account-dashboard .account-topbar{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 clamp(16px,3.2vw,55px);max-width:1920px;margin:auto}
 .tim-account-dashboard .account-brand{display:flex;align-items:center;gap:9px;flex:none;text-decoration:none;color:white;white-space:nowrap}
+.tim-account-dashboard .account-brand-logo{display:block;width:clamp(165px,18vw,245px);max-height:54px;height:auto;object-fit:contain;object-position:left center}
 .tim-account-dashboard .account-brand-main{font-weight:900;letter-spacing:-.045em;font-size:clamp(23px,2.3vw,32px);line-height:1}
 .tim-account-dashboard .account-brand-main em{font-size:.8em;color:#ffcc00;font-style:italic;font-weight:700;letter-spacing:-.05em}
 .tim-account-dashboard .account-search{flex:1;max-width:490px;min-width:130px;height:37px;border-radius:10px;background:white;display:flex;align-items:center;gap:10px;color:#122654;padding:0 12px}
@@ -95,7 +96,7 @@ body:has(.tim-account-dashboard)>.tim-header,body:has(.tim-account-dashboard)>.t
 .tim-account-dashboard .account-catnav .separator{width:1px;height:24px;background:#dbe4f2;flex-shrink:0}
 .tim-account-dashboard .account-catnav svg{color:#0b2759}
 @media(max-width:1100px){.tim-account-dashboard .account-top-actions{gap:10px}.tim-account-dashboard .account-top-actions a{font-size:11px}.tim-account-dashboard .account-brand-main{font-size:23px}}
-@media(max-width:760px){.tim-account-dashboard .account-topbar{height:auto;min-height:65px;flex-wrap:wrap;padding:10px}.tim-account-dashboard .account-brand-main{font-size:22px}.tim-account-dashboard .account-search{order:3;max-width:none;flex-basis:100%;height:40px}.tim-account-dashboard .account-catnav{justify-content:flex-start;padding:0 6px}.tim-account-dashboard .account-top-actions span.action-label{display:none}.tim-account-dashboard .account-top-actions{margin-left:auto}.tim-account-dashboard .account-top-actions .account-post{padding:9px}}
+@media(max-width:760px){.tim-account-dashboard .account-topbar{height:auto;min-height:76px;flex-wrap:wrap;padding:10px}.tim-account-dashboard .account-brand-logo{width:175px;max-height:64px}.tim-account-dashboard .account-brand-main{font-size:22px}.tim-account-dashboard .account-search{order:3;max-width:none;flex-basis:100%;height:40px}.tim-account-dashboard .account-catnav{justify-content:flex-start;padding:0 6px}.tim-account-dashboard .account-top-actions span.action-label{display:none}.tim-account-dashboard .account-top-actions{margin-left:auto}.tim-account-dashboard .account-top-actions .account-post{padding:9px}}
 
  .tim-account-dashboard *{box-sizing:border-box}
  .tim-account-dashboard a{text-decoration:none;color:inherit}
@@ -191,7 +192,7 @@ body:has(.tim-account-dashboard)>.tim-header,body:has(.tim-account-dashboard)>.t
  `}</style>
  <header className="account-site-header">
  <div className="account-topbar">
- <a className="account-brand" href="/"><svg width="38" height="45" viewBox="0 0 38 45" aria-hidden="true"><path fill="#ffcd05" d="M19 1C9 1 2 8 2 18c0 12 17 26 17 26S36 30 36 18C36 8 29 1 19 1Z"/><circle cx="19" cy="18" r="8" fill="#061d4c"/></svg><span className="account-brand-main">TOUT ICI<em> Market</em></span></a>
+ <a className="account-brand" href="/" aria-label="Accueil TOUT ICI MARKET"><img className="account-brand-logo" src="/tout-ici-market-officiel.svg" alt="TOUT ICI MARKET — logo officiel" /></a>
  <form className="account-search" action="/automobile/voitures" role="search"><Search size={21}/><input name="q" type="search" aria-label="Rechercher une annonce" placeholder="Rechercher une annonce (voiture, appartement, bateau, …)" /></form>
  <nav className="account-top-actions" aria-label="Actions du compte"><a href="/favoris"><Heart size={21}/><span className="action-label">Favoris</span></a><a href="/compte/messages"><MessageSquare size={20}/><span className="action-label">Messages</span></a><a href="/compte"><UserRound size={20}/><span className="action-label">Mon compte</span></a><a href="/deposer" className="account-post"><Plus size={20}/><span className="action-label">Déposer une annonce</span></a></nav>
  </div>
