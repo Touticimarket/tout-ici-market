@@ -130,6 +130,71 @@ export default function Messages(){
  .tim-messages .mia-float span{background:#079f55;color:#fff;font-weight:900;border-radius:8px;padding:6px 25px}
  @media(max-width:1100px){.tim-messages .columns{grid-template-columns:minmax(225px,32%) minmax(0,1fr)}.tim-messages .right{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.tim-messages .trust{max-width:100%}}
  @media(max-width:700px){.tim-messages .columns{grid-template-columns:1fr}.tim-messages .chat-panel{min-height:510px}.tim-messages .threadlist{max-height:245px}.tim-messages .right{grid-template-columns:1fr}.tim-messages .trust{grid-template-columns:repeat(2,minmax(0,1fr))}.tim-messages .bubble{max-width:90%}.tim-messages .chat-space{padding:12px}.tim-messages .mia-float img{width:55px;height:55px}}
+
+/* Agrandissement demandé : interface de messagerie à environ 200 % de la taille initiale. */
+.tim-messages{padding:10px 8px 32px!important}
+.tim-messages .columns{grid-template-columns:minmax(350px,28%) minmax(0,1fr) minmax(280px,21%);gap:17px!important}
+.tim-messages .panel{border-radius:18px!important}
+.tim-messages .thread-top{padding:24px 20px 16px!important}
+.tim-messages .side-title{font-size:28px!important;margin-bottom:18px!important}
+.tim-messages .searchbox{height:64px!important;border-radius:12px!important;padding:0 16px!important}
+.tim-messages .searchbox input{font-size:19px!important}
+.tim-messages .searchbox svg{width:25px;height:25px}
+.tim-messages .icon-button{width:57px!important;height:57px!important;border-radius:12px!important}
+.tim-messages .icon-button svg{width:26px;height:26px}
+.tim-messages .threadlist{max-height:1020px!important}
+.tim-messages .thread{min-height:133px!important;padding:19px 14px!important;gap:14px!important}
+.tim-messages .thread img,.tim-messages .fallback-picture{width:120px!important;height:100px!important;border-radius:12px!important}
+.tim-messages .thread-copy{gap:8px!important}
+.tim-messages .thread-title{font-size:19px!important;white-space:normal!important;line-height:1.3!important}
+.tim-messages .thread-meta,.tim-messages .thread-preview{font-size:16px!important;line-height:1.4!important}
+.tim-messages .thread-date{font-size:14px!important}
+.tim-messages .all-threads{font-size:17px!important;padding:18px!important;margin:18px!important}
+.tim-messages .all-threads svg{width:21px!important;height:21px!important}
+.tim-messages .chat-panel{min-height:900px!important}
+.tim-messages .chat-head{min-height:110px!important;padding:20px 22px!important;gap:16px!important}
+.tim-messages .chat-head>img{width:95px!important;height:79px!important;border-radius:11px!important}
+.tim-messages .chat-head>a svg{width:30px;height:30px}
+.tim-messages .chat-title{font-size:25px!important;line-height:1.25!important}
+.tim-messages .chat-subtitle{font-size:17px!important;line-height:1.4!important}
+.tim-messages .chat-space{min-height:575px!important;max-height:930px!important;padding:30px!important}
+.tim-messages .day-label{font-size:16px!important;padding:12px 21px!important}
+.tim-messages .bubble-row{margin:16px 0!important}
+.tim-messages .bubble{font-size:21px!important;line-height:1.5!important;padding:19px 22px!important;border-radius:17px!important;max-width:85%!important}
+.tim-messages .bubble small{font-size:15px!important;margin-top:11px!important}
+.tim-messages .composer{padding:20px 17px!important}
+.tim-messages .compose-line{gap:12px!important}
+.tim-messages .compose-input{border-radius:29px!important;padding:11px 18px!important}
+.tim-messages .compose-input input{font-size:19px!important;height:40px!important}
+.tim-messages .compose-input svg{width:26px;height:26px}
+.tim-messages .round{width:60px!important;height:60px!important}
+.tim-messages .round svg{width:27px;height:27px}
+.tim-messages .quick{gap:10px!important;margin-top:17px!important}
+.tim-messages .quick button{font-size:16px!important;padding:13px 15px!important;border-radius:13px!important}
+.tim-messages .right{gap:16px!important}
+.tim-messages .right-card{padding:23px!important}
+.tim-messages .right-card h3{font-size:20px!important;margin-bottom:23px!important}
+.tim-messages .seller-avatar{width:92px!important;height:92px!important;font-size:35px!important}
+.tim-messages .seller-name{font-size:22px!important}
+.tim-messages .online,.tim-messages .verified,.tim-messages .aside-text{font-size:16px!important;line-height:1.55!important}
+.tim-messages .verified{padding:14px!important}
+.tim-messages .verified svg{width:22px;height:22px}
+.tim-messages .profile-action{font-size:18px!important;padding:16px!important}
+.tim-messages .security p{font-size:17px!important;line-height:1.6!important;margin:16px 0!important}
+.tim-messages .security p svg{width:20px;height:20px}
+.tim-messages .security button,.tim-messages .action-item{font-size:17px!important}
+.tim-messages .action-item{padding:13px 0!important}
+.tim-messages .action-item svg{width:22px;height:22px}
+.tim-messages .trust{margin-top:18px!important;padding:20px 12px!important}
+.tim-messages .trust>div{gap:14px!important;padding:13px!important}
+.tim-messages .trust svg{width:38px;height:38px}
+.tim-messages .trust strong{font-size:17px!important}
+.tim-messages .trust small{font-size:15px!important}
+.tim-messages .mia-float img{width:110px!important;height:110px!important}
+.tim-messages .mia-float span{font-size:19px!important}
+@media(max-width:1450px){.tim-messages .columns{grid-template-columns:minmax(340px,35%) minmax(0,1fr)!important}.tim-messages .right{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.tim-messages .trust{max-width:100%}}
+@media(max-width:830px){.tim-messages .columns{grid-template-columns:1fr!important}.tim-messages .right{grid-template-columns:1fr}.tim-messages .threadlist{max-height:390px!important}.tim-messages .chat-panel{min-height:620px!important}.tim-messages .chat-space{min-height:360px!important}.tim-messages .trust{grid-template-columns:repeat(2,minmax(0,1fr))}.tim-messages .bubble{max-width:93%!important}.tim-messages .mia-float img{width:60px!important;height:60px!important}.tim-messages .mia-float span{font-size:14px!important;padding:3px 13px!important}}
+@media(max-width:520px){.tim-messages .thread img{width:90px!important;height:78px!important}.tim-messages .thread-title{font-size:17px!important}.tim-messages .chat-title{font-size:20px!important}.tim-messages .bubble{font-size:18px!important}.tim-messages .round{width:42px!important;height:42px!important}.tim-messages .compose-input{padding:5px 9px!important}.tim-messages .compose-input input{font-size:16px!important}.tim-messages .trust strong{font-size:13px!important}.tim-messages .trust small{font-size:12px!important}}
  `}</style>
  <div className="columns">
  <aside className="panel thread-panel"><div className="thread-top"><h1 className="side-title">Mes conversations</h1><div className="searchline"><label className="searchbox"><Search size={18}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Rechercher une conversation" aria-label="Rechercher une conversation"/></label><button type="button" className="icon-button" aria-label="Filtrer les conversations" title="Afficher la conversation sélectionnée" onClick={()=>setFilterUnread(v=>!v)}><SlidersHorizontal size={18}/></button></div></div>
