@@ -15,10 +15,10 @@ async function getAnnonce(id:string):Promise<MarketplaceAd|null>{
 }
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const {id}=await params;const a=await getAnnonce(id);
- if(!a)return {title:"Annonce indisponible | TOUT ICI MARKET",robots:{index:false,follow:false}};
+ if(!a)return {title:"Annonce indisponible | TOUT ICI ANNONCES",robots:{index:false,follow:false}};
  const description=(a.description||"Annonce gratuite entre particuliers").slice(0,170);
  const url="https://tout-ici-market.vercel.app/annonces/"+a.id;
- return {title:a.titre+" | TOUT ICI MARKET",description,alternates:{canonical:url},openGraph:{title:a.titre,description,url,type:"article",images:a.photos?.[0]?[{url:a.photos[0]}]:undefined}};
+ return {title:a.titre+" | TOUT ICI ANNONCES",description,alternates:{canonical:url},openGraph:{title:a.titre,description,url,type:"article",images:a.photos?.[0]?[{url:a.photos[0]}]:undefined}};
 }
 function displayDetail(value:unknown){
  if(typeof value==="string"||typeof value==="number")return String(value);
