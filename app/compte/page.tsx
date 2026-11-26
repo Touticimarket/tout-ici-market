@@ -63,6 +63,7 @@ export default function Compte(){
  <div className="account-quicklinks">
   <a href="/compte/recherches">⌕ Mes recherches enregistrées<small>Retrouvez vos recherches sauvegardées.</small></a>
   <a href="/favoris">♡ Mes annonces favorites<small>Consultez les annonces mises de côté.</small></a>
+  <a href="/compte/messages">✉ Mes messages<small>Conversations privées avec acheteurs et vendeurs.</small></a>
  </div>
  <div style={{marginTop:18}}><button onClick={async()=>{await supabase.auth.signOut();setUserId("");setEmail("")}} className="account-subaction">Se déconnecter</button></div>
  </>}
