@@ -340,7 +340,27 @@ body:has(.tim-account-dashboard) .tim-shell{max-width:none!important}
 .tim-account-dashboard .mia-floating img{width:90px!important;height:90px!important}
 }
 @media(min-width:851px) and (max-width:1150px){.tim-account-dashboard .workarea{grid-template-columns:205px minmax(0,1fr)}.tim-account-dashboard .dash-hero{height:155px}.tim-account-dashboard .stats-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+/* Compte : rétablir l'en-tête officiel et le retour au menu général. */
+body:has(.tim-account-dashboard) .tim-header{display:flex!important;background:#062452!important;color:#fff!important;border-bottom:1px solid #315287!important;min-height:85px!important;padding:9px clamp(14px,2vw,32px)!important}
+body:has(.tim-account-dashboard) .tim-navbar{display:flex!important;background:#06275d!important;min-height:63px!important;align-items:stretch!important;justify-content:space-between!important;border-bottom:3px solid #ffd20b!important;padding:0 12px!important}
+body:has(.tim-account-dashboard) .tim-navbar a{color:#fff!important;font-weight:850!important;font-size:clamp(14px,1vw,17px)!important;padding:12px!important}
+body:has(.tim-account-dashboard) .tim-header .tim-logo{display:block!important;width:clamp(175px,17vw,250px)!important}
+body:has(.tim-account-dashboard) .tim-header .tim-logo img{max-height:74px!important}
+body:has(.tim-account-dashboard) .tim-header .tim-header-links a:not(.tim-post){color:#fff!important}
+body:has(.tim-account-dashboard) .tim-header .tim-header-links .tim-post{background:#ffd10b!important;color:#061a49!important}
+body:has(.tim-account-dashboard) .tim-header .tim-home-search{background:#fff!important}
+.tim-account-dashboard .account-navigation{display:flex;align-items:center;gap:12px;margin:2px 0 13px;font-size:14px;font-weight:800;position:relative;z-index:10}
+.tim-account-dashboard .account-navigation>a,.tim-account-dashboard .account-drawer>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #d3e1f6;border-radius:10px;padding:12px 16px;background:#fff;color:#103b9d;cursor:pointer;list-style:none}
+.tim-account-dashboard .account-drawer>summary::-webkit-details-marker{display:none}
+.tim-account-dashboard .account-drawer[open]>summary{background:#eaf2ff}
+.tim-account-dashboard .account-drawer-links{position:absolute;top:calc(100% + 5px);left:185px;width:min(360px,90vw);background:#fff;border:1px solid #d5e3f7;box-shadow:0 10px 25px #122f5630;border-radius:12px;padding:10px;display:grid;gap:3px;max-height:65vh;overflow:auto}
+.tim-account-dashboard .account-drawer-links a{display:block;padding:12px;color:#102d68;border-radius:7px;font-size:14px}
+.tim-account-dashboard .account-drawer-links a:hover{background:#eff5ff}
+.tim-account-dashboard .dash-hero{background-image:linear-gradient(90deg,#f4f9fff0 0%,#f7fbffb0 26%,transparent 58%),url('/compte/paysage-reference.svg')!important;background-position:center 56%!important;background-size:cover!important}
+@media(max-width:850px){body:has(.tim-account-dashboard) .tim-navbar{justify-content:flex-start!important;overflow-x:auto!important}.tim-account-dashboard .account-navigation{flex-wrap:wrap}.tim-account-dashboard .account-drawer-links{left:0}.tim-account-dashboard .account-navigation>a,.tim-account-dashboard .account-drawer>summary{font-size:12px;padding:10px}}
  `}</style>
+ <nav className="account-navigation" aria-label="Navigation et rubriques du site"><a className="account-back-home" href="/">⌂ Retour à l'accueil</a><details className="account-drawer"><summary>☰ Ouvrir les rubriques <span>▾</span></summary><div className="account-drawer-links"><a href="/automobile">🚘 Véhicules</a><a href="/immobilier">⌂ Immobilier</a><a href="/emploi">▣ Emploi</a><a href="/materiel-pro">⚒ Matériel professionnel</a><a href="/maison-jardin">▤ Maison, bricolage &amp; jardin</a><a href="/telephones">▥ Téléphonie &amp; informatique</a><a href="/vacances-loisirs">✈ Loisirs &amp; voyages</a><a href="/famille">♡ Famille</a><a href="/bon-plan">★ Bons plans</a></div></details><a href="/compte/messages">✉ Mes messages</a></nav>
  <section className="dash-hero"><div><h1>Mon compte</h1><p>Gérez facilement vos annonces, messages et favoris au même endroit.</p></div>
  <div className="identity">{avatarUrl&&userId?<img className="avatar" src={avatarUrl} alt="Photo du compte" referrerPolicy="no-referrer" />:<div className="avatar">{userId?initials:"♙"}</div>}<div style={{minWidth:0,flex:1}}><h2>{userId?displayName:"Votre espace personnel"}</h2><div className="id-small">{userId?(isPro?"Compte professionnel":"Compte particulier"):"Connectez-vous pour retrouver votre profil"}{userId&&<div>{email}</div>}{userId&&person?.created_at&&<div>Membre depuis {new Date(person.created_at).toLocaleDateString("fr-FR",{month:"long",year:"numeric"})}</div>}</div></div><div className="profile-controls"><a className="profile-link" href="/compte/profil">{userId?"✎ Modifier le profil":"Se connecter"}</a><a className="profile-link" href="/compte/profil">♧ Sécurité du compte</a></div></div>
  </section>
