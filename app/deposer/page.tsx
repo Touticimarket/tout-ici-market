@@ -58,6 +58,9 @@ body:has(.depot-entry) .tim-content{width:100%}
 .depot-entry .card .go{font-size:12px;color:#0b49aa;font-weight:800;margin-top:7px}
 .depot-entry .other{text-align:center;padding-top:13px;font-size:13px}
 .depot-entry .other a{color:#1247a2;font-weight:800}
+.depot-entry .approved-lower{display:flex;flex-direction:column;gap:13px;margin:17px 0 0}
+.depot-entry .approved-lower img{display:block;width:100%;height:auto;object-fit:contain}
+.depot-entry .mobile-lower{display:none}
 .depot-entry .mia{display:grid;grid-template-columns:auto 1.6fr 1fr;gap:20px;align-items:center;background:linear-gradient(100deg,#e2f8e9,#effff5);border:1px solid #d3ecdd;border-radius:17px;margin:15px 0;padding:21px}
 .depot-entry .mia-icon{width:75px;height:75px;border:3px solid #87dcaa;display:grid;place-items:center;font-size:36px;border-radius:50%;background:#fff}
 .depot-entry .mia h2{margin:0 0 7px;font-size:22px;color:#08713b}
@@ -84,6 +87,7 @@ body:has(.depot-entry) .tim-content{width:100%}
 .depot-entry .categories-wrap{padding:9px;border-radius:15px}
 .depot-entry .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.depot-entry .card img,.depot-entry .card .fallback{height:auto;aspect-ratio:2.65/1}
 .depot-entry .card-text{padding:9px}.depot-entry .card strong{font-size:12px}.depot-entry .card small{font-size:10px}
+.depot-entry .approved-lower{display:none}.depot-entry .mobile-lower{display:block}
 .depot-entry .mia{grid-template-columns:auto 1fr;gap:10px;padding:12px}.depot-entry .mia-icon{width:51px;height:51px;font-size:25px}.depot-entry .mia h2{font-size:17px}.depot-entry .mia ul{grid-column:1/-1;font-size:12px}
 .depot-entry .trust{grid-template-columns:repeat(2,1fr);row-gap:12px}
 }
@@ -105,7 +109,12 @@ body:has(.depot-entry) .tim-content{width:100%}
 <div className="card-text"><strong>{c.icone} {c.nom}</strong><small>{c.resume}</small><span className="go">Déposer dans cette rubrique ›</span></div></Link>)}</div>
 <div className="other"><Link href="/deposer/autres">Autres catégories →</Link></div>
 </section>
+<div className="approved-lower">
+<img src="/depot/mia-reference.svg" alt="MIA vous accompagne : conseils pour rédiger votre annonce, plus de visibilité et plus de contacts" />
+<img src="/depot/garanties-reference.svg" alt="Paiement sécurisé, support 7 jours sur 7, annonces vérifiées, zéro commission et communauté fiable" />
+</div>
+<div className="mobile-lower">
 <section className="mia"><div className="mia-icon" aria-hidden="true">🤖</div><div><h2>MIA vous accompagne !</h2><p>Pour réussir votre annonce, choisissez des photos claires, un titre précis et une description complète. Les conseils s'adaptent à votre catégorie.</p></div><ul><li>Une annonce claire et complète</li><li>Des photos et une vidéo si besoin</li><li>Une publication simple et gratuite</li></ul></section>
-<div className="trust"><div><b>🔒 CONFIDENTIALITÉ</b>Gardez la maîtrise de vos informations</div><div><b>📷 PHOTOS & VIDÉO</b>Présentez votre bien simplement</div><div><b>✓ INFORMATIONS EXACTES</b>Relisez vos informations avant publication</div><div><b>♡ GRATUIT POUR LES PARTICULIERS</b>Déposez gratuitement votre annonce</div></div>
+<div className="trust"><div><b>🔒 CONFIDENTIALITÉ</b>Gardez la maîtrise de vos informations</div><div><b>📷 PHOTOS & VIDÉO</b>Présentez votre bien simplement</div><div><b>✓ INFORMATIONS EXACTES</b>Relisez vos informations avant publication</div><div><b>♡ GRATUIT POUR LES PARTICULIERS</b>Déposez gratuitement votre annonce</div></div></div>
 </main>;
 }
