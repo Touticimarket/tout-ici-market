@@ -63,8 +63,7 @@ export default async function MarketplaceAnnoncePage({params}:Props){
  <p>📍 {a.ville}{a.code_postal?" ("+a.code_postal+")":""}</p>
  <p style={{fontSize:12,color:"#586981"}}>Annonce publiée le {new Date(a.created_at).toLocaleDateString("fr-FR")}</p></section>
  <section className="panel actions"><h2 style={{margin:"0 0 4px"}}>Cette annonce vous intéresse ?</h2>
- <a href="/compte/messages">Accéder à mes messages</a>
- <small style={{lineHeight:1.5,color:"#506886"}}>La messagerie pour les annonces hors automobile sera raccordée progressivement. Ne transmettez jamais de données bancaires par messagerie.</small>
+ <p style={{margin:0,fontSize:13,lineHeight:1.5,color:"#506886"}}>La prise de contact directe avec le vendeur sera disponible prochainement pour cette rubrique.</p>
  </section></aside></div>
  </main>;
 }
