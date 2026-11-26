@@ -53,6 +53,16 @@ export default function AutomobilePage(){
  @media(max-width:980px){.auto-home .hero{margin-left:calc(-180px - 12px);width:calc(100% + 180px + 12px)}}
  @media(max-width:760px){.auto-home .hero{margin-left:0;width:100%}.auto-home .cards{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-home .main-panel{margin:0 8px;padding:13px}.auto-home .hero img{height:180px;object-position:center}.auto-home .hero-title{top:10%;left:2%;max-width:58%;padding:7px}.auto-home .hero-title span{font-size:10px}}
  @media(max-width:480px){.auto-home .cards{grid-template-columns:1fr}.auto-home .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-home .hero img{height:155px;object-position:center}}
+
+/* Catégories véhicule : cadrage uniforme, image entière et cartes propres. */
+.auto-home .cards{gap:16px}
+.auto-home .category{border-radius:17px;box-shadow:0 3px 12px #0b397f12;background:#fff}
+.auto-home .category img{width:100%!important;height:auto!important;max-height:none!important;aspect-ratio:480/221!important;object-fit:contain!important;object-position:center center!important;display:block!important;margin:0 auto!important;background:#f3f8ff!important;border-radius:15px 15px 0 0!important;image-rendering:auto}
+.auto-home .tile-copy{padding:13px 13px 16px}
+.auto-home .tile-title{font-size:clamp(15px,1.15vw,19px)}
+.auto-home .tile-description{font-size:clamp(12px,.9vw,14px);line-height:1.5}
+.auto-home .hero img{object-position:center center}
+@media(max-width:760px){.auto-home .cards{gap:12px}.auto-home .category img{aspect-ratio:480/221!important}}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Véhicules</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
