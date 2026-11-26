@@ -19,7 +19,7 @@ export default function ImmobilierPage() {
       </h1>
 
       <p style={{ fontSize: "22px", color: "#555" }}>
-        Retrouvez toutes les annonces immobilières sur TOUT ICI Market.
+        Retrouvez toutes les annonces immobilières sur TOUT ICI ANNONCES.
       </p>
 
       <div
