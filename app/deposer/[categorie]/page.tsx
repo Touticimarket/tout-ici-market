@@ -114,6 +114,6 @@ export default function DeposerCategorie(){
  {auth?<p className="caption">Connecté : {email}</p>:<p>Connectez-vous dans <a href="/compte">Mon compte</a> avant publication.</p>}
  <button type="button" className="main" disabled={busy||Boolean(publishedId)} onClick={()=>void publish()}>{busy?"Publication en cours…":publishedId?"✓ Annonce publiée":"Publier gratuitement"}</button>
  {message&&<p role="status" style={{fontWeight:700,marginTop:13}}>{message}</p>}
- {publishedId&&<p><a href="/compte/annonces">Retrouver mon annonce dans Mon compte → Mes annonces</a></p>}
+ {publishedId&&<p><a href={"/annonces/"+publishedId}>Voir mon annonce publiée →</a> · <a href="/compte/annonces">Mes annonces</a></p>}
  </section></main>;
 }
