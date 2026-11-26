@@ -3,6 +3,7 @@ import {notFound} from "next/navigation";
 import type {Metadata} from "next";
 import ShareLinks from "../../components/ShareLinks";
 import {TrackAutoView} from "../../components/FavoriteAnnonceButton";
+import ContacterVendeur from "../../components/ContacterVendeur";
 
 type Props={params:Promise<{id:string}>};
 type AutoAd={
@@ -43,6 +44,7 @@ export default async function AnnoncePage({params}:Props){
       <p style={{fontSize:30,color:"#0858a9",fontWeight:900,margin:"0 0 14px"}}>{a.prix==null?"Prix non renseigné":a.prix.toLocaleString("fr-FR")+" €"}</p>
       <ShareLinks url={"https://tout-ici-market.vercel.app/annonce/"+a.id} title={title+" — TOUT ICI MARKET"} label="Partager cette annonce"/>
     </div>
+    <ContacterVendeur annonceId={a.id}/>
     <p style={{color:"#586b89",fontWeight:700}}>📍 {[a.ville,a.code_postal,a.departement].filter(Boolean).join(" · ")||"Lieu non renseigné"}</p>
     {a.photos?.length?<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,230px),1fr))",gap:10,margin:"22px 0"}}>{a.photos.map((photo,i)=><img key={i} src={photo} alt={title+" — photo "+(i+1)} style={{width:"100%",height:250,objectFit:"contain",background:"#eaf1fa",borderRadius:12}}/>)}</div>:<div style={{background:"#ecf3fa",padding:42,textAlign:"center",borderRadius:12,margin:"18px 0"}}>Photo non disponible</div>}
     <h2 style={{fontSize:22,marginTop:25}}>Caractéristiques</h2>
