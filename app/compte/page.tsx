@@ -58,16 +58,26 @@ export default function MonCompte(){
   {name:"Mes recherches enregistrées",href:"/compte/recherches",icon:"⌕",number:savedCount},
   {name:"Mes alertes",href:"/compte/recherches",icon:"♧"},
   {name:"Mon profil et coordonnées",href:"/compte/profil",icon:"♙"},
+  {name:"Paramètres",href:"/compte/profil",icon:"⚙"},
   {name:"Sécurité du compte",href:"/compte/profil",icon:"♙"},
   {name:"Déposer une annonce",href:"/deposer",icon:"＋"}
  ];
  async function logout(){setSigningOut(true);await supabase.auth.signOut();setUserId("");setSigningOut(false);window.location.href="/compte";}
  return <main className="tim-account-dashboard">
  <style>{`
+ /* Only this account page: use the approved clean header without a duplicate brand logo. */
+ body:has(.tim-account-dashboard) .tim-header .tim-logo{display:none!important}
+ body:has(.tim-account-dashboard) .tim-header{background:#fff!important;color:#0a1e4f!important;border-bottom:1px solid #e8edf5;padding:11px 24px!important;gap:18px}
+ body:has(.tim-account-dashboard) .tim-header .tim-home-search{background:#f7faff;border:1px solid #e1e9f5;max-width:570px;box-shadow:none}
+ body:has(.tim-account-dashboard) .tim-header .tim-header-links a:not(.tim-post){color:#062d98}
+ body:has(.tim-account-dashboard) .tim-header .tim-header-links .tim-post{background:#0d36bb!important;color:white!important;border-radius:9px}
+ body:has(.tim-account-dashboard) .tim-navbar{background:#fff!important;border-bottom:1px solid #dfe8f3;padding:0 20px;justify-content:center;gap:10px}
+ body:has(.tim-account-dashboard) .tim-navbar a{color:#092455!important;font-weight:800}
+ body:has(.tim-account-dashboard) .tim-navbar a:hover{background:#eff4ff!important}
  body:has(.tim-account-dashboard) .tim-sidebar{display:none!important}
  body:has(.tim-account-dashboard) .tim-shell{display:block!important;max-width:1700px!important;width:100%!important;padding:0 12px!important;margin:0 auto!important}
  body:has(.tim-account-dashboard) .tim-content{width:100%!important;min-width:0!important}
- .tim-account-dashboard{color:#0a1c49;font-family:Arial,Helvetica,sans-serif;padding:13px 0 30px}
+ .tim-account-dashboard{color:#0a1c49;font-family:Arial,Helvetica,sans-serif;padding:14px 0 30px}
  .tim-account-dashboard *{box-sizing:border-box}
  .tim-account-dashboard a{text-decoration:none;color:inherit}
  .tim-account-dashboard .dash-hero{position:relative;background:linear-gradient(90deg,#f8fbfffa 0%,#f8fbfff4 25%,#f8fbffb0 42%,#f8fbff10 75%),url('/accueil-reel/vacances-loisirs.svg') center/cover;border-radius:20px;min-height:234px;padding:22px 40px;display:grid;grid-template-columns:1fr minmax(360px,550px);gap:25px;align-items:center;margin-bottom:16px;overflow:hidden}
@@ -122,9 +132,14 @@ export default function MonCompte(){
  .tim-account-dashboard .mia strong{font-size:17px;color:#057339}
  .tim-account-dashboard .mia p{font-size:12px;line-height:1.55}
  .tim-account-dashboard .empty{color:#50627b;font-size:13px;line-height:1.55}
- .tim-account-dashboard .trust{background:#f0f6ff;border-radius:12px;padding:18px 12px;margin-top:8px;text-align:center;color:#16419a;font-size:13px;font-weight:800}
+ .tim-account-dashboard .trust{background:white;border:1px solid #e0e9f5;border-radius:12px;padding:15px 12px;margin-top:15px;color:#16419a;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+ .tim-account-dashboard .trust span{padding:5px 10px;border-right:1px solid #dfe7ef;font-size:19px;text-align:center}
+ .tim-account-dashboard .trust span:last-child{border-right:0}
+ .tim-account-dashboard .trust strong{display:block;font-size:11px;margin:5px 0}
+ .tim-account-dashboard .trust small{display:block;font-size:10px;color:#445976}
  @media(max-width:1250px){.tim-account-dashboard .stats-grid{grid-template-columns:repeat(3,1fr)}.tim-account-dashboard .dash-columns{grid-template-columns:1fr}.tim-account-dashboard .fav-card img{height:135px}}
- @media(max-width:820px){.tim-account-dashboard .dash-hero{grid-template-columns:1fr;padding:22px}.tim-account-dashboard .workarea{grid-template-columns:1fr}.tim-account-dashboard .dash-nav{flex-direction:row;overflow-x:auto;padding:7px;position:static}.tim-account-dashboard .dash-nav a{flex-shrink:0;font-size:12px;padding:10px}.tim-account-dashboard .dash-nav .symbol{font-size:17px;width:18px}.tim-account-dashboard .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+ @media(max-width:820px){body:has(.tim-account-dashboard) .tim-navbar{justify-content:flex-start}body:has(.tim-account-dashboard) .tim-header{flex-wrap:wrap}
+ .tim-account-dashboard .dash-hero{grid-template-columns:1fr;padding:22px}.tim-account-dashboard .workarea{grid-template-columns:1fr}.tim-account-dashboard .dash-nav{flex-direction:row;overflow-x:auto;padding:7px;position:static}.tim-account-dashboard .dash-nav a{flex-shrink:0;font-size:12px;padding:10px}.tim-account-dashboard .dash-nav .symbol{font-size:17px;width:18px}.tim-account-dashboard .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tim-account-dashboard .trust{grid-template-columns:repeat(2,minmax(0,1fr))}.tim-account-dashboard .trust span{border-right:0}}
  @media(max-width:520px){.tim-account-dashboard .dash-hero{padding:17px;gap:15px}.tim-account-dashboard .identity{flex-wrap:wrap;padding:13px}.tim-account-dashboard .avatar{width:57px;height:57px}.tim-account-dashboard .profile-controls{margin-left:0;width:100%;flex-direction:row}.tim-account-dashboard .profile-link{flex:1;white-space:normal}.tim-account-dashboard .identity h2{font-size:17px}.tim-account-dashboard .stats-grid{gap:7px}.tim-account-dashboard .stat{padding:9px 7px;gap:6px}.tim-account-dashboard .stat b{font-size:19px}.tim-account-dashboard .stat-icon{height:30px;width:30px;font-size:17px}.tim-account-dashboard .adrow{flex-wrap:wrap}.tim-account-dashboard .ad-actions{margin-left:0;width:100%}.tim-account-dashboard .fav-card img{height:75px}}
  `}</style>
  <section className="dash-hero"><div><h1>Mon compte</h1><p>Gérez facilement vos annonces, messages, recherches et favoris au même endroit.</p></div>
@@ -160,6 +175,6 @@ export default function MonCompte(){
  </div></div>
  <p style={{fontSize:11,color:"#68788f",margin:"8px 0"}}>* Statistiques disponibles pour les annonces automobiles depuis l’activation du suivi. Aucune statistique n’est inventée.</p>
  </div></div>}
- <div className="trust">🔒 Espace personnel sécurisé &nbsp; · &nbsp; ♡ Annonces et favoris &nbsp; · &nbsp; ✉ Conversations privées &nbsp; · &nbsp; ✓ Dépôt gratuit pour les particuliers</div>
+ <div className="trust"><span>♙ <strong>100 % GRATUIT</strong><small>pour les particuliers</small></span><span>♢ <strong>ANNONCES & FAVORIS</strong><small>Gérez vos publications</small></span><span>♧ <strong>ESPACE SÉCURISÉ</strong><small>Informations privées</small></span><span>♙ <strong>COMPTE PERSONNEL</strong><small>Vos recherches au même endroit</small></span><span>♧ <strong>MESSAGERIE</strong><small>Conversations privées</small></span></div>
  </main>;
 }
