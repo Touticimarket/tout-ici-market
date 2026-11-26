@@ -26,8 +26,8 @@ async function getAd(id:string):Promise<AutoAd|null>{
 }
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const {id}=await params;const a=await getAd(id);
- if(!a)return {title:"Annonce indisponible | TOUT ICI MARKET",robots:{index:false,follow:false}};
- const title=titleOf(a)+" | TOUT ICI MARKET";
+ if(!a)return {title:"Annonce indisponible | TOUT ICI ANNONCES",robots:{index:false,follow:false}};
+ const title=titleOf(a)+" | TOUT ICI ANNONCES";
  const description=[a.prix!=null?a.prix.toLocaleString("fr-FR")+" €":null,a.ville,a.description].filter(Boolean).join(" · ").slice(0,190);
  const url="https://tout-ici-market.vercel.app/annonce/"+a.id;
  return {title,description,alternates:{canonical:url},openGraph:{title,description,url,type:"article",images:a.photos?.[0]?[{url:a.photos[0]}]:undefined},twitter:{card:a.photos?.[0]?"summary_large_image":"summary",title,description,images:a.photos?.[0]?[a.photos[0]]:undefined}};
@@ -42,7 +42,7 @@ export default async function AnnoncePage({params}:Props){
     <h1 style={{fontSize:"clamp(27px,3vw,38px)",margin:"0 0 12px"}}>{title}</h1>
     <div style={{display:"flex",flexWrap:"wrap",gap:18,alignItems:"center",justifyContent:"space-between"}}>
       <p style={{fontSize:30,color:"#0858a9",fontWeight:900,margin:"0 0 14px"}}>{a.prix==null?"Prix non renseigné":a.prix.toLocaleString("fr-FR")+" €"}</p>
-      <ShareLinks url={"https://tout-ici-market.vercel.app/annonce/"+a.id} title={title+" — TOUT ICI MARKET"} label="Partager cette annonce"/>
+      <ShareLinks url={"https://tout-ici-market.vercel.app/annonce/"+a.id} title={title+" — TOUT ICI ANNONCES"} label="Partager cette annonce"/>
     </div>
     <ContacterVendeur annonceId={a.id}/>
     <p style={{color:"#586b89",fontWeight:700}}>📍 {[a.ville,a.code_postal,a.departement].filter(Boolean).join(" · ")||"Lieu non renseigné"}</p>
