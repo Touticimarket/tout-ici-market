@@ -192,7 +192,7 @@ return <main className="vehicles-sub">
  <button type="button" className="reset" onClick={reset}>↺ Réinitialiser les filtres</button></div>
 <details className="filter-group" open><summary>Marque, modèle et finition</summary><div className="filters">
 <label>Marque<BrandAutocomplete brands={marques} value={marqueId} onChange={setMarqueId}/></label>
-<label>Modèle<select aria-label="Modèle" value={modeleId} onChange={e=>setModeleId(e.target.value)} disabled={!marqueId}><option value="">{marqueId?"Tous les modèles":"Choisir une marque"}</option>{modeles.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
+<label>Modèle<BrandAutocomplete brands={modeles} value={modeleId} onChange={setModeleId} label="Saisir un modèle" placeholder={marqueId?"Tapez 30 pour voir 3008 ou 308…":"Choisissez d’abord une marque"} disabled={!marqueId}/></label>
 <label>Finition<select aria-label="Finition" value={finitionId} onChange={e=>setFinitionId(e.target.value)} disabled={!modeleId}><option value="">{modeleId?"Toutes les finitions":"Choisir un modèle"}</option>{finitions.map(x=><option key={x.id} value={x.id}>{x.nom}</option>)}</select></label>
 </div></details>
 <details className="filter-group" open><summary>Prix, année et kilomètres</summary><div className="filters">
