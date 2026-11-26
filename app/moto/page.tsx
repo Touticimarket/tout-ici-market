@@ -19,7 +19,7 @@ export default function MotoPage() {
       </h1>
 
       <p style={{ fontSize: "22px", color: "#555" }}>
-        Retrouvez toutes les annonces moto sur TOUT ICI Market.
+        Retrouvez toutes les annonces moto sur TOUT ICI ANNONCES.
       </p>
 
       <div
