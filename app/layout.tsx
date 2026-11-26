@@ -65,6 +65,16 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-shell:has(.auto-home) .auto-home .main-panel{grid-area:auto-main;margin:0}
       @media(max-width:760px){.tim-shell:has(.auto-home){grid-template-columns:minmax(0,1fr);grid-template-areas:"auto-hero" "auto-side" "auto-main"}}
       @media(max-width:760px){.tim-sidebar-title{flex-shrink:0;white-space:nowrap}.tim-shell{grid-template-columns:1fr}.tim-sidebar{position:static;display:flex;overflow-x:auto;white-space:nowrap;padding:5px}.tim-sidebar a{border:0;flex-shrink:0;font-size:13px}.tim-sidebar .tim-sidebar-chevron{display:none}.tim-header{gap:10px;flex-wrap:wrap}.tim-header-links{margin-left:auto}.tim-header-links a:not(.tim-post){display:none}.tim-header-links .tim-post{padding:12px;font-size:12px}}
+
+      /* En-tête plus compact : logo préservé, navigation principale plus lisible. */
+      .tim-header{min-height:91px;padding:8px clamp(14px,2vw,32px);gap:18px}
+      .tim-logo{width:clamp(175px,17vw,250px)}
+      .tim-logo img{max-height:74px}
+      .tim-logo-caption{font-size:10px}
+      .tim-navbar{min-height:64px;align-items:stretch;gap:4px;background:#06275d;border-bottom:3px solid #ffd20b}
+      .tim-navbar a{display:flex;align-items:center;justify-content:center;font-size:clamp(14px,1.02vw,18px);font-weight:850;padding:14px clamp(9px,1vw,18px)}
+      .tim-navbar a:hover,.tim-navbar a:focus-visible{background:#164a91}
+      @media(max-width:760px){.tim-header{min-height:75px}.tim-logo{width:180px}.tim-logo img{max-height:65px}.tim-navbar{min-height:56px;justify-content:flex-start}.tim-navbar a{font-size:15px}}
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI MARKET"><img src="/tout-ici-market-officiel.svg" alt="TOUT ICI MARKET"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
