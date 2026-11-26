@@ -75,6 +75,14 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-navbar a{display:flex;align-items:center;justify-content:center;font-size:clamp(14px,1.02vw,18px);font-weight:850;padding:14px clamp(9px,1vw,18px)}
       .tim-navbar a:hover,.tim-navbar a:focus-visible{background:#164a91}
       @media(max-width:760px){.tim-header{min-height:75px}.tim-logo{width:180px}.tim-logo img{max-height:65px}.tim-navbar{min-height:56px;justify-content:flex-start}.tim-navbar a{font-size:15px}}
+      /* Logo officiel TOUT ICI ANNONCES : image fournie par le propriétaire, sans retouche ni étirement. */
+      .tim-header{min-height:150px!important}
+      .tim-logo{width:clamp(180px,19vw,240px)!important;flex-shrink:0!important}
+      .tim-logo img{width:100%!important;height:auto!important;max-height:none!important;aspect-ratio:3/2!important;object-fit:contain!important}
+      .tim-logo-caption{font-size:11px;line-height:1.35}
+      @media(max-width:900px){.tim-header{min-height:118px!important}.tim-logo{width:170px!important}}
+      @media(max-width:760px){.tim-header{min-height:105px!important}.tim-logo{width:155px!important}}
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
