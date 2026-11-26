@@ -55,16 +55,12 @@ export default function MonCompte(){
   {name:"Tableau de bord",href:"/compte",icon:"⌂",current:true},
   {name:"Mes favoris",href:"/favoris",icon:"♡"},
   {name:"Mes annonces",href:"/compte/annonces",icon:"▣"},
-  {name:"Mes messages",href:"/compte/messages",icon:"✉",number:conversationCount},
-  {name:"Mes recherches enregistrées",href:"/compte/recherches",icon:"⌕",number:savedCount},
-  {name:"Mes alertes",href:"/compte/recherches",icon:"♧"},
+  {name:"Mes messages",href:"/compte/messages",icon:"▤",number:conversationCount},
+  {name:"Mes alertes",href:"/compte/recherches",icon:"♧",number:savedCount},
   {name:"Mes avis",href:"",icon:"☆",disabled:true},
   {name:"Paiements / abonnements",href:"",icon:"▤",disabled:true},
-  {name:"Mon profil et coordonnées",href:"/compte/profil",icon:"♙"},
   {name:"Paramètres",href:"/compte/profil",icon:"⚙"},
-  {name:"Aide & support",href:"",icon:"ⓘ",disabled:true},
-  {name:"Sécurité du compte",href:"/compte/profil",icon:"♙"},
-  {name:"Déposer une annonce",href:"/deposer",icon:"＋"}
+  {name:"Aide & support",href:"",icon:"ⓘ",disabled:true}
  ];
  async function logout(){setSigningOut(true);await supabase.auth.signOut();setUserId("");setSigningOut(false);window.location.href="/compte";}
  return <main className="tim-account-dashboard">
@@ -121,6 +117,8 @@ body:has(.tim-account-dashboard)>.tim-header,body:has(.tim-account-dashboard)>.t
  .tim-account-dashboard .workarea{display:grid;grid-template-columns:270px minmax(0,1fr);gap:20px}
  .tim-account-dashboard .dash-nav{border:1px solid #dfe7f3;background:#fff;border-radius:16px;padding:14px;align-self:start;display:flex;flex-direction:column;gap:7px;min-height:550px}
  .tim-account-dashboard .dash-nav a{display:flex;align-items:center;gap:12px;padding:13px 12px;border-radius:10px;font-size:14px;font-weight:750}
+.tim-account-dashboard .dash-nav .disabled{padding:13px 12px;color:#092455;font-weight:750;cursor:default}
+.tim-account-dashboard .dash-nav .disabled .soon{display:none}
  .tim-account-dashboard .dash-nav a.active{background:#e8efff;color:#0744bb}
  .tim-account-dashboard .dash-nav a:hover,.tim-account-dashboard .dash-nav a:focus-visible{background:#f0f5ff}
  .tim-account-dashboard .dash-nav .symbol{font-size:22px;display:block;width:26px;text-align:center;color:#0b42b5}
@@ -139,6 +137,12 @@ body:has(.tim-account-dashboard)>.tim-header,body:has(.tim-account-dashboard)>.t
  .tim-account-dashboard .panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
  .tim-account-dashboard .panel-header a{font-size:12px;color:#0d47ac;font-weight:850}
  .tim-account-dashboard .adrow{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #e7edf5}
+ .tim-account-dashboard .adrow .adtext{max-width:260px}
+ .tim-account-dashboard .account-admetrics{min-width:105px;display:grid;gap:6px;font-size:11px}
+ .tim-account-dashboard .account-admetrics span{display:flex;align-items:center;gap:6px}
+ .tim-account-dashboard .ad-actions{margin-left:auto}
+ @media(max-width:1040px){.tim-account-dashboard .account-admetrics{display:none}}
+
  .tim-account-dashboard .adrow:last-child{border:0}
  .tim-account-dashboard .adrow img{width:124px;height:78px;object-fit:cover;border-radius:9px}
  .tim-account-dashboard .picture-empty{width:105px;height:69px;flex-shrink:0;display:grid;place-items:center;background:#eaf1fa;border-radius:9px}
@@ -152,6 +156,8 @@ body:has(.tim-account-dashboard)>.tim-header,body:has(.tim-account-dashboard)>.t
  .tim-account-dashboard .favgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
  .tim-account-dashboard .fav-card{border:1px solid #e0e8f3;border-radius:10px;overflow:hidden;min-width:0}
  .tim-account-dashboard .fav-card img{height:112px;object-fit:cover;width:100%;display:block}
+.tim-account-dashboard .fav-card{box-shadow:0 1px 5px #071d3710}
+.tim-account-dashboard .fav-card strong{font-weight:850}
  .tim-account-dashboard .fav-card div{padding:9px}
  .tim-account-dashboard .fav-card strong{display:block;font-size:11px;line-height:1.4;min-height:30px}
  .tim-account-dashboard .fav-card b{font-size:12px;color:#0b44ae}
@@ -196,15 +202,15 @@ body:has(.tim-account-dashboard)>.tim-header,body:has(.tim-account-dashboard)>.t
  </section>
  {!userId&&!busy&&<section className="sign-in-notice"><div><strong>Connectez-vous à votre compte</strong><p style={{margin:"6px 0 0",fontSize:13}}>Le tableau de bord est prêt. Vos annonces, favoris et statistiques apparaîtront après connexion.</p></div><a href="/compte/profil">Se connecter →</a></section>}
  <div className="workarea"><nav className="dash-nav" aria-label="Menu de mon compte">
- {menu.map(x=>x.disabled?<div className="disabled" key={x.name}><span className="symbol">{x.icon}</span>{x.name}<span className="soon">À venir</span></div>:<a href={x.href} key={x.name} className={x.current?"active":""}><span className="symbol">{x.icon}</span>{x.name}{x.number? <span className="count">{x.number}</span>:null}</a>)}
+ {menu.map(x=>x.disabled?<div className="disabled" key={x.name}><span className="symbol">{x.icon}</span>{x.name}</div>:<a href={x.href} key={x.name} className={x.current?"active":""}><span className="symbol">{x.icon}</span>{x.name}{x.number? <span className="count">{x.number}</span>:null}</a>)}
  {userId&&<button type="button" disabled={signingOut} onClick={logout} style={{textAlign:"left",border:0,background:"transparent",color:"#c52222",padding:"13px 12px",cursor:"pointer",fontWeight:850}}>↪ Déconnexion</button>}
  </nav><div className="work-content"><div className="overview">Vue d’ensemble {isPro?"— Espace professionnel":""}</div>
  {issue&&<p role="status" style={{color:"#a34113"}}>{issue}</p>}
  <div className="stats-grid">
  <div className="stat"><span className="stat-icon"><Eye size={25}/></span><div><b>{userId?totalViews.toLocaleString("fr-FR"):"—"}</b><small>Vues de vos annonces</small></div></div>
- <div className="stat"><span className="stat-icon"><Heart size={25}/></span><div><b>{userId?favCount:"—"}</b><small>Favoris enregistrés</small></div></div>
+ <div className="stat"><span className="stat-icon"><Heart size={25}/></span><div><b>{userId?favCount:"—"}</b><small>Mes favoris sauvegardés</small></div></div>
  <div className="stat"><span className="stat-icon"><MessageSquare size={24}/></span><div><b>{userId?conversationCount:"—"}</b><small>Conversations reçues</small></div></div>
- <div className="stat"><span className="stat-icon"><ChartNoAxesCombined size={24}/></span><div><b>{userId?savedCount:"—"}</b><small>Recherches sauvegardées</small></div></div>
+ <div className="stat"><span className="stat-icon"><ChartNoAxesCombined size={24}/></span><div><b>—</b><small>Taux de réponse</small><small style={{color:"#4b9460",marginTop:5}}>À calculer</small></div></div>
  <div className="stat"><span className="stat-icon"><CalendarDays size={24}/></span><div><b>{userId?avgAge:"—"}</b><small>Jours d’ancienneté moyenne</small></div></div>
  </div>
  <div className="dash-columns">
@@ -212,6 +218,7 @@ body:has(.tim-account-dashboard)>.tim-header,body:has(.tim-account-dashboard)>.t
  {ads.length===0?<p className="empty">{busy?"Chargement des annonces…":userId?"Vous n’avez pas encore déposé d’annonce.":"Connectez-vous pour retrouver les annonces que vous avez publiées."} <a href={userId?"/deposer":"/compte/profil"} style={{color:"#114bb9",fontWeight:900}}>{userId?"Déposer ma première annonce →":"Se connecter →"}</a></p>:ads.slice(0,5).map(a=><div className="adrow" key={a.source+a.id}>
  {a.photos?.[0]?<img src={a.photos[0]} alt="Photographie de l'annonce" />:<span className="picture-empty">📷</span>}
  <div className="adtext"><strong title={a.titre}>{a.titre}</strong><b>{price(a.prix)}</b><small>{isLive(a.statut)?"🟢 En ligne":a.statut} · {a.ville}</small>{a.source==="auto"&&<small style={{display:"block",marginTop:4}}>◉ {adViews(a.id).toLocaleString("fr-FR")} vues suivies</small>}</div>
+ <div className="account-admetrics">{a.source==="auto"&&<span><Eye size={13}/> {adViews(a.id)} vues</span>}{a.source==="auto"&&<span><Heart size={13}/> Favoris : —</span>}<span><MessageSquare size={13}/> Contacts : —</span></div>
  <div className="ad-actions">{isLive(a.statut)&&<a href={a.source==="auto"?"/annonce/"+a.id:"/annonces/"+a.id}>Voir</a>}<a href="/compte/annonces">{a.source==="auto"?"Statistiques":"Gérer"}</a></div>
  </div>)}
  <div style={{textAlign:"center",paddingTop:13}}><a href="/compte/annonces" style={{color:"#1248b7",fontWeight:850,fontSize:13}}>Voir toutes mes annonces →</a></div>
