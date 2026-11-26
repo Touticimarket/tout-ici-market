@@ -8,7 +8,7 @@ export const metadata:Metadata={
  twitter:{card:"summary",title:"TOUT ICI MARKET — Annonces gratuites",description:"Tout acheter, tout vendre, tout trouver."}
 };
 const rubriques = [
-  {nom:"Véhicule",href:"/automobile",icone:"🚘"},
+  {nom:"Véhicules",href:"/automobile",icone:"🚘"},
   {nom:"Immobilier",href:"/immobilier",icone:"⌂"},
   {nom:"Emploi",href:"/emploi",icone:"▣"},
   {nom:"Matériel pro",href:"/materiel-pro",icone:"🛠"},
@@ -78,7 +78,7 @@ export default function RootLayout({children}:{children:ReactNode}){
     </header>
     <nav className="tim-navbar" aria-label="Navigation principale">
       <a href="/">Accueil</a>
-      <a href="/automobile">Véhicule</a>
+      <a href="/automobile">Véhicules</a>
       <a href="/immobilier">Immobilier</a>
       <a href="/emploi">Emploi</a>
       <a href="/materiel-pro">Matériel pro</a>
