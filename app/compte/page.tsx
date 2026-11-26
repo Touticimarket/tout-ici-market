@@ -10,14 +10,14 @@ type Profile={nom:string|null;prenom:string|null;type_compte:string|null;created
 const isLive=(s:string)=>["publiee","publiée","en_ligne","en ligne","active","actif"].includes(s.toLowerCase());
 const price=(v:number|null)=>v==null?"Prix non renseigné":Number(v).toLocaleString("fr-FR")+" €";
 export default function MonCompte(){
- const [userId,setUserId]=useState("");const [email,setEmail]=useState("");const [person,setPerson]=useState<Profile|null>(null);
+ const [userId,setUserId]=useState("");const [email,setEmail]=useState("");const [person,setPerson]=useState<Profile|null>(null);const [avatarUrl,setAvatarUrl]=useState("");
  const [ads,setAds]=useState<Ad[]>([]);const [favCount,setFavCount]=useState(0);const [favorites,setFavorites]=useState<FavAd[]>([]);const [conversationCount,setConversationCount]=useState(0);const [savedCount,setSavedCount]=useState(0);const [stats,setStats]=useState<Daily[]>([]);
  const [busy,setBusy]=useState(true);const [issue,setIssue]=useState("");const [signingOut,setSigningOut]=useState(false);
  useEffect(()=>{let mounted=true;async function load(){
    try{
     const {data:{user}}=await supabase.auth.getUser();if(!mounted)return;
     if(!user){setBusy(false);return}
-    setUserId(user.id);setEmail(user.email??"");
+    setUserId(user.id);setEmail(user.email??"");const avatar=user.user_metadata?.avatar_url;setAvatarUrl(typeof avatar==="string"&&avatar.startsWith("https://")?avatar:"");
     const [profile,auto,market,favs,convos,saved,statistics]=await Promise.all([
       supabase.from("profiles").select("nom,prenom,type_compte,created_at").eq("id",user.id).maybeSingle(),
       supabase.from("annonces_auto").select("id,titre,marque,modele,prix,statut,photos,created_at,ville").eq("user_id",user.id).order("created_at",{ascending:false}).limit(150),
@@ -57,8 +57,11 @@ export default function MonCompte(){
   {name:"Mes messages",href:"/compte/messages",icon:"✉",number:conversationCount},
   {name:"Mes recherches enregistrées",href:"/compte/recherches",icon:"⌕",number:savedCount},
   {name:"Mes alertes",href:"/compte/recherches",icon:"♧"},
+  {name:"Mes avis",href:"",icon:"☆",disabled:true},
+  {name:"Paiements / abonnements",href:"",icon:"▤",disabled:true},
   {name:"Mon profil et coordonnées",href:"/compte/profil",icon:"♙"},
   {name:"Paramètres",href:"/compte/profil",icon:"⚙"},
+  {name:"Aide & support",href:"",icon:"ⓘ",disabled:true},
   {name:"Sécurité du compte",href:"/compte/profil",icon:"♙"},
   {name:"Déposer une annonce",href:"/deposer",icon:"＋"}
  ];
@@ -80,11 +83,16 @@ export default function MonCompte(){
  .tim-account-dashboard{color:#0a1c49;font-family:Arial,Helvetica,sans-serif;padding:14px 0 30px}
  .tim-account-dashboard *{box-sizing:border-box}
  .tim-account-dashboard a{text-decoration:none;color:inherit}
- .tim-account-dashboard .dash-hero{position:relative;background:linear-gradient(90deg,#f8fbfffa 0%,#f8fbfff4 25%,#f8fbffb0 42%,#f8fbff10 75%),url('/accueil-reel/vacances-loisirs.svg') center/cover;border-radius:20px;min-height:234px;padding:22px 40px;display:grid;grid-template-columns:1fr minmax(360px,550px);gap:25px;align-items:center;margin-bottom:16px;overflow:hidden}
+ .tim-account-dashboard .dash-hero{position:relative;background:linear-gradient(90deg,#f8fbfffa 0%,#f8fbfff4 25%,#f8fbffb0 42%,#f8fbff10 75%),url('/compte/paysage-reference.svg') center/cover;border-radius:20px;min-height:234px;padding:22px 40px;display:grid;grid-template-columns:1fr minmax(360px,550px);gap:25px;align-items:center;margin-bottom:16px;overflow:hidden}
  .tim-account-dashboard .dash-hero h1{font-size:clamp(34px,4vw,47px);margin:0 0 12px;font-weight:900;color:#061a49}
  .tim-account-dashboard .dash-hero p{max-width:390px;font-size:17px;line-height:1.55;margin:0}
  .tim-account-dashboard .identity{display:flex;align-items:center;gap:18px;border:1px solid #e0e6f0;border-radius:16px;background:#fffffff4;box-shadow:0 4px 14px #11284c20;padding:26px}
- .tim-account-dashboard .avatar{width:96px;height:96px;border-radius:50%;background:#0b358f;color:white;display:grid;place-items:center;font-size:30px;font-weight:900;flex-shrink:0}
+ .tim-account-dashboard .avatar{width:96px;height:96px;border-radius:50%;background:#0b358f;color:white;display:grid;place-items:center;font-size:30px;font-weight:900;flex-shrink:0;object-fit:cover}
+ .tim-account-dashboard .dash-nav .disabled{display:flex;align-items:center;gap:12px;padding:13px 12px;color:#51627f;font-size:14px;font-weight:750}
+ .tim-account-dashboard .dash-nav .soon{font-size:10px;margin-left:auto;color:#7a8aa0}
+ .tim-account-dashboard .identity .id-small .verified{color:#087b44;font-weight:700}
+ .tim-account-dashboard .sign-in-notice{margin:0 0 15px;border:1px solid #d5e0f6;border-radius:14px;background:#fff;padding:19px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+ .tim-account-dashboard .sign-in-notice a{background:#ffcf06;border-radius:10px;padding:12px 18px;font-weight:850;font-size:13px;white-space:nowrap}
  .tim-account-dashboard .identity h2{margin:0 0 6px;font-size:23px}
  .tim-account-dashboard .identity .id-small{font-size:12px;color:#4f6281;line-height:1.6}
  .tim-account-dashboard .profile-controls{display:flex;flex-direction:column;gap:10px;margin-left:auto;align-items:stretch}
@@ -143,25 +151,24 @@ export default function MonCompte(){
  @media(max-width:520px){.tim-account-dashboard .dash-hero{padding:17px;gap:15px}.tim-account-dashboard .identity{flex-wrap:wrap;padding:13px}.tim-account-dashboard .avatar{width:57px;height:57px}.tim-account-dashboard .profile-controls{margin-left:0;width:100%;flex-direction:row}.tim-account-dashboard .profile-link{flex:1;white-space:normal}.tim-account-dashboard .identity h2{font-size:17px}.tim-account-dashboard .stats-grid{gap:7px}.tim-account-dashboard .stat{padding:9px 7px;gap:6px}.tim-account-dashboard .stat b{font-size:19px}.tim-account-dashboard .stat-icon{height:30px;width:30px;font-size:17px}.tim-account-dashboard .adrow{flex-wrap:wrap}.tim-account-dashboard .ad-actions{margin-left:0;width:100%}.tim-account-dashboard .fav-card img{height:75px}}
  `}</style>
  <section className="dash-hero"><div><h1>Mon compte</h1><p>Gérez facilement vos annonces, messages, recherches et favoris au même endroit.</p></div>
- {userId&&<div className="identity"><div className="avatar">{initials}</div><div style={{minWidth:0}}><h2>{displayName}</h2><div className="id-small">{isPro?"Compte professionnel":"Compte particulier"}<div>{email}</div>{person?.created_at&&<div>Membre depuis {new Date(person.created_at).toLocaleDateString("fr-FR",{month:"long",year:"numeric"})}</div>}</div></div><div className="profile-controls"><a className="profile-link" href="/compte/profil">✎ Modifier le profil</a><a className="profile-link" href="/compte/profil">♧ Sécurité du compte</a></div></div>}
+ <div className="identity">{avatarUrl&&userId?<img className="avatar" src={avatarUrl} alt="Photo du compte" referrerPolicy="no-referrer" />:<div className="avatar">{userId?initials:"♙"}</div>}<div style={{minWidth:0,flex:1}}><h2>{userId?displayName:"Votre espace personnel"}</h2><div className="id-small">{userId?(isPro?"Compte professionnel":"Compte particulier"):"Connectez-vous pour retrouver votre profil"}{userId&&<div>{email}</div>}{userId&&person?.created_at&&<div>Membre depuis {new Date(person.created_at).toLocaleDateString("fr-FR",{month:"long",year:"numeric"})}</div>}</div></div><div className="profile-controls"><a className="profile-link" href="/compte/profil">{userId?"✎ Modifier le profil":"Se connecter"}</a><a className="profile-link" href="/compte/profil">♧ Sécurité du compte</a></div></div>
  </section>
- {busy?<div className="panel" role="status">Chargement de votre espace personnel…</div>:!userId?
- <section className="panel"><h2>Bienvenue dans votre espace personnel</h2><p>Connectez-vous pour retrouver vos annonces, vos favoris et vos conversations.</p><a href="/compte/profil" style={{display:"inline-block",background:"#ffcf06",padding:"13px 20px",borderRadius:9,fontWeight:850}}>Se connecter à mon compte →</a></section>:
+ {!userId&&!busy&&<section className="sign-in-notice"><div><strong>Connectez-vous à votre compte</strong><p style={{margin:"6px 0 0",fontSize:13}}>Le tableau de bord est prêt. Vos annonces, favoris et statistiques apparaîtront après connexion.</p></div><a href="/compte/profil">Se connecter →</a></section>}
  <div className="workarea"><nav className="dash-nav" aria-label="Menu de mon compte">
- {menu.map(x=><a href={x.href} key={x.name} className={x.current?"active":""}><span className="symbol">{x.icon}</span>{x.name}{x.number? <span className="count">{x.number}</span>:null}</a>)}
- <button type="button" disabled={signingOut} onClick={logout} style={{textAlign:"left",border:0,background:"transparent",color:"#c52222",padding:"13px 12px",cursor:"pointer",fontWeight:850}}>↪ Déconnexion</button>
+ {menu.map(x=>x.disabled?<div className="disabled" key={x.name}><span className="symbol">{x.icon}</span>{x.name}<span className="soon">À venir</span></div>:<a href={x.href} key={x.name} className={x.current?"active":""}><span className="symbol">{x.icon}</span>{x.name}{x.number? <span className="count">{x.number}</span>:null}</a>)}
+ {userId&&<button type="button" disabled={signingOut} onClick={logout} style={{textAlign:"left",border:0,background:"transparent",color:"#c52222",padding:"13px 12px",cursor:"pointer",fontWeight:850}}>↪ Déconnexion</button>}
  </nav><div className="work-content"><div className="overview">Vue d’ensemble {isPro?"— Espace professionnel":""}</div>
  {issue&&<p role="status" style={{color:"#a34113"}}>{issue}</p>}
  <div className="stats-grid">
- <div className="stat"><span className="stat-icon">◉</span><div><b>{totalViews.toLocaleString("fr-FR")}</b><small>Vues de mes annonces auto*</small></div></div>
- <div className="stat"><span className="stat-icon">♡</span><div><b>{favCount}</b><small>Favoris enregistrés</small></div></div>
- <div className="stat"><span className="stat-icon">✉</span><div><b>{conversationCount}</b><small>Conversations auto</small></div></div>
- <div className="stat"><span className="stat-icon">⌕</span><div><b>{savedCount}</b><small>Recherches sauvegardées</small></div></div>
- <div className="stat"><span className="stat-icon">▣</span><div><b>{avgAge}</b><small>Jours d’ancienneté moyenne des annonces</small></div></div>
+ <div className="stat"><span className="stat-icon">◉</span><div><b>{userId?totalViews.toLocaleString("fr-FR"):"—"}</b><small>Vues de vos annonces</small></div></div>
+ <div className="stat"><span className="stat-icon">♡</span><div><b>{userId?favCount:"—"}</b><small>Favoris enregistrés</small></div></div>
+ <div className="stat"><span className="stat-icon">✉</span><div><b>{userId?conversationCount:"—"}</b><small>Conversations reçues</small></div></div>
+ <div className="stat"><span className="stat-icon">⌕</span><div><b>{userId?savedCount:"—"}</b><small>Recherches sauvegardées</small></div></div>
+ <div className="stat"><span className="stat-icon">▣</span><div><b>{userId?avgAge:"—"}</b><small>Jours d’ancienneté moyenne</small></div></div>
  </div>
  <div className="dash-columns">
  <section className="panel"><div className="panel-header"><h2>Mes annonces</h2><a href="/compte/annonces">Voir toutes mes annonces →</a></div>
- {ads.length===0?<p className="empty">Vous n’avez pas encore déposé d’annonce. <a href="/deposer" style={{color:"#114bb9",fontWeight:900}}>Déposer ma première annonce →</a></p>:ads.slice(0,5).map(a=><div className="adrow" key={a.source+a.id}>
+ {ads.length===0?<p className="empty">{busy?"Chargement des annonces…":userId?"Vous n’avez pas encore déposé d’annonce.":"Connectez-vous pour retrouver les annonces que vous avez publiées."} <a href={userId?"/deposer":"/compte/profil"} style={{color:"#114bb9",fontWeight:900}}>{userId?"Déposer ma première annonce →":"Se connecter →"}</a></p>:ads.slice(0,5).map(a=><div className="adrow" key={a.source+a.id}>
  {a.photos?.[0]?<img src={a.photos[0]} alt="Photographie de l'annonce" />:<span className="picture-empty">📷</span>}
  <div className="adtext"><strong title={a.titre}>{a.titre}</strong><b>{price(a.prix)}</b><small>{isLive(a.statut)?"🟢 En ligne":a.statut} · {a.ville}</small>{a.source==="auto"&&<small style={{display:"block",marginTop:4}}>◉ {adViews(a.id).toLocaleString("fr-FR")} vues suivies</small>}</div>
  <div className="ad-actions">{isLive(a.statut)&&<a href={a.source==="auto"?"/annonce/"+a.id:"/annonces/"+a.id}>Voir</a>}<a href="/compte/annonces">{a.source==="auto"?"Statistiques":"Gérer"}</a></div>
@@ -169,12 +176,12 @@ export default function MonCompte(){
  <div style={{textAlign:"center",paddingTop:13}}><a href="/compte/annonces" style={{color:"#1248b7",fontWeight:850,fontSize:13}}>Voir toutes mes annonces →</a></div>
  </section>
  <div style={{minWidth:0}}><section className="panel"><div className="panel-header"><h2>Mes favoris</h2><a href="/favoris">Voir tous mes favoris →</a></div>
- {favorites.length===0?<p className="empty">Aucune annonce favorite disponible pour le moment.</p>:<div className="favgrid">{favorites.slice(0,3).map(a=><a className="fav-card" href={"/annonce/"+a.id} key={a.id}>{a.photos?.[0]?<img src={a.photos[0]} alt="Annonce favorite" />:<div style={{height:94,background:"#e8eff9",display:"grid",placeItems:"center"}}>📷</div>}<div><strong>{a.titre||[a.marque,a.modele].filter(Boolean).join(" ")||"Véhicule"}</strong><b>{price(a.prix)}</b></div></a>)}</div>}
+ {favorites.length===0?<p className="empty">{busy?"Chargement des favoris…":userId?"Aucune annonce favorite disponible pour le moment.":"Connectez-vous pour retrouver vos favoris."}</p>:<div className="favgrid">{favorites.slice(0,3).map(a=><a className="fav-card" href={"/annonce/"+a.id} key={a.id}>{a.photos?.[0]?<img src={a.photos[0]} alt="Annonce favorite" />:<div style={{height:94,background:"#e8eff9",display:"grid",placeItems:"center"}}>📷</div>}<div><strong>{a.titre||[a.marque,a.modele].filter(Boolean).join(" ")||"Véhicule"}</strong><b>{price(a.prix)}</b></div></a>)}</div>}
  </section>
  <section className="mia"><span className="mia-symbol">🤖</span><div><strong>Conseil MIA</strong><p>Pour attirer davantage d'acheteurs, ajoutez des photos nettes, une description complète et toutes les caractéristiques du bien.</p><a href="/compte/annonces" style={{fontWeight:850,fontSize:13,color:"#087538"}}>Améliorer mes annonces →</a></div></section>
  </div></div>
  <p style={{fontSize:11,color:"#68788f",margin:"8px 0"}}>* Statistiques disponibles pour les annonces automobiles depuis l’activation du suivi. Aucune statistique n’est inventée.</p>
- </div></div>}
+ </div></div>
  <div className="trust"><span>♙ <strong>100 % GRATUIT</strong><small>pour les particuliers</small></span><span>♢ <strong>ANNONCES & FAVORIS</strong><small>Gérez vos publications</small></span><span>♧ <strong>ESPACE SÉCURISÉ</strong><small>Informations privées</small></span><span>♙ <strong>COMPTE PERSONNEL</strong><small>Vos recherches au même endroit</small></span><span>♧ <strong>MESSAGERIE</strong><small>Conversations privées</small></span></div>
  </main>;
 }
