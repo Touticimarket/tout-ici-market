@@ -2,9 +2,10 @@ import Link from "next/link";
 import {depotCategories} from "./categories";
 export const metadata={title:"Déposer une annonce gratuite | TOUT ICI MARKET",description:"Découvrez les cinq étapes du dépôt gratuit et choisissez une catégorie pour publier votre annonce."};
 
-const principal=depotCategories.filter(c=>c.slug!=="autres");
+const depotOrder=["automobile","immobilier","nautisme","emploi-services","maison-bricolage-jardin","tv-telephonie-informatique","famille","mode-accessoires","animaux","materiel-pro","loisirs-voyages","bons-plans"];
+const principal=depotOrder.map(slug=>depotCategories.find(c=>c.slug===slug)).filter((c):c is (typeof depotCategories)[number]=>Boolean(c));
 const etapes=[
- {titre:"Choisissez votre catégorie",description:"Automobile, immobilier, nautisme, bricolage…",icone:"▦"},
+ {titre:"Choisissez votre catégorie",description:"Véhicules, immobilier, nautisme, bricolage…",icone:"▦"},
  {titre:"Ajoutez vos photos et/ou vidéo",description:"Présentez votre bien sous plusieurs angles.",icone:"▣"},
  {titre:"Renseignez les informations",description:"Description, caractéristiques, prix et lieu.",icone:"✎"},
  {titre:"Vérifiez et prévisualisez",description:"Relisez votre annonce avant publication.",icone:"◉"},
@@ -17,6 +18,10 @@ body:has(.depot-entry){background:#f8fafe!important}
 body:has(.depot-entry) .tim-shell{display:block;max-width:1800px;padding:0;margin:0 auto}
 body:has(.depot-entry) .tim-sidebar{display:none}
 body:has(.depot-entry) .tim-content{width:100%}
+.depot-entry .reference-top{width:100%;margin:0;padding:0;overflow:hidden;background:#f9fbfe}
+.depot-entry .reference-top img{display:block;width:100%;height:auto;object-fit:contain}
+.depot-entry .reference-top img:first-child{border-radius:0}
+.depot-entry .hero,.depot-entry .intro-heading,.depot-entry .steps{display:none}
 .depot-entry{color:#071c4c;font-family:Arial,Helvetica,sans-serif;padding:0 14px 28px}
 .depot-entry *{box-sizing:border-box}
 .depot-entry .hero{display:grid;grid-template-columns:35% minmax(0,65%);align-items:stretch;position:relative;overflow:hidden;background:#071d4a;box-shadow:0 5px 15px #13234f1b;border-radius:0 0 17px 17px;min-height:330px}
@@ -47,7 +52,7 @@ body:has(.depot-entry) .tim-content{width:100%}
 .depot-entry .start-button{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:#ffd006;color:#071a46;padding:17px 26px;border-radius:40px;font-weight:900;text-decoration:none;font-size:clamp(15px,1.6vw,21px);box-shadow:0 3px 5px #071d481e}
 .depot-entry .start-button:hover,.depot-entry .start-button:focus-visible{background:#ffe05a}
 .depot-entry .categories-wrap{background:#f3f7fe;border-radius:22px;padding:14px 15px 18px;margin-top:15px}
-.depot-entry .cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:13px}
+.depot-entry .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
 .depot-entry .card{display:flex;flex-direction:column;text-decoration:none;color:#092254;border:1px solid #d1dced;background:#fff;border-radius:14px;overflow:hidden;min-width:0;box-shadow:0 3px 6px #10264d15;transition:border-color .15s,transform .15s}
 .depot-entry .card:hover,.depot-entry .card:focus-visible{border-color:#ffcb0b;transform:translateY(-2px)}
 .depot-entry .card img{display:block;width:100%;height:auto;aspect-ratio:2.65/1;object-fit:fill;object-position:center;background:#e7f1fb}
@@ -73,6 +78,7 @@ body:has(.depot-entry) .tim-content{width:100%}
 @media(max-width:1200px){.depot-entry .cards{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:820px){.depot-entry .cards{grid-template-columns:repeat(3,minmax(0,1fr))}.depot-entry .hero{min-height:270px;grid-template-columns:39% minmax(0,61%)}.depot-entry .hero-copy{max-width:none}.depot-entry .steps{grid-template-columns:repeat(5,minmax(0,1fr))}.depot-entry .step{padding:5px}.depot-entry .step strong{font-size:12px}.depot-entry .step small{font-size:11px}}
 @media(max-width:600px){
+.depot-entry .reference-top{display:none}.depot-entry .hero{display:grid}.depot-entry .intro-heading{display:block}.depot-entry .steps{display:flex}
 .depot-entry{padding:0 8px 24px}
 .depot-entry .hero{min-height:0;border-radius:0 0 13px 13px;grid-template-columns:1fr}.depot-entry .hero-visual{order:2}.depot-entry .hero-visual img{width:100%;height:auto}.depot-entry .hero-stamp{font-size:10px;top:6px;right:6px;padding:7px;max-width:125px}
 .depot-entry .hero-copy{padding:20px 16px;max-width:100%;width:100%;order:1}
@@ -92,6 +98,7 @@ body:has(.depot-entry) .tim-content{width:100%}
 .depot-entry .trust{grid-template-columns:repeat(2,1fr);row-gap:12px}
 }
 `}</style>
+<div className="reference-top" aria-label="Présentation du dépôt d’annonce et ses cinq étapes"><img src="/depot/reference-haut.svg" alt="Publiez votre annonce en quelques minutes : voiture, maison, bateau, vélo et mobilier ; dépôt gratuit pour les particuliers" /><img src="/depot/reference-etapes.svg" alt="Comment déposer une annonce : choisir sa catégorie, ajouter photos et vidéo, remplir les informations, vérifier et publier" /></div>
 <section className="hero">
 <div className="hero-copy">
 <span className="eyebrow">100 % GRATUIT POUR LES PARTICULIERS</span>
@@ -99,7 +106,7 @@ body:has(.depot-entry) .tim-content{width:100%}
 <p>Vendez, louez ou proposez vos services facilement sur <strong>TOUT ICI MARKET</strong>.</p>
 <div className="benefits" aria-label="Les avantages"><span><b>⚡</b>Simple et rapide</span><span><b>♡</b>Sans frais pour les particuliers</span><span><b>🔒</b>Vos informations protégées</span></div>
 </div><div className="hero-visual"><img src="/depot/depot-photo.svg" alt="Photographie de la maison, de la voiture, du bateau, du vélo et du mobilier avec une personne prenant une photo" /><div className="hero-stamp">✓ MIA vous accompagne dans votre dépôt</div></div></section>
-<div className="section-title"><h2>Comment déposer votre annonce sur TOUT ICI MARKET ?</h2><p>C’est simple et gratuit : découvrez les cinq étapes avant de choisir votre catégorie.</p></div>
+<div className="section-title intro-heading"><h2>Être quelque part, commencer à déposer votre annonce ou déposez maintenant votre annonce.</h2><p>Consultez les rubriques ci-dessous, choisissez votre catégorie et publiez votre annonce en toute simplicité.</p></div>
 <div className="steps" aria-label="Les cinq étapes du dépôt d'annonce">{etapes.map((e,i)=><div className="step" key={e.titre}><span className="number">{i+1}</span><span className="step-icon" aria-hidden="true">{e.icone}</span><strong>{e.titre}</strong><small>{e.description}</small></div>)}</div>
 <div className="start-wrap"><a href="#categories-depot" className="start-button">📣 Commencer à déposer votre annonce <span aria-hidden="true">›</span></a></div>
 <section className="categories-wrap" id="categories-depot">
