@@ -56,10 +56,17 @@ const [typeVendeur,setTypeVendeur]=useState("");const [rayon,setRayon]=useState(
 const reset=()=>{setMarqueId("");setModeleId("");setFinitionId("");setPrixMin("");setPrixMax("");setAnneeMin("");setAnneeMax("");setKmMin("");setKmMax("");setCarburant("");setBoite("");setVille("");setTri("recent");setPuissanceMin("");setPuissanceMax("");setDepartement("");setMotCle("");setEquipements([]);setCouleur("");setPortes("");setPlaces("");setCarrosserie("");setTypeVendeur("");setRayon("france");setCommune(null)};
 const [loading,setLoading]=useState(true);const [error,setError]=useState("");
 const restoreModelId=useRef("");const restoreFinitionId=useRef("");
+const freeQuery=useRef("");
 const [exactCount,setExactCount]=useState<number|null>(null);
 const [countLoading,setCountLoading]=useState(true);
 useEffect(()=>{
- const search=new URLSearchParams(window.location.search).get("f");if(!search)return;
+ const params=new URLSearchParams(window.location.search);const search=params.get("f");
+ const plain=(params.get("q")||"").trim();
+ if(plain){freeQuery.current=plain;const q=plain.toLocaleLowerCase("fr");
+ if(/diesel|gazole/.test(q))setCarburant("Diesel");else if(/hybride rechargeable|phev/.test(q))setCarburant("Hybride rechargeable");else if(/hybride/.test(q))setCarburant("Hybride");else if(/electrique|électrique/.test(q))setCarburant("Électrique");else if(/essence/.test(q))setCarburant("Essence");
+ if(/automatique|\bauto\b|\beat8\b|\bdsg\b/.test(q))setBoite("Automatique");else if(/manuelle|\bbvm\b/.test(q))setBoite("Manuelle");
+ }
+ if(!search)return;
  try{
  const x=JSON.parse(search) as Record<string,unknown>;
  const read=(key:string)=>typeof x[key]==="string"?String(x[key]):"";
@@ -81,11 +88,18 @@ supabase.from("marques_auto").select("id,nom").order("nom").limit(1000),
 supabase.from("annonces_auto").select("id,marque,modele,finition,prix,annee,kilometrage,ville,carburant,boite,puissance_ch,departement,options,description,couleur,nombre_portes,nombre_places,carrosserie,photos,code_postal,latitude,longitude,type_vendeur").eq("statut","publiee").in("type_vehicule",category.dbTypes).order("created_at",{ascending:false}).limit(200)
 ]);if(!mounted)return;
 if(m.error||a.error)setError("Impossible de récupérer toutes les données. Vérifiez la connexion et les autorisations de lecture Supabase.");
-setMarques(m.data??[]);setAnnonces(a.data??[]);setLoading(false);}
+setMarques(m.data??[]);setAnnonces(a.data??[]);setLoading(false);
+ if(freeQuery.current&&m.data?.length){const q=" "+freeQuery.current.toLocaleLowerCase("fr")+" ";
+ const found=[...m.data].sort((x,y)=>y.nom.length-x.nom.length).find(b=>q.includes(" "+b.nom.toLocaleLowerCase("fr")+" "));
+ if(found)setMarqueId(found.id);else setMotCle(freeQuery.current);
+ }}
 void load();return()=>{mounted=false;};},[slug]);
 useEffect(()=>{let mounted=true;setModeles([]);setModeleId("");setFinitions([]);setFinitionId("");if(!marqueId)return;
 async function loadModels(){const {data,error}=await supabase.from("modeles_auto").select("id,nom").eq("marque_id",marqueId).order("nom").limit(1000);
-if(!mounted)return;if(error)setError("Impossible de charger les modèles.");else {setModeles(data??[]);if(restoreModelId.current){setModeleId(restoreModelId.current);restoreModelId.current="";}}}
+if(!mounted)return;if(error)setError("Impossible de charger les modèles.");else {setModeles(data??[]);if(restoreModelId.current){setModeleId(restoreModelId.current);restoreModelId.current="";}
+ else if(freeQuery.current){const q=" "+freeQuery.current.toLocaleLowerCase("fr")+" ";
+ const found=[...(data??[])].sort((x,y)=>y.nom.length-x.nom.length).find(m=>q.includes(" "+m.nom.toLocaleLowerCase("fr")+" "));if(found)setModeleId(found.id);}
+ }}
 void loadModels();return()=>{mounted=false;};},[marqueId]);
 useEffect(()=>{let mounted=true;setFinitions([]);setFinitionId("");if(!modeleId)return;
 async function loadFinitions(){const {data,error}=await supabase.from("finitions_auto").select("id,nom").eq("modele_id",modeleId).order("nom").limit(1000);if(!mounted)return;if(error)setError("Impossible de charger les finitions.");else {setFinitions(data??[]);if(restoreFinitionId.current){setFinitionId(restoreFinitionId.current);restoreFinitionId.current="";}}}
