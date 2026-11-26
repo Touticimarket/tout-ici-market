@@ -82,6 +82,22 @@ export default function AutomobilePage(){
 .auto-home .category{border:1px solid #d7e4f4!important;box-shadow:0 3px 10px #0c377b12!important;overflow:hidden}
 .auto-home .tile-copy{background:#fff}
 @media(prefers-reduced-motion:reduce){.auto-home .tile-photo img{transition:none!important}}
+
+/* Rectification après contrôle des 10 sources : images panoramiques 480x221.
+   Cartes plus hautes, proportions conservées (aucun étirement). */
+.auto-home .tile-photo{aspect-ratio:16/10!important;overflow:hidden!important;background:#e9f1f9!important}
+.auto-home .tile-photo img{width:100%!important;height:100%!important;max-height:none!important;aspect-ratio:auto!important;object-fit:cover!important;object-position:center center!important;transform:none!important;transition:none!important}
+.auto-home .category:hover .tile-photo img,.auto-home .category:focus-visible .tile-photo img{transform:none!important}
+.auto-home .tile-photo-voitures img{object-position:48% 50%!important}
+.auto-home .tile-photo-utilitaires img{object-position:50% 50%!important}
+.auto-home .tile-photo-camions img{object-position:53% 50%!important}
+.auto-home .tile-photo-caravaning img{object-position:50% 50%!important}
+.auto-home .tile-photo-remorques img{object-position:52% 50%!important}
+.auto-home .tile-photo-motos img{object-position:50% 50%!important}
+.auto-home .tile-photo-velos img{object-position:50% 50%!important}
+.auto-home .tile-photo-nautisme img{object-position:50% 50%!important}
+.auto-home .tile-photo-vans-amenages img{object-position:51% 50%!important}
+.auto-home .tile-photo-autres-vehicules img{object-position:50% 50%!important}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Véhicules</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
