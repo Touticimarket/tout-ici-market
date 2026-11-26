@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {depotCategories} from "./categories";
-export const metadata={title:"Déposer une annonce gratuite | TOUT ICI MARKET",description:"Découvrez les cinq étapes du dépôt gratuit et choisissez une catégorie pour publier votre annonce."};
+export const metadata={title:"Déposer une annonce gratuite | TOUT ICI ANNONCES",description:"Découvrez les cinq étapes du dépôt gratuit et choisissez une catégorie pour publier votre annonce."};
 
 const depotOrder=["automobile","immobilier","nautisme","emploi-services","maison-bricolage-jardin","tv-telephonie-informatique","famille","mode-accessoires","animaux","materiel-pro","loisirs-voyages","bons-plans"];
 const principal=depotOrder.map(slug=>depotCategories.find(c=>c.slug===slug)).filter((c):c is (typeof depotCategories)[number]=>Boolean(c));
