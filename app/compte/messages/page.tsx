@@ -1,11 +1,11 @@
 "use client";
 import {useEffect,useState} from "react";
-import {useSearchParams} from "next/navigation";
+
 import {supabase} from "../../lib/supabaseClient";
 type Conversation={id:string;annonce_id:string;acheteur_id:string;vendeur_id:string;created_at:string};
 type Message={id:string;conversation_id:string;auteur_id:string;contenu:string;created_at:string};
 export default function Messages(){
- const query=useSearchParams();const requested=query.get("conversation");
+ const requested=typeof window==="undefined"?null:new URLSearchParams(window.location.search).get("conversation");
  const [userId,setUserId]=useState("");const [threads,setThreads]=useState<Conversation[]>([]);
  const [active,setActive]=useState("");const [messages,setMessages]=useState<Message[]>([]);
  const [titles,setTitles]=useState<Record<string,string>>({});const [draft,setDraft]=useState("");const [status,setStatus]=useState("Chargement…");const [sending,setSending]=useState(false);
