@@ -64,6 +64,7 @@ export default function MesAnnonces(){
  <span className="status">{ad.statut}</span>
  {ad.origine==="auto"&&<button type="button" onClick={()=>setSelected(ad.id)}>▥ Statistiques</button>}
  {ad.origine==="auto"&&statusTab(ad.statut)==="en_ligne"&&<a href={"/annonce/"+ad.id}>Voir →</a>}
+ {ad.origine==="marketplace"&&statusTab(ad.statut)==="en_ligne"&&<a href={"/annonces/"+ad.id}>Voir →</a>}
  </div>)}</div>
  {selectedAd&&<section className="panel"><h2>Statistiques : {selectedAd.titre}</h2><p>Les visites et clics sont comptabilisés depuis l’activation du suivi.</p>
  <div className="charts"><strong>👁 {totalVues.toLocaleString("fr-FR")} vues</strong><strong>☝ {totalClics.toLocaleString("fr-FR")} clics</strong></div>
