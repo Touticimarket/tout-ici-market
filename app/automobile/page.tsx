@@ -63,12 +63,31 @@ export default function AutomobilePage(){
 .auto-home .tile-description{font-size:clamp(12px,.9vw,14px);line-height:1.5}
 .auto-home .hero img{object-position:center center}
 @media(max-width:760px){.auto-home .cards{gap:12px}.auto-home .category img{aspect-ratio:480/221!important}}
+
+/* Correction définitive des 10 miniatures véhicules : cadre fixe et recadrage ciblé. */
+.auto-home .tile-photo{width:100%;aspect-ratio:480/221;overflow:hidden;position:relative;background:#eaf2fa;border-radius:15px 15px 0 0;isolation:isolate}
+.auto-home .tile-photo img{display:block!important;width:100%!important;height:100%!important;max-height:none!important;aspect-ratio:auto!important;object-fit:cover!important;object-position:center!important;border-radius:0!important;margin:0!important;background:transparent!important;transform:scale(1.075);transform-origin:center center;transition:transform .25s ease;image-rendering:auto}
+.auto-home .category:hover .tile-photo img,.auto-home .category:focus-visible .tile-photo img{transform:scale(1.115)}
+.auto-home .tile-photo-voitures img{object-position:48% 54%!important;transform:scale(1.085)}
+.auto-home .tile-photo-utilitaires img{object-position:50% 51%!important;transform:scale(1.09)}
+.auto-home .tile-photo-camions img{object-position:53% 52%!important;transform:scale(1.09)}
+.auto-home .tile-photo-caravaning img{object-position:50% 53%!important;transform:scale(1.09)}
+.auto-home .tile-photo-remorques img{object-position:51% 56%!important;transform:scale(1.105)}
+.auto-home .tile-photo-motos img{object-position:50% 54%!important;transform:scale(1.09)}
+.auto-home .tile-photo-velos img{object-position:50% 56%!important;transform:scale(1.09)}
+.auto-home .tile-photo-nautisme img{object-position:50% 53%!important;transform:scale(1.095)}
+.auto-home .tile-photo-vans-amenages img{object-position:51% 52%!important;transform:scale(1.09)}
+.auto-home .tile-photo-autres-vehicules img{object-position:50% 55%!important;transform:scale(1.085)}
+.auto-home .category:hover .tile-photo img,.auto-home .category:focus-visible .tile-photo img{transform:scale(1.13)!important}
+.auto-home .category{border:1px solid #d7e4f4!important;box-shadow:0 3px 10px #0c377b12!important;overflow:hidden}
+.auto-home .tile-copy{background:#fff}
+@media(prefers-reduced-motion:reduce){.auto-home .tile-photo img{transition:none!important}}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Véhicules</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
- <img src={"/auto-reel/"+c.image+".svg"} alt={c.name} loading="lazy"/>
+ <div className={"tile-photo tile-photo-"+c.image}><img src={"/auto-reel/"+c.image+".svg"} alt={c.name} loading="lazy" decoding="async"/></div>
  <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow">›</span></div><p className="tile-description">{c.description}</p></div>
  </a>)}</div>
  <div className="equip-section"><h2>Équipements &amp; Services</h2>
