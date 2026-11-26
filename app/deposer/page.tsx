@@ -50,7 +50,7 @@ body:has(.depot-entry) .tim-content{width:100%}
 .depot-entry .cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:13px}
 .depot-entry .card{display:flex;flex-direction:column;text-decoration:none;color:#092254;border:1px solid #d1dced;background:#fff;border-radius:14px;overflow:hidden;min-width:0;box-shadow:0 3px 6px #10264d15;transition:border-color .15s,transform .15s}
 .depot-entry .card:hover,.depot-entry .card:focus-visible{border-color:#ffcb0b;transform:translateY(-2px)}
-.depot-entry .card img{display:block;width:100%;height:auto;aspect-ratio:261/119;object-fit:contain;object-position:center;background:#e7f1fb}
+.depot-entry .card img{display:block;width:100%;height:auto;aspect-ratio:2.65/1;object-fit:fill;object-position:center;background:#e7f1fb}
 .depot-entry .card .fallback{aspect-ratio:261/119;display:grid;place-items:center;background:linear-gradient(125deg,#f5eddc,#edf5ff);font-size:45px}
 .depot-entry .card-text{display:flex;flex-direction:column;flex:1;padding:10px}
 .depot-entry .card strong{font-size:14px;line-height:1.2;min-height:32px}
@@ -82,7 +82,7 @@ body:has(.depot-entry) .tim-content{width:100%}
 .depot-entry .number{height:28px;width:28px;font-size:14px}.depot-entry .step-icon{font-size:17px}
 .depot-entry .start-button{width:100%;font-size:15px;padding:15px 7px}
 .depot-entry .categories-wrap{padding:9px;border-radius:15px}
-.depot-entry .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.depot-entry .card img,.depot-entry .card .fallback{height:auto;aspect-ratio:261/119}
+.depot-entry .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.depot-entry .card img,.depot-entry .card .fallback{height:auto;aspect-ratio:2.65/1}
 .depot-entry .card-text{padding:9px}.depot-entry .card strong{font-size:12px}.depot-entry .card small{font-size:10px}
 .depot-entry .mia{grid-template-columns:auto 1fr;gap:10px;padding:12px}.depot-entry .mia-icon{width:51px;height:51px;font-size:25px}.depot-entry .mia h2{font-size:17px}.depot-entry .mia ul{grid-column:1/-1;font-size:12px}
 .depot-entry .trust{grid-template-columns:repeat(2,1fr);row-gap:12px}
@@ -101,7 +101,7 @@ body:has(.depot-entry) .tim-content{width:100%}
 <section className="categories-wrap" id="categories-depot">
 <div className="section-title"><h2>Choisissez votre catégorie</h2><p>Cliquez sur une rubrique pour ouvrir sa page de dépôt spécialisée.</p></div>
 <div className="cards">{principal.map(c=><Link className="card" href={c.slug==="automobile"?"/automobile/deposer":"/deposer/"+c.slug} key={c.slug}>
-{c.slug==="nautisme"?<img src="/auto-reel/nautisme.svg" alt="" />:["mode","animaux"].includes(c.image)?<div className="fallback" aria-hidden="true">{c.icone}</div>:<img src={"/accueil-reel/"+c.image+".svg"} alt="" />}
+<img src={"/depot/photos-valides/"+c.slug+".svg"} alt={""} />
 <div className="card-text"><strong>{c.icone} {c.nom}</strong><small>{c.resume}</small><span className="go">Déposer dans cette rubrique ›</span></div></Link>)}</div>
 <div className="other"><Link href="/deposer/autres">Autres catégories →</Link></div>
 </section>
