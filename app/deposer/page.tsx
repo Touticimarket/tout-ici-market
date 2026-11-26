@@ -14,6 +14,11 @@ return <main className="depot-entry">
 .depot-entry .heading{text-align:center;padding:25px 8px 11px}
 .depot-entry .heading h2{margin:0;font-size:clamp(23px,2.5vw,31px)}
 .depot-entry .heading p{color:#486079;margin:8px 0}
+.depot-entry .steps-info{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:15px 0 22px}
+.depot-entry .step-info{border:1px solid #d8e5f3;border-radius:13px;padding:15px 10px;background:#fff;text-align:center}
+.depot-entry .step-info .step-number{display:flex;align-items:center;justify-content:center;background:#0b398f;color:#fff;border-radius:50%;width:36px;height:36px;margin:0 auto 9px;font-weight:900}
+.depot-entry .step-info strong{display:block;font-size:13px;margin:5px 0}
+.depot-entry .step-info small{display:block;color:#587086;font-size:12px;line-height:1.4}
 .depot-entry .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .depot-entry .card{display:flex;flex-direction:column;min-width:0;text-decoration:none;color:#082353;background:#fff;border:1px solid #d7e2ee;border-radius:14px;overflow:hidden;box-shadow:0 3px 10px #15335b10;transition:transform .15s,border-color .15s}
 .depot-entry .card:hover,.depot-entry .card:focus-visible{transform:translateY(-3px);border-color:#ffbf00}
@@ -23,12 +28,22 @@ return <main className="depot-entry">
 .depot-entry .card small{font-size:12px;line-height:1.35;color:#52667b}
 .depot-entry .card .arrow{color:#0b50a0;font-weight:800;margin-top:auto;padding-top:4px}
 @media(max-width:1080px){.depot-entry .cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:650px){.depot-entry .cards{grid-template-columns:repeat(2,minmax(0,1fr))}.depot-entry .card img{height:100px}.depot-entry .banner{min-height:200px}}
+@media(max-width:650px){.depot-entry .steps-info{grid-template-columns:repeat(2,minmax(0,1fr))}.depot-entry .cards{grid-template-columns:repeat(2,minmax(0,1fr))}.depot-entry .card img{height:100px}.depot-entry .banner{min-height:200px}}
 `}</style>
 <section className="banner"><div className="banner-copy"><div style={{color:"#c3ffda",fontWeight:800,fontSize:13,marginBottom:12}}>100 % GRATUIT POUR LES PARTICULIERS</div><h1>Déposez votre annonce en <span>quelques minutes</span></h1><p>Vendez, louez ou proposez vos services simplement sur <strong>TOUT ICI MARKET</strong>.</p></div></section>
-<div className="heading"><h2>Choisissez la catégorie de votre annonce</h2><p>Chaque rubrique possède un formulaire adapté à ce que vous souhaitez vendre ou proposer.</p></div>
+<div className="heading"><h2>Comment déposer une annonce ?</h2><p>Un parcours gratuit en 5 étapes simples. Commencez en choisissant votre catégorie ci-dessous.</p></div>
+<div className="steps-info" aria-label="Les cinq étapes du dépôt">
+{[
+["Choisissez la catégorie","Sélectionnez le domaine de votre annonce pour ouvrir son formulaire dédié."],
+["Ajoutez vos photos et vidéo","Présentez votre bien avec des photos et, si vous le souhaitez, une vidéo."],
+["Décrivez votre annonce","Renseignez les informations utiles, le prix et la localisation."],
+["Vérifiez votre annonce","Relisez les détails et prévisualisez la présentation."],
+["Publiez gratuitement","Confirmez la publication depuis votre page de dépôt spécialisée."]
+].map(([name,description],i)=><div className="step-info" key={name}><span className="step-number">{i+1}</span><strong>{name}</strong><small>{description}</small></div>)}
+</div>
+<div className="heading"><h2>Choisissez une catégorie pour commencer</h2><p>Cliquez sur une des 12 catégories pour accéder à sa page de dépôt d'annonce.</p></div>
 <div className="cards">{depotCategories.map(c=><Link className="card" href={c.slug==="automobile"?"/automobile/deposer":"/deposer/"+c.slug} key={c.slug}>
-<img src={"/accueil-reel/"+c.image+".svg"} alt="" /><div className="copy"><strong>{c.icone} {c.nom}</strong><small>{c.resume}</small><span className="arrow">Déposer dans cette rubrique →</span></div>
+<img src={"/accueil-reel/"+c.image+".svg"} alt="" /><div className="copy"><strong>{c.icone} {c.nom}</strong><small>{c.resume}</small><span className="arrow">Ouvrir la page de dépôt →</span></div>
 </Link>)}</div>
 <p style={{fontSize:13,color:"#4c6080",marginTop:20}}>Les annonces sont liées à votre compte. Les informations demandées diffèrent selon la catégorie. Les badges de vérification sont attribués uniquement après contrôle réel.</p>
 </main>;
