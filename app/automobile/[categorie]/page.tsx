@@ -204,7 +204,7 @@ return <main className="vehicles-sub">
 @media(max-width:900px){.vehicles-sub .search-layout{grid-template-columns:1fr}.vehicles-sub .search-sidebar{position:static}.vehicles-sub .filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.vehicles-sub .filters{grid-template-columns:1fr}.vehicles-sub .results-bar select{min-width:0;width:100%}}
 `}</style>
-<section className="hero"><a href="/automobile">← Automobile &amp; Véhicules / Toutes les catégories</a>
+<section className="hero"><a href="/automobile">← Véhicule / Toutes les catégories</a>
 <h1>{category.icon} {category.title}</h1>
 <p>Consultez les annonces et affinez votre recherche.</p>
 <a className="gold" href="/automobile/deposer">＋ Déposer une annonce</a></section>
