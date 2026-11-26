@@ -1,5 +1,5 @@
 import {createClient} from "@supabase/supabase-js";
-import {notFound} from "next/navigation";
+import AutoAnnonceBrowserFallback from "../../components/AutoAnnonceBrowserFallback";
 import type {Metadata} from "next";
 import PremiumAutoAnnonce from "../../components/PremiumAutoAnnonce";
 import {TrackAutoView} from "../../components/FavoriteAnnonceButton";
@@ -35,7 +35,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 export default async function AnnoncePage({params}:Props){
  const {id}=await params;
  const a=await getAd(id);
- if(!a)notFound();
+ if(!a)return <AutoAnnonceBrowserFallback id={id}/>;
  const details:[string,string][]=[
   ["Marque",a.marque],["Modèle",a.modele],["Finition",a.finition],
   ["Année",a.annee!=null?String(a.annee):null],
