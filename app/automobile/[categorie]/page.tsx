@@ -97,7 +97,7 @@ const criteres=useMemo(()=>({marqueId,modeleId,finitionId,prixMin,prixMax,anneeM
 const distanceKm=(lat1:number,lon1:number,lat2:number,lon2:number)=>{const rad=Math.PI/180;const dLat=(lat2-lat1)*rad;const dLon=(lon2-lon1)*rad;const h=Math.sin(dLat/2)**2+Math.cos(lat1*rad)*Math.cos(lat2*rad)*Math.sin(dLon/2)**2;return 6371*2*Math.asin(Math.min(1,Math.sqrt(h)))};
 const filtered=useMemo(()=>annonces.filter(a=>
 (!typeVendeur||a.type_vendeur===typeVendeur)&&
-(rayon==="france"||!commune||(a.latitude!=null&&a.longitude!=null&&distanceKm(commune.latitude,commune.longitude,a.latitude,a.longitude)<=Number(rayon)))&&
+(rayon==="france"||(commune!=null&&a.latitude!=null&&a.longitude!=null&&distanceKm(commune.latitude,commune.longitude,a.latitude,a.longitude)<=Number(rayon)))&&
 (!marque||a.marque?.toLocaleLowerCase("fr")===marque)&&
 (!modele||a.modele?.toLocaleLowerCase("fr")===modele)&&
 (!finition||a.finition?.toLocaleLowerCase("fr")===finition)&&
@@ -124,7 +124,7 @@ equipements.every(e=>a.options?.some(o=>o.toLocaleLowerCase("fr")===e.toLocaleLo
 useEffect(()=>{if(!category)return;let cancelled=false;setCountLoading(true);
  const timeout=setTimeout(async()=>{
   if(rayon!=="france"){
-    if(!commune){if(!cancelled){setExactCount(null);setCountLoading(false)}return;}
+    if(!commune){if(!cancelled){setExactCount(0);setCountLoading(false)}return;}
     const {data,error:radiusError}=await supabase.rpc("compter_annonces_auto_rayon",{p_types:category.dbTypes,p_lat:commune.latitude,p_lon:commune.longitude,p_rayon:Number(rayon),p_filtre:{marque,modele,finition,type_vendeur:typeVendeur,carburant,boite,prixMin,prixMax,anneeMin,anneeMax,kmMin,kmMax,puissanceMin,puissanceMax,couleur,carrosserie,portes,places,equipements,motCle}});
     if(!cancelled){setExactCount(radiusError?null:Number(data));setCountLoading(false);}return;
   }
