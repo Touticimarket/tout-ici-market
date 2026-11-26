@@ -10,7 +10,7 @@ async function latestAds():Promise<HomeAnnonce[]>{
  if(error)return [];return (data??[]) as HomeAnnonce[];}catch{return []}
 }
 const categories = [
-  { name:"Automobile & Véhicules", href:"/automobile", image:"automobile" },
+  { name:"Véhicule", href:"/automobile", image:"automobile" },
   { name:"Immobilier", href:"/immobilier", image:"immobilier" },
   { name:"Emploi", href:"/emploi", image:"emploi" },
   { name:"Matériel pro", href:"/materiel-pro", image:"materiel-pro" },
