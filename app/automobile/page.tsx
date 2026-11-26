@@ -142,6 +142,22 @@ export default function AutomobilePage(){
 .auto-home .category:nth-child(8) .exact-photo{background-position:50% 100%}
 .auto-home .category:nth-child(9) .exact-photo{background-position:75% 100%}
 .auto-home .category:nth-child(10) .exact-photo{background-position:100% 100%}
+
+/* Agrandissement modéré de la page Automobile, sans remplacer les photos validées. */
+.auto-home .main-panel{padding:16px 16px 32px!important}
+.auto-home .main-panel h1{font-size:clamp(28px,2.5vw,39px)!important}
+.auto-home .subtitle{font-size:clamp(16px,1.2vw,19px)!important;margin-bottom:18px!important}
+.auto-home .cards{gap:16px!important}
+.auto-home .tile-photo{aspect-ratio:1.72!important}
+.auto-home .tile-copy{padding:12px 14px 16px!important}
+.auto-home .tile-title{font-size:clamp(17px,1.25vw,22px)!important;line-height:1.3!important}
+.auto-home .tile-description{font-size:clamp(13px,.9vw,16px)!important;line-height:1.4!important;min-height:39px!important}
+.auto-home .arrow{width:28px!important;height:28px!important;min-width:28px!important}
+.auto-home .equip-section{margin-top:23px!important}
+.auto-home .equip-section h2{font-size:clamp(26px,2.25vw,36px)!important}
+.auto-home .equip-tile{min-height:132px!important;font-size:clamp(13px,.91vw,17px)!important;padding:16px 9px!important}
+.auto-home .equip-icon svg{width:46px!important;height:46px!important}
+@media(max-width:760px){.auto-home .main-panel{padding:12px!important}.auto-home .cards{gap:12px!important}.auto-home .tile-title{font-size:17px!important}.auto-home .tile-description{font-size:13px!important}}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Véhicules</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
