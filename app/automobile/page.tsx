@@ -1,14 +1,14 @@
 const categories=[
- {name:"Automobiles",description:"Voitures, berlines, SUV, citadines, etc.",slug:"voitures",image:"voitures"},
- {name:"Utilitaires",description:"Fourgons, fourgonnettes, camionnettes, pick-up...",slug:"utilitaires",image:"utilitaires"},
- {name:"Camions",description:"Poids lourds, tracteurs, porteurs, remorques...",slug:"camions",image:"camions"},
- {name:"Caravaning",description:"Camping-cars, caravanes, cellules, vans aménagés...",slug:"caravaning",image:"caravaning"},
- {name:"Remorques",description:"Bagagères, porte-voitures, plateaux, spéciales...",slug:"remorques",image:"remorques"},
- {name:"Motos & Scooters",description:"Motos, scooters, 3 roues, quads...",slug:"motos",image:"motos"},
- {name:"Vélos",description:"Vélos, VAE, VTT, route, enfants, accessoires...",slug:"velos",image:"velos"},
- {name:"Nautisme",description:"Bateaux, jet-skis, voiliers, remorques bateau...",slug:"nautisme",image:"nautisme"},
- {name:"Vans & Aménagés",description:"Vans, fourgons aménagés, minibus, loisirs...",slug:"vans-amenages",image:"vans-amenages"},
- {name:"Autres véhicules",description:"Tracteurs, engins, véhicules spécifiques, collection...",slug:"autres-vehicules",image:"autres-vehicules"},
+ {name:"Automobiles",description:"Voitures, berlines, SUV, citadines, etc.",slug:"voitures",image:"https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Utilitaires",description:"Fourgons, fourgonnettes, camionnettes, pick-up...",slug:"utilitaires",image:"https://images.unsplash.com/photo-1768400554801-2002b63e0591?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Camions",description:"Poids lourds, tracteurs, porteurs, remorques...",slug:"camions",image:"https://images.unsplash.com/photo-1725889283394-bc0b15c5f15d?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Caravaning",description:"Camping-cars, caravanes, cellules, vans aménagés...",slug:"caravaning",image:"https://images.unsplash.com/photo-1782046820445-d2798c847f8f?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Remorques",description:"Bagagères, porte-voitures, plateaux, spéciales...",slug:"remorques",image:"https://images.unsplash.com/photo-1682980799090-c4c6342be01a?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Motos & Scooters",description:"Motos, scooters, 3 roues, quads...",slug:"motos",image:"https://images.unsplash.com/photo-1662788019557-443ef532cccd?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Vélos",description:"Vélos, VAE, VTT, route, enfants, accessoires...",slug:"velos",image:"https://images.unsplash.com/photo-1760892471867-d50bb945c13d?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Nautisme",description:"Bateaux, jet-skis, voiliers, remorques bateau...",slug:"nautisme",image:"https://images.unsplash.com/photo-1768740615503-52872b6707b1?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Vans & Aménagés",description:"Vans, fourgons aménagés, minibus, loisirs...",slug:"vans-amenages",image:"https://images.unsplash.com/photo-1792525233093-229dd8252f2b?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Autres véhicules",description:"Tracteurs, engins, véhicules spécifiques, collection...",slug:"autres-vehicules",image:"https://images.unsplash.com/photo-1689791649990-03f270b73ce3?auto=format&fit=crop&w=1200&q=85"},
 ];
 const equipements=[
  {name:"Équipement auto",icon:"◉",slug:"equipement-auto"},
@@ -98,12 +98,18 @@ export default function AutomobilePage(){
 .auto-home .tile-photo-nautisme img{object-position:50% 50%!important}
 .auto-home .tile-photo-vans-amenages img{object-position:51% 50%!important}
 .auto-home .tile-photo-autres-vehicules img{object-position:50% 50%!important}
+
+/* Nouvelle photothèque : 10 photos distinctes haute définition sous licence Unsplash.
+   Ratio visuel identique et objet jamais étiré. */
+.auto-home .tile-photo{aspect-ratio:16/10!important;overflow:hidden!important;background:#e6eef8!important}
+.auto-home .tile-photo img,.auto-home .tile-photo-voitures img,.auto-home .tile-photo-utilitaires img,.auto-home .tile-photo-camions img,.auto-home .tile-photo-caravaning img,.auto-home .tile-photo-remorques img,.auto-home .tile-photo-motos img,.auto-home .tile-photo-velos img,.auto-home .tile-photo-nautisme img,.auto-home .tile-photo-vans-amenages img,.auto-home .tile-photo-autres-vehicules img{display:block!important;width:100%!important;height:100%!important;max-height:none!important;aspect-ratio:auto!important;object-fit:cover!important;object-position:center center!important;transform:none!important;transition:none!important}
+.auto-home .category:hover .tile-photo img,.auto-home .category:focus-visible .tile-photo img{transform:none!important}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Véhicules</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
- <div className={"tile-photo tile-photo-"+c.image}><img src={"/auto-reel/"+c.image+".svg"} alt={c.name} loading="lazy" decoding="async"/></div>
+ <div className={"tile-photo tile-photo-"+c.image}><img src={c.image} alt={"Photographie : "+c.name} loading="lazy" decoding="async" referrerPolicy="no-referrer"/></div>
  <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow">›</span></div><p className="tile-description">{c.description}</p></div>
  </a>)}</div>
  <div className="equip-section"><h2>Équipements &amp; Services</h2>
