@@ -54,9 +54,9 @@ export default function AutomobilePage(){
  @media(max-width:760px){.auto-home .hero{margin-left:0;width:100%}.auto-home .cards{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-home .main-panel{margin:0 8px;padding:13px}.auto-home .hero img{height:180px;object-position:center}.auto-home .hero-title{top:10%;left:2%;max-width:58%;padding:7px}.auto-home .hero-title span{font-size:10px}}
  @media(max-width:480px){.auto-home .cards{grid-template-columns:1fr}.auto-home .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-home .hero img{height:155px;object-position:center}}
  `}</style>
- <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Véhicule</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
+ <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Véhicules</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
- <p className="subtitle">dans la rubrique Véhicule</p>
+ <p className="subtitle">dans la rubrique Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
  <img src={"/auto-reel/"+c.image+".svg"} alt={c.name} loading="lazy"/>
  <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow">›</span></div><p className="tile-description">{c.description}</p></div>
