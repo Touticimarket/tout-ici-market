@@ -1,3 +1,4 @@
+import {CarFront, Caravan, Sailboat, Bike, Wrench, CircleDot, Armchair, FileDroplet, ChevronRight} from "lucide-react";
 const categories=[
  {name:"Automobiles",description:"Voitures, berlines, SUV, citadines, etc.",slug:"voitures",image:"https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=85"},
  {name:"Utilitaires",description:"Fourgons, fourgonnettes, camionnettes, pick-up...",slug:"utilitaires",image:"https://images.unsplash.com/photo-1768400554801-2002b63e0591?auto=format&fit=crop&w=1200&q=85"},
@@ -7,19 +8,18 @@ const categories=[
  {name:"Motos & Scooters",description:"Motos, scooters, 3 roues, quads...",slug:"motos",image:"https://images.unsplash.com/photo-1662788019557-443ef532cccd?auto=format&fit=crop&w=1200&q=85"},
  {name:"Vélos",description:"Vélos, VAE, VTT, route, enfants, accessoires...",slug:"velos",image:"https://images.unsplash.com/photo-1760892471867-d50bb945c13d?auto=format&fit=crop&w=1200&q=85"},
  {name:"Nautisme",description:"Bateaux, jet-skis, voiliers, remorques bateau...",slug:"nautisme",image:"https://images.unsplash.com/photo-1768740615503-52872b6707b1?auto=format&fit=crop&w=1200&q=85"},
- {name:"Vans & Aménagés",description:"Vans, fourgons aménagés, minibus, loisirs...",slug:"vans-amenages",image:"https://images.unsplash.com/photo-1792525233093-229dd8252f2b?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Vans aménagés",description:"Vans, fourgons aménagés, minibus, loisirs...",slug:"vans-amenages",image:"https://images.unsplash.com/photo-1792525233093-229dd8252f2b?auto=format&fit=crop&w=1200&q=85"},
  {name:"Autres véhicules",description:"Tracteurs, engins, véhicules spécifiques, collection...",slug:"autres-vehicules",image:"https://images.unsplash.com/photo-1689791649990-03f270b73ce3?auto=format&fit=crop&w=1200&q=85"},
 ];
 const equipements=[
- {name:"Équipement auto",icon:"◉",slug:"equipement-auto"},
- {name:"Équipement caravaning",icon:"▣",slug:"equipement-caravaning"},
- {name:"Équipement nautisme",icon:"⛵",slug:"equipement-nautisme"},
- {name:"Équipements vélos",icon:"♧",slug:"equipement-velos"},
- {name:"Services de réparation mécanique",icon:"⚒",slug:"services-mecaniques"},
- {name:"Pneus & Jantes",icon:"◎",slug:"pneus-jantes"},
- {name:"Pièces & Accessoires",icon:"⚙",slug:"pieces-accessoires"},
- {name:"Entretien & Consommables",icon:"♢",slug:"entretien-consommables"},
- {name:"Autres",icon:"⋯",slug:"autres-equipements"}
+ {name:"Équipement auto",icon:<CircleDot size={40}/>,slug:"equipement-auto"},
+ {name:"Équipement caravaning",icon:<Caravan size={40}/>,slug:"equipement-caravaning"},
+ {name:"Équipement nautisme",icon:<Sailboat size={40}/>,slug:"equipement-nautisme"},
+ {name:"Équipements vélos",icon:<Bike size={40}/>,slug:"equipement-velos"},
+ {name:"Services de réparation mécanique",icon:<Wrench size={40}/>,slug:"services-mecaniques"},
+ {name:"Pneus & Jantes",icon:<CircleDot size={40}/>,slug:"pneus-jantes"},
+ {name:"Pièces & Accessoires",icon:<Armchair size={40}/>,slug:"pieces-accessoires"},
+ {name:"Entretien & Consommables",icon:<FileDroplet size={40}/>,slug:"entretien-consommables"},
 ];
 export default function AutomobilePage(){
  return <main className="auto-home">
@@ -104,13 +104,36 @@ export default function AutomobilePage(){
 .auto-home .tile-photo{aspect-ratio:16/10!important;overflow:hidden!important;background:#e6eef8!important}
 .auto-home .tile-photo img,.auto-home .tile-photo-voitures img,.auto-home .tile-photo-utilitaires img,.auto-home .tile-photo-camions img,.auto-home .tile-photo-caravaning img,.auto-home .tile-photo-remorques img,.auto-home .tile-photo-motos img,.auto-home .tile-photo-velos img,.auto-home .tile-photo-nautisme img,.auto-home .tile-photo-vans-amenages img,.auto-home .tile-photo-autres-vehicules img{display:block!important;width:100%!important;height:100%!important;max-height:none!important;aspect-ratio:auto!important;object-fit:cover!important;object-position:center center!important;transform:none!important;transition:none!important}
 .auto-home .category:hover .tile-photo img,.auto-home .category:focus-visible .tile-photo img{transform:none!important}
+
+/* Mise en page de référence du 26/11 : deux rangées de cinq, flèches jaunes, huit équipements. */
+.auto-home .main-panel{background:#f9fbff!important;border:0!important;box-shadow:none!important;padding:8px 9px 25px!important;margin:0 8px 0 0!important}
+.auto-home .main-panel h1{font-size:clamp(24px,2.25vw,36px)!important;font-weight:900!important;letter-spacing:-.045em!important;display:flex;align-items:center;gap:12px;color:#08133f!important;margin:0 0 1px!important}
+.auto-home .main-panel h1:before,.auto-home .equip-section h2:before{content:"";display:inline-block;width:32px;height:5px;border-radius:6px;background:#ffd008;flex-shrink:0}
+.auto-home .subtitle{font-size:clamp(14px,1.1vw,17px)!important;color:#607088!important;font-weight:800!important;padding-left:44px;margin-bottom:13px!important}
+.auto-home .cards{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:12px!important}
+.auto-home .category{display:flex!important;flex-direction:column!important;border-radius:15px!important;border:1px solid #dce5f1!important;box-shadow:0 4px 10px #18315215!important;background:#f6f9ff!important}
+.auto-home .tile-photo{aspect-ratio:1.92!important;overflow:hidden!important;border-radius:13px 13px 0 0!important}
+.auto-home .tile-photo img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important;transform:none!important;filter:none!important}
+.auto-home .tile-copy{padding:7px 12px 11px!important;background:linear-gradient(#fff,#f5f9ff)!important;flex:1}
+.auto-home .tile-title{font-size:clamp(14px,1.05vw,20px)!important;line-height:1.2!important;letter-spacing:-.025em!important;gap:8px!important}
+.auto-home .arrow{width:23px;height:23px;min-width:23px;border-radius:50%;background:#ffe08a;color:#082457;display:grid;place-items:center!important;font-size:0!important}
+.auto-home .tile-description{font-size:clamp(10px,.75vw,13px)!important;line-height:1.3!important;margin:5px 0 0!important;min-height:30px!important}
+.auto-home .equip-section{border:0!important;margin-top:14px!important;padding:0!important}
+.auto-home .equip-section h2{display:flex;align-items:center;gap:12px;font-size:clamp(23px,2vw,32px)!important;font-weight:900!important;margin:0 0 10px!important}
+.auto-home .equip-grid{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr))!important;gap:9px!important}
+.auto-home .equip-tile{min-height:108px!important;padding:13px 6px 10px!important;border-radius:19px!important;background:linear-gradient(150deg,#e6f1ff,#f2f6fd)!important;box-shadow:0 3px 8px #193f7615!important;gap:7px!important;font-size:clamp(10px,.76vw,14px)!important;line-height:1.2!important;justify-content:center!important}
+.auto-home .equip-icon{color:#05388c!important;line-height:1!important}
+.auto-home .equip-icon svg{width:40px;height:40px;stroke-width:2.2}
+@media(max-width:1150px){.auto-home .cards{grid-template-columns:repeat(3,minmax(0,1fr))!important}.auto-home .equip-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+@media(max-width:760px){.auto-home .cards{grid-template-columns:repeat(2,minmax(0,1fr))!important}.auto-home .main-panel{padding:12px!important}.auto-home .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:420px){.auto-home .cards{grid-template-columns:1fr!important}}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Véhicules</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
- <p className="subtitle">dans la rubrique Véhicules</p>
+ <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
  <div className={"tile-photo tile-photo-"+c.image}><img src={c.image} alt={"Photographie : "+c.name} loading="lazy" decoding="async" referrerPolicy="no-referrer"/></div>
- <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow">›</span></div><p className="tile-description">{c.description}</p></div>
+ <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow"><ChevronRight size={17}/></span></div><p className="tile-description">{c.description}</p></div>
  </a>)}</div>
  <div className="equip-section"><h2>Équipements &amp; Services</h2>
  <div className="equip-grid">{equipements.map(e=><a href={"/automobile/"+e.slug} key={e.slug} className="equip-tile"><span className="equip-icon" aria-hidden="true">{e.icon}</span><span>{e.name}</span></a>)}</div></div>
