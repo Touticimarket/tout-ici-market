@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 export const metadata:Metadata={
- title:"TOUT ICI MARKET — Annonces gratuites pour les particuliers",
+ title:"TOUT ICI ANNONCES — Annonces gratuites pour les particuliers",
  description:"Tout acheter, tout vendre, tout trouver. Site d’annonces gratuites pour les particuliers : automobile, immobilier, maison, loisirs et plus encore.",
  metadataBase:new URL("https://tout-ici-market.vercel.app"),
- openGraph:{title:"TOUT ICI MARKET — Annonces gratuites",description:"Tout acheter, tout vendre, tout trouver. Découvrez les annonces gratuites pour les particuliers.",url:"https://tout-ici-market.vercel.app",siteName:"TOUT ICI MARKET",type:"website"},
- twitter:{card:"summary",title:"TOUT ICI MARKET — Annonces gratuites",description:"Tout acheter, tout vendre, tout trouver."}
+ openGraph:{title:"TOUT ICI ANNONCES — Annonces gratuites",description:"Tout acheter, tout vendre, tout trouver. Découvrez les annonces gratuites pour les particuliers.",url:"https://tout-ici-market.vercel.app",siteName:"TOUT ICI ANNONCES",type:"website"},
+ twitter:{card:"summary",title:"TOUT ICI ANNONCES — Annonces gratuites",description:"Tout acheter, tout vendre, tout trouver."}
 };
 const rubriques = [
   {nom:"Véhicules",href:"/automobile",icone:"🚘"},
@@ -77,7 +77,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       @media(max-width:760px){.tim-header{min-height:75px}.tim-logo{width:180px}.tim-logo img{max-height:65px}.tim-navbar{min-height:56px;justify-content:flex-start}.tim-navbar a{font-size:15px}}
     `}</style>
     <header className="tim-header">
-      <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI MARKET"><img src="/tout-ici-market-officiel.svg" alt="TOUT ICI MARKET"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
+      <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
       <form className="tim-home-search" action="/automobile/voitures" role="search"><span className="search-symbol" aria-hidden="true">⌕</span><input type="search" name="q" aria-label="Que recherchez-vous ?" placeholder="Que recherchez-vous ?" /><button type="submit">Rechercher</button></form>
       
       <nav className="tim-header-links" aria-label="Espace utilisateur">
