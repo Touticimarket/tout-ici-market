@@ -127,12 +127,27 @@ export default function AutomobilePage(){
 @media(max-width:1150px){.auto-home .cards{grid-template-columns:repeat(3,minmax(0,1fr))!important}.auto-home .equip-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 @media(max-width:760px){.auto-home .cards{grid-template-columns:repeat(2,minmax(0,1fr))!important}.auto-home .main-panel{padding:12px!important}.auto-home .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:420px){.auto-home .cards{grid-template-columns:1fr!important}}
+
+/* Dix photographies EXACTES de la capture approuvée par le propriétaire.
+   Sprite local hébergé sur le site : aucune photo externe, aucun recadrage destructif. */
+.auto-home .tile-photo{aspect-ratio:15 / 8!important;position:relative!important;background:#eaf2fb!important;overflow:hidden!important}
+.auto-home .tile-photo .exact-photo{width:100%;height:100%;display:block;background-image:url('/auto-reel/photos-maquette-exactes.svg');background-repeat:no-repeat;background-size:500% 200%}
+.auto-home .category:nth-child(1) .exact-photo{background-position:0% 0%}
+.auto-home .category:nth-child(2) .exact-photo{background-position:25% 0%}
+.auto-home .category:nth-child(3) .exact-photo{background-position:50% 0%}
+.auto-home .category:nth-child(4) .exact-photo{background-position:75% 0%}
+.auto-home .category:nth-child(5) .exact-photo{background-position:100% 0%}
+.auto-home .category:nth-child(6) .exact-photo{background-position:0% 100%}
+.auto-home .category:nth-child(7) .exact-photo{background-position:25% 100%}
+.auto-home .category:nth-child(8) .exact-photo{background-position:50% 100%}
+.auto-home .category:nth-child(9) .exact-photo{background-position:75% 100%}
+.auto-home .category:nth-child(10) .exact-photo{background-position:100% 100%}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Véhicules</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
- <div className={"tile-photo tile-photo-"+c.image}><img src={c.image} alt={"Photographie : "+c.name} loading="lazy" decoding="async" referrerPolicy="no-referrer"/></div>
+ <div className="tile-photo"><div className="exact-photo" role="img" aria-label={"Photo de la maquette : "+c.name}/></div>
  <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow"><ChevronRight size={17}/></span></div><p className="tile-description">{c.description}</p></div>
  </a>)}</div>
  <div className="equip-section"><h2>Équipements &amp; Services</h2>
