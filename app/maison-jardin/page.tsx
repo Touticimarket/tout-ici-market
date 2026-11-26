@@ -20,7 +20,7 @@ export default function MaisonJardinPage() {
 
       <p style={{ fontSize: "22px", color: "#555" }}>
         Retrouvez tout pour la maison, le mobilier, la décoration,
-        le bricolage, les outils, le jardin et l’aménagement extérieur sur TOUT ICI Market.
+        le bricolage, les outils, le jardin et l’aménagement extérieur sur TOUT ICI ANNONCES.
       </p>
 
       <div
