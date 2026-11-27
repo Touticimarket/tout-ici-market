@@ -15,9 +15,21 @@ export default function ChoisirCategorie(){
 return <main className="depot-entry">
 <style>{`
 body:has(.depot-entry){background:#f8fafe!important}
-body:has(.depot-entry) .tim-shell{display:block;max-width:1800px;padding:0;margin:0 auto}
-body:has(.depot-entry) .tim-sidebar{display:none}
-body:has(.depot-entry) .tim-content{width:100%}
+/* Page de dépôt : la liste Rubriques reste compacte à gauche, sans occuper la page. */
+html body:has(.depot-entry) .tim-shell{display:grid!important;grid-template-columns:205px minmax(0,1fr)!important;gap:14px!important;max-width:1800px!important;padding:12px 14px!important;margin:0 auto!important;align-items:start!important}
+html body:has(.depot-entry) .tim-sidebar{display:block!important;position:sticky!important;top:12px!important;width:auto!important;max-width:205px!important;padding:7px!important;border-radius:12px!important}
+html body:has(.depot-entry) .tim-sidebar-title{display:block!important;font-size:13px!important;padding:9px 7px!important}
+html body:has(.depot-entry) .tim-sidebar a:not(.tim-auto-sidebar-post){min-height:39px!important;padding:7px 5px!important;gap:7px!important;font-size:11px!important;line-height:1.25!important}
+html body:has(.depot-entry) .tim-sidebar .tim-sidebar-image{width:30px!important;height:29px!important;border-radius:6px!important;flex-shrink:0!important}
+html body:has(.depot-entry) .tim-sidebar .tim-sidebar-icon{display:none!important}
+html body:has(.depot-entry) .tim-content{display:block!important;min-width:0!important;width:100%!important}
+html body:has(.depot-entry) .depot-entry{padding:0 0 24px!important;min-width:0!important}
+@media(max-width:850px){
+ html body:has(.depot-entry) .tim-shell{grid-template-columns:1fr!important;padding:8px!important}
+ html body:has(.depot-entry) .tim-sidebar{display:flex!important;position:static!important;max-width:100%!important;width:100%!important;overflow-x:auto!important;gap:6px!important}
+ html body:has(.depot-entry) .tim-sidebar-title{display:none!important}
+ html body:has(.depot-entry) .tim-sidebar a:not(.tim-auto-sidebar-post){flex:0 0 auto!important;white-space:nowrap!important}
+}
 .depot-entry .reference-top{width:100%;margin:0;padding:0;overflow:hidden;background:#f9fbfe}
 .depot-entry .reference-top img{display:block;width:100%;height:auto;object-fit:contain}
 .depot-entry .reference-top img:first-child{border-radius:0}
