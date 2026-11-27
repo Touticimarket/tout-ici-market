@@ -3,19 +3,19 @@ import {useState} from "react";
 import {supabase} from "../../../lib/supabaseClient";
 import {FranceLocation,OrderedPhotos,type Commune} from "../PhotosLocalisation";
 
-type MotoType={title:string;dbType:string;icon:string;photoIndex?:number};
+type MotoType={title:string;dbType:string;icon:string;photo:string};
 const types:MotoType[]=[
- {title:"Roadster",dbType:"moto",icon:"🏍️",photoIndex:2},
- {title:"Sportive",dbType:"moto",icon:"🏍️",photoIndex:0},
- {title:"Trail / Adventure",dbType:"moto",icon:"🏍️",photoIndex:1},
- {title:"Trike",dbType:"moto",icon:"🏍️"},
- {title:"Custom",dbType:"moto",icon:"🏍️",photoIndex:2},
- {title:"GT / Routière",dbType:"moto",icon:"🏍️",photoIndex:1},
- {title:"Enduro",dbType:"moto",icon:"🏍️",photoIndex:3},
- {title:"Cross",dbType:"moto",icon:"🏍️",photoIndex:4},
- {title:"Scooter",dbType:"scooter",icon:"🛵"},
- {title:"Quad",dbType:"quad",icon:"🛞"},
- {title:"Autre",dbType:"moto",icon:"🏍️"}
+ {title:"Roadster",dbType:"moto",icon:"🏍️",photo:"/moto-types/custom.svg"},
+ {title:"Sportive",dbType:"moto",icon:"🏍️",photo:"/moto-types/sportive.svg"},
+ {title:"Trail / Adventure",dbType:"moto",icon:"🏍️",photo:"/moto-types/trail.svg"},
+ {title:"Trike",dbType:"moto",icon:"🏍️",photo:"https://images.squarespace-cdn.com/content/v1/5fbd35cb3177f25a2b5aac97/1607438354668-4XNM9EGOTX20AY5WPTHK/crozier-06-2010%2B%287%29.JPG"},
+ {title:"Custom",dbType:"moto",icon:"🏍️",photo:"/moto-types/custom.svg"},
+ {title:"GT / Routière",dbType:"moto",icon:"🏍️",photo:"/moto-types/trail.svg"},
+ {title:"Enduro",dbType:"moto",icon:"🏍️",photo:"/moto-types/enduro.svg"},
+ {title:"Cross",dbType:"moto",icon:"🏍️",photo:"/moto-types/cross.svg"},
+ {title:"Scooter",dbType:"scooter",icon:"🛵",photo:"/moto-types/sportive.svg"},
+ {title:"Quad",dbType:"quad",icon:"🛞",photo:"/moto-types/enduro.svg"},
+ {title:"Autre",dbType:"moto",icon:"🏍️",photo:"/moto-types/custom.svg"}
 ];
 const labels=["Véhicule","Photos & vidéo","Description","Localisation","Récapitulatif","Publication"];
 const checks=["Renseignez toutes les informations","Ajoutez des photos de qualité","Décrivez l’état et l’historique de la moto","Indiquez les renseignements importants","Une annonce complète se vend plus vite !"];
@@ -228,6 +228,10 @@ export default function DeposerAnnonceMoto(){
  .moto-deposit .moto-type>span:last-child{display:block!important;font-size:15px!important;font-weight:900!important;line-height:1.3!important}
  @media(max-width:1000px){.moto-deposit .type-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
  @media(max-width:620px){.moto-deposit .type-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.moto-deposit .moto-type .type-icon{height:100px!important;min-height:100px!important}}
+
+ /* Photo réelle en element img, indépendante des règles de découpe CSS. */
+ .moto-deposit .moto-type .type-icon{display:block!important;position:relative!important;width:100%!important;height:116px!important;overflow:hidden!important;background:#f0f5fa!important}
+ .moto-deposit .moto-type .type-icon img{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;object-fit:cover!important;object-position:center!important;position:static!important;filter:none!important;opacity:1!important;mix-blend-mode:normal!important;border:0!important}
  `}</style>
  <header className="moto-hero">
   <img className="moto-hero-image" src="/auto-reel/bandeau-depot-moto.webp" alt="Déposez votre annonce moto en quelques minutes — motos trail, sportive et custom devant un paysage de montagne, avec les garanties MIA" />
@@ -247,7 +251,7 @@ export default function DeposerAnnonceMoto(){
  {input("annee","Année de mise en circulation *","Ex. 2021","number")}
  {select("carburant","Carburant *",["Essence","Électrique","Hybride","Autre"])}
  {select("permis","Permis",["AM","A1","A2","A","Sans permis","Non précisé"])}
- </div><h3>Type de moto (catégorie)</h3><div className="type-grid">{types.map(t=><button key={t.title} className={"moto-type"+(type===t.title?" active":"")} type="button" onClick={()=>setType(t.title)}><span className="type-icon" role="img" aria-label={"Photo : "+t.title} style={t.title==="Trike"?{backgroundImage:"url(https://cdn.antaranews.com/cache/1200x800/2020/10/31/h-d-tiga-roda.jpg)",backgroundSize:"cover",backgroundPosition:"center"}:t.photoIndex!==undefined?{backgroundImage:"url(/auto-reel/moto-types-sprite.webp)",backgroundSize:"500% 100%",backgroundPosition:(t.photoIndex*25)+"% center"}:{backgroundImage:"url(/auto-reel/motos.svg)",backgroundSize:"cover",backgroundPosition:"center"}}/><span>{t.title}</span></button>)}</div></>}
+ </div><h3>Type de moto (catégorie)</h3><div className="type-grid">{types.map(t=><button key={t.title} className={"moto-type"+(type===t.title?" active":"")} type="button" onClick={()=>setType(t.title)}><span className="type-icon"><img src={t.photo} alt={"Moto "+t.title} loading="eager" onError={e=>{if(!e.currentTarget.src.endsWith("/moto-types/custom.svg"))e.currentTarget.src="/moto-types/custom.svg"}}/></span><span>{t.title}</span></button>)}</div></>}
  {step===1&&<><h2>Étape 2/6 – Photos et vidéo</h2><p>Ajoutez jusqu’à 10 photos de votre moto. Vous pouvez modifier leur ordre.</p><OrderedPhotos files={photos} onChange={setPhotos}/><label style={{marginTop:18}}>Vidéo (facultative)<input type="file" accept="video/mp4,video/webm,video/quicktime" onChange={e=>setVideo(e.target.files?.[0]||null)}/></label></>}
  {step===2&&<><h2>Étape 3/6 – Description et prix</h2><div className="moto-fields">{input("titre","Titre de l’annonce","Ex. BMW R 1250 GS 2021")}{input("prix","Prix demandé (€) *","Ex. 9 900","number")}</div><label style={{marginTop:16}}>Description détaillée *<textarea value={f.description||""} onChange={e=>field("description",e.target.value)} placeholder="État de la moto, historique, entretien, factures, raisons de la vente..."/></label></>}
  {step===3&&<><h2>Étape 4/6 – Localisation et coordonnées</h2><FranceLocation selected={location} onChange={setLocation}/><div className="moto-fields" style={{marginTop:16}}>{input("email","E-mail de contact","","email")}{input("telephone","Téléphone de contact","","tel")}</div></>}
