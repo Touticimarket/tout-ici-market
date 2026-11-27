@@ -34,16 +34,16 @@ const categories:Record<string,{title:string;icon:string;dbTypes:string[]}>={
 const vehiculeTabs=[
  {slug:"voitures",label:"Automobiles",image:"/auto-reel/voitures.svg"},
  {slug:"motos",label:"Motos & Scooters",image:"/auto-reel/motos.svg"},
+ {slug:"caravaning",label:"Camping-cars & Caravaning",image:"/auto-reel/caravaning.svg"},
+ {slug:"vans-amenages",label:"Vans aménagés",image:"/auto-reel/vans-amenages.svg"},
  {slug:"utilitaires",label:"Utilitaires",image:"/auto-reel/utilitaires.svg"},
  {slug:"camions",label:"Camions",image:"/auto-reel/camions.svg"},
- {slug:"caravaning",label:"Caravaning",image:"/auto-reel/caravaning.svg"},
- {slug:"velos",label:"Vélos",image:"/auto-reel/velos.svg"},
- {slug:"equipement-auto",label:"Équipement auto",image:"/auto-reel/equipement-auto-icone.svg"},
- {slug:"services-mecaniques",label:"Services mécaniques",image:"/auto-reel/services-mecaniques-icone.svg"},
  {slug:"remorques",label:"Remorques",image:"/auto-reel/remorques.svg"},
+ {slug:"velos",label:"Vélos",image:"/auto-reel/velos.svg"},
  {slug:"nautisme",label:"Nautisme",image:"/auto-reel/nautisme.svg"},
- {slug:"vans-amenages",label:"Vans aménagés",image:"/auto-reel/vans-amenages.svg"},
- {slug:"autres-vehicules",label:"Autres véhicules",image:"/auto-reel/autres-vehicules.svg"}
+ {slug:"autres-vehicules",label:"Autres véhicules",image:"/auto-reel/autres-vehicules.svg"},
+ {slug:"equipement-auto",label:"Équipement auto & accessoires",image:"/auto-reel/equipement-auto-icone.svg"},
+ {slug:"services-mecaniques",label:"Services mécaniques",image:"/auto-reel/services-mecaniques-icone.svg"}
 ];
 /* Positions identiques à la grille Automobile validée : 5 colonnes x 2 rangées. */
 const tabPhotoPositions={
