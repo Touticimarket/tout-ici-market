@@ -46,6 +46,7 @@ const vehiculeTabs=[
 ];
 export default function CategorieVehicules(){
 const params=useParams();const slug=typeof params.categorie==="string"?params.categorie:"";
+const tabsScrollRef=useRef<HTMLElement|null>(null);
 const category=categories[slug];
 const [marques,setMarques]=useState<Option[]>([]);
 const [modeles,setModeles]=useState<Option[]>([]);
@@ -253,6 +254,42 @@ return <main className="vehicles-sub">
 .vehicles-sub .ads article h3{font-size:16px;line-height:1.25;margin:9px 0 6px}
 .vehicles-sub .ads .price{font-size:21px}
 @media(max-width:900px){.vehicles-sub .search-layout{grid-template-columns:1fr}}
+
+/* Lecture améliorée — filtres et catégories dimensionnés comme les rubriques de gauche. */
+.vehicles-sub .vehicle-tabs-wrap{display:flex;align-items:stretch;min-width:0;width:100%;padding:9px 8px;gap:6px;background:#fff;border-bottom:1px solid #dae6f5}
+.vehicles-sub .vehicle-tabs{flex:1;min-width:0;max-width:none;scroll-behavior:smooth;scroll-snap-type:x proximity;padding:3px 2px 8px;gap:11px;scrollbar-width:thin}
+.vehicles-sub .vehicle-tab{flex:0 0 151px;min-height:132px;padding:7px 10px 11px;scroll-snap-align:start}
+.vehicles-sub .vehicle-tab-photo{height:82px;width:100%;object-fit:contain;border-radius:8px}
+.vehicles-sub .vehicle-tab strong{font-size:15px;line-height:1.18;min-height:35px;padding-top:6px}
+.vehicles-sub .vehicle-tab .vehicle-tab-chevron{font-size:22px;bottom:7px}
+.vehicles-sub .vehicle-tabs-arrow{flex:0 0 39px;align-self:center;height:68px;display:flex;align-items:center;justify-content:center;border:1px solid #cad9ed;border-radius:10px;background:#eaf3ff;color:#0a3d86;font-size:36px;font-weight:900;cursor:pointer;transition:background .15s}
+.vehicles-sub .vehicle-tabs-arrow:hover,.vehicles-sub .vehicle-tabs-arrow:focus-visible{background:#ffcc00;color:#082653;border-color:#e4b300}
+.vehicles-sub .search-layout{grid-template-columns:minmax(295px,320px) minmax(0,1fr);gap:16px}
+.vehicles-sub .search-sidebar{padding:18px}
+.vehicles-sub .filter-heading h2{font-size:clamp(23px,1.85vw,28px);line-height:1.2}
+.vehicles-sub .filter-group summary{font-size:17px;padding:16px 14px}
+.vehicles-sub .filter-group label,.vehicles-sub .search-sidebar label{font-size:15px;line-height:1.3}
+.vehicles-sub .search-sidebar select,.vehicles-sub .search-sidebar input{font-size:15px;padding:12px 11px}
+.vehicles-sub .equip-list label{font-size:14px}
+.vehicles-sub .vehicles-search-callout{min-height:121px;gap:23px;padding:21px 27px}
+.vehicles-sub .vehicles-search-brand{min-width:280px}
+.vehicles-sub .vehicles-search-brand strong{font-size:clamp(25px,2.5vw,36px);line-height:1.1}
+.vehicles-sub .vehicles-search-brand>span{font-size:60px}
+.vehicles-sub .vehicles-search-copy strong{font-size:clamp(20px,1.8vw,27px)}
+.vehicles-sub .vehicles-search-copy span{font-size:clamp(15px,1.2vw,18px);line-height:1.45}
+.vehicles-sub .vehicles-search-callout>a{font-size:16px;max-width:285px;line-height:1.3}
+.vehicles-sub .vehicles-search-explain{font-size:15px;line-height:1.35}
+@media(max-width:1050px){.vehicles-sub .vehicles-search-brand{min-width:0}.vehicles-sub .vehicles-search-callout{flex-wrap:wrap}}
+@media(max-width:900px){.vehicles-sub .search-layout{grid-template-columns:1fr}.vehicles-sub .search-sidebar{position:static}}
+@media(max-width:600px){
+.vehicles-sub .vehicle-tab{flex-basis:133px;min-height:121px}
+.vehicles-sub .vehicle-tab-photo{height:72px}
+.vehicles-sub .vehicle-tab strong{font-size:13px}
+.vehicles-sub .vehicle-tabs-arrow{flex-basis:32px;height:54px;font-size:30px}
+.vehicles-sub .vehicles-search-callout{padding:16px}
+.vehicles-sub .vehicles-search-brand strong{font-size:25px}
+.vehicles-sub .vehicles-search-copy strong{font-size:21px}
+}
 `}</style>
 <section className="hero vehicles-photo-hero" aria-label="Automobile et véhicules">
 <img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules : sélection de voitures" />
@@ -260,9 +297,13 @@ return <main className="vehicles-sub">
 </section>
 <section className="vehicles-search-callout"><div className="vehicles-search-brand"><span aria-hidden="true">⌕</span><strong>TOUT ICI <em>TROUVE POUR VOUS</em></strong></div><div className="vehicles-search-copy"><strong>Vous recherchez un véhicule ?</strong><span>Filtrez les annonces selon votre marque, votre budget et votre localisation.</span></div><a href="#filtres-vehicules">◎ Créer ma recherche personnalisée</a></section>
 <div className="vehicles-search-explain"><span>◎ Décrivez votre recherche</span><span>⌕ Nous cherchons les annonces</span><span>♧ Enregistrez vos critères</span><span>✓ Contactez les vendeurs</span></div>
-<nav className="vehicle-tabs" aria-label="Choisir le type de véhicule">
+<div className="vehicle-tabs-wrap" aria-label="Parcourir les catégories de véhicules">
+ <button className="vehicle-tabs-arrow" type="button" aria-label="Voir les catégories précédentes" onClick={()=>tabsScrollRef.current?.scrollBy({left:-480,behavior:"smooth"})}>‹</button>
+ <nav ref={tabsScrollRef} className="vehicle-tabs" aria-label="Choisir le type de véhicule">
  {vehiculeTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-tab "+(slug===t.slug?"selected":"")} aria-current={slug===t.slug?"page":undefined}><img className="vehicle-tab-photo" src={t.image} alt="" loading="lazy" /><strong>{t.label}</strong><span className="vehicle-tab-chevron" aria-hidden="true">›</span></a>)}
-</nav>
+ </nav>
+ <button className="vehicle-tabs-arrow" type="button" aria-label="Voir les catégories suivantes" onClick={()=>tabsScrollRef.current?.scrollBy({left:480,behavior:"smooth"})}>›</button>
+</div>
 <div className="inner">
 {<div className="search-layout">
 <aside id="filtres-vehicules" className="search-sidebar" aria-label="Filtres de recherche automobile">
