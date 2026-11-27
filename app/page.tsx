@@ -80,6 +80,14 @@ export default async function Home(){
       @media(max-width:1230px){.tim-home .popular-grid{grid-template-columns:repeat(3,minmax(0,1fr))}body:has(.tim-home) .tim-header{flex-wrap:wrap}body:has(.tim-home) .tim-header-links{margin-left:auto}.tim-home .category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
       @media(max-width:760px){.tim-home .popular-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body:has(.tim-home) .tim-shell{display:flex;flex-direction:column;padding:8px}body:has(.tim-home) .tim-sidebar{position:static;max-width:100%;white-space:nowrap;overflow:auto}body:has(.tim-home) .tim-sidebar-title{display:none}body:has(.tim-home) .tim-sidebar-image{width:34px;height:28px}body:has(.tim-home) .tim-sidebar a{min-height:35px;border-bottom:0}body:has(.tim-home) .tim-home-search{order:3;flex-basis:100%;max-width:none}body:has(.tim-home) .tim-header{min-height:auto}body:has(.tim-home) .tim-header-links{margin-left:auto}body:has(.tim-home) .tim-navbar{min-height:52px;justify-content:flex-start}.tim-home .category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tim-home .popular-head{flex-wrap:wrap}}
       @media(max-width:390px){.tim-home .category-grid{grid-template-columns:1fr}}
+      /* Accès direct à la page de dépôt illustrée validée, sans carrousel. */
+      .tim-home .tim-depot-access{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin:10px 7px 20px;padding:17px 24px;border-radius:17px;border:1px solid #c8d9f1;background:linear-gradient(100deg,#edf6ff,#fff9d9);box-shadow:0 3px 13px #092c6810}
+      .tim-home .tim-depot-access-copy{display:flex;flex-direction:column;gap:5px;color:#0b2355}
+      .tim-home .tim-depot-access-copy strong{font-size:clamp(19px,1.8vw,27px);font-weight:900}
+      .tim-home .tim-depot-access-copy span{font-size:14px;line-height:1.4}
+      .tim-home .tim-depot-access-button{display:inline-flex;align-items:center;gap:11px;background:#ffcd08;color:#082456;text-decoration:none;border-radius:35px;padding:15px 23px;font-weight:900;font-size:clamp(15px,1.23vw,19px);box-shadow:0 4px 10px #a8810026;transition:background .15s}
+      .tim-home .tim-depot-access-button:hover,.tim-home .tim-depot-access-button:focus-visible{background:#ffe05a;outline:2px solid #bb8900}
+      @media(max-width:760px){.tim-home .tim-depot-access{margin:8px 7px 16px;padding:14px}.tim-home .tim-depot-access-button{width:100%;justify-content:center}}
       /* Accueil : rubriques plus grandes, en haut comme dans la colonne gauche. */
       body:has(.tim-home) .tim-shell{grid-template-columns:minmax(258px,286px) minmax(0,1fr);gap:14px}
       body:has(.tim-home) .tim-navbar{min-height:70px;justify-content:flex-start;gap:4px}
@@ -98,6 +106,10 @@ export default async function Home(){
       }
 
     `}</style>
+    <section className="tim-depot-access" aria-label="Déposer une annonce">
+      <div className="tim-depot-access-copy"><strong>Publiez votre annonce en quelques minutes</strong><span>Automobile, immobilier, maison, loisirs et toutes vos rubriques.</span></div>
+      <a href="/deposer" className="tim-depot-access-button">＋ Déposer une annonce <span aria-hidden="true">›</span></a>
+    </section>
     <section aria-labelledby="tim-categories-title">
       <h1 className="heading" id="tim-categories-title">Toutes les catégories</h1>
       <div className="category-grid">
