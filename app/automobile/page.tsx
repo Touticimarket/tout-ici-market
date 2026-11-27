@@ -1,25 +1,25 @@
 import {CarFront, Caravan, Sailboat, Bike, Wrench, CircleDot, Armchair, Droplet, ChevronRight} from "lucide-react";
 const categories=[
- {name:"Automobiles",description:"Voitures, berlines, SUV, citadines, etc.",slug:"voitures",image:"https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Automobiles",description:"Voitures, berlines, SUV, citadines et voitures de collection.",slug:"voitures",image:"https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=85"},
  {name:"Utilitaires",description:"Fourgons, fourgonnettes, camionnettes, pick-up...",slug:"utilitaires",image:"https://images.unsplash.com/photo-1768400554801-2002b63e0591?auto=format&fit=crop&w=1200&q=85"},
  {name:"Camions",description:"Poids lourds, tracteurs, porteurs, remorques...",slug:"camions",image:"https://images.unsplash.com/photo-1725889283394-bc0b15c5f15d?auto=format&fit=crop&w=1200&q=85"},
  {name:"Caravaning",description:"Camping-cars, caravanes, cellules, vans aménagés...",slug:"caravaning",image:"https://images.unsplash.com/photo-1782046820445-d2798c847f8f?auto=format&fit=crop&w=1200&q=85"},
  {name:"Remorques",description:"Bagagères, porte-voitures, plateaux, spéciales...",slug:"remorques",image:"https://images.unsplash.com/photo-1682980799090-c4c6342be01a?auto=format&fit=crop&w=1200&q=85"},
- {name:"Motos & Scooters",description:"Motos, scooters, 3 roues, quads...",slug:"motos",image:"https://images.unsplash.com/photo-1662788019557-443ef532cccd?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Motos, Scooters & Quads",description:"Motos, scooters, trois-roues et quads.",slug:"motos",image:"https://images.unsplash.com/photo-1662788019557-443ef532cccd?auto=format&fit=crop&w=1200&q=85"},
  {name:"Vélos",description:"Vélos, VAE, VTT, route, enfants, accessoires...",slug:"velos",image:"https://images.unsplash.com/photo-1760892471867-d50bb945c13d?auto=format&fit=crop&w=1200&q=85"},
  {name:"Nautisme",description:"Bateaux, jet-skis, voiliers, remorques bateau...",slug:"nautisme",image:"https://images.unsplash.com/photo-1768740615503-52872b6707b1?auto=format&fit=crop&w=1200&q=85"},
  {name:"Vans aménagés",description:"Vans, fourgons aménagés, minibus, loisirs...",slug:"vans-amenages",image:"https://images.unsplash.com/photo-1792525233093-229dd8252f2b?auto=format&fit=crop&w=1200&q=85"},
- {name:"Autres véhicules",description:"Tracteurs, engins, véhicules spécifiques, collection...",slug:"autres-vehicules",image:"https://images.unsplash.com/photo-1689791649990-03f270b73ce3?auto=format&fit=crop&w=1200&q=85"},
+ {name:"Autres véhicules",description:"Tracteurs, engins agricoles et véhicules spécifiques...",slug:"autres-vehicules",image:"https://images.unsplash.com/photo-1689791649990-03f270b73ce3?auto=format&fit=crop&w=1200&q=85"},
 ];
 const equipements=[
- {name:"Équipement auto",icon:<CircleDot size={40}/>,slug:"equipement-auto"},
- {name:"Équipement caravaning",icon:<Caravan size={40}/>,slug:"equipement-caravaning"},
- {name:"Équipement nautisme",icon:<Sailboat size={40}/>,slug:"equipement-nautisme"},
- {name:"Équipements vélos",icon:<Bike size={40}/>,slug:"equipement-velos"},
- {name:"Services de réparation mécanique",icon:<Wrench size={40}/>,slug:"services-mecaniques"},
- {name:"Pneus & Jantes",icon:<CircleDot size={40}/>,slug:"pneus-jantes"},
- {name:"Pièces & Accessoires",icon:<Armchair size={40}/>,slug:"pieces-accessoires"},
- {name:"Entretien & Consommables",icon:<Droplet size={40}/>,slug:"entretien-consommables"},
+ {name:"Équipement auto",icon:<CircleDot size={33}/>,slug:"equipement-auto",photo:"https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=480&h=280&q=80"},
+ {name:"Équipement caravaning",icon:<Caravan size={33}/>,slug:"equipement-caravaning",photo:"/auto-reel/caravaning.svg"},
+ {name:"Équipement nautisme",icon:<Sailboat size={33}/>,slug:"equipement-nautisme",photo:"/auto-reel/nautisme.svg"},
+ {name:"Équipements vélos",icon:<Bike size={33}/>,slug:"equipement-velos",photo:"/auto-reel/velos.svg"},
+ {name:"Services de réparation mécanique",icon:<Wrench size={33}/>,slug:"services-mecaniques",photo:"https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=480&h=280&q=80"},
+ {name:"Pneus & Jantes",icon:<CircleDot size={33}/>,slug:"pneus-jantes",photo:"https://images.unsplash.com/photo-1760688966178-a3745cc0e722?auto=format&fit=crop&w=480&h=280&q=80"},
+ {name:"Pièces & Accessoires",icon:<Armchair size={33}/>,slug:"pieces-accessoires",photo:"https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=480&h=280&q=80"},
+ {name:"Entretien & Consommables",icon:<Droplet size={33}/>,slug:"entretien-consommables",photo:"https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=480&h=280&q=80"},
 ];
 export default function AutomobilePage(){
  return <main className="auto-home">
@@ -190,6 +190,17 @@ export default function AutomobilePage(){
 .auto-home .auto-search-steps{font-size:15px!important;line-height:1.4!important}
 @media(max-width:1050px){.auto-home .auto-search-callout{flex-wrap:wrap!important}.auto-home .auto-search-callout-heading{min-width:0!important}}
 @media(max-width:600px){.auto-home .auto-search-callout{padding:16px!important}.auto-home .auto-search-callout-heading strong{font-size:25px!important}.auto-home .auto-search-callout-copy strong{font-size:21px!important}}
+
+
+/* Visuels photographiques et icônes sous les équipements (sans changer les liens). */
+.auto-home .equip-grid{grid-template-columns:repeat(8,minmax(0,1fr))!important;gap:10px!important}
+.auto-home .equip-tile{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:center!important;gap:7px!important;min-height:184px!important;padding:7px 7px 13px!important;border-radius:14px!important;text-align:center!important;overflow:hidden!important;background:linear-gradient(#fff,#eef5ff)!important}
+.auto-home .equip-tile .equip-photo{display:block;width:100%;height:92px;flex:0 0 92px;object-fit:cover;border-radius:9px;background:#eaf3fc}
+.auto-home .equip-tile .equip-icon{display:flex;align-items:center;justify-content:center;color:#0c4594}
+.auto-home .equip-tile .equip-icon svg{width:29px!important;height:29px!important}
+.auto-home .equip-tile:hover,.auto-home .equip-tile:focus-visible{background:#fff0bc!important;border-color:#eeb900!important}
+@media(max-width:1400px){.auto-home .equip-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+@media(max-width:650px){.auto-home .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.auto-home .equip-tile{min-height:170px!important}.auto-home .equip-tile .equip-photo{height:78px;flex-basis:78px}}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules — sélection de voitures" /></div>
  <section className="auto-search-callout" aria-label="Recherche personnalisée de véhicule">
@@ -201,10 +212,10 @@ export default function AutomobilePage(){
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
- <div className="tile-photo"><div className="exact-photo" role="img" aria-label={"Photo de la maquette : "+c.name}/></div>
+ <div className="tile-photo"><div className="exact-photo" style={c.slug==="autres-vehicules"?{backgroundImage:"url(https://images.unsplash.com/photo-1685335686020-e0b487f7f426?auto=format&fit=crop&w=900&q=85)",backgroundPosition:"center",backgroundSize:"cover"}:undefined} role="img" aria-label={"Photo : "+c.name}/></div>
  <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow"><ChevronRight size={17}/></span></div><p className="tile-description">{c.description}</p></div>
  </a>)}</div>
  <div className="equip-section"><h2>Équipements &amp; Services</h2>
- <div className="equip-grid">{equipements.map(e=><a href={"/automobile/"+e.slug} key={e.slug} className="equip-tile"><span className="equip-icon" aria-hidden="true">{e.icon}</span><span>{e.name}</span></a>)}</div></div>
+ <div className="equip-grid">{equipements.map(e=><a href={"/automobile/"+e.slug} key={e.slug} className="equip-tile"><img className="equip-photo" src={e.photo} alt="" loading="lazy"/><span className="equip-icon" aria-hidden="true">{e.icon}</span><span>{e.name}</span></a>)}</div></div>
  </section></main>
 }
