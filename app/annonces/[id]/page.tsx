@@ -64,6 +64,7 @@ export default async function MarketplaceAnnoncePage({params}:Props){
  <p style={{fontSize:12,color:"#586981"}}>Annonce publiée le {new Date(a.created_at).toLocaleDateString("fr-FR")}</p></section>
  <section className="panel actions"><h2 style={{margin:"0 0 4px"}}>Cette annonce vous intéresse ?</h2>
  <p style={{margin:0,fontSize:13,lineHeight:1.5,color:"#506886"}}>La prise de contact directe avec le vendeur sera disponible prochainement pour cette rubrique.</p>
+ <div style={{background:"#f2f7ff",border:"1px solid #dbe7f5",borderRadius:13,padding:15,marginTop:15}}><strong>🔒 Paiement Confiance</strong><p style={{fontSize:13,lineHeight:1.55,color:"#506886"}}>Bientôt, un partenaire agréé pourra sécuriser le règlement et permettre aux deux parties de suivre la transaction. Aucun paiement actif actuellement.</p><a href="/paiement-confiance" style={{display:"block",background:"#ffcf06",padding:"11px 13px",borderRadius:9,color:"#092451",fontWeight:800,textDecoration:"none",textAlign:"center"}}>Découvrir le service →</a></div>
  </section></aside></div>
  </main>;
 }
