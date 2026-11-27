@@ -92,7 +92,7 @@ export default function RootLayout({children}:{children:ReactNode}){
 
     `}</style>
     <header className="tim-header">
-      <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
+      <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonce-nouveau.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
       <form className="tim-home-search" action="/automobile/voitures" role="search"><span className="search-symbol" aria-hidden="true">⌕</span><input type="search" name="q" aria-label="Que recherchez-vous ?" placeholder="Que recherchez-vous ?" /><button type="submit">Rechercher</button></form>
       
       <nav className="tim-header-links" aria-label="Espace utilisateur">
