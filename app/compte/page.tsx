@@ -58,7 +58,7 @@ export default function MonCompte(){
   {name:"Mes messages",href:"/compte/messages",icon:<MessageSquare size={18}/>,number:conversationCount},
   {name:"Mes alertes",href:"/compte/recherches",icon:<Bell size={18}/>,number:savedCount},
   {name:"Mes avis",href:"",icon:<Star size={18}/>,disabled:true},
-  {name:"Paiements / abonnements",href:"",icon:<CreditCard size={18}/>,disabled:true},
+  {name:"Paiement Confiance",href:"/compte/paiements",icon:<ShieldCheck size={18}/>},
   {name:"Paramètres",href:"/compte/profil",icon:<Settings size={18}/>},
   {name:"Aide & support",href:"",icon:<HelpCircle size={18}/>,disabled:true}
  ];
