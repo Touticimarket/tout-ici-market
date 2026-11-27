@@ -32,16 +32,17 @@ const categories:Record<string,{title:string;icon:string;dbTypes:string[]}>={
 "autres-equipements":{title:"Autres équipements & services",icon:"⚙️",dbTypes:["autres-equipements"]}
 };
 const vehiculeTabs=[
- {slug:"voitures",label:"Automobiles",icon:"🚘"},
- {slug:"motos",label:"Motos & Scooters",icon:"🏍️"},
- {slug:"utilitaires",label:"Utilitaires",icon:"🚐"},
- {slug:"camions",label:"Camions",icon:"🚚"},
- {slug:"caravaning",label:"Caravaning",icon:"🚍"},
- {slug:"remorques",label:"Remorques",icon:"🛻"},
- {slug:"velos",label:"Vélos",icon:"🚲"},
- {slug:"nautisme",label:"Nautisme",icon:"⛵"},
- {slug:"equipement-auto",label:"Équipement auto",icon:"⚙️"},
- {slug:"services-mecaniques",label:"Services mécaniques",icon:"🛠️"}
+ {slug:"voitures",label:"Automobiles",image:"/auto-reel/voitures.svg"},
+ {slug:"motos",label:"Motos & Scooters",image:"/auto-reel/motos.svg"},
+ {slug:"utilitaires",label:"Utilitaires",image:"/auto-reel/utilitaires.svg"},
+ {slug:"camions",label:"Camions",image:"/auto-reel/camions.svg"},
+ {slug:"caravaning",label:"Caravaning",image:"/auto-reel/caravaning.svg"},
+ {slug:"velos",label:"Vélos",image:"/auto-reel/velos.svg"},
+ {slug:"equipement-auto",label:"Équipement auto",image:"/auto-reel/remorques.svg"},
+ {slug:"services-mecaniques",label:"Services mécaniques",image:"/auto-reel/autres-vehicules.svg"},
+ {slug:"remorques",label:"Remorques",image:"/auto-reel/remorques.svg"},
+ {slug:"nautisme",label:"Nautisme",image:"/auto-reel/nautisme.svg"},
+ {slug:"vans-amenages",label:"Vans aménagés",image:"/auto-reel/vans-amenages.svg"}
 ];
 export default function CategorieVehicules(){
 const params=useParams();const slug=typeof params.categorie==="string"?params.categorie:"";
@@ -235,12 +236,13 @@ return <main className="vehicles-sub">
 @media(max-width:880px){.vehicles-sub .vehicles-search-callout{flex-wrap:wrap}.vehicles-sub .vehicles-search-brand{min-width:0}.vehicles-sub .vehicles-search-explain{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.vehicles-sub .vehicles-search-callout>a{max-width:none;width:100%}.vehicles-sub .vehicles-search-brand{border-right:0}.vehicles-sub .vehicles-search-explain{font-size:11px}}
 
-.vehicles-sub .vehicle-tabs{display:flex;align-items:stretch;gap:8px;overflow-x:auto;max-width:100%;padding:12px 12px 6px;background:#fff;scrollbar-width:thin}
-.vehicles-sub .vehicle-tab{flex:0 0 122px;min-height:84px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;text-decoration:none;color:#091f4f;background:#fff;border:1px solid #dbe5f1;border-radius:12px;padding:9px 7px;position:relative;text-align:center}
-.vehicles-sub .vehicle-tab>span:first-child{font-size:27px;line-height:1}
-.vehicles-sub .vehicle-tab strong{font-size:12px;line-height:1.2;font-weight:850}
-.vehicles-sub .vehicle-tab .vehicle-tab-chevron{position:absolute;right:7px;bottom:5px;color:#1447a8;font-size:19px}
-.vehicles-sub .vehicle-tab.selected,.vehicles-sub .vehicle-tab:hover,.vehicles-sub .vehicle-tab:focus-visible{background:#fff5cd;border-color:#ffca00;outline:none}
+.vehicles-sub .vehicle-tabs{display:flex;align-items:stretch;gap:8px;overflow-x:auto;max-width:100%;padding:10px 12px 9px;background:#fff;scrollbar-width:thin;border-bottom:1px solid #e5edf5}
+.vehicles-sub .vehicle-tab{flex:0 0 125px;min-height:100px;display:flex;align-items:center;flex-direction:column;gap:0;text-decoration:none;color:#091f4f;background:#fff;border:1px solid #d9e3ed;border-radius:11px;padding:5px 7px 9px;position:relative;text-align:center;box-shadow:0 1px 2px #062b5c10;transition:background .15s,border-color .15s,box-shadow .15s}
+.vehicles-sub .vehicle-tab-photo{display:block;width:100%;height:58px;object-fit:contain;object-position:center;background:#f6faff;border-radius:7px;mix-blend-mode:multiply}
+.vehicles-sub .vehicle-tab strong{display:flex;align-items:center;justify-content:center;flex:1;min-height:27px;font-size:12px;line-height:1.15;font-weight:850;padding:5px 13px 0 1px}
+.vehicles-sub .vehicle-tab .vehicle-tab-chevron{position:absolute;right:7px;bottom:6px;color:#1447a8;font-size:20px;line-height:1}
+.vehicles-sub .vehicle-tab.selected,.vehicles-sub .vehicle-tab:hover,.vehicles-sub .vehicle-tab:focus-visible{background:#fff5cf;border-color:#ffc900;box-shadow:0 2px 8px #af7c001c;outline:none}
+.vehicles-sub .vehicle-tab.selected .vehicle-tab-photo{background:#fff4c9}
 .vehicles-sub .search-layout{grid-template-columns:minmax(245px,290px) minmax(0,1fr);gap:14px}
 .vehicles-sub .search-sidebar{padding:15px;border:1px solid #d6e2ef;border-radius:13px}
 .vehicles-sub .filter-heading h2{font-size:21px}
@@ -259,7 +261,7 @@ return <main className="vehicles-sub">
 <section className="vehicles-search-callout"><div className="vehicles-search-brand"><span aria-hidden="true">⌕</span><strong>TOUT ICI <em>TROUVE POUR VOUS</em></strong></div><div className="vehicles-search-copy"><strong>Vous recherchez un véhicule ?</strong><span>Filtrez les annonces selon votre marque, votre budget et votre localisation.</span></div><a href="#filtres-vehicules">◎ Créer ma recherche personnalisée</a></section>
 <div className="vehicles-search-explain"><span>◎ Décrivez votre recherche</span><span>⌕ Nous cherchons les annonces</span><span>♧ Enregistrez vos critères</span><span>✓ Contactez les vendeurs</span></div>
 <nav className="vehicle-tabs" aria-label="Choisir le type de véhicule">
- {vehiculeTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-tab "+(slug===t.slug?"selected":"")} aria-current={slug===t.slug?"page":undefined}><span aria-hidden="true">{t.icon}</span><strong>{t.label}</strong><span className="vehicle-tab-chevron" aria-hidden="true">›</span></a>)}
+ {vehiculeTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-tab "+(slug===t.slug?"selected":"")} aria-current={slug===t.slug?"page":undefined}><img className="vehicle-tab-photo" src={t.image} alt="" loading="lazy" /><strong>{t.label}</strong><span className="vehicle-tab-chevron" aria-hidden="true">›</span></a>)}
 </nav>
 <div className="inner">
 {<div className="search-layout">
