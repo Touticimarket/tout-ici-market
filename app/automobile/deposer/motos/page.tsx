@@ -190,6 +190,29 @@ export default function DeposerAnnonceMoto(){
   background-color:#e8f1fa;
  }
  @media(max-width:580px){.moto-deposit .moto-hero{height:auto!important;aspect-ratio:2172 / 724!important}.moto-deposit .moto-type .type-icon{aspect-ratio:275 / 168!important}}
+
+ /* Affichage fiable des petites photos moto : véritables images, non des fonds CSS. */
+ .moto-deposit .moto-type{min-height:142px!important;height:auto!important;padding:7px!important;gap:8px!important}
+ .moto-deposit .moto-type .type-icon{
+   display:block!important;position:relative!important;width:100%!important;
+   height:96px!important;aspect-ratio:auto!important;overflow:hidden!important;
+   padding:0!important;background:#eaf2fc!important;border-radius:8px!important;
+   line-height:normal!important;
+ }
+ .moto-deposit .moto-type .moto-type-photo{
+   position:absolute!important;top:0!important;width:500%!important;
+   height:100%!important;max-width:none!important;object-fit:fill!important;
+   display:block!important;filter:none!important;mix-blend-mode:normal!important;
+ }
+ .moto-deposit .moto-type .moto-type-fallback{
+   height:100%;display:grid;place-items:center;font-size:36px;
+ }
+ .moto-deposit .moto-type .type-icon.photo-error:after{
+   content:"🏍️";position:absolute;inset:0;display:grid;place-items:center;
+   font-size:36px;background:#eaf2fc;
+ }
+ .moto-deposit .moto-type span:last-child{font-size:13px!important;line-height:1.25!important}
+ @media(max-width:580px){.moto-deposit .moto-type .type-icon{height:86px!important}}
  `}</style>
  <header className="moto-hero">
   <img className="moto-hero-image" src="/auto-reel/bandeau-depot-moto.webp" alt="Déposez votre annonce moto en quelques minutes — motos trail, sportive et custom devant un paysage de montagne, avec les garanties MIA" />
@@ -209,7 +232,7 @@ export default function DeposerAnnonceMoto(){
  {input("annee","Année de mise en circulation *","Ex. 2021","number")}
  {select("carburant","Carburant *",["Essence","Électrique","Hybride","Autre"])}
  {select("permis","Permis",["AM","A1","A2","A","Sans permis","Non précisé"])}
- </div><h3>Type de moto (catégorie)</h3><div className="type-grid">{types.map(t=><button key={t.title} className={"moto-type"+(type===t.title?" active":"")} type="button" onClick={()=>setType(t.title)}><span className="type-icon" style={t.photoIndex===undefined?undefined:{backgroundImage:"url('/auto-reel/moto-types-sprite.webp')",backgroundSize:"500% 100%",backgroundRepeat:"no-repeat",backgroundPosition:(t.photoIndex*25)+"% center"}}>{t.photoIndex===undefined?t.icon:""}</span><span>{t.title}</span></button>)}</div></>}
+ </div><h3>Type de moto (catégorie)</h3><div className="type-grid">{types.map(t=><button key={t.title} className={"moto-type"+(type===t.title?" active":"")} type="button" onClick={()=>setType(t.title)}><span className="type-icon">{t.photoIndex===undefined?<span className="moto-type-fallback" aria-hidden="true">{t.icon}</span>:<img className="moto-type-photo" src="/auto-reel/moto-types-sprite.webp" alt={"Photo de moto "+t.title} loading="eager" style={{left:"-"+(t.photoIndex*100)+"%"}} onError={e=>{e.currentTarget.style.display="none";e.currentTarget.parentElement?.classList.add("photo-error");}}/>}</span><span>{t.title}</span></button>)}</div></>}
  {step===1&&<><h2>Étape 2/6 – Photos et vidéo</h2><p>Ajoutez jusqu’à 10 photos de votre moto. Vous pouvez modifier leur ordre.</p><OrderedPhotos files={photos} onChange={setPhotos}/><label style={{marginTop:18}}>Vidéo (facultative)<input type="file" accept="video/mp4,video/webm,video/quicktime" onChange={e=>setVideo(e.target.files?.[0]||null)}/></label></>}
  {step===2&&<><h2>Étape 3/6 – Description et prix</h2><div className="moto-fields">{input("titre","Titre de l’annonce","Ex. BMW R 1250 GS 2021")}{input("prix","Prix demandé (€) *","Ex. 9 900","number")}</div><label style={{marginTop:16}}>Description détaillée *<textarea value={f.description||""} onChange={e=>field("description",e.target.value)} placeholder="État de la moto, historique, entretien, factures, raisons de la vente..."/></label></>}
  {step===3&&<><h2>Étape 4/6 – Localisation et coordonnées</h2><FranceLocation selected={location} onChange={setLocation}/><div className="moto-fields" style={{marginTop:16}}>{input("email","E-mail de contact","","email")}{input("telephone","Téléphone de contact","","tel")}</div></>}
