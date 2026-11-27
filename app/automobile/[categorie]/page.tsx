@@ -42,14 +42,14 @@ const vehiculeTabs=[
  {slug:"remorques",label:"Remorques",image:"/auto-reel/remorques.svg"},
  {slug:"velos",label:"Vélos",image:"/auto-reel/velos.svg"},
  {slug:"nautisme",label:"Nautisme",image:"/auto-reel/nautisme.svg"},
- {slug:"autres-vehicules",label:"Autres véhicules",image:"https://images.unsplash.com/photo-1666011866606-f95e4f23836e?auto=format&fit=crop&w=800&q=85"}
+ {slug:"autres-vehicules",label:"Autres véhicules",image:"https://images.unsplash.com/photo-1618346976725-71ee4a1ecc89?auto=format&fit=crop&w=960&h=560&q=85"}
 ];
 const equipementTabs=[
  {slug:"equipement-caravaning",label:"Équipement caravaning",Icon:Caravan,photo:"/auto-reel/caravaning.svg"},
  {slug:"equipement-nautisme",label:"Équipement nautisme",Icon:Sailboat,photo:"/auto-reel/nautisme.svg"},
  {slug:"equipement-velos",label:"Équipements vélos",Icon:Bike,photo:"/auto-reel/velos.svg"},
  {slug:"services-mecaniques",label:"Services de réparation mécanique",Icon:Wrench,photo:"https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=480&h=280&q=80"},
- {slug:"pneus-jantes",label:"Pneus & Jantes",Icon:Disc3,photo:"https://images.unsplash.com/photo-1760688966178-a3745cc0e722?auto=format&fit=crop&w=480&h=280&q=80"},
+ {slug:"pneus-jantes",label:"Pneus & Jantes",Icon:Disc3,photo:"https://images.unsplash.com/photo-1760688966178-a3745cc0e722?auto=format&fit=crop&w=720&h=720&q=85"},
  {slug:"pieces-accessoires",label:"Pièces & Accessoires auto",Icon:Armchair,photo:"https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=480&h=280&q=80"},
  {slug:"entretien-consommables",label:"Entretien & Consommables",Icon:Droplet,photo:"https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=480&h=280&q=80"}
 ];
@@ -390,6 +390,14 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
 .vehicles-sub .vehicle-equipment-tabs{display:flex!important;gap:11px!important;align-items:stretch!important;overflow-x:auto!important;padding-bottom:8px!important;scrollbar-width:thin!important;scroll-snap-type:x proximity!important}
 .vehicles-sub .vehicle-equipment-tab{scroll-snap-align:start!important}
 @media(max-width:600px){.vehicles-sub .vehicle-tab,.vehicles-sub .vehicle-equipment-tab{flex-basis:146px!important;min-width:146px!important;width:146px!important;height:147px!important;min-height:147px!important}.vehicles-sub .vehicle-tab .vehicle-tab-photo,.vehicles-sub .vehicle-equipment-tab .vehicle-equipment-photo{height:76px!important;flex-basis:76px!important}.vehicles-sub .vehicle-tab strong,.vehicles-sub .vehicle-equipment-tab span{font-size:12px!important}}
+
+
+/* Same centered crops as the Automobile main categories. */
+.vehicles-sub .vehicle-equipment-tab-equipement-caravaning .vehicle-equipment-photo,
+.vehicles-sub .vehicle-equipment-tab-equipement-nautisme .vehicle-equipment-photo,
+.vehicles-sub .vehicle-equipment-tab-equipement-velos .vehicle-equipment-photo{object-fit:contain!important;object-position:center!important;padding:3px!important;background:#eaf2fc!important}
+.vehicles-sub .vehicle-equipment-tab-pneus-jantes .vehicle-equipment-photo{object-fit:contain!important;object-position:center!important;padding:2px!important;background:#edf3f8!important}
+.vehicles-sub .vehicle-tab:not(.selected) .vehicle-tab-photo:not(.vehicle-tab-photo-exact){background-position:50% 43%!important;background-size:cover!important}
 `}</style>
 <section className="hero vehicles-photo-hero" aria-label="Automobile et véhicules">
 <img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules : sélection de voitures" />
@@ -407,7 +415,7 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
 <section className="vehicle-equipment-section" aria-label="Équipements et services de véhicules">
  <h2>Équipements &amp; Services</h2>
  <nav className="vehicle-equipment-tabs" aria-label="Choisir un équipement ou service">
- {equipementTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-equipment-tab"+(slug===t.slug?" selected":"")} aria-current={slug===t.slug?"page":undefined}><img className="vehicle-equipment-photo" src={t.photo} alt="" loading="lazy" onError={e=>{e.currentTarget.style.display="none"}}/><t.Icon size={27} strokeWidth={2.2} aria-hidden="true"/><span>{t.label}</span></a>)}
+ {equipementTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-equipment-tab vehicle-equipment-tab-"+t.slug+(slug===t.slug?" selected":"")} aria-current={slug===t.slug?"page":undefined}><img className="vehicle-equipment-photo" src={t.photo} alt="" loading="lazy" onError={e=>{e.currentTarget.style.display="none"}}/><t.Icon size={27} strokeWidth={2.2} aria-hidden="true"/><span>{t.label}</span></a>)}
  </nav>
 </section>
 <div className="inner">
