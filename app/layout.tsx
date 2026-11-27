@@ -192,6 +192,43 @@ export default function RootLayout({children}:{children:ReactNode}){
         html body .tim-header{min-height:115px!important}
       }
 
+
+      /* Priorité aux styles communs, y compris sur l'accueil et dans Mon compte. */
+      html body:has(.tim-home) .tim-header,
+      html body:has(.tim-account-dashboard) .tim-header{display:flex!important;background:#fff!important;color:#0b285e!important;min-height:150px!important;border-bottom:1px solid #e4ebf4!important;padding:8px clamp(14px,2vw,32px)!important;gap:18px!important}
+      html body:has(.tim-home) .tim-header .tim-logo,
+      html body:has(.tim-account-dashboard) .tim-header .tim-logo{display:block!important;width:clamp(260px,23vw,330px)!important}
+      html body:has(.tim-home) .tim-header .tim-logo img,
+      html body:has(.tim-account-dashboard) .tim-header .tim-logo img{max-height:140px!important;width:100%!important;height:auto!important}
+      html body:has(.tim-home) .tim-header .tim-header-links a:not(.tim-post),
+      html body:has(.tim-account-dashboard) .tim-header .tim-header-links a:not(.tim-post){color:#102c60!important}
+      html body:has(.tim-home) .tim-header .tim-header-links .tim-post,
+      html body:has(.tim-account-dashboard) .tim-header .tim-header-links .tim-post{background:#ffcf06!important;color:#071e4a!important}
+      html body:has(.tim-home) .tim-navbar,
+      html body:has(.tim-account-dashboard) .tim-navbar{display:flex!important;background:#fff!important;min-height:70px!important;border-bottom:3px solid #ffd20b!important;justify-content:flex-start!important;gap:3px!important;padding:0 12px!important}
+      html body:has(.tim-home) .tim-navbar a,
+      html body:has(.tim-account-dashboard) .tim-navbar a{color:#0b2d68!important;font-size:clamp(15px,1.1vw,17px)!important;padding:16px clamp(11px,1.08vw,18px)!important}
+      html body:has(.tim-home) .tim-navbar a:first-child{font-size:clamp(15px,1.1vw,17px)!important}
+      html body:has(.tim-home) .tim-navbar a:first-child::before{content:none!important;display:none!important}
+      html body:has(.tim-account-dashboard) .tim-sidebar{display:block!important}
+      html body:has(.tim-home) .tim-shell{grid-template-columns:240px minmax(0,1fr)!important;gap:14px!important}
+      html body:has(.tim-account-dashboard) .tim-shell{grid-template-columns:240px minmax(0,1fr)!important}
+      @media(max-width:1050px) and (min-width:761px){
+        html body:has(.tim-home) .tim-shell,
+        html body:has(.tim-account-dashboard) .tim-shell{grid-template-columns:220px minmax(0,1fr)!important}
+      }
+      @media(max-width:760px){
+        html body:has(.tim-home) .tim-header,
+        html body:has(.tim-account-dashboard) .tim-header{min-height:115px!important;flex-wrap:wrap!important}
+        html body:has(.tim-home) .tim-shell,
+        html body:has(.tim-account-dashboard) .tim-shell{display:flex!important;flex-direction:column!important}
+        html body:has(.tim-account-dashboard) .tim-sidebar{display:flex!important}
+        html body:has(.tim-home) .tim-navbar,
+        html body:has(.tim-account-dashboard) .tim-navbar{min-height:60px!important;overflow-x:auto!important}
+        html body:has(.tim-home) .tim-navbar a,
+        html body:has(.tim-account-dashboard) .tim-navbar a{font-size:15px!important;padding:13px 12px!important}
+      }
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
