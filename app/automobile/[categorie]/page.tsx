@@ -44,6 +44,13 @@ const vehiculeTabs=[
  {slug:"nautisme",label:"Nautisme",image:"/auto-reel/nautisme.svg"},
  {slug:"vans-amenages",label:"Vans aménagés",image:"/auto-reel/vans-amenages.svg"}
 ];
+/* Positions identiques à la grille Automobile validée : 5 colonnes x 2 rangées. */
+const tabPhotoPositions={
+ voitures:"0% 0%",utilitaires:"25% 0%",camions:"50% 0%",
+ caravaning:"75% 0%",remorques:"100% 0%",motos:"0% 100%",
+ velos:"25% 100%",nautisme:"50% 100%",
+ "vans-amenages":"75% 100%","autres-vehicules":"100% 100%"
+} as const;
 export default function CategorieVehicules(){
 const params=useParams();const slug=typeof params.categorie==="string"?params.categorie:"";
 const tabsScrollRef=useRef<HTMLElement|null>(null);
@@ -321,6 +328,30 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
   .vehicles-sub .search-layout{grid-template-columns:1fr}
   html body:has(.vehicles-sub) .tim-shell.tim-sidebar-expanded{grid-template-columns:1fr!important}
 }
+
+/* Même jeu de photographies que les 10 grandes cartes Automobile. */
+.vehicles-sub .vehicle-tab .vehicle-tab-photo{
+ display:block!important;
+ width:100%!important;
+ height:88px!important;
+ flex:0 0 88px!important;
+ border-radius:8px!important;
+ background-repeat:no-repeat!important;
+ background-position:center!important;
+ mix-blend-mode:normal!important;
+ background-color:#eef5fd!important;
+}
+.vehicles-sub .vehicle-tab .vehicle-tab-photo-exact{
+ background-image:url('/auto-reel/photos-maquette-exactes.svg')!important;
+ background-size:500% 200%!important;
+}
+.vehicles-sub .vehicle-tab{flex-basis:164px!important;min-height:146px!important}
+.vehicles-sub .vehicle-tab strong{font-size:15px!important}
+@media(max-width:600px){
+ .vehicles-sub .vehicle-tab{flex-basis:143px!important;min-height:136px!important}
+ .vehicles-sub .vehicle-tab .vehicle-tab-photo{height:78px!important;flex-basis:78px!important}
+ .vehicles-sub .vehicle-tab strong{font-size:13px!important}
+}
 `}</style>
 <section className="hero vehicles-photo-hero" aria-label="Automobile et véhicules">
 <img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules : sélection de voitures" />
@@ -331,7 +362,7 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
 <div className="vehicle-tabs-wrap" aria-label="Parcourir les catégories de véhicules">
  <button className="vehicle-tabs-arrow" type="button" aria-label="Voir les catégories précédentes" onClick={()=>tabsScrollRef.current?.scrollBy({left:-480,behavior:"smooth"})}>‹</button>
  <nav ref={tabsScrollRef} className="vehicle-tabs" aria-label="Choisir le type de véhicule">
- {vehiculeTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-tab "+(slug===t.slug?"selected":"")} aria-current={slug===t.slug?"page":undefined}><img className="vehicle-tab-photo" src={t.image} alt="" loading="lazy" /><strong>{t.label}</strong><span className="vehicle-tab-chevron" aria-hidden="true">›</span></a>)}
+ {vehiculeTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-tab "+(slug===t.slug?"selected":"")} aria-current={slug===t.slug?"page":undefined}><span className={"vehicle-tab-photo"+(Object.prototype.hasOwnProperty.call(tabPhotoPositions,t.slug)?" vehicle-tab-photo-exact":"")} style={Object.prototype.hasOwnProperty.call(tabPhotoPositions,t.slug)?{backgroundPosition:tabPhotoPositions[t.slug as keyof typeof tabPhotoPositions]}:{backgroundImage:"url("+t.image+")",backgroundSize:"contain"}} role="img" aria-label={"Illustration : "+t.label}/><strong>{t.label}</strong><span className="vehicle-tab-chevron" aria-hidden="true">›</span></a>)}
  </nav>
  <button className="vehicle-tabs-arrow" type="button" aria-label="Voir les catégories suivantes" onClick={()=>tabsScrollRef.current?.scrollBy({left:480,behavior:"smooth"})}>›</button>
 </div>
