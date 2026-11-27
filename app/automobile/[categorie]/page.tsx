@@ -45,13 +45,12 @@ const vehiculeTabs=[
  {slug:"autres-vehicules",label:"Autres véhicules",image:"https://images.unsplash.com/photo-1666011866606-f95e4f23836e?auto=format&fit=crop&w=800&q=85"}
 ];
 const equipementTabs=[
- {slug:"equipement-auto",label:"Équipement auto",Icon:CircleDot,photo:"https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=480&h=280&q=80"},
  {slug:"equipement-caravaning",label:"Équipement caravaning",Icon:Caravan,photo:"/auto-reel/caravaning.svg"},
  {slug:"equipement-nautisme",label:"Équipement nautisme",Icon:Sailboat,photo:"/auto-reel/nautisme.svg"},
  {slug:"equipement-velos",label:"Équipements vélos",Icon:Bike,photo:"/auto-reel/velos.svg"},
  {slug:"services-mecaniques",label:"Services de réparation mécanique",Icon:Wrench,photo:"https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=480&h=280&q=80"},
  {slug:"pneus-jantes",label:"Pneus & Jantes",Icon:Disc3,photo:"https://images.unsplash.com/photo-1760688966178-a3745cc0e722?auto=format&fit=crop&w=480&h=280&q=80"},
- {slug:"pieces-accessoires",label:"Pièces & Accessoires",Icon:Armchair,photo:"https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=480&h=280&q=80"},
+ {slug:"pieces-accessoires",label:"Pièces & Accessoires auto",Icon:Armchair,photo:"https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=480&h=280&q=80"},
  {slug:"entretien-consommables",label:"Entretien & Consommables",Icon:Droplet,photo:"https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=480&h=280&q=80"}
 ];
 /* Positions identiques à la grille Automobile validée : 5 colonnes x 2 rangées. */
@@ -381,6 +380,16 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
 .vehicles-sub .vehicle-equipment-tab span{font-size:13px;line-height:1.18;font-weight:850}
 .vehicles-sub .vehicle-tab:not(.selected) .vehicle-tab-photo:not(.vehicle-tab-photo-exact){background-size:cover!important}
 @media(max-width:600px){.vehicles-sub .vehicle-equipment-tab{min-height:157px!important}.vehicles-sub .vehicle-equipment-tab .vehicle-equipment-photo{height:78px;flex-basis:78px}}
+
+/* Bandeaux de catégories : même largeur de cases et même cadrage photo. */
+.vehicles-sub .vehicle-tabs-wrap{padding-block:10px!important}
+.vehicles-sub .vehicle-tab,.vehicles-sub .vehicle-equipment-tab{box-sizing:border-box!important;flex:0 0 164px!important;width:164px!important;min-width:164px!important;min-height:159px!important;height:159px!important;border-radius:12px!important;justify-content:flex-start!important;align-items:center!important;gap:5px!important;padding:7px 7px 9px!important}
+.vehicles-sub .vehicle-tab .vehicle-tab-photo,.vehicles-sub .vehicle-equipment-tab .vehicle-equipment-photo{display:block!important;width:100%!important;height:86px!important;flex:0 0 86px!important;border-radius:8px!important;background-color:#e8f1fc!important;object-fit:cover!important;object-position:center!important}
+.vehicles-sub .vehicle-tab strong,.vehicles-sub .vehicle-equipment-tab span{font-size:14px!important;line-height:1.2!important;font-weight:850!important;text-align:center!important}
+.vehicles-sub .vehicle-equipment-tab svg{width:22px!important;height:22px!important;flex-shrink:0!important}
+.vehicles-sub .vehicle-equipment-tabs{display:flex!important;gap:11px!important;align-items:stretch!important;overflow-x:auto!important;padding-bottom:8px!important;scrollbar-width:thin!important;scroll-snap-type:x proximity!important}
+.vehicles-sub .vehicle-equipment-tab{scroll-snap-align:start!important}
+@media(max-width:600px){.vehicles-sub .vehicle-tab,.vehicles-sub .vehicle-equipment-tab{flex-basis:146px!important;min-width:146px!important;width:146px!important;height:147px!important;min-height:147px!important}.vehicles-sub .vehicle-tab .vehicle-tab-photo,.vehicles-sub .vehicle-equipment-tab .vehicle-equipment-photo{height:76px!important;flex-basis:76px!important}.vehicles-sub .vehicle-tab strong,.vehicles-sub .vehicle-equipment-tab span{font-size:12px!important}}
 `}</style>
 <section className="hero vehicles-photo-hero" aria-label="Automobile et véhicules">
 <img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules : sélection de voitures" />
