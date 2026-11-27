@@ -8,6 +8,7 @@ const types:MotoType[]=[
  {title:"Roadster",dbType:"moto",icon:"🏍️",photoIndex:2},
  {title:"Sportive",dbType:"moto",icon:"🏍️",photoIndex:0},
  {title:"Trail / Adventure",dbType:"moto",icon:"🏍️",photoIndex:1},
+ {title:"Trike",dbType:"moto",icon:"🏍️"},
  {title:"Custom",dbType:"moto",icon:"🏍️",photoIndex:2},
  {title:"GT / Routière",dbType:"moto",icon:"🏍️",photoIndex:1},
  {title:"Enduro",dbType:"moto",icon:"🏍️",photoIndex:3},
@@ -213,6 +214,20 @@ export default function DeposerAnnonceMoto(){
  }
  .moto-deposit .moto-type span:last-child{font-size:13px!important;line-height:1.25!important}
  @media(max-width:580px){.moto-deposit .moto-type .type-icon{height:86px!important}}
+
+ /* Vignettes moto : photos toujours visibles et bien cadrées dans les cases. */
+ .moto-deposit .type-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+ .moto-deposit .moto-type{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;min-height:164px!important;height:auto!important;padding:8px!important;gap:9px!important;background:#fff!important;border:1px solid #c8d9ee!important;overflow:hidden!important}
+ .moto-deposit .moto-type .type-icon{
+  display:block!important;position:relative!important;flex:none!important;width:100%!important;
+  height:110px!important;min-height:110px!important;aspect-ratio:auto!important;
+  border-radius:9px!important;background-color:#e6f0fa!important;background-repeat:no-repeat!important;
+  font-size:0!important;line-height:0!important;overflow:hidden!important;
+ }
+ .moto-deposit .moto-type.active{background:#fff6d7!important;border:3px solid #ffca00!important}
+ .moto-deposit .moto-type>span:last-child{display:block!important;font-size:15px!important;font-weight:900!important;line-height:1.3!important}
+ @media(max-width:1000px){.moto-deposit .type-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+ @media(max-width:620px){.moto-deposit .type-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.moto-deposit .moto-type .type-icon{height:100px!important;min-height:100px!important}}
  `}</style>
  <header className="moto-hero">
   <img className="moto-hero-image" src="/auto-reel/bandeau-depot-moto.webp" alt="Déposez votre annonce moto en quelques minutes — motos trail, sportive et custom devant un paysage de montagne, avec les garanties MIA" />
@@ -232,7 +247,7 @@ export default function DeposerAnnonceMoto(){
  {input("annee","Année de mise en circulation *","Ex. 2021","number")}
  {select("carburant","Carburant *",["Essence","Électrique","Hybride","Autre"])}
  {select("permis","Permis",["AM","A1","A2","A","Sans permis","Non précisé"])}
- </div><h3>Type de moto (catégorie)</h3><div className="type-grid">{types.map(t=><button key={t.title} className={"moto-type"+(type===t.title?" active":"")} type="button" onClick={()=>setType(t.title)}><span className="type-icon">{t.photoIndex===undefined?<span className="moto-type-fallback" aria-hidden="true">{t.icon}</span>:<img className="moto-type-photo" src="/auto-reel/moto-types-sprite.webp" alt={"Photo de moto "+t.title} loading="eager" style={{left:"-"+(t.photoIndex*100)+"%"}} onError={e=>{e.currentTarget.style.display="none";e.currentTarget.parentElement?.classList.add("photo-error");}}/>}</span><span>{t.title}</span></button>)}</div></>}
+ </div><h3>Type de moto (catégorie)</h3><div className="type-grid">{types.map(t=><button key={t.title} className={"moto-type"+(type===t.title?" active":"")} type="button" onClick={()=>setType(t.title)}><span className="type-icon" role="img" aria-label={"Photo : "+t.title} style={t.title==="Trike"?{backgroundImage:"url(https://cdn.antaranews.com/cache/1200x800/2020/10/31/h-d-tiga-roda.jpg)",backgroundSize:"cover",backgroundPosition:"center"}:t.photoIndex!==undefined?{backgroundImage:"url(/auto-reel/moto-types-sprite.webp)",backgroundSize:"500% 100%",backgroundPosition:(t.photoIndex*25)+"% center"}:{backgroundImage:"url(/auto-reel/motos.svg)",backgroundSize:"cover",backgroundPosition:"center"}}/><span>{t.title}</span></button>)}</div></>}
  {step===1&&<><h2>Étape 2/6 – Photos et vidéo</h2><p>Ajoutez jusqu’à 10 photos de votre moto. Vous pouvez modifier leur ordre.</p><OrderedPhotos files={photos} onChange={setPhotos}/><label style={{marginTop:18}}>Vidéo (facultative)<input type="file" accept="video/mp4,video/webm,video/quicktime" onChange={e=>setVideo(e.target.files?.[0]||null)}/></label></>}
  {step===2&&<><h2>Étape 3/6 – Description et prix</h2><div className="moto-fields">{input("titre","Titre de l’annonce","Ex. BMW R 1250 GS 2021")}{input("prix","Prix demandé (€) *","Ex. 9 900","number")}</div><label style={{marginTop:16}}>Description détaillée *<textarea value={f.description||""} onChange={e=>field("description",e.target.value)} placeholder="État de la moto, historique, entretien, factures, raisons de la vente..."/></label></>}
  {step===3&&<><h2>Étape 4/6 – Localisation et coordonnées</h2><FranceLocation selected={location} onChange={setLocation}/><div className="moto-fields" style={{marginTop:16}}>{input("email","E-mail de contact","","email")}{input("telephone","Téléphone de contact","","tel")}</div></>}
