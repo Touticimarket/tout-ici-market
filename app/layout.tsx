@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import {Fragment, type ReactNode} from "react";
 import type { Metadata } from "next";
 import CollapsibleSiteShell from "./components/CollapsibleSiteShell";
 export const metadata:Metadata={
@@ -568,13 +568,13 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/autres">Autres</a>
     </nav>
     <CollapsibleSiteShell sidebar={<aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
-        {rubriques.map(r=><><a key={r.href} href={r.href}><span className="tim-sidebar-icon" aria-hidden="true">{r.icone}</span><img className="tim-sidebar-image" src={"/accueil-reel/"+({"automobile":"automobile","immobilier":"immobilier","emploi":"emploi","materiel-pro":"materiel-pro","maison-jardin":"maison-jardin","telephones":"telephones","vacances-loisirs":"vacances-loisirs","famille":"famille","bon-plan":"bon-plan","autres":"autres"} as Record<string,string>)[r.href.slice(1)]+".svg"} alt="" aria-hidden="true"/><span>{r.nom}</span><span className="tim-sidebar-chevron" aria-hidden="true">›</span></a>{r.href==="/automobile"&&<div className="tim-vehicle-shortcuts" aria-label="Consulter les annonces de véhicules">
+        {rubriques.map(r=><Fragment key={r.href}><a href={r.href}><span className="tim-sidebar-icon" aria-hidden="true">{r.icone}</span><img className="tim-sidebar-image" src={"/accueil-reel/"+({"automobile":"automobile","immobilier":"immobilier","emploi":"emploi","materiel-pro":"materiel-pro","maison-jardin":"maison-jardin","telephones":"telephones","vacances-loisirs":"vacances-loisirs","famille":"famille","bon-plan":"bon-plan","autres":"autres"} as Record<string,string>)[r.href.slice(1)]+".svg"} alt="" aria-hidden="true"/><span>{r.nom}</span><span className="tim-sidebar-chevron" aria-hidden="true">›</span></a>{r.href==="/automobile"&&<div className="tim-vehicle-shortcuts" aria-label="Consulter les annonces de véhicules">
  <a href="/automobile/voitures">🚗 Voitures</a>
  <a href="/automobile/motos">🏍️ Motos et scooters</a>
  <a href="/automobile/utilitaires">🚐 Utilitaires</a>
  <a href="/automobile/caravaning">🚍 Camping-cars</a>
  <a href="/automobile/velos">🚲 Vélos</a>
- </div>}</>)}
+ </div>}</Fragment>)}
       </aside>}>
       {children}
     </CollapsibleSiteShell>
