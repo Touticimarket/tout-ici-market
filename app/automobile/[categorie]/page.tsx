@@ -7,6 +7,7 @@ import CommuneSelect,{type CommuneOption} from "../../components/CommuneSelect";
 import {useParams} from "next/navigation";
 import {supabase} from "../../lib/supabaseClient";
 import ShareLinks from "../../components/ShareLinks";
+import {CircleDot, Caravan, Sailboat, Bike, Wrench, Disc3, Armchair, Droplet} from "lucide-react";
 type Option={id:string;nom:string};
 type Annonce={id:string;marque:string|null;modele:string|null;finition:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;carburant:string|null;boite:string|null;puissance_ch:number|null;departement:string|null;options:string[]|null;description:string|null;photos?:string[]|null;code_postal?:string|null;couleur?:string|null;nombre_portes?:number|null;nombre_places?:number|null;carrosserie?:string|null;latitude?:number|null;longitude?:number|null;type_vendeur?:string|null};
 const categories:Record<string,{title:string;icon:string;dbTypes:string[]}>={
@@ -41,9 +42,17 @@ const vehiculeTabs=[
  {slug:"remorques",label:"Remorques",image:"/auto-reel/remorques.svg"},
  {slug:"velos",label:"Vélos",image:"/auto-reel/velos.svg"},
  {slug:"nautisme",label:"Nautisme",image:"/auto-reel/nautisme.svg"},
- {slug:"autres-vehicules",label:"Autres véhicules",image:"/auto-reel/autres-vehicules.svg"},
- {slug:"equipement-auto",label:"Équipement auto & accessoires",image:"/auto-reel/equipement-auto-icone.svg"},
- {slug:"services-mecaniques",label:"Services mécaniques",image:"/auto-reel/services-mecaniques-icone.svg"}
+ {slug:"autres-vehicules",label:"Autres véhicules",image:"/auto-reel/autres-vehicules.svg"}
+];
+const equipementTabs=[
+ {slug:"equipement-auto",label:"Équipement auto",Icon:CircleDot},
+ {slug:"equipement-caravaning",label:"Équipement caravaning",Icon:Caravan},
+ {slug:"equipement-nautisme",label:"Équipement nautisme",Icon:Sailboat},
+ {slug:"equipement-velos",label:"Équipements vélos",Icon:Bike},
+ {slug:"services-mecaniques",label:"Services de réparation mécanique",Icon:Wrench},
+ {slug:"pneus-jantes",label:"Pneus & Jantes",Icon:Disc3},
+ {slug:"pieces-accessoires",label:"Pièces & Accessoires",Icon:Armchair},
+ {slug:"entretien-consommables",label:"Entretien & Consommables",Icon:Droplet}
 ];
 /* Positions identiques à la grille Automobile validée : 5 colonnes x 2 rangées. */
 const tabPhotoPositions={
@@ -352,6 +361,17 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
  .vehicles-sub .vehicle-tab .vehicle-tab-photo{height:78px!important;flex-basis:78px!important}
  .vehicles-sub .vehicle-tab strong{font-size:13px!important}
 }
+
+/* Distinct row for equipment and services: dedicated icon navigation, not mixed with photo vehicles. */
+.vehicles-sub .vehicle-equipment-section{padding:12px clamp(8px,1vw,18px) 15px;background:#fff;border-bottom:1px solid #dce7f4}
+.vehicles-sub .vehicle-equipment-section h2{margin:0 0 11px;color:#092858;font-size:17px;font-weight:900;line-height:1.3}
+.vehicles-sub .vehicle-equipment-tabs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:9px}
+.vehicles-sub .vehicle-equipment-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:116px;padding:11px 8px;text-align:center;text-decoration:none;border-radius:14px;border:1px solid #e2ebf5;background:linear-gradient(145deg,#e9f3ff,#f4f8ff);color:#092c69;transition:border-color .15s,background .15s}
+.vehicles-sub .vehicle-equipment-tab svg{flex-shrink:0;color:#0c4699}
+.vehicles-sub .vehicle-equipment-tab span{font-weight:850;font-size:13px;line-height:1.25}
+.vehicles-sub .vehicle-equipment-tab:hover,.vehicles-sub .vehicle-equipment-tab:focus-visible,.vehicles-sub .vehicle-equipment-tab.selected{background:#fff0b5;border-color:#ffc800;color:#092858;outline:none}
+@media(max-width:1350px){.vehicles-sub .vehicle-equipment-tabs{display:flex;overflow-x:auto;gap:9px;padding-bottom:7px;scrollbar-width:thin}.vehicles-sub .vehicle-equipment-tab{flex:0 0 150px;min-height:108px}}
+@media(max-width:600px){.vehicles-sub .vehicle-equipment-tab{flex-basis:135px;min-height:103px}.vehicles-sub .vehicle-equipment-tab span{font-size:12px}}
 `}</style>
 <section className="hero vehicles-photo-hero" aria-label="Automobile et véhicules">
 <img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules : sélection de voitures" />
@@ -366,6 +386,12 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
  </nav>
  <button className="vehicle-tabs-arrow" type="button" aria-label="Voir les catégories suivantes" onClick={()=>tabsScrollRef.current?.scrollBy({left:480,behavior:"smooth"})}>›</button>
 </div>
+<section className="vehicle-equipment-section" aria-label="Équipements et services de véhicules">
+ <h2>Équipements &amp; Services</h2>
+ <nav className="vehicle-equipment-tabs" aria-label="Choisir un équipement ou service">
+ {equipementTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-equipment-tab"+(slug===t.slug?" selected":"")} aria-current={slug===t.slug?"page":undefined}><t.Icon size={31} strokeWidth={2.2} aria-hidden="true"/><span>{t.label}</span></a>)}
+ </nav>
+</section>
 <div className="inner">
 {<div className="search-layout">
 <aside id="filtres-vehicules" className="search-sidebar" aria-label="Filtres de recherche automobile">
