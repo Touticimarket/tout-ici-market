@@ -98,18 +98,18 @@ body:has(.depot-entry) .tim-content{width:100%}
 .depot-entry .trust{grid-template-columns:repeat(2,1fr);row-gap:12px}
 }
 `}</style>
-<div className="reference-top" aria-label="Présentation du dépôt d’annonce et ses cinq étapes"><img src="/depot/reference-haut.svg" alt="Publiez votre annonce en quelques minutes : voiture, maison, bateau, vélo et mobilier ; dépôt gratuit pour les particuliers" /><img src="/depot/reference-etapes.svg" alt="Comment déposer une annonce : choisir sa catégorie, ajouter photos et vidéo, remplir les informations, vérifier et publier" /></div>
+<div className="reference-top" aria-label="Présentation du dépôt d’annonce et ses cinq étapes"><img src="/depot/reference-haut.webp" alt="Publiez votre annonce en quelques minutes : voiture, maison, bateau, vélo et mobilier ; dépôt gratuit pour les particuliers" /><img src="/depot/reference-etapes.webp" alt="Comment déposer une annonce : choisir sa catégorie, ajouter photos et vidéo, remplir les informations, vérifier et publier" /></div>
 <div className="start-wrap"><a href="#categories-depot" className="start-button">📣 Commencer à déposer votre annonce <span aria-hidden="true">›</span></a></div>
 <section className="categories-wrap" id="categories-depot">
 <div className="section-title"><h2>Choisissez votre catégorie</h2><p>Cliquez sur une rubrique pour ouvrir sa page de dépôt spécialisée.</p></div>
 <div className="cards">{principal.map(c=><Link className="card" href={c.slug==="automobile"?"/automobile/deposer":"/deposer/"+c.slug} key={c.slug}>
-<img src={"/depot/photos-valides/"+c.slug+".svg"} alt={""} />
+<img src={"/depot/photos-valides/"+c.slug+".jpg"} alt={""} />
 <div className="card-text"><strong>{c.icone} {c.nom}</strong><small>{c.resume}</small><span className="go">Déposer dans cette rubrique ›</span></div></Link>)}</div>
 <div className="other"><Link href="/deposer/autres">Autres catégories →</Link></div>
 </section>
 <div className="approved-lower">
-<img src="/depot/mia-reference.svg" alt="MIA vous accompagne : conseils pour rédiger votre annonce, plus de visibilité et plus de contacts" />
-<img src="/depot/garanties-reference.svg" alt="Paiement sécurisé, support 7 jours sur 7, annonces vérifiées, zéro commission et communauté fiable" />
+<img src="/depot/mia-reference.webp" alt="MIA vous accompagne : conseils pour rédiger votre annonce, plus de visibilité et plus de contacts" />
+<img src="/depot/garanties-reference.webp" alt="Paiement sécurisé, support 7 jours sur 7, annonces vérifiées, zéro commission et communauté fiable" />
 </div>
 <div className="mobile-lower">
 <section className="mia"><div className="mia-icon" aria-hidden="true">🤖</div><div><h2>MIA vous accompagne !</h2><p>Pour réussir votre annonce, choisissez des photos claires, un titre précis et une description complète. Les conseils s'adaptent à votre catégorie.</p></div><ul><li>Une annonce claire et complète</li><li>Des photos et une vidéo si besoin</li><li>Une publication simple et gratuite</li></ul></section>
