@@ -229,6 +229,62 @@ export default function RootLayout({children}:{children:ReactNode}){
         html body:has(.tim-account-dashboard) .tim-navbar a{font-size:15px!important;padding:13px 12px!important}
       }
 
+
+      /* Navigation unifiée : centrage, lisibilité et survol jaune doré. */
+      html body .tim-navbar,
+      html body:has(.tim-home) .tim-navbar,
+      html body:has(.tim-account-dashboard) .tim-navbar{
+        justify-content:safe center!important;
+        min-height:76px!important;
+        gap:3px!important;
+        padding:0 12px!important;
+        overflow-x:auto!important;
+        scrollbar-width:thin;
+      }
+      html body .tim-navbar a,
+      html body:has(.tim-home) .tim-navbar a,
+      html body:has(.tim-account-dashboard) .tim-navbar a{
+        font-size:clamp(16px,1.16vw,19px)!important;
+        font-weight:850!important;
+        line-height:1.35!important;
+        padding:17px clamp(10px,1.05vw,19px)!important;
+        border-radius:9px!important;
+        transition:background-color .15s ease,color .15s ease!important;
+      }
+      html body .tim-navbar a:is(:hover,:focus-visible),
+      html body:has(.tim-home) .tim-navbar a:is(:hover,:focus-visible),
+      html body:has(.tim-account-dashboard) .tim-navbar a:is(:hover,:focus-visible){
+        background:#ffcc00!important;
+        color:#082452!important;
+        box-shadow:inset 0 -3px 0 #d6a300!important;
+      }
+      html body .tim-sidebar a:not(.tim-auto-sidebar-post):is(:hover,:focus-visible),
+      html body:has(.tim-home) .tim-sidebar a:not(.tim-auto-sidebar-post):is(:hover,:focus-visible),
+      html body:has(.tim-account-dashboard) .tim-sidebar a:not(.tim-auto-sidebar-post):is(:hover,:focus-visible){
+        background:#ffcc00!important;
+        color:#082452!important;
+        border-bottom-color:#dcb000!important;
+        box-shadow:inset 4px 0 0 #e4a900!important;
+      }
+      html body .tim-sidebar a:not(.tim-auto-sidebar-post):is(:hover,:focus-visible) .tim-sidebar-icon{
+        color:#082452!important;
+      }
+      @media(max-width:900px){
+        html body .tim-navbar,
+        html body:has(.tim-home) .tim-navbar,
+        html body:has(.tim-account-dashboard) .tim-navbar{
+          justify-content:flex-start!important;
+          min-height:62px!important;
+        }
+        html body .tim-navbar a,
+        html body:has(.tim-home) .tim-navbar a,
+        html body:has(.tim-account-dashboard) .tim-navbar a{
+          font-size:15px!important;
+          padding:13px 12px!important;
+          flex-shrink:0!important;
+        }
+      }
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
