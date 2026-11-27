@@ -186,7 +186,7 @@ return <main className="vehicles-sub">
 .vehicles-sub .hero{background:linear-gradient(110deg,#051335,#0757a7);padding:32px clamp(20px,4vw,60px);color:white}
 .vehicles-sub .hero a{color:#ffdb20;text-decoration:none;font-weight:700}
 .vehicles-sub h1{font-size:clamp(34px,4vw,54px);margin:18px 0}
-.vehicles-sub .inner{max-width:1350px;margin:auto;padding:30px 20px}
+.vehicles-sub .inner{width:100%;max-width:none;margin:0;padding:16px clamp(8px,1vw,20px)}
 .vehicles-sub .search-layout{display:grid;grid-template-columns:minmax(260px,310px) minmax(0,1fr);gap:26px;align-items:start}
 .vehicles-sub .search-sidebar{background:white;border-radius:18px;padding:22px;box-shadow:0 5px 20px #122b4d14;position:sticky;top:16px}
 .vehicles-sub .filters{display:grid;grid-template-columns:1fr;gap:17px}
@@ -289,6 +289,37 @@ return <main className="vehicles-sub">
 .vehicles-sub .vehicles-search-callout{padding:16px}
 .vehicles-sub .vehicles-search-brand strong{font-size:25px}
 .vehicles-sub .vehicles-search-copy strong{font-size:21px}
+}
+
+/* Recherche véhicules : occuper réellement toute la largeur du moniteur. */
+html body:has(.vehicles-sub) .tim-shell.tim-sidebar-collapsed,
+html body:has(.vehicles-sub) .tim-shell.tim-sidebar-expanded{
+  width:100%!important;
+  max-width:none!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:8px clamp(4px,.55vw,12px)!important;
+}
+html body:has(.vehicles-sub) .tim-shell.tim-sidebar-collapsed{
+  grid-template-columns:44px minmax(0,1fr)!important;
+  gap:7px!important;
+}
+html body:has(.vehicles-sub) .tim-shell.tim-sidebar-expanded{
+  grid-template-columns:255px minmax(0,1fr)!important;
+  gap:10px!important;
+}
+html body:has(.vehicles-sub) .tim-shell>.tim-content{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+}
+.vehicles-sub{width:100%;max-width:none;margin:0!important}
+.vehicles-sub .inner{width:100%!important;max-width:none!important;margin:0!important;padding:12px clamp(6px,.8vw,18px)!important}
+.vehicles-sub .search-layout{width:100%;max-width:none;grid-template-columns:minmax(295px,320px) minmax(0,1fr);gap:clamp(12px,1vw,20px)}
+.vehicles-sub .search-results{width:100%;max-width:none;min-width:0}
+@media(max-width:900px){
+  .vehicles-sub .search-layout{grid-template-columns:1fr}
+  html body:has(.vehicles-sub) .tim-shell.tim-sidebar-expanded{grid-template-columns:1fr!important}
 }
 `}</style>
 <section className="hero vehicles-photo-hero" aria-label="Automobile et véhicules">
