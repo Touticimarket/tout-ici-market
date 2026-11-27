@@ -396,6 +396,37 @@ export default function RootLayout({children}:{children:ReactNode}){
         html body .tim-header-links .tim-trust-link{font-size:11px!important;padding:4px 7px}
       }
 
+
+      /* Recherche principale agrandie sur le fond blanc ; actions compte et dépôt préservées. */
+      html body .tim-home-search,
+      html body:has(.tim-home) .tim-home-search,
+      html body:has(.tim-account-dashboard) .tim-home-search{
+        flex:1 1 530px!important;
+        max-width:760px!important;
+        min-width:210px!important;
+        height:62px!important;
+        padding:6px!important;
+        border-radius:16px!important;
+        border:2px solid #d7e2f1!important;
+        background:#fff!important;
+        box-sizing:border-box!important;
+      }
+      html body .tim-home-search .search-symbol{font-size:29px!important;padding-left:14px!important}
+      html body .tim-home-search input{font-size:clamp(16px,1.15vw,19px)!important;padding:10px 12px!important}
+      html body .tim-home-search button{font-size:16px!important;padding:12px 20px!important;border-radius:11px!important}
+      html body .tim-header{column-gap:clamp(12px,1.1vw,24px)!important}
+      @media(max-width:1300px){
+        html body .tim-home-search,
+        html body:has(.tim-home) .tim-home-search,
+        html body:has(.tim-account-dashboard) .tim-home-search{max-width:none!important;flex-basis:100%!important;order:3!important}
+      }
+      @media(max-width:760px){
+        html body .tim-home-search,
+        html body:has(.tim-home) .tim-home-search{height:55px!important;min-width:0!important}
+        html body .tim-home-search input{font-size:15px!important}
+        html body .tim-home-search button{font-size:13px!important;padding:10px 13px!important}
+      }
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
