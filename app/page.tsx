@@ -1,6 +1,5 @@
 import {createClient} from "@supabase/supabase-js";
 import FavoriteAnnonceButton from "./components/FavoriteAnnonceButton";
-import HomeBannerCarousel from "./components/HomeBannerCarousel";
 export const dynamic="force-dynamic";
 type HomeAnnonce={id:string;marque:string|null;modele:string|null;prix:number|null;annee:number|null;kilometrage:number|null;ville:string|null;photos:string[]|null;carburant:string|null};
 async function latestAds():Promise<HomeAnnonce[]>{
@@ -99,7 +98,6 @@ export default async function Home(){
       }
 
     `}</style>
-    <HomeBannerCarousel />
     <section aria-labelledby="tim-categories-title">
       <h1 className="heading" id="tim-categories-title">Toutes les catégories</h1>
       <div className="category-grid">
