@@ -427,6 +427,61 @@ export default function RootLayout({children}:{children:ReactNode}){
         html body .tim-home-search button{font-size:13px!important;padding:10px 13px!important}
       }
 
+
+      /* Logo and header stay white; deposit call to action is unmistakable. */
+      html body .tim-header-links .tim-post,
+      html body:has(.tim-home) .tim-header-links .tim-post,
+      html body:has(.tim-account-dashboard) .tim-header-links .tim-post{
+        display:inline-flex!important;
+        align-items:center!important;
+        justify-content:center!important;
+        background:linear-gradient(180deg,#ffe44c 0%,#ffbf00 100%)!important;
+        color:#061e4e!important;
+        border:2px solid #dba600!important;
+        border-radius:15px!important;
+        min-height:62px!important;
+        padding:15px clamp(16px,1.6vw,28px)!important;
+        font-size:clamp(17px,1.3vw,21px)!important;
+        font-weight:950!important;
+        line-height:1.2!important;
+        white-space:nowrap!important;
+        box-shadow:0 4px 13px rgba(119,82,0,.21)!important;
+        text-decoration:none!important;
+      }
+      html body .tim-header-links .tim-post:hover,
+      html body .tim-header-links .tim-post:focus-visible{
+        background:#ffe868!important;
+        box-shadow:0 6px 19px rgba(110,74,0,.28)!important;
+        transform:translateY(-1px);
+      }
+      /* Left side: blue section title, gold highlighted categories. */
+      html body .tim-sidebar .tim-sidebar-title,
+      html body:has(.tim-home) .tim-sidebar .tim-sidebar-title,
+      html body:has(.depot-entry) .tim-sidebar .tim-sidebar-title{
+        display:block!important;
+        background:linear-gradient(110deg,#053b89,#082563)!important;
+        color:#fff!important;
+        font-weight:900!important;
+        border-left:5px solid #ffcc00!important;
+        border-radius:10px!important;
+        padding:15px 12px!important;
+        font-size:17px!important;
+        line-height:1.3!important;
+      }
+      html body .tim-sidebar a:not(.tim-auto-sidebar-post),
+      html body:has(.depot-entry) .tim-sidebar a:not(.tim-auto-sidebar-post){
+        border-left:3px solid #ffcc00!important;
+        color:#082b65!important;
+      }
+      html body .tim-sidebar a:not(.tim-auto-sidebar-post):is(:hover,:focus-visible),
+      html body:has(.depot-entry) .tim-sidebar a:not(.tim-auto-sidebar-post):is(:hover,:focus-visible){
+        background:#ffce00!important;color:#08234a!important;border-left-color:#06448c!important;
+      }
+      @media(max-width:760px){
+        html body .tim-header-links .tim-post,
+        html body:has(.tim-home) .tim-header-links .tim-post{min-height:49px!important;font-size:14px!important;padding:10px 13px!important}
+      }
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
