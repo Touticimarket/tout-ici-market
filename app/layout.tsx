@@ -77,7 +77,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       @media(max-width:760px){.tim-header{min-height:75px}.tim-logo{width:180px}.tim-logo img{max-height:65px}.tim-navbar{min-height:56px;justify-content:flex-start}.tim-navbar a{font-size:15px}}
       /* En-tête blanc sur toutes les rubriques : le nouveau logo conserve son ratio naturel. */
       .tim-header{background:#ffffff!important;color:#0a2555!important;min-height:150px!important;border-bottom:1px solid #e4ebf4;box-shadow:0 3px 14px rgba(13,39,82,.06)}
-      .tim-logo{width:clamp(295px,28vw,415px)!important;flex-shrink:0!important;text-decoration:none!important}
+      .tim-logo{width:clamp(260px,23vw,330px)!important;flex-shrink:0!important;text-decoration:none!important}
       .tim-logo img{display:block!important;width:100%!important;height:auto!important;max-height:140px!important;object-fit:contain!important;aspect-ratio:auto!important}
       .tim-logo-caption{color:#163b78!important;font-size:11px;line-height:1.3;font-weight:750}
       .tim-header-links a{color:#102c60!important}
@@ -86,7 +86,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       .tim-navbar{background:#ffffff!important;border-bottom:3px solid #ffd20b!important;box-shadow:0 3px 10px rgba(8,33,75,.05)}
       .tim-navbar a{color:#0b2d68!important}
       .tim-navbar a:hover,.tim-navbar a:focus-visible{background:#fff0a4!important;color:#092452!important}
-      @media(max-width:1100px){.tim-logo{width:clamp(240px,34vw,350px)!important}}
+      @media(max-width:1100px){.tim-logo{width:clamp(240px,31vw,315px)!important}}
       @media(max-width:760px){.tim-header{min-height:115px!important}.tim-logo{width:clamp(210px,65vw,310px)!important}.tim-logo img{max-height:110px!important}.tim-navbar{min-height:56px}}
 
 
