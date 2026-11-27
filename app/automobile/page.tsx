@@ -16,7 +16,7 @@ const equipements=[
  {name:"Équipement nautisme",icon:<Sailboat size={33}/>,slug:"equipement-nautisme",photo:"/auto-reel/nautisme.svg"},
  {name:"Équipements vélos",icon:<Bike size={33}/>,slug:"equipement-velos",photo:"/auto-reel/velos.svg"},
  {name:"Services de réparation mécanique",icon:<Wrench size={33}/>,slug:"services-mecaniques",photo:"https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=480&h=280&q=80"},
- {name:"Pneus & Jantes",icon:<CircleDot size={33}/>,slug:"pneus-jantes",photo:"https://images.unsplash.com/photo-1760688966178-a3745cc0e722?auto=format&fit=crop&w=480&h=280&q=80"},
+ {name:"Pneus & Jantes",icon:<CircleDot size={33}/>,slug:"pneus-jantes",photo:"https://images.unsplash.com/photo-1760688966178-a3745cc0e722?auto=format&fit=crop&w=720&h=720&q=85"},
  {name:"Pièces & Accessoires auto",icon:<Armchair size={33}/>,slug:"pieces-accessoires",photo:"https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=480&h=280&q=80"},
  {name:"Entretien & Consommables",icon:<Droplet size={33}/>,slug:"entretien-consommables",photo:"https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=480&h=280&q=80"},
 ];
@@ -213,6 +213,15 @@ export default function AutomobilePage(){
 @media(max-width:1180px){.auto-home .cards,.auto-home .equip-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:760px){.auto-home .cards,.auto-home .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}}
 @media(max-width:440px){.auto-home .cards,.auto-home .equip-grid{grid-template-columns:1fr!important}}
+
+
+/* Corrected visual framing — generous subject centered inside uniform cards. */
+.auto-home .equip-tile .equip-photo{object-fit:cover!important;object-position:center center!important;background:#eff5fb!important}
+.auto-home .equip-tile .equip-photo-equipement-caravaning,
+.auto-home .equip-tile .equip-photo-equipement-nautisme,
+.auto-home .equip-tile .equip-photo-equipement-velos{object-fit:contain!important;object-position:50% 50%!important;padding:4px!important;background:#eaf2fc!important}
+.auto-home .equip-tile .equip-photo-pneus-jantes{object-fit:contain!important;object-position:center!important;padding:2px!important;background:#edf3f8!important}
+.auto-home .category:last-child .exact-photo{background-position:50% 42%!important;background-size:cover!important}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules — sélection de voitures" /></div>
  <section className="auto-search-callout" aria-label="Recherche personnalisée de véhicule">
@@ -224,10 +233,10 @@ export default function AutomobilePage(){
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
- <div className="tile-photo"><div className="exact-photo" style={c.slug==="autres-vehicules"?{backgroundImage:"url(https://images.unsplash.com/photo-1666011866606-f95e4f23836e?auto=format&fit=crop&w=800&q=85)",backgroundPosition:"center",backgroundSize:"cover"}:undefined} role="img" aria-label={"Photo : "+c.name}/></div>
+ <div className="tile-photo"><div className="exact-photo" style={c.slug==="autres-vehicules"?{backgroundImage:"url(https://images.unsplash.com/photo-1618346976725-71ee4a1ecc89?auto=format&fit=crop&w=960&h=560&q=85)",backgroundPosition:"50% 45%",backgroundSize:"cover"}:undefined} role="img" aria-label={"Photo : "+c.name}/></div>
  <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow"><ChevronRight size={17}/></span></div><p className="tile-description">{c.description}</p></div>
  </a>)}</div>
  <div className="equip-section"><h2>Équipements &amp; Services</h2>
- <div className="equip-grid">{equipements.map(e=><a href={"/automobile/"+e.slug} key={e.slug} className="equip-tile"><img className="equip-photo" src={e.photo} alt="" loading="lazy"/><span className="equip-icon" aria-hidden="true">{e.icon}</span><span>{e.name}</span></a>)}</div></div>
+ <div className="equip-grid">{equipements.map(e=><a href={"/automobile/"+e.slug} key={e.slug} className="equip-tile"><img className={"equip-photo equip-photo-"+e.slug} src={e.photo} alt="" loading="lazy"/><span className="equip-icon" aria-hidden="true">{e.icon}</span><span>{e.name}</span></a>)}</div></div>
  </section></main>
 }
