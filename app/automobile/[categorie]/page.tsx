@@ -398,6 +398,33 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
 .vehicles-sub .vehicle-equipment-tab-equipement-velos .vehicle-equipment-photo{object-fit:contain!important;object-position:center!important;padding:3px!important;background:#eaf2fc!important}
 .vehicles-sub .vehicle-equipment-tab-pneus-jantes .vehicle-equipment-photo{object-fit:contain!important;object-position:center!important;padding:2px!important;background:#edf3f8!important}
 .vehicles-sub .vehicle-tab:not(.selected) .vehicle-tab-photo:not(.vehicle-tab-photo-exact){background-position:50% 43%!important;background-size:cover!important}
+
+/* Consistent framing for thumbnail photos: native 15:8 aspect ratio, no stretched imagery. */
+.vehicles-sub .vehicle-tab .vehicle-tab-photo,
+.vehicles-sub .vehicle-equipment-tab .vehicle-equipment-photo{
+ box-sizing:border-box!important;
+ width:100%!important;
+ height:auto!important;
+ aspect-ratio:15 / 8!important;
+ flex:0 0 auto!important;
+ border-radius:8px!important;
+ background-color:#edf4fd!important;
+ object-position:50% 50%!important;
+}
+.vehicles-sub .vehicle-tab .vehicle-tab-photo-exact{
+ background-image:url('/auto-reel/photos-maquette-exactes.svg')!important;
+ background-size:500% 200%!important;
+ background-repeat:no-repeat!important;
+}
+.vehicles-sub .vehicle-equipment-tab .vehicle-equipment-photo{object-fit:cover!important;padding:0!important}
+.vehicles-sub .vehicle-equipment-tab-equipement-caravaning .vehicle-equipment-photo,
+.vehicles-sub .vehicle-equipment-tab-equipement-nautisme .vehicle-equipment-photo,
+.vehicles-sub .vehicle-equipment-tab-equipement-velos .vehicle-equipment-photo,
+.vehicles-sub .vehicle-equipment-tab-pneus-jantes .vehicle-equipment-photo{
+ object-fit:contain!important;padding:2px!important;
+}
+.vehicles-sub .vehicle-tab,.vehicles-sub .vehicle-equipment-tab{height:auto!important;min-height:159px!important}
+@media(max-width:600px){.vehicles-sub .vehicle-tab,.vehicles-sub .vehicle-equipment-tab{min-height:146px!important}}
 `}</style>
 <section className="hero vehicles-photo-hero" aria-label="Automobile et véhicules">
 <img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules : sélection de voitures" />
