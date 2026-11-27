@@ -80,6 +80,9 @@ export default async function Home(){
       @media(max-width:1230px){.tim-home .popular-grid{grid-template-columns:repeat(3,minmax(0,1fr))}body:has(.tim-home) .tim-header{flex-wrap:wrap}body:has(.tim-home) .tim-header-links{margin-left:auto}.tim-home .category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
       @media(max-width:760px){.tim-home .popular-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body:has(.tim-home) .tim-shell{display:flex;flex-direction:column;padding:8px}body:has(.tim-home) .tim-sidebar{position:static;max-width:100%;white-space:nowrap;overflow:auto}body:has(.tim-home) .tim-sidebar-title{display:none}body:has(.tim-home) .tim-sidebar-image{width:34px;height:28px}body:has(.tim-home) .tim-sidebar a{min-height:35px;border-bottom:0}body:has(.tim-home) .tim-home-search{order:3;flex-basis:100%;max-width:none}body:has(.tim-home) .tim-header{min-height:auto}body:has(.tim-home) .tim-header-links{margin-left:auto}body:has(.tim-home) .tim-navbar{min-height:52px;justify-content:flex-start}.tim-home .category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tim-home .popular-head{flex-wrap:wrap}}
       @media(max-width:390px){.tim-home .category-grid{grid-template-columns:1fr}}
+      .tim-home .tim-static-home-hero{width:100%;border-radius:16px;overflow:hidden;margin:1px 0 15px;border:1px solid #e0e8f3;box-shadow:0 3px 13px #071d4614;background:#edf6ff}
+      .tim-home .tim-static-home-hero img{width:100%;height:auto;display:block;aspect-ratio:1362/294;object-fit:cover}
+      @media(max-width:760px){.tim-home .tim-static-home-hero img{aspect-ratio:3/1;object-fit:cover}}
       /* Accueil : rubriques plus grandes, en haut comme dans la colonne gauche. */
       body:has(.tim-home) .tim-shell{grid-template-columns:minmax(258px,286px) minmax(0,1fr);gap:14px}
       body:has(.tim-home) .tim-navbar{min-height:70px;justify-content:flex-start;gap:4px}
@@ -98,6 +101,7 @@ export default async function Home(){
       }
 
     `}</style>
+    <div className="tim-static-home-hero" aria-label="Tout acheter, tout vendre, tout trouver"><img src="/accueil-reel/bandeau.svg" alt="Tout acheter, tout vendre, tout trouver — catégories de petites annonces" /></div>
     <section aria-labelledby="tim-categories-title">
       <h1 className="heading" id="tim-categories-title">Toutes les catégories</h1>
       <div className="category-grid">
