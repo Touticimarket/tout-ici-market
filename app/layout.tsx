@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import HomeBannerCarousel from "./components/HomeBannerCarousel";
 export const metadata:Metadata={
  title:"TOUT ICI ANNONCES — Annonces gratuites pour les particuliers",
  description:"Tout acheter, tout vendre, tout trouver. Site d’annonces gratuites pour les particuliers : automobile, immobilier, maison, loisirs et plus encore.",
@@ -157,6 +158,40 @@ export default function RootLayout({children}:{children:ReactNode}){
         }
       }
 
+
+      /* Harmonisation de la charte : même bandeau et rubriques sur toutes les pages. */
+      .tim-shared-banner{width:calc(100% - 24px);max-width:1776px;margin:14px auto 0}
+      .tim-shared-banner .tim-ad-carousel{border:1px solid #dce6f3;border-radius:16px}
+      html body .tim-header{background:#fff!important;color:#0b285e!important;min-height:150px!important;border-bottom:1px solid #e4ebf4!important}
+      html body .tim-header .tim-logo{display:block!important;width:clamp(260px,23vw,330px)!important}
+      html body .tim-header .tim-logo img{max-height:140px!important;height:auto!important;width:100%!important;object-fit:contain!important}
+      html body .tim-header .tim-header-links a:not(.tim-post){color:#102c60!important}
+      html body .tim-header .tim-header-links .tim-post{background:#ffcf06!important;color:#071e4a!important}
+      html body .tim-navbar{display:flex!important;background:#fff!important;min-height:70px!important;border-bottom:3px solid #ffd20b!important;justify-content:flex-start!important;align-items:stretch!important;gap:3px!important}
+      html body .tim-navbar a{color:#0b2d68!important;font-size:clamp(15px,1.1vw,17px)!important;font-weight:850!important;padding:16px clamp(11px,1.08vw,18px)!important;line-height:1.3!important}
+      html body .tim-navbar a:hover,html body .tim-navbar a:focus-visible{background:#ffe04e!important;color:#082453!important}
+      html body .tim-sidebar{display:block!important;background:linear-gradient(#fff,#f3f8ff)!important}
+      html body .tim-sidebar .tim-auto-sidebar-post{display:flex!important}
+      html body .tim-sidebar .tim-sidebar-title{display:block!important}
+      html body .tim-sidebar .tim-sidebar-image{display:none!important}
+      html body .tim-sidebar .tim-sidebar-icon{display:inline-block!important}
+      /* Automobile : la bannière commune remplace l'ancien bandeau de catégorie. */
+      html body .tim-shell:has(.auto-home){display:grid!important;grid-template-columns:240px minmax(0,1fr)!important;grid-template-areas:none!important;align-items:start!important}
+      html body .tim-shell:has(.auto-home)>.tim-sidebar{grid-area:auto!important}
+      html body .tim-shell:has(.auto-home)>.tim-content{display:block!important}
+      html body .tim-shell:has(.auto-home) .auto-home{display:block!important;margin:0!important}
+      html body .tim-shell:has(.auto-home) .auto-home .main-panel{display:block!important;margin:0!important}
+      @media(max-width:1050px) and (min-width:761px){html body .tim-shell:has(.auto-home){grid-template-columns:220px minmax(0,1fr)!important}}
+      @media(max-width:760px){
+        .tim-shared-banner{width:calc(100% - 16px);margin-top:8px}
+        html body .tim-navbar{min-height:58px!important;justify-content:flex-start!important}
+        html body .tim-navbar a{font-size:15px!important;padding:13px 12px!important}
+        html body .tim-shell:has(.auto-home){display:flex!important;flex-direction:column!important}
+        html body .tim-sidebar{display:flex!important;overflow-x:auto!important}
+        html body .tim-sidebar .tim-sidebar-title{display:none!important}
+        html body .tim-header{min-height:115px!important}
+      }
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
@@ -181,6 +216,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/bon-plan">Bon plan</a>
       <a href="/autres">Autres</a>
     </nav>
+    <div className="tim-shared-banner"><HomeBannerCarousel /></div>
     <div className="tim-shell">
       <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
         <a className="tim-auto-sidebar-post" href="/automobile/deposer">➤ Déposer une annonce</a>
