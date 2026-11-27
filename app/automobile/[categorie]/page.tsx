@@ -203,14 +203,35 @@ return <main className="vehicles-sub">
 .vehicles-sub .gold{display:inline-block;background:#ffcf06;color:#061636!important;padding:14px 22px;border-radius:40px;text-decoration:none;font-weight:900}
 @media(max-width:900px){.vehicles-sub .search-layout{grid-template-columns:1fr}.vehicles-sub .search-sidebar{position:static}.vehicles-sub .filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.vehicles-sub .filters{grid-template-columns:1fr}.vehicles-sub .results-bar select{min-width:0;width:100%}}
+
+.vehicles-sub .vehicles-photo-hero{position:relative;padding:0!important;background:#eaf3ff!important;border-radius:14px;overflow:hidden}
+.vehicles-sub .vehicles-photo-hero img{display:block;width:100%;height:auto;aspect-ratio:1448/296;object-fit:cover}
+.vehicles-sub .vehicles-hero-back{position:absolute;top:8px;left:13px}
+.vehicles-sub .vehicles-hero-back a{color:#092456!important;background:#fffef1ed;padding:6px 10px;border-radius:8px;font-size:12px}
+.vehicles-sub .vehicles-search-callout{display:flex;align-items:center;gap:20px;background:linear-gradient(110deg,#075bbb,#062e7b 53%,#071e5c);color:#fff;padding:15px 24px;border-radius:15px;margin:9px 0}
+.vehicles-sub .vehicles-search-brand{display:flex;align-items:center;gap:10px;border-right:1px solid #ffffff8a;padding-right:20px;min-width:240px}
+.vehicles-sub .vehicles-search-brand>span{font-size:50px;color:#ffca00}
+.vehicles-sub .vehicles-search-brand strong{font-size:clamp(20px,2vw,30px);font-style:italic;line-height:1.06}
+.vehicles-sub .vehicles-search-brand em{display:block;color:#ffcc00;font-style:italic}
+.vehicles-sub .vehicles-search-copy{display:flex;flex-direction:column;flex:1;gap:6px;line-height:1.4}
+.vehicles-sub .vehicles-search-copy strong{font-size:clamp(17px,1.5vw,23px)}
+.vehicles-sub .vehicles-search-copy span{font-size:14px}
+.vehicles-sub .vehicles-search-callout>a{background:#ffcb00;color:#081e52;border-radius:22px;font-weight:900;max-width:260px;padding:15px 18px;text-align:center;text-decoration:none}
+.vehicles-sub .vehicles-search-callout>a:hover{background:#ffe16c}
+.vehicles-sub .vehicles-search-explain{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:15px;background:#f4f8ff;border:1px solid #dce7f6;border-radius:12px;gap:8px;color:#0c2c63;text-align:center;font-weight:800;font-size:13px}
+.vehicles-sub .inner{padding-top:14px!important}
+@media(max-width:880px){.vehicles-sub .vehicles-search-callout{flex-wrap:wrap}.vehicles-sub .vehicles-search-brand{min-width:0}.vehicles-sub .vehicles-search-explain{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.vehicles-sub .vehicles-search-callout>a{max-width:none;width:100%}.vehicles-sub .vehicles-search-brand{border-right:0}.vehicles-sub .vehicles-search-explain{font-size:11px}}
 `}</style>
-<section className="hero"><a href="/automobile">← Véhicules / Toutes les catégories</a>
-<h1>{category.icon} {category.title}</h1>
-<p>Consultez les annonces et affinez votre recherche.</p>
-<a className="gold" href="/automobile/deposer">＋ Déposer une annonce</a></section>
+<section className="hero vehicles-photo-hero" aria-label="Automobile et véhicules">
+<img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules : sélection de voitures" />
+<div className="vehicles-hero-back"><a href="/automobile">← Toutes les catégories de véhicules</a></div>
+</section>
+<section className="vehicles-search-callout"><div className="vehicles-search-brand"><span aria-hidden="true">⌕</span><strong>TOUT ICI <em>TROUVE POUR VOUS</em></strong></div><div className="vehicles-search-copy"><strong>Vous recherchez un véhicule ?</strong><span>Filtrez les annonces selon votre marque, votre budget et votre localisation.</span></div><a href="#filtres-vehicules">◎ Créer ma recherche personnalisée</a></section>
+<div className="vehicles-search-explain"><span>◎ Décrivez votre recherche</span><span>⌕ Nous cherchons les annonces</span><span>♧ Enregistrez vos critères</span><span>✓ Contactez les vendeurs</span></div>
 <div className="inner">
 {<div className="search-layout">
-<aside className="search-sidebar" aria-label="Filtres de recherche automobile">
+<aside id="filtres-vehicules" className="search-sidebar" aria-label="Filtres de recherche automobile">
 <div className="filter-heading"><h2>Affiner votre recherche</h2>
  <div style={{border:"1px solid #d5e5f7",borderRadius:12,padding:14,background:"#f6faff"}}>
  <div style={{fontSize:12,color:"#435878",fontWeight:700}}>Véhicules correspondant à vos critères</div>
