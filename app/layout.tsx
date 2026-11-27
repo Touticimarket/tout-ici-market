@@ -102,6 +102,61 @@ export default function RootLayout({children}:{children:ReactNode}){
       @media(min-width:761px) and (max-width:1050px){.tim-shell{grid-template-columns:220px minmax(0,1fr)}.tim-navbar{justify-content:flex-start}}
       @media(max-width:760px){.tim-shell{display:block}.tim-navbar{min-height:60px;justify-content:flex-start}.tim-navbar a{font-size:15px;padding:14px 13px}.tim-sidebar{display:flex;overflow-x:auto;white-space:nowrap}.tim-sidebar a{font-size:14px;min-height:48px;flex-shrink:0}.tim-sidebar-title{font-size:14px}}
 
+
+      /* Colonne des rubriques : charte de la page Véhicules sur tout le site. */
+      .tim-sidebar,body:has(.tim-home) .tim-sidebar{
+        background:linear-gradient(180deg,#ffffff 0%,#f3f8ff 100%)!important;
+        border:1px solid #d8e5f6!important;border-radius:15px!important;
+        padding:9px!important;box-shadow:0 2px 10px #153b6a12!important;
+      }
+      .tim-sidebar-title,body:has(.tim-home) .tim-sidebar-title{
+        background:#ffffff!important;color:#09265f!important;
+        border-left:5px solid #ffcd0b!important;border-radius:9px!important;
+        padding:14px 10px!important;margin:0 0 9px!important;
+        font-size:17px!important;font-weight:900!important;line-height:1.25!important;
+      }
+      .tim-sidebar .tim-auto-sidebar-post,body:has(.tim-home) .tim-sidebar .tim-auto-sidebar-post{
+        display:flex!important;align-items:center!important;justify-content:center!important;
+        gap:7px!important;background:linear-gradient(180deg,#073e9c,#052b79)!important;
+        color:#ffffff!important;border:0!important;border-radius:13px!important;
+        font-size:15px!important;font-weight:900!important;line-height:1.2!important;
+        min-height:51px!important;padding:12px 9px!important;
+        margin:2px 1px 11px!important;text-align:center!important;
+      }
+      .tim-sidebar a:not(.tim-auto-sidebar-post),body:has(.tim-home) .tim-sidebar a:not(.tim-auto-sidebar-post){
+        background:transparent!important;color:#09265f!important;
+        border-bottom:1px solid #e0eaf6!important;border-radius:9px!important;
+        padding:11px 9px!important;min-height:51px!important;
+        font-size:14px!important;font-weight:800!important;line-height:1.32!important;
+        gap:10px!important;
+      }
+      .tim-sidebar a:not(.tim-auto-sidebar-post):hover,
+      .tim-sidebar a:not(.tim-auto-sidebar-post):focus-visible,
+      body:has(.tim-home) .tim-sidebar a:not(.tim-auto-sidebar-post):hover,
+      body:has(.tim-home) .tim-sidebar a:not(.tim-auto-sidebar-post):focus-visible{
+        background:#ffdf4d!important;color:#082453!important;
+        border-bottom-color:#eac83b!important;
+      }
+      .tim-sidebar .tim-sidebar-image,body:has(.tim-home) .tim-sidebar .tim-sidebar-image{display:none!important}
+      .tim-sidebar .tim-sidebar-icon,body:has(.tim-home) .tim-sidebar .tim-sidebar-icon{
+        display:inline-block!important;font-size:20px!important;width:26px!important;
+        flex-shrink:0!important;text-align:center!important;color:#0b3f8d!important;
+      }
+      .tim-shell:has(.auto-home) .tim-sidebar a[href="/automobile"]{
+        background:#ffcf0a!important;color:#082453!important;
+        border-radius:11px!important;font-weight:900!important;
+      }
+      @media(max-width:760px){
+        .tim-sidebar,body:has(.tim-home) .tim-sidebar{display:flex!important;align-items:center!important;overflow-x:auto!important}
+        .tim-sidebar-title,body:has(.tim-home) .tim-sidebar-title{display:none!important}
+        .tim-sidebar .tim-auto-sidebar-post,body:has(.tim-home) .tim-sidebar .tim-auto-sidebar-post{
+          flex-shrink:0!important;min-height:47px!important;margin:0 7px 0 0!important;
+        }
+        .tim-sidebar a:not(.tim-auto-sidebar-post),body:has(.tim-home) .tim-sidebar a:not(.tim-auto-sidebar-post){
+          min-height:47px!important;flex-shrink:0!important;border-bottom:0!important;
+        }
+      }
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
