@@ -308,6 +308,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/famille">Famille</a>
       <a href="/bon-plan">Bon plan</a>
       <a href="/autres">Autres</a>
+      <a href="/paiement-confiance">🔒 Paiement Confiance</a>
     </nav>
     <div className="tim-shared-banner"><HomeBannerCarousel /></div>
     <div className="tim-shell">
