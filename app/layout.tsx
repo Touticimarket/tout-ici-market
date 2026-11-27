@@ -482,6 +482,57 @@ export default function RootLayout({children}:{children:ReactNode}){
         html body:has(.tim-home) .tim-header-links .tim-post{min-height:49px!important;font-size:14px!important;padding:10px 13px!important}
       }
 
+
+      /* Ajustements finaux : appel au depot visible et colonne categories bleu/or. */
+      html body .tim-header-links .tim-post,
+      html body:has(.tim-home) .tim-header-links .tim-post,
+      html body:has(.depot-entry) .tim-header-links .tim-post{
+        display:inline-flex!important;align-items:center!important;justify-content:center!important;
+        background:#ffcf00!important;color:#061d4a!important;
+        font-size:clamp(18px,1.45vw,23px)!important;font-weight:950!important;
+        min-height:68px!important;padding:18px 29px!important;
+        border:3px solid #efb900!important;border-radius:16px!important;
+        box-shadow:0 5px 0 #c89900,0 8px 20px #001d4b30!important;
+        white-space:nowrap!important;line-height:1.1!important;
+      }
+      html body .tim-sidebar,
+      html body:has(.tim-home) .tim-sidebar,
+      html body:has(.depot-entry) .tim-sidebar{
+        background:linear-gradient(180deg,#0b3d88 0%,#062860 100%)!important;
+        border:2px solid #08418c!important;
+      }
+      html body .tim-sidebar .tim-sidebar-title,
+      html body:has(.tim-home) .tim-sidebar .tim-sidebar-title,
+      html body:has(.depot-entry) .tim-sidebar .tim-sidebar-title{
+        background:#073172!important;color:#ffd322!important;
+        border-left:5px solid #ffcd00!important;
+        font-size:19px!important;
+      }
+      html body .tim-sidebar a:not(.tim-auto-sidebar-post),
+      html body:has(.tim-home) .tim-sidebar a:not(.tim-auto-sidebar-post),
+      html body:has(.depot-entry) .tim-sidebar a:not(.tim-auto-sidebar-post){
+        color:#fff!important;border-bottom:1px solid #ffffff35!important;
+        border-left:3px solid transparent!important;background:transparent!important;
+      }
+      html body .tim-sidebar .tim-sidebar-icon{color:#ffd322!important}
+      html body .tim-sidebar .tim-sidebar-chevron{color:#ffd322!important}
+      html body .tim-sidebar a:not(.tim-auto-sidebar-post):hover,
+      html body .tim-sidebar a:not(.tim-auto-sidebar-post):focus-visible,
+      html body:has(.depot-entry) .tim-sidebar a:not(.tim-auto-sidebar-post):hover,
+      html body:has(.depot-entry) .tim-sidebar a:not(.tim-auto-sidebar-post):focus-visible{
+        background:#ffd322!important;color:#062860!important;
+        border-left-color:#fff!important;
+      }
+      html body .tim-sidebar a:not(.tim-auto-sidebar-post):hover .tim-sidebar-icon,
+      html body .tim-sidebar a:not(.tim-auto-sidebar-post):hover .tim-sidebar-chevron{color:#062860!important}
+      @media(max-width:760px){
+        html body .tim-header-links .tim-post,
+        html body:has(.tim-home) .tim-header-links .tim-post,
+        html body:has(.depot-entry) .tim-header-links .tim-post{
+          font-size:15px!important;min-height:52px!important;padding:12px 14px!important;
+          border-width:2px!important;border-radius:12px!important;
+        }
+      }
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
