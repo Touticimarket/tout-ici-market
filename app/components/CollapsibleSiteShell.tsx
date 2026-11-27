@@ -9,7 +9,24 @@ export default function CollapsibleSiteShell({sidebar,children}:{sidebar:ReactNo
  const preferCollapsed=/^\/automobile\/[^/]+\/?$/.test(pathname)&&!pathname.startsWith("/automobile/deposer");
  const [expanded,setExpanded]=useState(!preferCollapsed);
  useEffect(()=>{setExpanded(!(/^\/automobile\/[^/]+\/?$/.test(pathname)&&!pathname.startsWith("/automobile/deposer")));},[pathname]);
- return <div className={"tim-shell "+(expanded?"tim-sidebar-expanded":"tim-sidebar-collapsed")}>
+ const inDepositFlow=pathname==="/deposer"||pathname.startsWith("/deposer/")||pathname==="/automobile/deposer"||pathname.startsWith("/automobile/deposer/");
+ const depositDestinations:Record<string,string>={
+  "/automobile":"/automobile/deposer","/immobilier":"/deposer/immobilier",
+  "/emploi":"/deposer/emploi-services","/materiel-pro":"/deposer/materiel-pro",
+  "/maison-jardin":"/deposer/maison-bricolage-jardin",
+  "/telephones":"/deposer/tv-telephonie-informatique",
+  "/vacances-loisirs":"/deposer/loisirs-voyages",
+  "/famille":"/deposer/famille","/bon-plan":"/deposer/bons-plans",
+  "/autres":"/deposer/autres"
+ };
+ return <div className={"tim-shell "+(expanded?"tim-sidebar-expanded":"tim-sidebar-collapsed")} onClickCapture={event=>{
+  if(!inDepositFlow||event.button!==0||event.ctrlKey||event.metaKey||event.altKey||event.shiftKey)return;
+  const target=event.target instanceof Element?event.target:null;
+  const anchor=target?.closest("a[href]");
+  if(!anchor||!anchor.closest(".tim-sidebar"))return;
+  const destination=depositDestinations[anchor.getAttribute("href")||""];
+  if(destination){event.preventDefault();window.location.assign(destination);}
+ }}>
   <style>{`
     .tim-shell.tim-sidebar-expanded,.tim-shell.tim-sidebar-collapsed{position:relative!important;align-items:start!important}
     html body .tim-shell.tim-sidebar-expanded{grid-template-columns:255px minmax(0,1fr)!important}
