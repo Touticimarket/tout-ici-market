@@ -145,10 +145,24 @@ export default function DeposerAnnonceMoto(){
  .moto-deposit .moto-recap dd{margin:0}
  @media(max-width:850px){.moto-deposit .moto-step-layout{grid-template-columns:1fr}.moto-deposit .moto-help{display:none}.moto-deposit .moto-fields{grid-template-columns:repeat(2,1fr)}.moto-deposit .type-grid{grid-template-columns:repeat(3,1fr)}}
  @media(max-width:580px){.moto-deposit .moto-fields{grid-template-columns:1fr}.moto-deposit .type-grid{grid-template-columns:repeat(2,1fr)}.moto-deposit .moto-steps{overflow-x:auto;display:flex}.moto-deposit .moto-steps button{flex:0 0 88px}.moto-deposit .moto-hero{height:245px}.moto-deposit .moto-hero-copy{width:92%}.moto-deposit .moto-showcase{opacity:.3}}
+
+
+ /* Image stable, visible and not repeated three times or partially cropped. */
+ .moto-deposit .moto-hero{height:clamp(270px,25vw,420px)!important;background:#e8f0fb!important}
+ .moto-deposit .moto-hero .moto-landscape{background-image:url('/auto-reel/motos.svg')!important;background-position:center 53%!important;background-size:cover!important;filter:none!important}
+ .moto-deposit .moto-hero .moto-veil{background:linear-gradient(90deg,#021e44 0%,#04244ded 34%,#07366ca8 53%,#0b3c5410 79%)!important}
+ .moto-deposit .moto-showcase{display:none!important}
+ .moto-deposit .moto-hero-copy{top:50%!important;transform:translateY(-50%)!important;width:min(58%,600px)!important}
+ .moto-deposit .moto-hero-copy h1{font-size:clamp(25px,2.65vw,44px)!important}
+ .moto-deposit .moto-help img{display:block;width:100%!important;height:auto!important;aspect-ratio:16/10!important;object-fit:contain!important;object-position:center!important;background:#eaf1fa!important}
+ .moto-deposit .moto-type{height:106px!important;min-height:106px!important;gap:8px!important;border-radius:11px!important;overflow:hidden!important}
+ .moto-deposit .moto-type .type-icon{width:100%!important;height:59px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:31px!important;line-height:1!important;border-radius:7px!important;background:#eef5ff!important}
+ .moto-deposit .moto-type span:last-child{font-size:13px!important;line-height:1.25!important}
+ @media(max-width:580px){.moto-deposit .moto-hero-copy{width:91%!important}.moto-deposit .moto-hero .moto-veil{background:linear-gradient(90deg,#021e44f5 0%,#04244de6 63%,#07366a70 100%)!important}}
  `}</style>
  <header className="moto-hero">
   <div className="moto-landscape"/><div className="moto-veil"/>
-  <div className="moto-showcase" aria-hidden="true"><img src="/auto-reel/motos.svg" alt=""/><img src="/auto-reel/motos.svg" alt=""/><img src="/auto-reel/motos.svg" alt=""/></div>
+  <div className="moto-showcase" aria-hidden="true"><img src="/auto-reel/motos.svg" alt=""/></div>
   <div className="moto-hero-copy"><span className="moto-hero-label">🏍️ Moto</span><h1>Déposez votre annonce moto <strong>en quelques minutes</strong></h1><p>Vendez votre moto simplement et gratuitement sur <b>TOUT ICI ANNONCES</b>.</p></div>
  </header>
  <nav className="moto-steps" aria-label="Étapes du dépôt de moto">{labels.map((label,i)=><button key={label} type="button" className={i===step?"current":""} onClick={()=>move(i)}><b>{i+1}</b>{label}</button>)}</nav>
