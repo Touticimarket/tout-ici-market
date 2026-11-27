@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import HomeBannerCarousel from "./components/HomeBannerCarousel";
 export const metadata:Metadata={
  title:"TOUT ICI ANNONCES — Annonces gratuites pour les particuliers",
  description:"Tout acheter, tout vendre, tout trouver. Site d’annonces gratuites pour les particuliers : automobile, immobilier, maison, loisirs et plus encore.",
@@ -308,6 +309,7 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/bon-plan">Bon plan</a>
       <a href="/autres">Autres</a>
     </nav>
+    <div className="tim-shared-banner"><HomeBannerCarousel /></div>
     <div className="tim-shell">
       <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
         <a className="tim-auto-sidebar-post" href="/automobile/deposer">➤ Déposer une annonce</a>
