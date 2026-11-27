@@ -158,7 +158,33 @@ export default function AutomobilePage(){
 .auto-home .equip-tile{min-height:132px!important;font-size:clamp(13px,.91vw,17px)!important;padding:16px 9px!important}
 .auto-home .equip-icon svg{width:46px!important;height:46px!important}
 @media(max-width:760px){.auto-home .main-panel{padding:12px!important}.auto-home .cards{gap:12px!important}.auto-home .tile-title{font-size:17px!important}.auto-home .tile-description{font-size:13px!important}}
+
+
+/* Automobile : rétablissement de la grande photo et du bloc de recherche validés. */
+.auto-home{margin:0!important;padding:0 0 28px!important;background:#fff!important}
+.auto-home .hero{margin:0 0 10px!important;width:100%!important;position:relative!important;border-radius:15px!important;overflow:hidden!important}
+.auto-home .hero img{width:100%!important;height:auto!important;aspect-ratio:1448/296!important;object-fit:cover!important;display:block!important}
+.auto-home .auto-search-callout{display:flex;align-items:center;gap:20px;justify-content:space-between;padding:14px 22px;background:linear-gradient(115deg,#0865c2,#062d78 41%,#061f60);border-radius:16px;color:white;margin-bottom:9px;min-height:94px}
+.auto-home .auto-search-callout-heading{display:flex;align-items:center;gap:12px;min-width:250px;border-right:1px solid #ffffff88;padding-right:20px}
+.auto-home .auto-search-callout-heading>span{font-size:48px;color:#ffcb00;line-height:1}
+.auto-home .auto-search-callout-heading strong{font-size:clamp(20px,2vw,29px);font-style:italic;line-height:1.08}
+.auto-home .auto-search-callout-heading em{display:block;color:#ffcf00;font-style:italic}
+.auto-home .auto-search-callout-copy{display:flex;flex-direction:column;gap:7px;flex:1;font-size:14px;line-height:1.35}
+.auto-home .auto-search-callout-copy strong{font-size:clamp(16px,1.4vw,22px)}
+.auto-home .auto-search-callout>a{background:#ffcc00;border-radius:25px;color:#061d48;padding:17px 20px;font-weight:900;text-align:center;text-decoration:none;max-width:245px;line-height:1.3}
+.auto-home .auto-search-callout>a:hover{background:#ffe36d}
+.auto-home .auto-search-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#f3f8ff;border:1px solid #dbe7f6;border-radius:12px;margin:0 0 14px;color:#0d285e;gap:8px;padding:13px 10px;text-align:center;font-size:13px;font-weight:850}
+.auto-home .main-panel{margin:0!important}
+@media(max-width:900px){.auto-home .auto-search-callout{flex-wrap:wrap;gap:12px}.auto-home .auto-search-callout-heading{min-width:0}.auto-home .auto-search-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.auto-home .auto-search-callout{padding:14px}.auto-home .auto-search-callout-heading{border-right:0;padding:0}.auto-home .auto-search-callout>a{max-width:none;width:100%}.auto-home .auto-search-steps{font-size:12px}}
  `}</style>
+ <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules — sélection de voitures" /></div>
+ <section className="auto-search-callout" aria-label="Recherche personnalisée de véhicule">
+   <div className="auto-search-callout-heading"><span aria-hidden="true">⌕</span><strong>TOUT ICI <em>TROUVE POUR VOUS</em></strong></div>
+   <div className="auto-search-callout-copy"><strong>Vous recherchez un véhicule ?</strong><span>Décrivez ce que vous souhaitez, consultez les annonces et enregistrez vos critères.</span></div>
+   <a href="/automobile/voitures">◎ Créer ma recherche personnalisée</a>
+ </section>
+ <div className="auto-search-steps" aria-label="Comment fonctionne la recherche"><span>◎ Décrivez votre recherche</span><span>⌕ Consultez les véhicules</span><span>♧ Enregistrez vos critères</span><span>✓ Contactez les vendeurs</span></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
