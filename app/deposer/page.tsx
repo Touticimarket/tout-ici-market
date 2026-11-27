@@ -109,6 +109,12 @@ html body:has(.depot-entry) .depot-entry{padding:0 0 24px!important;min-width:0!
 .depot-entry .mia{grid-template-columns:auto 1fr;gap:10px;padding:12px}.depot-entry .mia-icon{width:51px;height:51px;font-size:25px}.depot-entry .mia h2{font-size:17px}.depot-entry .mia ul{grid-column:1/-1;font-size:12px}
 .depot-entry .trust{grid-template-columns:repeat(2,1fr);row-gap:12px}
 }
+
+/* Photos : préserver les proportions, ne jamais étirer ni couper les sujets. */
+.depot-entry .reference-top img{width:100%!important;height:auto!important;object-fit:contain!important;display:block!important}
+.depot-entry .cards .card img{display:block!important;width:100%!important;height:155px!important;aspect-ratio:auto!important;object-fit:contain!important;object-position:center center!important;background:#edf3fa!important;padding:5px!important}
+.depot-entry .approved-lower img{width:100%!important;height:auto!important;object-fit:contain!important}
+@media(max-width:600px){.depot-entry .cards .card img{height:115px!important;padding:3px!important}}
 `}</style>
 <div className="reference-top" aria-label="Présentation du dépôt d’annonce et ses cinq étapes"><img src="/depot/reference-haut.webp" alt="Publiez votre annonce en quelques minutes : voiture, maison, bateau, vélo et mobilier ; dépôt gratuit pour les particuliers" /><img src="/depot/reference-etapes.webp" alt="Comment déposer une annonce : choisir sa catégorie, ajouter photos et vidéo, remplir les informations, vérifier et publier" /></div>
 <div className="start-wrap"><a href="#categories-depot" className="start-button">📣 Commencer à déposer votre annonce <span aria-hidden="true">›</span></a></div>
