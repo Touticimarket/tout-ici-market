@@ -177,6 +177,19 @@ export default function AutomobilePage(){
 .auto-home .main-panel{margin:0!important}
 @media(max-width:900px){.auto-home .auto-search-callout{flex-wrap:wrap;gap:12px}.auto-home .auto-search-callout-heading{min-width:0}.auto-home .auto-search-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.auto-home .auto-search-callout{padding:14px}.auto-home .auto-search-callout-heading{border-right:0;padding:0}.auto-home .auto-search-callout>a{max-width:none;width:100%}.auto-home .auto-search-steps{font-size:12px}}
+
+
+/* Barre TOUT ICI TROUVE POUR VOUS plus grande et lisible. */
+.auto-home .auto-search-callout{min-height:121px!important;padding:22px 27px!important;gap:23px!important}
+.auto-home .auto-search-callout-heading{min-width:290px!important;gap:16px!important}
+.auto-home .auto-search-callout-heading>span{font-size:61px!important}
+.auto-home .auto-search-callout-heading strong{font-size:clamp(25px,2.45vw,36px)!important;line-height:1.12!important}
+.auto-home .auto-search-callout-copy strong{font-size:clamp(21px,1.85vw,28px)!important}
+.auto-home .auto-search-callout-copy span{font-size:clamp(15px,1.2vw,18px)!important;line-height:1.45!important}
+.auto-home .auto-search-callout>a{font-size:16px!important;line-height:1.35!important;padding:19px 22px!important}
+.auto-home .auto-search-steps{font-size:15px!important;line-height:1.4!important}
+@media(max-width:1050px){.auto-home .auto-search-callout{flex-wrap:wrap!important}.auto-home .auto-search-callout-heading{min-width:0!important}}
+@media(max-width:600px){.auto-home .auto-search-callout{padding:16px!important}.auto-home .auto-search-callout-heading strong{font-size:25px!important}.auto-home .auto-search-callout-copy strong{font-size:21px!important}}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules — sélection de voitures" /></div>
  <section className="auto-search-callout" aria-label="Recherche personnalisée de véhicule">
