@@ -24,7 +24,7 @@ export default function HomeBannerCarousel(){
  return <section className="tim-ad-carousel" aria-label="Bannière d’accueil et publicités partenaires" onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)} onFocusCapture={()=>setPaused(true)} onBlurCapture={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))setPaused(false)}}>
  <style>{`
  .tim-ad-carousel{position:relative;isolation:isolate;overflow:hidden;border-radius:15px;background:white;box-shadow:0 5px 22px #16345b18;width:100%}
- .tim-ad-carousel .frame{position:relative;min-height:0;aspect-ratio:1362/294;background:#f5f9ff}
+ .tim-ad-carousel .frame{position:relative;min-height:0;aspect-ratio:3/1;background:#f5f9ff}
  .tim-ad-carousel .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .55s ease;overflow:hidden}
  .tim-ad-carousel .slide.current{opacity:1;visibility:visible;z-index:1}
  .tim-ad-carousel .slide:has(.main-photo){background:linear-gradient(112deg,#072b63,#1687c8 48%,#d4edff);}\n .tim-ad-carousel .main-stage{position:relative;width:100%;height:100%;overflow:hidden;background:linear-gradient(115deg,#0c3b78,#59b2e9 55%,#dbf4ff)}
@@ -47,7 +47,7 @@ export default function HomeBannerCarousel(){
  .tim-ad-carousel .dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
  .tim-ad-carousel .dot{height:10px;width:10px;padding:0;border:1px solid #fff;border-radius:50%;background:#102b579c;cursor:pointer;box-shadow:0 1px 3px #0005}
  .tim-ad-carousel .dot.active{background:#ffcb05;width:27px;border-radius:12px}
- @media(max-width:650px){.tim-ad-carousel .frame{aspect-ratio:2/1}.tim-ad-carousel .main-photo{object-fit:cover}.tim-ad-carousel .advert{padding:14px 33px}.tim-ad-carousel .advert-copy{max-width:76%}.tim-ad-carousel .advert::before{inset:0 0 0 36%;background-position:center}.tim-ad-carousel .advert::after{background:linear-gradient(90deg,#071c43 0%,#071c43ed 35%,#071c43a0 63%,transparent 100%)}.tim-ad-carousel .advert .photo-caption{display:none}.tim-ad-carousel .nav{width:28px;height:28px;font-size:19px}.tim-ad-carousel .advert h2{font-size:clamp(19px,5vw,25px)}.tim-ad-carousel .advert p{font-size:13px}.tim-ad-carousel .ad-label{font-size:10px}}
+ @media(max-width:650px){.tim-ad-carousel .frame{aspect-ratio:3/1}.tim-ad-carousel .main-photo{object-fit:cover}.tim-ad-carousel .advert{padding:14px 33px}.tim-ad-carousel .advert-copy{max-width:76%}.tim-ad-carousel .advert::before{inset:0 0 0 36%;background-position:center}.tim-ad-carousel .advert::after{background:linear-gradient(90deg,#071c43 0%,#071c43ed 35%,#071c43a0 63%,transparent 100%)}.tim-ad-carousel .advert .photo-caption{display:none}.tim-ad-carousel .nav{width:28px;height:28px;font-size:19px}.tim-ad-carousel .advert h2{font-size:clamp(19px,5vw,25px)}.tim-ad-carousel .advert p{font-size:13px}.tim-ad-carousel .ad-label{font-size:10px}}
  @media(prefers-reduced-motion:reduce){.tim-ad-carousel .slide{transition:none}}
  `}</style>
  <div className="frame">{slides.map((s,i)=><div key={i} className={"slide "+(active===i?"current":"")} aria-hidden={active!==i}>
