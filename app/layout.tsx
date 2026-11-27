@@ -381,14 +381,33 @@ export default function RootLayout({children}:{children:ReactNode}){
         html body:has(.tim-home) .tim-sidebar a:not(.tim-auto-sidebar-post){font-size:14px!important;min-height:45px!important}
       }
 
+
+      /* Paiement Confiance sous Mon compte / Mes favoris, hors menu principal. */
+      html body .tim-header-links{display:flex!important;align-items:center!important;gap:18px!important}
+      html body .tim-account-nav{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-width:0}
+      html body .tim-account-nav-top{display:flex;align-items:center;justify-content:center;gap:17px}
+      html body .tim-header-links .tim-trust-link{display:inline-flex!important;align-items:center;justify-content:center;text-decoration:none;font-size:13px!important;font-weight:800;color:#0b3879!important;padding:5px 13px;border-radius:9px;background:#eef5ff}
+      html body .tim-header-links .tim-trust-link:hover,html body .tim-header-links .tim-trust-link:focus-visible{background:#ffcc00!important;color:#082453!important}
+      @media(max-width:760px){
+        html body .tim-account-nav-top{gap:8px}
+        html body .tim-account-nav-top a{display:inline-block!important;font-size:11px!important}
+        html body .tim-header-links{gap:8px!important;flex-wrap:wrap!important;justify-content:flex-end}
+        html body .tim-header-links .tim-trust-link{font-size:11px!important;padding:4px 7px}
+      }
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
       <form className="tim-home-search" action="/automobile/voitures" role="search"><span className="search-symbol" aria-hidden="true">⌕</span><input type="search" name="q" aria-label="Que recherchez-vous ?" placeholder="Que recherchez-vous ?" /><button type="submit">Rechercher</button></form>
       
       <nav className="tim-header-links" aria-label="Espace utilisateur">
-        <a href="/compte">♙ Mon compte</a>
-        <a href="/favoris">♡ Mes favoris</a>
+        <div className="tim-account-nav">
+          <div className="tim-account-nav-top">
+            <a href="/compte">♙ Mon compte</a>
+            <a href="/favoris">♡ Mes favoris</a>
+          </div>
+          <a className="tim-trust-link" href="/paiement-confiance">🔒 Paiement Confiance</a>
+        </div>
         <a className="tim-post" href="/deposer">＋ Déposer une annonce</a>
       </nav>
     </header>
@@ -404,7 +423,6 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/famille">Famille</a>
       <a href="/bon-plan">Bon plan</a>
       <a href="/autres">Autres</a>
-      <a href="/paiement-confiance">🔒 Paiement Confiance</a>
     </nav>
     <div className="tim-shell">
       <aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
