@@ -533,6 +533,11 @@ export default function RootLayout({children}:{children:ReactNode}){
           border-width:2px!important;border-radius:12px!important;
         }
       }
+
+      /* Menu plus fin, enrichi de raccourcis de consultation. */
+      html body .tim-sidebar .tim-vehicle-shortcuts{display:grid!important;gap:3px!important;margin:1px 3px 9px 13px!important;padding-left:9px!important;border-left:2px solid #ffd322!important}
+      html body .tim-sidebar .tim-vehicle-shortcuts a{display:block!important;color:#e9f1ff!important;font-size:12px!important;line-height:1.2!important;min-height:0!important;padding:6px 7px!important;border:0!important;border-radius:7px!important;text-decoration:none!important;background:#ffffff12!important}
+      html body .tim-sidebar .tim-vehicle-shortcuts a:hover,html body .tim-sidebar .tim-vehicle-shortcuts a:focus-visible{background:#ffd322!important;color:#05285d!important}
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
@@ -563,7 +568,13 @@ export default function RootLayout({children}:{children:ReactNode}){
       <a href="/autres">Autres</a>
     </nav>
     <CollapsibleSiteShell sidebar={<aside className="tim-sidebar" aria-label="Toutes les rubriques"><div className="tim-sidebar-title">▦ Rubriques / Catégories</div>
-        {rubriques.map(r=><a key={r.href} href={r.href}><span className="tim-sidebar-icon" aria-hidden="true">{r.icone}</span><img className="tim-sidebar-image" src={"/accueil-reel/"+({"automobile":"automobile","immobilier":"immobilier","emploi":"emploi","materiel-pro":"materiel-pro","maison-jardin":"maison-jardin","telephones":"telephones","vacances-loisirs":"vacances-loisirs","famille":"famille","bon-plan":"bon-plan","autres":"autres"} as Record<string,string>)[r.href.slice(1)]+".svg"} alt="" aria-hidden="true"/><span>{r.nom}</span><span className="tim-sidebar-chevron" aria-hidden="true">›</span></a>)}
+        {rubriques.map(r=><><a key={r.href} href={r.href}><span className="tim-sidebar-icon" aria-hidden="true">{r.icone}</span><img className="tim-sidebar-image" src={"/accueil-reel/"+({"automobile":"automobile","immobilier":"immobilier","emploi":"emploi","materiel-pro":"materiel-pro","maison-jardin":"maison-jardin","telephones":"telephones","vacances-loisirs":"vacances-loisirs","famille":"famille","bon-plan":"bon-plan","autres":"autres"} as Record<string,string>)[r.href.slice(1)]+".svg"} alt="" aria-hidden="true"/><span>{r.nom}</span><span className="tim-sidebar-chevron" aria-hidden="true">›</span></a>{r.href==="/automobile"&&<div className="tim-vehicle-shortcuts" aria-label="Consulter les annonces de véhicules">
+ <a href="/automobile/voitures">🚗 Voitures</a>
+ <a href="/automobile/motos">🏍️ Motos et scooters</a>
+ <a href="/automobile/utilitaires">🚐 Utilitaires</a>
+ <a href="/automobile/caravaning">🚍 Camping-cars</a>
+ <a href="/automobile/velos">🚲 Vélos</a>
+ </div>}</>)}
       </aside>}>
       {children}
     </CollapsibleSiteShell>
