@@ -124,13 +124,22 @@ html body:has(.depot-entry) .depot-entry{padding:0 0 24px!important;min-width:0!
 .depot-entry .depot-clear-step strong{font-size:15px;line-height:1.25;color:#082b6b}
 .depot-entry .depot-clear-step small{font-size:12px;line-height:1.35;color:#4b6080}
 @media(max-width:760px){.depot-entry .depot-clear-steps-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Reprendre le bandeau exact validé : icônes, micro-typographie et 5 étapes d'origine. */
+.depot-entry .depot-reference-steps{margin:0!important;padding:6px 0 0!important;background:#f6f8ff!important;text-align:center!important;border:0!important}
+.depot-entry .depot-reference-steps h2{margin:0 auto 3px!important;color:#071957!important;font-size:clamp(18px,2.1vw,27px)!important;font-weight:900!important;font-style:italic!important;line-height:1.15!important}
+.depot-entry .depot-reference-steps p{margin:1px 0 5px!important;color:#0b1b4c!important;font-size:clamp(9px,1vw,12px)!important;font-weight:700!important;line-height:1.25!important}
+.depot-entry .depot-reference-steps-image{display:block!important;width:100%!important;aspect-ratio:1024/173!important;background-image:url('/depot/reference-etapes.webp')!important;background-repeat:no-repeat!important;background-position:center bottom!important;background-size:100% auto!important}
+.depot-entry .start-wrap{padding:11px 0 9px!important;background:#f6f8ff!important}
+.depot-entry .start-button{background:#ffce00!important;color:#071c40!important;font-size:clamp(14px,1.45vw,18px)!important;padding:12px 27px!important;border-radius:30px!important}
+@media(max-width:600px){.depot-entry .depot-reference-steps h2{font-size:17px!important}.depot-entry .depot-reference-steps p{font-size:9px!important}.depot-entry .start-button{width:auto!important;max-width:98%!important;padding:12px 14px!important;font-size:13px!important}}
 `}</style>
 <div className="reference-top" aria-label="Présentation du dépôt d’annonce et ses cinq étapes"><img src="/depot/reference-haut.webp" alt="Publiez votre annonce en quelques minutes : voiture, maison, bateau, vélo et mobilier ; dépôt gratuit pour les particuliers" /></div>
-<section className="depot-clear-steps" aria-label="Comment publier votre annonce">
- <h2>Publiez votre annonce en 5 étapes</h2>
- <div className="depot-clear-steps-grid">{etapes.map((e,i)=><div className="depot-clear-step" key={e.titre}><span className="depot-step-number">{i+1}</span><strong>{e.titre}</strong><small>{e.description}</small></div>)}</div>
+<section className="depot-reference-steps" aria-label="Les cinq étapes pour déposer votre annonce">
+  <h2>Déposez maintenant votre annonce.</h2>
+  <p>Consultez les rubriques ci-dessous, choisissez votre catégorie et publiez votre annonce en toute simplicité.</p>
+  <div className="depot-reference-steps-image" role="img" aria-label="1 Choisissez votre catégorie ; 2 Ajoutez vos photos et/ou vidéo ; 3 Renseignez les informations ; 4 Vérifiez et prévisualisez ; 5 Publiez votre annonce" />
 </section>
-<div className="reference-top-tail"></div>
 <div className="start-wrap"><a href="#categories-depot" className="start-button">📣 Commencer à déposer votre annonce <span aria-hidden="true">›</span></a></div>
 <section className="categories-wrap" id="categories-depot">
 <div className="section-title"><h2>Choisissez votre catégorie</h2><p>Cliquez sur une rubrique pour ouvrir sa page de dépôt spécialisée.</p></div>
