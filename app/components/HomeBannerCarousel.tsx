@@ -1,0 +1,47 @@
+"use client";
+import {useEffect,useState} from "react";
+type Slide={kind:"image"|"ad";image?:string;title:string;subtitle?:string;url?:string;cta?:string};
+const slides:Slide[]=[
+ {kind:"image",image:"/accueil-reel/bandeau.svg",title:"Vendre, trouver, acheter — Tout ici"},
+ {kind:"ad",title:"Votre publicité automobile ici",subtitle:"Garages et professionnels : présentez vos offres aux visiteurs de TOUT ICI ANNONCES.",cta:"Découvrir les annonces",url:"/automobile",image:"/auto-reel/bandeau.svg"},
+ {kind:"ad",title:"Votre publicité immobilière ici",subtitle:"Un espace premium pour les agences et les acteurs de l'immobilier.",cta:"Voir l'immobilier",url:"/immobilier",image:"/accueil-reel/immobilier.svg"}
+];
+export default function HomeBannerCarousel(){
+ const [active,setActive]=useState(0);
+ const [paused,setPaused]=useState(false);
+ useEffect(()=>{
+  if(paused||typeof window==="undefined")return;
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const timer=window.setInterval(()=>setActive(i=>(i+1)%slides.length),6000);
+  return()=>window.clearInterval(timer);
+ },[paused]);
+ const go=(n:number)=>setActive((n+slides.length)%slides.length);
+ return <section className="tim-ad-carousel" aria-label="Bannière d’accueil et publicités partenaires" onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)} onFocusCapture={()=>setPaused(true)} onBlurCapture={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))setPaused(false)}}>
+ <style>{`
+ .tim-ad-carousel{position:relative;isolation:isolate;overflow:hidden;border-radius:15px;background:white;box-shadow:0 5px 22px #16345b18;width:100%}
+ .tim-ad-carousel .frame{position:relative;min-height:0;aspect-ratio:1362/294;background:#f5f9ff}
+ .tim-ad-carousel .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .55s ease;overflow:hidden}
+ .tim-ad-carousel .slide.current{opacity:1;visibility:visible;z-index:1}
+ .tim-ad-carousel .main-photo{display:block;width:100%;height:100%;object-fit:fill}
+ .tim-ad-carousel .advert{height:100%;display:flex;align-items:center;justify-content:flex-start;padding:clamp(20px,4vw,65px);background:linear-gradient(100deg,rgba(5,30,73,.98) 0%,rgba(5,30,73,.92) 45%,rgba(5,30,73,.2) 100%),var(--ad-image) center/cover;color:white}
+ .tim-ad-carousel .advert-copy{max-width:58%;position:relative;z-index:2}
+ .tim-ad-carousel .ad-label{display:inline-flex;padding:5px 10px;border-radius:6px;background:#ffcd0b;color:#071d45;font-weight:900;font-size:clamp(10px,1.1vw,13px);margin-bottom:8px}
+ .tim-ad-carousel .advert h2{font-size:clamp(17px,2.4vw,36px);line-height:1.13;margin:0 0 12px}
+ .tim-ad-carousel .advert p{font-size:clamp(11px,1.3vw,17px);margin:0 0 15px;line-height:1.4}
+ .tim-ad-carousel .advert a{display:inline-block;background:#ffd10b;color:#07224d;text-decoration:none;font-size:clamp(11px,1.2vw,15px);font-weight:900;border-radius:13px;padding:10px 17px}
+ .tim-ad-carousel .nav{position:absolute;z-index:3;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:36px;height:36px;background:#072b5fcc;color:white;border:1px solid #fff7;border-radius:50%;cursor:pointer;font-size:25px}
+ .tim-ad-carousel .nav.previous{left:9px}.tim-ad-carousel .nav.next{right:9px}
+ .tim-ad-carousel .dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
+ .tim-ad-carousel .dot{height:10px;width:10px;padding:0;border:1px solid #fff;border-radius:50%;background:#102b579c;cursor:pointer;box-shadow:0 1px 3px #0005}
+ .tim-ad-carousel .dot.active{background:#ffcb05;width:27px;border-radius:12px}
+ @media(max-width:650px){.tim-ad-carousel .frame{aspect-ratio:2/1}.tim-ad-carousel .main-photo{object-fit:cover}.tim-ad-carousel .advert{padding:25px 40px}.tim-ad-carousel .advert-copy{max-width:90%}.tim-ad-carousel .nav{width:28px;height:28px;font-size:19px}.tim-ad-carousel .advert h2{font-size:20px}}
+ @media(prefers-reduced-motion:reduce){.tim-ad-carousel .slide{transition:none}}
+ `}</style>
+ <div className="frame">{slides.map((s,i)=><div key={i} className={"slide "+(active===i?"current":"")} aria-hidden={active!==i}>
+ {s.kind==="image"?<img className="main-photo" src={s.image} alt={s.title} />:<div className="advert" style={{"--ad-image":`url("${s.image}")`} as React.CSSProperties}><div className="advert-copy"><span className="ad-label">PUBLICITÉ — ESPACE DE DÉMONSTRATION</span><h2>{s.title}</h2><p>{s.subtitle}</p><a href={s.url} tabIndex={active===i?0:-1}>{s.cta} →</a></div></div>}
+ </div>)}</div>
+ <button type="button" className="nav previous" onClick={()=>go(active-1)} aria-label="Bannière précédente">‹</button>
+ <button type="button" className="nav next" onClick={()=>go(active+1)} aria-label="Bannière suivante">›</button>
+ <div className="dots">{slides.map((_,i)=><button type="button" key={i} className={"dot "+(active===i?"active":"")} aria-label={"Afficher la bannière "+(i+1)} aria-current={active===i?"true":undefined} onClick={()=>go(i)}/>)}</div>
+ </section>;
+}
