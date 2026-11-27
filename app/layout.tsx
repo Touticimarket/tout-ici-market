@@ -90,6 +90,18 @@ export default function RootLayout({children}:{children:ReactNode}){
       @media(max-width:760px){.tim-header{min-height:115px!important}.tim-logo{width:clamp(210px,65vw,310px)!important}.tim-logo img{max-height:110px!important}.tim-navbar{min-height:56px}}
 
 
+      /* Lisibilité accrue de la navigation sur toutes les pages. */
+      .tim-shell{grid-template-columns:240px minmax(0,1fr);gap:14px}
+      .tim-navbar{min-height:70px;justify-content:flex-start;gap:3px}
+      .tim-navbar a{font-size:clamp(15px,1.1vw,17px);padding:17px clamp(12px,1.12vw,19px);line-height:1.35}
+      .tim-sidebar{padding:9px}
+      .tim-sidebar-title{font-size:16px;padding:13px 9px}
+      .tim-sidebar a{font-size:14px;line-height:1.35;min-height:49px;padding:12px 9px;gap:10px}
+      .tim-sidebar .tim-sidebar-icon{font-size:20px;width:24px}
+      .tim-shell:has(.auto-home) .tim-sidebar a:not(.tim-auto-sidebar-post){font-size:14px;min-height:50px}
+      @media(min-width:761px) and (max-width:1050px){.tim-shell{grid-template-columns:220px minmax(0,1fr)}.tim-navbar{justify-content:flex-start}}
+      @media(max-width:760px){.tim-shell{display:block}.tim-navbar{min-height:60px;justify-content:flex-start}.tim-navbar a{font-size:15px;padding:14px 13px}.tim-sidebar{display:flex;overflow-x:auto;white-space:nowrap}.tim-sidebar a{font-size:14px;min-height:48px;flex-shrink:0}.tim-sidebar-title{font-size:14px}}
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
