@@ -81,6 +81,23 @@ export default async function Home(){
       @media(max-width:1230px){.tim-home .popular-grid{grid-template-columns:repeat(3,minmax(0,1fr))}body:has(.tim-home) .tim-header{flex-wrap:wrap}body:has(.tim-home) .tim-header-links{margin-left:auto}.tim-home .category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
       @media(max-width:760px){.tim-home .popular-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body:has(.tim-home) .tim-shell{display:flex;flex-direction:column;padding:8px}body:has(.tim-home) .tim-sidebar{position:static;max-width:100%;white-space:nowrap;overflow:auto}body:has(.tim-home) .tim-sidebar-title{display:none}body:has(.tim-home) .tim-sidebar-image{width:34px;height:28px}body:has(.tim-home) .tim-sidebar a{min-height:35px;border-bottom:0}body:has(.tim-home) .tim-home-search{order:3;flex-basis:100%;max-width:none}body:has(.tim-home) .tim-header{min-height:auto}body:has(.tim-home) .tim-header-links{margin-left:auto}body:has(.tim-home) .tim-navbar{min-height:52px;justify-content:flex-start}.tim-home .category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tim-home .popular-head{flex-wrap:wrap}}
       @media(max-width:390px){.tim-home .category-grid{grid-template-columns:1fr}}
+      /* Accueil : rubriques plus grandes, en haut comme dans la colonne gauche. */
+      body:has(.tim-home) .tim-shell{grid-template-columns:minmax(258px,286px) minmax(0,1fr);gap:14px}
+      body:has(.tim-home) .tim-navbar{min-height:70px;justify-content:flex-start;gap:4px}
+      body:has(.tim-home) .tim-navbar a{font-size:clamp(15px,1.08vw,17px);font-weight:850;padding:16px clamp(11px,1.05vw,18px);line-height:1.3}
+      body:has(.tim-home) .tim-navbar a:first-child{font-size:0}
+      body:has(.tim-home) .tim-navbar a:first-child::before{font-size:35px}
+      body:has(.tim-home) .tim-sidebar-title{font-size:19px;padding:14px 7px 17px}
+      body:has(.tim-home) .tim-sidebar a,body:has(.tim-home) .tim-sidebar a:first-of-type{font-size:14px;line-height:1.33;min-height:58px;padding:10px 6px;gap:11px}
+      body:has(.tim-home) .tim-sidebar-image{width:55px;height:42px}
+      @media(max-width:760px){
+        body:has(.tim-home) .tim-shell{display:flex;flex-direction:column}
+        body:has(.tim-home) .tim-navbar{min-height:60px;justify-content:flex-start}
+        body:has(.tim-home) .tim-navbar a{font-size:15px;padding:14px 13px}
+        body:has(.tim-home) .tim-sidebar a,body:has(.tim-home) .tim-sidebar a:first-of-type{min-height:49px;font-size:14px;padding:9px 7px}
+        body:has(.tim-home) .tim-sidebar-image{width:42px;height:33px}
+      }
+
     `}</style>
     <HomeBannerCarousel />
     <section aria-labelledby="tim-categories-title">
