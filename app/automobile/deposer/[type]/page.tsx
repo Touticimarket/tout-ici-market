@@ -124,7 +124,7 @@ export default function DeposerVehiculeSpecialise(){
   }catch(e){setNotice(e instanceof Error?e.message:"La publication a échoué.");}
   finally{setSending(false);}
  }
- const FormField=({id,label,placeholder="",type="text"}:{id:string;label:string;placeholder?:string;type?:string})=><label>{label}<input type={type} value={f[id]||""} placeholder={placeholder} onChange={e=>field(id,e.target.value)}/></label>;
+ const renderField=(id:string,label:string,placeholder="",type="text")=><label key={id}>{label}<input type={type} value={f[id]||""} placeholder={placeholder} onChange={e=>field(id,e.target.value)}/></label>;
  return <main className="depot-vehicule-type">
  <style>{`
   .depot-vehicule-type{font-family:Arial,sans-serif;color:#08275e;background:#f5f8fe;padding:10px clamp(12px,2vw,30px) 45px;min-height:90vh}
@@ -158,24 +158,24 @@ export default function DeposerVehiculeSpecialise(){
  <section className="panel">
  {stage===0&&<><h2>1. Quel véhicule ou équipement proposez-vous ?</h2><div className="fields">
  <label>Type de {isEquipment?"produit ou service":"véhicule"}<select value={subtype} onChange={e=>setSubtype(e.target.value)}><option value="">Choisir une sous-catégorie</option>{config.choices.map(c=><option key={c.name}>{c.name}</option>)}</select></label>
- <FormField id="marque" label={isEquipment?"Marque ou fabricant":"Marque"} placeholder="Saisir la marque"/>
- <FormField id="modele" label={isEquipment?"Modèle ou référence":"Modèle"} placeholder="Saisir le modèle"/>
- <FormField id="finition" label="Version / finition (facultatif)"/>
- <FormField id="annee" label="Année" type="number"/>
- <FormField id="km" label={isEquipment?"Utilisation (si applicable)":"Kilométrage (km)"} type="number"/>
+ {renderField("marque",isEquipment?"Marque ou fabricant":"Marque","Saisir la marque")}
+ {renderField("modele",isEquipment?"Modèle ou référence":"Modèle","Saisir le modèle")}
+ {renderField("finition","Version / finition (facultatif)")}
+ {renderField("annee","Année","","number")}
+ {renderField("km",isEquipment?"Utilisation (si applicable)":"Kilométrage (km)","","number")}
  </div></>}
  {stage===1&&<><h2>2. Caractéristiques spécifiques</h2><div className="fields">
  {config.extras.map(e=><label key={e.name}>{e.label}<input value={extras[e.label]||""} onChange={ev=>setExtras(o=>({...o,[e.label]:ev.target.value}))} placeholder={e.placeholder||e.label}/></label>)}
  <label>Énergie / carburant<select value={f.energie||""} onChange={e=>field("energie",e.target.value)}><option value="">Non renseigné</option>{["Essence","Diesel","Hybride","Électrique","GPL","Autre","Sans objet"].map(x=><option key={x}>{x}</option>)}</select></label>
  <label>Boîte / transmission<select value={f.boite||""} onChange={e=>field("boite",e.target.value)}><option value="">Non renseignée</option>{["Manuelle","Automatique","Autre","Sans objet"].map(x=><option key={x}>{x}</option>)}</select></label>
- <FormField id="puissance" label="Puissance (ch, si applicable)" type="number"/>
- <FormField id="couleur" label="Couleur"/>
+ {renderField("puissance","Puissance (ch, si applicable)","","number")}
+ {renderField("couleur","Couleur")}
  <label>État<select value={f.etat||"Occasion"} onChange={e=>field("etat",e.target.value)}>{["0 km","Neuf","Occasion","Reconditionné","À réparer","Non roulant","Pour pièces"].map(x=><option key={x}>{x}</option>)}</select></label>
- <FormField id="options" label="Équipements ou options (séparés par des virgules)" placeholder="Ex. ABS, attelage, GPS"/>
+ {renderField("options","Équipements ou options (séparés par des virgules)","Ex. ABS, attelage, GPS")}
  </div></>}
  {stage===2&&<><h2>3. Photos et vidéo</h2><p>Jusqu'à 10 photos : vous pouvez les réorganiser avant la publication.</p><OrderedPhotos files={photos} onChange={setPhotos}/><label>Vidéo facultative<input type="file" accept="video/mp4,video/quicktime,video/webm" onChange={e=>setVideo(e.target.files?.[0]||null)}/></label></>}
- {stage===3&&<><h2>4. Décrivez votre annonce</h2><div className="fields"><FormField id="titre" label="Titre de l’annonce" placeholder={config.title+" — marque et modèle"}/><FormField id="prix" label="Prix demandé (€)" type="number"/></div><label style={{marginTop:16}}>Description<textarea value={f.description||""} placeholder="État, historique, équipements, précisions sur la vente..." onChange={e=>field("description",e.target.value)}/></label></>}
- {stage===4&&<><h2>5. Localisation et coordonnées</h2><p>Choisissez une commune française dans la liste.</p><FranceLocation selected={location} onChange={setLocation}/><div className="fields" style={{marginTop:18}}><FormField id="email" label="E-mail de contact" type="email"/><FormField id="telephone" label="Téléphone de contact" type="tel"/></div></>}
+ {stage===3&&<><h2>4. Décrivez votre annonce</h2><div className="fields">{renderField("titre","Titre de l’annonce",config.title+" — marque et modèle")}{renderField("prix","Prix demandé (€)","","number")}</div><label style={{marginTop:16}}>Description<textarea value={f.description||""} placeholder="État, historique, équipements, précisions sur la vente..." onChange={e=>field("description",e.target.value)}/></label></>}
+ {stage===4&&<><h2>5. Localisation et coordonnées</h2><p>Choisissez une commune française dans la liste.</p><FranceLocation selected={location} onChange={setLocation}/><div className="fields" style={{marginTop:18}}>{renderField("email","E-mail de contact","","email")}{renderField("telephone","Téléphone de contact","","tel")}</div></>}
  {stage===5&&<><h2>6. Récapitulatif</h2><div className="recap"><b>Catégorie</b><span>{config.title}</span><b>Type</b><span>{subtype||"À préciser"}</span><b>Marque / modèle</b><span>{f.marque} {f.modele}</span><b>Année / km</b><span>{f.annee||"—"} / {f.km||"—"}</span><b>Prix</b><span>{f.prix||"—"} €</span><b>Commune</b><span>{location?.nom||"—"}</span><b>Photos</b><span>{photos.length}</span><b>Description</b><span>{f.description||"—"}</span></div><p>Vous pouvez revenir aux étapes précédentes pour apporter des corrections.</p></>}
  {stage===6&&<><h2>7. Publier votre annonce</h2><p>Dernière vérification avant de rendre votre annonce visible sur TOUT ICI ANNONCES.</p><label style={{display:"flex",flexDirection:"row",alignItems:"center",gap:9}}><input type="checkbox" style={{width:18,height:18}} checked={confirm} onChange={e=>setConfirm(e.target.checked)}/> Je confirme que les informations sont exactes et que je suis autorisé à publier cette annonce.</label><button type="button" className="publish" style={{marginTop:20}} disabled={sending} onClick={publish}>{sending?"Publication en cours…":"Publier mon annonce"}</button></>}
  {notice&&<div className="notice" role="status">{notice}</div>}
