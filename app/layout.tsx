@@ -284,6 +284,55 @@ export default function RootLayout({children}:{children:ReactNode}){
         }
       }
 
+
+      /* Retour aux captures validées : bandeau de navigation bleu nuit et catégories illustrées. */
+      html body .tim-header,
+      html body:has(.tim-home) .tim-header,
+      html body:has(.tim-account-dashboard) .tim-header{
+        background:linear-gradient(108deg,#051b49 0%,#052660 57%,#04143e 100%)!important;
+        color:#fff!important;
+        min-height:95px!important;
+        border-bottom:1px solid #173c79!important;
+        padding:12px clamp(14px,2vw,32px)!important;
+      }
+      html body .tim-header .tim-logo,
+      html body:has(.tim-home) .tim-header .tim-logo,
+      html body:has(.tim-account-dashboard) .tim-header .tim-logo{width:clamp(225px,21vw,315px)!important}
+      html body .tim-header .tim-logo img,
+      html body:has(.tim-home) .tim-header .tim-logo img{max-height:102px!important}
+      html body .tim-header .tim-logo-caption{color:#fff!important}
+      html body .tim-header .tim-header-links a:not(.tim-post),
+      html body:has(.tim-home) .tim-header .tim-header-links a:not(.tim-post),
+      html body:has(.tim-account-dashboard) .tim-header .tim-header-links a:not(.tim-post){color:#fff!important}
+      html body .tim-navbar,
+      html body:has(.tim-home) .tim-navbar,
+      html body:has(.tim-account-dashboard) .tim-navbar{
+        background:linear-gradient(#07417a,#052653)!important;
+        border-bottom:3px solid #ffcb08!important;
+        color:#fff!important;
+        min-height:53px!important;
+      }
+      html body .tim-navbar a,
+      html body:has(.tim-home) .tim-navbar a,
+      html body:has(.tim-account-dashboard) .tim-navbar a{color:#fff!important;font-size:clamp(14px,1.05vw,17px)!important;padding:13px clamp(9px,.9vw,16px)!important}
+      html body .tim-navbar a:is(:hover,:focus-visible),
+      html body:has(.tim-home) .tim-navbar a:is(:hover,:focus-visible),
+      html body:has(.tim-account-dashboard) .tim-navbar a:is(:hover,:focus-visible){background:#ffcc00!important;color:#082453!important}
+      html body .tim-sidebar .tim-sidebar-image,
+      html body:has(.tim-home) .tim-sidebar .tim-sidebar-image{display:block!important;width:45px!important;height:42px!important;object-fit:cover!important;border-radius:9px!important}
+      html body .tim-sidebar a,
+      html body:has(.tim-home) .tim-sidebar a{font-size:13px!important}
+      html body .tim-sidebar a:is(:hover,:focus-visible),
+      html body:has(.tim-home) .tim-sidebar a:is(:hover,:focus-visible){background:#ffcc00!important;color:#082453!important}
+      @media(max-width:760px){
+        html body .tim-header,
+        html body:has(.tim-home) .tim-header{min-height:85px!important}
+        html body .tim-header .tim-logo,
+        html body:has(.tim-home) .tim-header .tim-logo{width:clamp(185px,53vw,260px)!important}
+        html body .tim-navbar,
+        html body:has(.tim-home) .tim-navbar{justify-content:flex-start!important;overflow-x:auto!important}
+      }
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
