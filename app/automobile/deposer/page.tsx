@@ -204,7 +204,10 @@ export default function DeposerAutoPage() {
       <style>{`
         .depot-auto{color:#0a2452;background:#f1f6fd;font-family:Arial,Helvetica,sans-serif;min-height:100vh;padding-bottom:50px}
         .depot-auto *{box-sizing:border-box}
-        .depot-auto .banner{width:100%;min-height:210px;background:linear-gradient(90deg,rgba(0,25,65,.9),rgba(0,41,98,.14)),url("/bandeau-depot-bmw.svg") center/cover;display:flex;align-items:center;padding:30px clamp(16px,3vw,48px);border-radius:15px;overflow:hidden}
+        .depot-auto .deposit-breadcrumb{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:9px 13px;margin:0 0 11px;background:#f1f7ff;border:1px solid #dce8f6;border-radius:11px;font-size:14px;font-weight:800;color:#09265b}
+        .depot-auto .deposit-breadcrumb a{color:#0a4ba1;text-decoration:none}
+        .depot-auto .deposit-breadcrumb a:hover{text-decoration:underline}
+        .depot-auto .banner{width:100%;min-height:210px;background:linear-gradient(90deg,rgba(0,25,65,.9),rgba(0,41,98,.14)),url("/bandeau-depot-bmw.webp") center/cover;display:flex;align-items:center;padding:30px clamp(16px,3vw,48px);border-radius:15px;overflow:hidden}
         .depot-auto .banner{display:block!important;min-height:0!important;height:auto!important;padding:0!important;background:none!important;border-radius:13px;overflow:hidden;margin-bottom:12px;box-shadow:0 4px 18px rgba(0,24,68,.16)}
         .depot-auto .banner img{display:block;width:100%;height:auto;aspect-ratio:3.4 / 1;object-fit:cover;object-position:center center;image-rendering:auto}
                 .depot-auto .banner-copy{max-width:520px;color:white}
@@ -264,7 +267,7 @@ export default function DeposerAutoPage() {
         .depot-auto select,.depot-auto .field input,.depot-auto textarea{min-height:36px;padding:9px;font-size:13px;border-radius:7px}
         .depot-auto .immat-lookup{margin-bottom:12px;padding:13px;border-radius:9px}
         .depot-auto .immat-lookup h3{font-size:15px}
-        .depot-auto .banner{min-height:205px;margin-bottom:10px;background-image:linear-gradient(90deg,rgba(0,16,48,.91),rgba(0,21,62,.12)),url("/bandeau-depot-bmw.svg");background-position:center;background-size:cover}
+        .depot-auto .banner{min-height:205px;margin-bottom:10px;background-image:linear-gradient(90deg,rgba(0,16,48,.91),rgba(0,21,62,.12)),url("/bandeau-depot-bmw.webp");background-position:center;background-size:cover}
         .depot-auto .banner-copy{max-width:570px}
         .depot-auto .banner h1{font-size:clamp(24px,2.9vw,39px)}
         .depot-auto .depot-main{min-width:0}
@@ -321,8 +324,9 @@ export default function DeposerAutoPage() {
         @media(max-width:800px){.depot-auto .page-grid{grid-template-columns:1fr}.depot-auto .depot-progress{position:static}.depot-auto .fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(max-width:520px){.depot-auto .fields,.depot-auto .equip-list{grid-template-columns:1fr}.depot-auto .form-section{padding:19px}.depot-auto .section-title{font-size:22px}.depot-auto .intro h2{font-size:25px}.depot-auto .field{font-size:17px}}
       `}</style>
+      <div className="deposit-breadcrumb"><a href="/deposer">← Choisir une autre catégorie</a><span>Automobile &amp; Véhicules</span></div>
       <section className="banner" aria-label="Déposez votre annonce automobile en quelques minutes — BMW et encart MIA">
-        <img src="/bandeau-depot-bmw.svg" alt="Déposez votre annonce automobile en quelques minutes, visuel BMW et informations MIA" />
+        <img src="/bandeau-depot-bmw.webp" alt="Déposez votre annonce automobile en quelques minutes, visuel BMW et informations MIA" />
       </section>
       <div className="page-grid">
        <aside className="depot-progress" aria-label="Étapes du dépôt automobile">
