@@ -78,6 +78,10 @@ export default function DeposerVehiculeSpecialise(){
  const next=()=>{setNotice("");if(stage===0&&(!subtype||!f.marque?.trim()||!f.modele?.trim())){setNotice("Renseignez le type, la marque et le modèle ou la référence.");return;}if(stage===3&&(!f.prix||Number(f.prix)<0||!f.description?.trim())){setNotice("Indiquez un prix et une description.");return;}if(stage===4&&!location){setNotice("Sélectionnez une commune française.");return;}setStage(o=>Math.min(o+1,6));window.scrollTo({top:0,behavior:"smooth"});};
  const previous=()=>{setNotice("");setStage(o=>Math.max(o-1,0));window.scrollTo({top:0,behavior:"smooth"});};
  async function publish(){
+  if(!subtype||!f.marque?.trim()||!f.modele?.trim()){setNotice("Choisissez le type et renseignez la marque et le modèle.");return;}
+  if(!f.description?.trim()||!f.prix||Number(f.prix)<0){setNotice("Une description et un prix valide sont obligatoires.");return;}
+  if(f.annee&&(Number(f.annee)<1900||Number(f.annee)>new Date().getFullYear()+1)){setNotice("Vérifiez l'année indiquée.");return;}
+  if(f.km&&Number(f.km)<0){setNotice("Le kilométrage ne peut pas être négatif.");return;}
   if(!confirm){setNotice("Confirmez l’exactitude des informations avant publication.");return;}
   if(!location){setNotice("La localisation est obligatoire.");return;}
   const {data:{user}}=await supabase.auth.getUser();
