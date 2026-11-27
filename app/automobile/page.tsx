@@ -159,7 +159,6 @@ export default function AutomobilePage(){
 .auto-home .equip-icon svg{width:46px!important;height:46px!important}
 @media(max-width:760px){.auto-home .main-panel{padding:12px!important}.auto-home .cards{gap:12px!important}.auto-home .tile-title{font-size:17px!important}.auto-home .tile-description{font-size:13px!important}}
  `}</style>
- <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Photographie panoramique : berline bleue, utilitaire, moto, camping-car, bateau et vélo au bord d’un lac de montagne" /><div className="hero-title"><strong>Véhicules</strong><span>Vendez ou achetez tous types de véhicules et équipements</span></div></div>
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
