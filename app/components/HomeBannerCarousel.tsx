@@ -2,7 +2,6 @@
 import {useEffect,useState} from "react";
 type Slide={kind:"image"|"ad";image?:string;title:string;subtitle?:string;url?:string;cta?:string};
 const slides:Slide[]=[
- {kind:"image",image:"/accueil-reel/bandeau-carrousel.svg",title:"Vendre, trouver, acheter — Tout ici"},
  {kind:"ad",title:"Votre publicité automobile ici",subtitle:"Garages et professionnels : présentez vos offres aux visiteurs de TOUT ICI ANNONCES.",cta:"Découvrir les annonces",url:"/automobile",image:"/auto-reel/bandeau.svg"},
  {kind:"ad",title:"Votre publicité immobilière ici",subtitle:"Un espace premium pour les agences et les acteurs de l'immobilier.",cta:"Voir l'immobilier",url:"/immobilier",image:"/accueil-reel/bandeau.svg"}
 ];
@@ -43,7 +42,7 @@ export default function HomeBannerCarousel(){
  @media(prefers-reduced-motion:reduce){.tim-ad-carousel .slide{transition:none}}
  `}</style>
  <div className="frame">{slides.map((s,i)=><div key={i} className={"slide "+(active===i?"current":"")} aria-hidden={active!==i}>
- {s.kind==="image"?<img className="main-photo" src={s.image} alt={s.title} />:<div className="advert" style={{"--ad-image":`url("${s.image}")`} as React.CSSProperties}><div className="advert-copy"><span className="ad-label">PUBLICITÉ — ESPACE DE DÉMONSTRATION</span><h2>{s.title}</h2><p>{s.subtitle}</p><a href={s.url} tabIndex={active===i?0:-1}>{s.cta} →</a></div><span className="photo-caption">{i===1?"AUTOMOBILE":"IMMOBILIER"}</span></div>}
+ {s.kind==="image"?<img className="main-photo" src={s.image} alt={s.title} />:<div className="advert" style={{"--ad-image":`url("${s.image}")`} as React.CSSProperties}><div className="advert-copy"><span className="ad-label">PUBLICITÉ — ESPACE DE DÉMONSTRATION</span><h2>{s.title}</h2><p>{s.subtitle}</p><a href={s.url} tabIndex={active===i?0:-1}>{s.cta} →</a></div><span className="photo-caption">{i===0?"AUTOMOBILE":"IMMOBILIER"}</span></div>}
  </div>)}</div>
  <button type="button" className="nav previous" onClick={()=>go(active-1)} aria-label="Bannière précédente">‹</button>
  <button type="button" className="nav next" onClick={()=>go(active+1)} aria-label="Bannière suivante">›</button>
