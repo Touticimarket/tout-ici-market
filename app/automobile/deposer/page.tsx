@@ -39,6 +39,10 @@ export default function DeposerVehiculeAccueil(){
   @media(max-width:1200px){.vehicle-depot-chooser .cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
   @media(max-width:760px){.vehicle-depot-chooser .cards{grid-template-columns:repeat(2,minmax(0,1fr))}.vehicle-depot-chooser .accessories{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:440px){.vehicle-depot-chooser .cards{grid-template-columns:1fr}}
+
+  /* Les petites photos conservent leur cadrage dans leur vignette. */
+  .vehicle-depot-chooser .card-picture{display:block;width:100%;aspect-ratio:1.72/1;min-height:110px;background-color:#eff5fb;background-repeat:no-repeat;background-size:500% 200%}
+  .vehicle-depot-chooser .card-body{min-height:105px}
  `}</style>
  <header className="intro"><a href="/deposer">← Retour au choix des catégories</a><h1>Déposer une annonce — Automobile & véhicules</h1><p>Choisissez d'abord votre type de véhicule. Chaque rubrique ouvre son propre formulaire, avec des informations adaptées à votre annonce. Aucune publicité sur ces pages.</p></header>
  <h2>Quel véhicule souhaitez-vous vendre ?</h2>
