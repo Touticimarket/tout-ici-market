@@ -42,7 +42,7 @@ const vehiculeTabs=[
  {slug:"remorques",label:"Remorques",image:"/auto-reel/remorques.svg"},
  {slug:"velos",label:"Vélos",image:"/auto-reel/velos.svg"},
  {slug:"nautisme",label:"Nautisme",image:"/auto-reel/nautisme.svg"},
- {slug:"autres-vehicules",label:"Autres véhicules",image:"https://images.unsplash.com/photo-1685335686020-e0b487f7f426?auto=format&fit=crop&w=600&q=85"}
+ {slug:"autres-vehicules",label:"Autres véhicules",image:"https://images.unsplash.com/photo-1666011866606-f95e4f23836e?auto=format&fit=crop&w=800&q=85"}
 ];
 const equipementTabs=[
  {slug:"equipement-auto",label:"Équipement auto",Icon:CircleDot,photo:"https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=480&h=280&q=80"},
