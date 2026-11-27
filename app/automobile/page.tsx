@@ -212,7 +212,7 @@ export default function AutomobilePage(){
  <section className="main-panel"><h1>Choisissez une sous-catégorie</h1>
  <p className="subtitle">dans la rubrique Automobile &amp; Véhicules</p>
  <div className="cards">{categories.map(c=><a className="category" key={c.slug} href={"/automobile/"+c.slug}>
- <div className="tile-photo"><div className="exact-photo" style={c.slug==="autres-vehicules"?{backgroundImage:"url(https://images.unsplash.com/photo-1685335686020-e0b487f7f426?auto=format&fit=crop&w=900&q=85)",backgroundPosition:"center",backgroundSize:"cover"}:undefined} role="img" aria-label={"Photo : "+c.name}/></div>
+ <div className="tile-photo"><div className="exact-photo" style={c.slug==="autres-vehicules"?{backgroundImage:"url(https://images.unsplash.com/photo-1666011866606-f95e4f23836e?auto=format&fit=crop&w=800&q=85)",backgroundPosition:"center",backgroundSize:"cover"}:undefined} role="img" aria-label={"Photo : "+c.name}/></div>
  <div className="tile-copy"><div className="tile-title"><span>{c.name}</span><span className="arrow"><ChevronRight size={17}/></span></div><p className="tile-description">{c.description}</p></div>
  </a>)}</div>
  <div className="equip-section"><h2>Équipements &amp; Services</h2>
