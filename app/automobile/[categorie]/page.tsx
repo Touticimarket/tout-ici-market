@@ -31,6 +31,18 @@ const categories:Record<string,{title:string;icon:string;dbTypes:string[]}>={
 "entretien-consommables":{title:"Entretien & Consommables",icon:"🧰",dbTypes:["entretien-consommables"]},
 "autres-equipements":{title:"Autres équipements & services",icon:"⚙️",dbTypes:["autres-equipements"]}
 };
+const vehiculeTabs=[
+ {slug:"voitures",label:"Automobiles",icon:"🚘"},
+ {slug:"motos",label:"Motos & Scooters",icon:"🏍️"},
+ {slug:"utilitaires",label:"Utilitaires",icon:"🚐"},
+ {slug:"camions",label:"Camions",icon:"🚚"},
+ {slug:"caravaning",label:"Caravaning",icon:"🚍"},
+ {slug:"remorques",label:"Remorques",icon:"🛻"},
+ {slug:"velos",label:"Vélos",icon:"🚲"},
+ {slug:"nautisme",label:"Nautisme",icon:"⛵"},
+ {slug:"equipement-auto",label:"Équipement auto",icon:"⚙️"},
+ {slug:"services-mecaniques",label:"Services mécaniques",icon:"🛠️"}
+];
 export default function CategorieVehicules(){
 const params=useParams();const slug=typeof params.categorie==="string"?params.categorie:"";
 const category=categories[slug];
@@ -222,6 +234,23 @@ return <main className="vehicles-sub">
 .vehicles-sub .inner{padding-top:14px!important}
 @media(max-width:880px){.vehicles-sub .vehicles-search-callout{flex-wrap:wrap}.vehicles-sub .vehicles-search-brand{min-width:0}.vehicles-sub .vehicles-search-explain{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.vehicles-sub .vehicles-search-callout>a{max-width:none;width:100%}.vehicles-sub .vehicles-search-brand{border-right:0}.vehicles-sub .vehicles-search-explain{font-size:11px}}
+
+.vehicles-sub .vehicle-tabs{display:flex;align-items:stretch;gap:8px;overflow-x:auto;max-width:100%;padding:12px 12px 6px;background:#fff;scrollbar-width:thin}
+.vehicles-sub .vehicle-tab{flex:0 0 122px;min-height:84px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;text-decoration:none;color:#091f4f;background:#fff;border:1px solid #dbe5f1;border-radius:12px;padding:9px 7px;position:relative;text-align:center}
+.vehicles-sub .vehicle-tab>span:first-child{font-size:27px;line-height:1}
+.vehicles-sub .vehicle-tab strong{font-size:12px;line-height:1.2;font-weight:850}
+.vehicles-sub .vehicle-tab .vehicle-tab-chevron{position:absolute;right:7px;bottom:5px;color:#1447a8;font-size:19px}
+.vehicles-sub .vehicle-tab.selected,.vehicles-sub .vehicle-tab:hover,.vehicles-sub .vehicle-tab:focus-visible{background:#fff5cd;border-color:#ffca00;outline:none}
+.vehicles-sub .search-layout{grid-template-columns:minmax(245px,290px) minmax(0,1fr);gap:14px}
+.vehicles-sub .search-sidebar{padding:15px;border:1px solid #d6e2ef;border-radius:13px}
+.vehicles-sub .filter-heading h2{font-size:21px}
+.vehicles-sub .results-bar{margin:10px 0 14px}
+.vehicles-sub .results-bar h2{font-size:clamp(19px,1.7vw,26px);color:#08265a}
+.vehicles-sub .ads{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.vehicles-sub .ads article{padding:10px;border-radius:12px}
+.vehicles-sub .ads article h3{font-size:16px;line-height:1.25;margin:9px 0 6px}
+.vehicles-sub .ads .price{font-size:21px}
+@media(max-width:900px){.vehicles-sub .search-layout{grid-template-columns:1fr}}
 `}</style>
 <section className="hero vehicles-photo-hero" aria-label="Automobile et véhicules">
 <img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules : sélection de voitures" />
@@ -229,6 +258,9 @@ return <main className="vehicles-sub">
 </section>
 <section className="vehicles-search-callout"><div className="vehicles-search-brand"><span aria-hidden="true">⌕</span><strong>TOUT ICI <em>TROUVE POUR VOUS</em></strong></div><div className="vehicles-search-copy"><strong>Vous recherchez un véhicule ?</strong><span>Filtrez les annonces selon votre marque, votre budget et votre localisation.</span></div><a href="#filtres-vehicules">◎ Créer ma recherche personnalisée</a></section>
 <div className="vehicles-search-explain"><span>◎ Décrivez votre recherche</span><span>⌕ Nous cherchons les annonces</span><span>♧ Enregistrez vos critères</span><span>✓ Contactez les vendeurs</span></div>
+<nav className="vehicle-tabs" aria-label="Choisir le type de véhicule">
+ {vehiculeTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-tab "+(slug===t.slug?"selected":"")} aria-current={slug===t.slug?"page":undefined}><span aria-hidden="true">{t.icon}</span><strong>{t.label}</strong><span className="vehicle-tab-chevron" aria-hidden="true">›</span></a>)}
+</nav>
 <div className="inner">
 {<div className="search-layout">
 <aside id="filtres-vehicules" className="search-sidebar" aria-label="Filtres de recherche automobile">
