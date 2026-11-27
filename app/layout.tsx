@@ -333,6 +333,54 @@ export default function RootLayout({children}:{children:ReactNode}){
         html body:has(.tim-home) .tim-navbar{justify-content:flex-start!important;overflow-x:auto!important}
       }
 
+
+      /* Charte confirmée : en-tête logo entièrement blanc ; navigation inférieure distincte. */
+      html body .tim-header,
+      html body:has(.tim-home) .tim-header,
+      html body:has(.tim-account-dashboard) .tim-header{
+        background:#fff!important;
+        background-image:none!important;
+        color:#0a285d!important;
+        border-bottom:1px solid #dce5f1!important;
+        box-shadow:0 2px 12px rgba(8,34,73,.06)!important;
+      }
+      html body .tim-header .tim-logo-caption,
+      html body:has(.tim-home) .tim-header .tim-logo-caption,
+      html body:has(.tim-account-dashboard) .tim-header .tim-logo-caption{color:#163a75!important}
+      html body .tim-header .tim-header-links a:not(.tim-post),
+      html body:has(.tim-home) .tim-header .tim-header-links a:not(.tim-post),
+      html body:has(.tim-account-dashboard) .tim-header .tim-header-links a:not(.tim-post){color:#102d65!important}
+      /* Rubriques de gauche : mêmes tailles de texte que les liens du menu supérieur. */
+      html body .tim-shell,
+      html body:has(.tim-home) .tim-shell{grid-template-columns:255px minmax(0,1fr)!important}
+      html body .tim-sidebar,
+      html body:has(.tim-home) .tim-sidebar{min-width:0!important}
+      html body .tim-sidebar-title,
+      html body:has(.tim-home) .tim-sidebar-title{font-size:16px!important;line-height:1.3!important;padding:13px 9px!important}
+      html body .tim-sidebar a:not(.tim-auto-sidebar-post),
+      html body:has(.tim-home) .tim-sidebar a:not(.tim-auto-sidebar-post),
+      html body:has(.tim-account-dashboard) .tim-sidebar a:not(.tim-auto-sidebar-post){
+        font-size:clamp(14px,1.05vw,17px)!important;
+        line-height:1.3!important;
+        min-height:53px!important;
+        padding:10px 8px!important;
+        gap:10px!important;
+      }
+      html body .tim-sidebar .tim-sidebar-image,
+      html body:has(.tim-home) .tim-sidebar .tim-sidebar-image{width:43px!important;height:39px!important}
+      @media(min-width:761px) and (max-width:1100px){
+        html body .tim-shell,
+        html body:has(.tim-home) .tim-shell{grid-template-columns:235px minmax(0,1fr)!important}
+      }
+      @media(max-width:760px){
+        html body .tim-shell,
+        html body:has(.tim-home) .tim-shell{display:flex!important;flex-direction:column!important}
+        html body .tim-sidebar,
+        html body:has(.tim-home) .tim-sidebar{max-width:100%!important;overflow-x:auto!important}
+        html body .tim-sidebar a:not(.tim-auto-sidebar-post),
+        html body:has(.tim-home) .tim-sidebar a:not(.tim-auto-sidebar-post){font-size:14px!important;min-height:45px!important}
+      }
+
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
