@@ -4,7 +4,7 @@ type Slide={kind:"image"|"ad";image?:string;title:string;subtitle?:string;url?:s
 const slides:Slide[]=[
  {kind:"image",image:"/accueil-reel/bandeau-carrousel.svg",title:"Vendre, trouver, acheter — Tout ici"},
  {kind:"ad",title:"Votre publicité automobile ici",subtitle:"Garages et professionnels : présentez vos offres aux visiteurs de TOUT ICI ANNONCES.",cta:"Découvrir les annonces",url:"/automobile",image:"/auto-reel/bandeau.svg"},
- {kind:"ad",title:"Votre publicité immobilière ici",subtitle:"Un espace premium pour les agences et les acteurs de l'immobilier.",cta:"Voir l'immobilier",url:"/immobilier",image:"/accueil-reel/immobilier.svg"}
+ {kind:"ad",title:"Votre publicité immobilière ici",subtitle:"Un espace premium pour les agences et les acteurs de l'immobilier.",cta:"Voir l'immobilier",url:"/immobilier",image:"/accueil-valide/bandeau.svg"}
 ];
 export default function HomeBannerCarousel(){
  const [active,setActive]=useState(0);
@@ -19,22 +19,22 @@ export default function HomeBannerCarousel(){
  return <section className="tim-ad-carousel" aria-label="Bannière d’accueil et publicités partenaires" onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)} onFocusCapture={()=>setPaused(true)} onBlurCapture={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))setPaused(false)}}>
  <style>{`
  .tim-ad-carousel{position:relative;isolation:isolate;overflow:hidden;border-radius:15px;background:white;box-shadow:0 5px 22px #16345b18;width:100%}
- .tim-ad-carousel .frame{position:relative;min-height:0;aspect-ratio:3/1;background:#f5f9ff}
+ .tim-ad-carousel .frame{position:relative;min-height:0;aspect-ratio:1362/294;background:#f5f9ff}
  .tim-ad-carousel .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .55s ease;overflow:hidden}
  .tim-ad-carousel .slide.current{opacity:1;visibility:visible;z-index:1}
- .tim-ad-carousel .main-photo{display:block;width:100%;height:100%;object-fit:contain}
+ .tim-ad-carousel .main-photo{display:block;width:100%;height:100%;object-fit:cover;image-rendering:auto}
  .tim-ad-carousel .advert{height:100%;display:flex;align-items:center;justify-content:flex-start;padding:clamp(20px,4vw,65px);background:linear-gradient(100deg,rgba(5,30,73,.98) 0%,rgba(5,30,73,.92) 45%,rgba(5,30,73,.2) 100%),var(--ad-image) center/cover;color:white}
- .tim-ad-carousel .advert-copy{max-width:58%;position:relative;z-index:2}
+ .tim-ad-carousel .advert-copy{max-width:66%;position:relative;z-index:2;text-shadow:0 1px 3px #021327}
  .tim-ad-carousel .ad-label{display:inline-flex;padding:5px 10px;border-radius:6px;background:#ffcd0b;color:#071d45;font-weight:900;font-size:clamp(10px,1.1vw,13px);margin-bottom:8px}
- .tim-ad-carousel .advert h2{font-size:clamp(17px,2.4vw,36px);line-height:1.13;margin:0 0 12px}
- .tim-ad-carousel .advert p{font-size:clamp(11px,1.3vw,17px);margin:0 0 15px;line-height:1.4}
- .tim-ad-carousel .advert a{display:inline-block;background:#ffd10b;color:#07224d;text-decoration:none;font-size:clamp(11px,1.2vw,15px);font-weight:900;border-radius:13px;padding:10px 17px}
+ .tim-ad-carousel .advert h2{font-size:clamp(22px,2.4vw,38px);line-height:1.12;margin:0 0 12px;font-weight:900;letter-spacing:-.02em}
+ .tim-ad-carousel .advert p{font-size:clamp(14px,1.35vw,18px);margin:0 0 16px;line-height:1.45;font-weight:650}
+ .tim-ad-carousel .advert a{display:inline-block;background:#ffd10b;color:#07224d;text-decoration:none;font-size:clamp(13px,1.2vw,16px);font-weight:900;border-radius:13px;padding:10px 17px}
  .tim-ad-carousel .nav{position:absolute;z-index:3;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:36px;height:36px;background:#072b5fcc;color:white;border:1px solid #fff7;border-radius:50%;cursor:pointer;font-size:25px}
  .tim-ad-carousel .nav.previous{left:9px}.tim-ad-carousel .nav.next{right:9px}
  .tim-ad-carousel .dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
  .tim-ad-carousel .dot{height:10px;width:10px;padding:0;border:1px solid #fff;border-radius:50%;background:#102b579c;cursor:pointer;box-shadow:0 1px 3px #0005}
  .tim-ad-carousel .dot.active{background:#ffcb05;width:27px;border-radius:12px}
- @media(max-width:650px){.tim-ad-carousel .frame{aspect-ratio:3/1}.tim-ad-carousel .main-photo{object-fit:contain}.tim-ad-carousel .advert{padding:25px 40px}.tim-ad-carousel .advert-copy{max-width:90%}.tim-ad-carousel .nav{width:28px;height:28px;font-size:19px}.tim-ad-carousel .advert h2{font-size:20px}}
+ @media(max-width:650px){.tim-ad-carousel .frame{aspect-ratio:2/1}.tim-ad-carousel .main-photo{object-fit:cover}.tim-ad-carousel .advert{padding:25px 40px}.tim-ad-carousel .advert-copy{max-width:100%}.tim-ad-carousel .nav{width:28px;height:28px;font-size:19px}.tim-ad-carousel .advert h2{font-size:clamp(19px,5vw,25px)}.tim-ad-carousel .advert p{font-size:13px}.tim-ad-carousel .ad-label{font-size:10px}}
  @media(prefers-reduced-motion:reduce){.tim-ad-carousel .slide{transition:none}}
  `}</style>
  <div className="frame">{slides.map((s,i)=><div key={i} className={"slide "+(active===i?"current":"")} aria-hidden={active!==i}>
