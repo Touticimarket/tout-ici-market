@@ -16,11 +16,11 @@ return <main className="depot-entry">
 <style>{`
 body:has(.depot-entry){background:#f8fafe!important}
 /* Page de dépôt : la liste Rubriques reste compacte à gauche, sans occuper la page. */
-html body:has(.depot-entry) .tim-shell{display:grid!important;grid-template-columns:205px minmax(0,1fr)!important;gap:14px!important;max-width:1800px!important;padding:12px 14px!important;margin:0 auto!important;align-items:start!important}
-html body:has(.depot-entry) .tim-sidebar{display:block!important;position:sticky!important;top:12px!important;width:auto!important;max-width:205px!important;padding:7px!important;border-radius:12px!important}
-html body:has(.depot-entry) .tim-sidebar-title{display:block!important;font-size:13px!important;padding:9px 7px!important}
-html body:has(.depot-entry) .tim-sidebar a:not(.tim-auto-sidebar-post){min-height:39px!important;padding:7px 5px!important;gap:7px!important;font-size:11px!important;line-height:1.25!important}
-html body:has(.depot-entry) .tim-sidebar .tim-sidebar-image{width:30px!important;height:29px!important;border-radius:6px!important;flex-shrink:0!important}
+html body:has(.depot-entry) .tim-shell{display:grid!important;grid-template-columns:255px minmax(0,1fr)!important;gap:14px!important;max-width:1800px!important;padding:12px 14px!important;margin:0 auto!important;align-items:start!important}
+html body:has(.depot-entry) .tim-sidebar{display:block!important;position:sticky!important;top:12px!important;width:auto!important;max-width:255px!important;padding:8px!important;border-radius:12px!important}
+html body:has(.depot-entry) .tim-sidebar-title{display:block!important;font-size:16px!important;padding:12px 8px!important}
+html body:has(.depot-entry) .tim-sidebar a:not(.tim-auto-sidebar-post){min-height:53px!important;padding:10px 7px!important;gap:9px!important;font-size:clamp(14px,1.05vw,17px)!important;line-height:1.25!important}
+html body:has(.depot-entry) .tim-sidebar .tim-sidebar-image{width:42px!important;height:38px!important;border-radius:6px!important;flex-shrink:0!important}
 html body:has(.depot-entry) .tim-sidebar .tim-sidebar-icon{display:none!important}
 html body:has(.depot-entry) .tim-content{display:block!important;min-width:0!important;width:100%!important}
 html body:has(.depot-entry) .depot-entry{padding:0 0 24px!important;min-width:0!important}
