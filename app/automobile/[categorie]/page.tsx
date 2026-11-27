@@ -42,7 +42,8 @@ const vehiculeTabs=[
  {slug:"services-mecaniques",label:"Services mécaniques",image:"/auto-reel/services-mecaniques-icone.svg"},
  {slug:"remorques",label:"Remorques",image:"/auto-reel/remorques.svg"},
  {slug:"nautisme",label:"Nautisme",image:"/auto-reel/nautisme.svg"},
- {slug:"vans-amenages",label:"Vans aménagés",image:"/auto-reel/vans-amenages.svg"}
+ {slug:"vans-amenages",label:"Vans aménagés",image:"/auto-reel/vans-amenages.svg"},
+ {slug:"autres-vehicules",label:"Autres véhicules",image:"/auto-reel/autres-vehicules.svg"}
 ];
 /* Positions identiques à la grille Automobile validée : 5 colonnes x 2 rangées. */
 const tabPhotoPositions={
@@ -337,7 +338,6 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
  flex:0 0 88px!important;
  border-radius:8px!important;
  background-repeat:no-repeat!important;
- background-position:center!important;
  mix-blend-mode:normal!important;
  background-color:#eef5fd!important;
 }
