@@ -12,13 +12,12 @@ const categories=[
  {name:"Autres véhicules",description:"Tracteurs, engins agricoles et véhicules spécifiques...",slug:"autres-vehicules",image:"https://images.unsplash.com/photo-1689791649990-03f270b73ce3?auto=format&fit=crop&w=1200&q=85"},
 ];
 const equipements=[
- {name:"Équipement auto",icon:<CircleDot size={33}/>,slug:"equipement-auto",photo:"https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=480&h=280&q=80"},
  {name:"Équipement caravaning",icon:<Caravan size={33}/>,slug:"equipement-caravaning",photo:"/auto-reel/caravaning.svg"},
  {name:"Équipement nautisme",icon:<Sailboat size={33}/>,slug:"equipement-nautisme",photo:"/auto-reel/nautisme.svg"},
  {name:"Équipements vélos",icon:<Bike size={33}/>,slug:"equipement-velos",photo:"/auto-reel/velos.svg"},
  {name:"Services de réparation mécanique",icon:<Wrench size={33}/>,slug:"services-mecaniques",photo:"https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=480&h=280&q=80"},
  {name:"Pneus & Jantes",icon:<CircleDot size={33}/>,slug:"pneus-jantes",photo:"https://images.unsplash.com/photo-1760688966178-a3745cc0e722?auto=format&fit=crop&w=480&h=280&q=80"},
- {name:"Pièces & Accessoires",icon:<Armchair size={33}/>,slug:"pieces-accessoires",photo:"https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=480&h=280&q=80"},
+ {name:"Pièces & Accessoires auto",icon:<Armchair size={33}/>,slug:"pieces-accessoires",photo:"https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=480&h=280&q=80"},
  {name:"Entretien & Consommables",icon:<Droplet size={33}/>,slug:"entretien-consommables",photo:"https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=480&h=280&q=80"},
 ];
 export default function AutomobilePage(){
@@ -201,6 +200,19 @@ export default function AutomobilePage(){
 .auto-home .equip-tile:hover,.auto-home .equip-tile:focus-visible{background:#fff0bc!important;border-color:#eeb900!important}
 @media(max-width:1400px){.auto-home .equip-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 @media(max-width:650px){.auto-home .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.auto-home .equip-tile{min-height:170px!important}.auto-home .equip-tile .equip-photo{height:78px;flex-basis:78px}}
+
+/* Images identiques pour toutes les catégories Automobile et Équipements. */
+.auto-home .cards,.auto-home .equip-grid{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:14px!important;align-items:stretch!important}
+.auto-home .category,.auto-home .equip-tile{min-width:0!important;height:100%!important;border-radius:14px!important;overflow:hidden!important}
+.auto-home .tile-photo{width:100%!important;aspect-ratio:1.72!important;height:auto!important;overflow:hidden!important}
+.auto-home .equip-tile{display:flex!important;flex-direction:column!important;padding:0 0 12px!important;gap:7px!important;justify-content:flex-start!important;min-height:0!important}
+.auto-home .equip-tile .equip-photo{display:block!important;width:100%!important;height:auto!important;aspect-ratio:1.72!important;flex:0 0 auto!important;object-fit:cover!important;object-position:center!important;border-radius:0!important}
+.auto-home .equip-tile .equip-icon{height:29px!important;flex-shrink:0!important}
+.auto-home .equip-tile .equip-icon svg{width:27px!important;height:27px!important}
+.auto-home .equip-tile>span:last-child{font-size:clamp(15px,1.15vw,20px)!important;line-height:1.3!important;font-weight:850!important;padding:0 9px!important}
+@media(max-width:1180px){.auto-home .cards,.auto-home .equip-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:760px){.auto-home .cards,.auto-home .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}}
+@media(max-width:440px){.auto-home .cards,.auto-home .equip-grid{grid-template-columns:1fr!important}}
  `}</style>
  <div className="hero"><img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules — sélection de voitures" /></div>
  <section className="auto-search-callout" aria-label="Recherche personnalisée de véhicule">
