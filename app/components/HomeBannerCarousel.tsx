@@ -27,7 +27,10 @@ export default function HomeBannerCarousel(){
  .tim-ad-carousel .frame{position:relative;min-height:0;aspect-ratio:1362/294;background:#f5f9ff}
  .tim-ad-carousel .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .55s ease;overflow:hidden}
  .tim-ad-carousel .slide.current{opacity:1;visibility:visible;z-index:1}
- .tim-ad-carousel .slide:has(.main-photo){background:linear-gradient(112deg,#072b63,#1687c8 48%,#d4edff);}\n .tim-ad-carousel .main-photo{display:block;width:100%;height:100%;object-fit:cover;image-rendering:auto}
+ .tim-ad-carousel .slide:has(.main-photo){background:linear-gradient(112deg,#072b63,#1687c8 48%,#d4edff);}\n .tim-ad-carousel .main-stage{position:relative;width:100%;height:100%;overflow:hidden;background:linear-gradient(115deg,#0c3b78,#59b2e9 55%,#dbf4ff)}
+ .tim-ad-carousel .main-fallback{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:3px;color:#092b60;font-size:clamp(18px,3vw,43px);font-weight:900;padding:12px}
+ .tim-ad-carousel .main-fallback strong{color:#ffc20b;font-size:clamp(35px,6vw,100px);line-height:1.05}
+ .tim-ad-carousel .main-photo{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:cover;image-rendering:auto}
  .tim-ad-carousel .advert{height:100%;display:flex;align-items:center;justify-content:flex-start;padding:clamp(18px,3.3vw,48px);background:linear-gradient(105deg,#071c43 0%,#0a306b 52%,#071c43 100%);color:white;position:relative}
  .tim-ad-carousel .advert::before{content:"";position:absolute;inset:0 0 0 46%;background-image:var(--ad-image);background-size:cover;background-position:center;filter:contrast(1.08) saturate(1.1);z-index:0}
  .tim-ad-carousel .advert::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#071c43 0%,#071c43 38%,rgba(7,28,67,.94) 49%,rgba(7,28,67,.12) 73%,transparent 100%);z-index:1;pointer-events:none}
@@ -48,7 +51,7 @@ export default function HomeBannerCarousel(){
  @media(prefers-reduced-motion:reduce){.tim-ad-carousel .slide{transition:none}}
  `}</style>
  <div className="frame">{slides.map((s,i)=><div key={i} className={"slide "+(active===i?"current":"")} aria-hidden={active!==i}>
- {s.kind==="image"?<img className="main-photo" src={s.image} alt={s.title} onError={e=>{e.currentTarget.style.display="none"}} />:<div className="advert" style={{"--ad-image":`url("${s.image}")`} as React.CSSProperties}><div className="advert-copy"><span className="ad-label">PUBLICITÉ — ESPACE DE DÉMONSTRATION</span><h2>{s.title}</h2><p>{s.subtitle}</p><a href={s.url} tabIndex={active===i?0:-1}>{s.cta} →</a></div><span className="photo-caption">{i===1?"AUTOMOBILE":i===3?"IMMOBILIER":"MATÉRIEL PRO"}</span></div>}
+ {s.kind==="image"?<div className="main-stage"><div className="main-fallback"><span>Vendre, trouver, acheter</span><strong>Tout ici</strong></div><img className="main-photo" src={s.image} alt={s.title} onError={e=>{e.currentTarget.style.display="none"}} /></div>:<div className="advert" style={{"--ad-image":`url("${s.image}")`} as React.CSSProperties}><div className="advert-copy"><span className="ad-label">PUBLICITÉ — ESPACE DE DÉMONSTRATION</span><h2>{s.title}</h2><p>{s.subtitle}</p><a href={s.url} tabIndex={active===i?0:-1}>{s.cta} →</a></div><span className="photo-caption">{i===1?"AUTOMOBILE":i===3?"IMMOBILIER":"MATÉRIEL PRO"}</span></div>}
  </div>)}</div>
  <button type="button" className="nav previous" onClick={()=>go(active-1)} aria-label="Bannière précédente">‹</button>
  <button type="button" className="nav next" onClick={()=>go(active+1)} aria-label="Bannière suivante">›</button>
