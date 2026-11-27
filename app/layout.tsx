@@ -536,8 +536,8 @@ export default function RootLayout({children}:{children:ReactNode}){
 
       /* Menu plus fin, enrichi de raccourcis de consultation. */
       html body .tim-sidebar .tim-vehicle-shortcuts{display:grid!important;gap:3px!important;margin:1px 3px 9px 13px!important;padding-left:9px!important;border-left:2px solid #ffd322!important}
-      html body .tim-sidebar .tim-vehicle-shortcuts a{display:block!important;color:#e9f1ff!important;font-size:12px!important;line-height:1.2!important;min-height:0!important;padding:6px 7px!important;border:0!important;border-radius:7px!important;text-decoration:none!important;background:#ffffff12!important}
-      html body .tim-sidebar .tim-vehicle-shortcuts a:hover,html body .tim-sidebar .tim-vehicle-shortcuts a:focus-visible{background:#ffd322!important;color:#05285d!important}
+      html body .tim-sidebar .tim-vehicle-shortcuts a:not(.tim-auto-sidebar-post), html body:has(.depot-entry) .tim-sidebar .tim-vehicle-shortcuts a:not(.tim-auto-sidebar-post){display:block!important;color:#e9f1ff!important;font-size:12px!important;line-height:1.2!important;min-height:0!important;padding:6px 7px!important;border:0!important;border-radius:7px!important;text-decoration:none!important;background:#ffffff12!important}
+      html body .tim-sidebar .tim-vehicle-shortcuts a:not(.tim-auto-sidebar-post):hover,html body .tim-sidebar .tim-vehicle-shortcuts a:not(.tim-auto-sidebar-post):focus-visible{background:#ffd322!important;color:#05285d!important}
     `}</style>
     <header className="tim-header">
       <a className="tim-logo" href="/" aria-label="Accueil TOUT ICI ANNONCES"><img src="/tout-ici-annonces-officiel.svg" alt="TOUT ICI ANNONCES"/><span className="tim-logo-caption">Site d’annonces gratuites pour les particuliers</span></a>
