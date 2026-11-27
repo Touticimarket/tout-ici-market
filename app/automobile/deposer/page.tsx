@@ -415,7 +415,7 @@ export default function DeposerAutoPage() {
                 <div className="fields">
           <label className="field">Carrosserie
             <select value={form.carrosserie} onChange={e=>setForm({...form,carrosserie:e.target.value})}>
-              <option value="">Choisir</option>{["Citadine","Berline","Break","SUV","Crossover","Coupé","Cabriolet","Monospace","4x4","Pick-up","Autre"].map(v=><option key={v}>{v}</option>)}
+              <option value="">Choisir</option>{["Citadine","Berline","Break","SUV","Crossover","Coupé","Cabriolet","Monospace","4x4","Pick-up","Collection","Autre"].map(v=><option key={v}>{v}</option>)}
             </select>
           </label>
           <label className="field">Couleur
