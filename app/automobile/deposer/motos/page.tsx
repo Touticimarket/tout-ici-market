@@ -3,15 +3,15 @@ import {useState} from "react";
 import {supabase} from "../../../lib/supabaseClient";
 import {FranceLocation,OrderedPhotos,type Commune} from "../PhotosLocalisation";
 
-type MotoType={title:string;dbType:string;icon:string};
+type MotoType={title:string;dbType:string;icon:string;photoIndex?:number};
 const types:MotoType[]=[
- {title:"Roadster",dbType:"moto",icon:"🏍️"},
- {title:"Sportive",dbType:"moto",icon:"🏍️"},
- {title:"Trail / Adventure",dbType:"moto",icon:"🏍️"},
- {title:"Custom",dbType:"moto",icon:"🏍️"},
- {title:"GT / Routière",dbType:"moto",icon:"🏍️"},
- {title:"Enduro",dbType:"moto",icon:"🏍️"},
- {title:"Cross",dbType:"moto",icon:"🏍️"},
+ {title:"Roadster",dbType:"moto",icon:"🏍️",photoIndex:2},
+ {title:"Sportive",dbType:"moto",icon:"🏍️",photoIndex:0},
+ {title:"Trail / Adventure",dbType:"moto",icon:"🏍️",photoIndex:1},
+ {title:"Custom",dbType:"moto",icon:"🏍️",photoIndex:2},
+ {title:"GT / Routière",dbType:"moto",icon:"🏍️",photoIndex:1},
+ {title:"Enduro",dbType:"moto",icon:"🏍️",photoIndex:3},
+ {title:"Cross",dbType:"moto",icon:"🏍️",photoIndex:4},
  {title:"Scooter",dbType:"scooter",icon:"🛵"},
  {title:"Quad",dbType:"quad",icon:"🛞"},
  {title:"Autre",dbType:"moto",icon:"🏍️"}
@@ -159,11 +159,40 @@ export default function DeposerAnnonceMoto(){
  .moto-deposit .moto-type .type-icon{width:100%!important;height:59px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:31px!important;line-height:1!important;border-radius:7px!important;background:#eef5ff!important}
  .moto-deposit .moto-type span:last-child{font-size:13px!important;line-height:1.25!important}
  @media(max-width:580px){.moto-deposit .moto-hero-copy{width:91%!important}.moto-deposit .moto-hero .moto-veil{background:linear-gradient(90deg,#021e44f5 0%,#04244de6 63%,#07366a70 100%)!important}}
+
+
+ /* Exactly the validated motorcycle banner, no overlay, no repetition. */
+ .moto-deposit .moto-hero{
+  display:block!important;
+  height:auto!important;min-height:0!important;
+  aspect-ratio:2172 / 724!important;
+  overflow:hidden!important;background:#f3f6fc!important;
+  margin-bottom:12px!important;
+ }
+ .moto-deposit .moto-hero-image{
+  display:block!important;width:100%!important;height:100%!important;
+  object-fit:contain!important;object-position:center!important;
+ }
+ .moto-deposit .moto-type{min-width:0!important;padding:5px!important}
+ .moto-deposit .moto-type .type-icon{
+  display:block!important;width:100%!important;height:auto!important;
+  aspect-ratio:275 / 168!important;border-radius:7px!important;
+  background-color:#e9f3fd!important;
+  background-size:500% 100%;
+  font-size:29px!important;line-height:65px!important;
+  text-align:center!important;overflow:hidden!important;
+ }
+ .moto-deposit .moto-type{height:auto!important;min-height:112px!important}
+ .moto-deposit .moto-help-picture{
+  width:100%;height:auto;aspect-ratio:275 / 168;
+  background-image:url('/auto-reel/moto-types-sprite.webp');
+  background-repeat:no-repeat;background-size:500% 100%;background-position:50% center;
+  background-color:#e8f1fa;
+ }
+ @media(max-width:580px){.moto-deposit .moto-hero{height:auto!important;aspect-ratio:2172 / 724!important}.moto-deposit .moto-type .type-icon{aspect-ratio:275 / 168!important}}
  `}</style>
  <header className="moto-hero">
-  <div className="moto-landscape"/><div className="moto-veil"/>
-  <div className="moto-showcase" aria-hidden="true"><img src="/auto-reel/motos.svg" alt=""/></div>
-  <div className="moto-hero-copy"><span className="moto-hero-label">🏍️ Moto</span><h1>Déposez votre annonce moto <strong>en quelques minutes</strong></h1><p>Vendez votre moto simplement et gratuitement sur <b>TOUT ICI ANNONCES</b>.</p></div>
+  <img className="moto-hero-image" src="/auto-reel/bandeau-depot-moto.webp" alt="Déposez votre annonce moto en quelques minutes — motos trail, sportive et custom devant un paysage de montagne, avec les garanties MIA" />
  </header>
  <nav className="moto-steps" aria-label="Étapes du dépôt de moto">{labels.map((label,i)=><button key={label} type="button" className={i===step?"current":""} onClick={()=>move(i)}><b>{i+1}</b>{label}</button>)}</nav>
  <div className="moto-step-layout"><section className="moto-panel">
@@ -180,14 +209,14 @@ export default function DeposerAnnonceMoto(){
  {input("annee","Année de mise en circulation *","Ex. 2021","number")}
  {select("carburant","Carburant *",["Essence","Électrique","Hybride","Autre"])}
  {select("permis","Permis",["AM","A1","A2","A","Sans permis","Non précisé"])}
- </div><h3>Type de moto (catégorie)</h3><div className="type-grid">{types.map(t=><button key={t.title} className={"moto-type"+(type===t.title?" active":"")} type="button" onClick={()=>setType(t.title)}><span className="type-icon">{t.icon}</span><span>{t.title}</span></button>)}</div></>}
+ </div><h3>Type de moto (catégorie)</h3><div className="type-grid">{types.map(t=><button key={t.title} className={"moto-type"+(type===t.title?" active":"")} type="button" onClick={()=>setType(t.title)}><span className="type-icon" style={t.photoIndex===undefined?undefined:{backgroundImage:"url('/auto-reel/moto-types-sprite.webp')",backgroundSize:"500% 100%",backgroundRepeat:"no-repeat",backgroundPosition:(t.photoIndex*25)+"% center"}}>{t.photoIndex===undefined?t.icon:""}</span><span>{t.title}</span></button>)}</div></>}
  {step===1&&<><h2>Étape 2/6 – Photos et vidéo</h2><p>Ajoutez jusqu’à 10 photos de votre moto. Vous pouvez modifier leur ordre.</p><OrderedPhotos files={photos} onChange={setPhotos}/><label style={{marginTop:18}}>Vidéo (facultative)<input type="file" accept="video/mp4,video/webm,video/quicktime" onChange={e=>setVideo(e.target.files?.[0]||null)}/></label></>}
  {step===2&&<><h2>Étape 3/6 – Description et prix</h2><div className="moto-fields">{input("titre","Titre de l’annonce","Ex. BMW R 1250 GS 2021")}{input("prix","Prix demandé (€) *","Ex. 9 900","number")}</div><label style={{marginTop:16}}>Description détaillée *<textarea value={f.description||""} onChange={e=>field("description",e.target.value)} placeholder="État de la moto, historique, entretien, factures, raisons de la vente..."/></label></>}
  {step===3&&<><h2>Étape 4/6 – Localisation et coordonnées</h2><FranceLocation selected={location} onChange={setLocation}/><div className="moto-fields" style={{marginTop:16}}>{input("email","E-mail de contact","","email")}{input("telephone","Téléphone de contact","","tel")}</div></>}
  {step===4&&<><h2>Étape 5/6 – Récapitulatif</h2><dl className="moto-recap"><dt>Catégorie</dt><dd>{type}</dd><dt>Marque et modèle</dt><dd>{f.marque} {f.modele}</dd><dt>Année / kilomètres</dt><dd>{f.annee} / {f.kilometrage} km</dd><dt>Puissance / cylindrée</dt><dd>{f.puissance} ch / {f.cylindree} cm³</dd><dt>Prix</dt><dd>{f.prix} €</dd><dt>Commune</dt><dd>{location?.nom||"Non renseignée"}</dd><dt>Photos</dt><dd>{photos.length}</dd><dt>Description</dt><dd>{f.description||"—"}</dd></dl></>}
  {step===5&&<><h2>Étape 6/6 – Publication</h2><p>Vérifiez les informations avant de publier votre moto.</p><label style={{flexDirection:"row",alignItems:"center",gap:10}}><input type="checkbox" style={{width:20,height:20}} checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/> Je confirme que les informations sont exactes.</label></>}
  <div className="moto-nav"><button type="button" className="back" disabled={step===0} onClick={()=>move(step-1)}>← Précédent</button>{step<5?<button type="button" onClick={()=>move(step+1)}>Suivant →</button>:<button type="button" onClick={publish} disabled={sending}>{sending?"Publication en cours…":"Publier mon annonce →"}</button>}</div>
- </section><aside className="moto-help"><h3>💡 Conseils pour votre annonce</h3><ul>{checks.map(t=><li key={t}>{t}</li>)}</ul><img src="/auto-reel/motos.svg" alt="Moto pour illustrer l'annonce"/></aside></div>
+ </section><aside className="moto-help"><h3>💡 Conseils pour votre annonce</h3><ul>{checks.map(t=><li key={t}>{t}</li>)}</ul><div className="moto-help-picture" role="img" aria-label="Moto custom photographiée devant un paysage de montagne"/></aside></div>
  {message&&<div className="moto-message" role="status">{message}</div>}
  </main>;
 }
