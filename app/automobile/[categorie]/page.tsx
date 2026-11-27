@@ -17,7 +17,7 @@ const categories:Record<string,{title:string;icon:string;dbTypes:string[]}>={
 "caravaning":{title:"Caravaning",icon:"🚍",dbTypes:["caravaning","camping-car","camping-cars","caravane"]},
 "camping-cars":{title:"Caravaning",icon:"🚍",dbTypes:["caravaning","camping-car","camping-cars","caravane"]},
 "remorques":{title:"Remorques",icon:"🛻",dbTypes:["remorque","remorques"]},
-"motos":{title:"Motos & Scooters",icon:"🏍️",dbTypes:["moto","motos","scooter","scooters","quad"]},
+"motos":{title:"Motos, Scooters & Quads",icon:"🏍️",dbTypes:["moto","motos","scooter","scooters","quad","quads"]},
 "velos":{title:"Vélos",icon:"🚲",dbTypes:["velo","velos","vélo","vélos","vae"]},
 "nautisme":{title:"Nautisme",icon:"⛵",dbTypes:["nautisme","bateau","bateaux","jet-ski","voilier"]},
 "vans-amenages":{title:"Vans & Aménagés",icon:"🚐",dbTypes:["van","van-amenage","vans-amenages","fourgon-amenage"]},
@@ -34,7 +34,7 @@ const categories:Record<string,{title:string;icon:string;dbTypes:string[]}>={
 };
 const vehiculeTabs=[
  {slug:"voitures",label:"Automobiles",image:"/auto-reel/voitures.svg"},
- {slug:"motos",label:"Motos & Scooters",image:"/auto-reel/motos.svg"},
+ {slug:"motos",label:"Motos, Scooters & Quads",image:"/auto-reel/motos.svg"},
  {slug:"caravaning",label:"Camping-cars & Caravaning",image:"/auto-reel/caravaning.svg"},
  {slug:"vans-amenages",label:"Vans aménagés",image:"/auto-reel/vans-amenages.svg"},
  {slug:"utilitaires",label:"Utilitaires",image:"/auto-reel/utilitaires.svg"},
@@ -42,24 +42,24 @@ const vehiculeTabs=[
  {slug:"remorques",label:"Remorques",image:"/auto-reel/remorques.svg"},
  {slug:"velos",label:"Vélos",image:"/auto-reel/velos.svg"},
  {slug:"nautisme",label:"Nautisme",image:"/auto-reel/nautisme.svg"},
- {slug:"autres-vehicules",label:"Autres véhicules",image:"/auto-reel/autres-vehicules.svg"}
+ {slug:"autres-vehicules",label:"Autres véhicules",image:"https://images.unsplash.com/photo-1685335686020-e0b487f7f426?auto=format&fit=crop&w=600&q=85"}
 ];
 const equipementTabs=[
- {slug:"equipement-auto",label:"Équipement auto",Icon:CircleDot},
- {slug:"equipement-caravaning",label:"Équipement caravaning",Icon:Caravan},
- {slug:"equipement-nautisme",label:"Équipement nautisme",Icon:Sailboat},
- {slug:"equipement-velos",label:"Équipements vélos",Icon:Bike},
- {slug:"services-mecaniques",label:"Services de réparation mécanique",Icon:Wrench},
- {slug:"pneus-jantes",label:"Pneus & Jantes",Icon:Disc3},
- {slug:"pieces-accessoires",label:"Pièces & Accessoires",Icon:Armchair},
- {slug:"entretien-consommables",label:"Entretien & Consommables",Icon:Droplet}
+ {slug:"equipement-auto",label:"Équipement auto",Icon:CircleDot,photo:"https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=480&h=280&q=80"},
+ {slug:"equipement-caravaning",label:"Équipement caravaning",Icon:Caravan,photo:"/auto-reel/caravaning.svg"},
+ {slug:"equipement-nautisme",label:"Équipement nautisme",Icon:Sailboat,photo:"/auto-reel/nautisme.svg"},
+ {slug:"equipement-velos",label:"Équipements vélos",Icon:Bike,photo:"/auto-reel/velos.svg"},
+ {slug:"services-mecaniques",label:"Services de réparation mécanique",Icon:Wrench,photo:"https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=480&h=280&q=80"},
+ {slug:"pneus-jantes",label:"Pneus & Jantes",Icon:Disc3,photo:"https://images.unsplash.com/photo-1760688966178-a3745cc0e722?auto=format&fit=crop&w=480&h=280&q=80"},
+ {slug:"pieces-accessoires",label:"Pièces & Accessoires",Icon:Armchair,photo:"https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=480&h=280&q=80"},
+ {slug:"entretien-consommables",label:"Entretien & Consommables",Icon:Droplet,photo:"https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=480&h=280&q=80"}
 ];
 /* Positions identiques à la grille Automobile validée : 5 colonnes x 2 rangées. */
 const tabPhotoPositions={
  voitures:"0% 0%",utilitaires:"25% 0%",camions:"50% 0%",
  caravaning:"75% 0%",remorques:"100% 0%",motos:"0% 100%",
  velos:"25% 100%",nautisme:"50% 100%",
- "vans-amenages":"75% 100%","autres-vehicules":"100% 100%"
+ "vans-amenages":"75% 100%"
 } as const;
 export default function CategorieVehicules(){
 const params=useParams();const slug=typeof params.categorie==="string"?params.categorie:"";
@@ -78,7 +78,7 @@ const [puissanceMin,setPuissanceMin]=useState("");const [puissanceMax,setPuissan
 const [departement,setDepartement]=useState("");const [motCle,setMotCle]=useState("");
 const [equipements,setEquipements]=useState<string[]>([]);
 const [couleur,setCouleur]=useState("");const [portes,setPortes]=useState("");const [places,setPlaces]=useState("");const [carrosserie,setCarrosserie]=useState("");
-const carrosseries=["Citadine","Berline","Break","SUV","Crossover","Coupé","Cabriolet","Monospace","4x4","Pick-up","Autre"];
+const carrosseries=["Citadine","Berline","Break","SUV","Crossover","Coupé","Cabriolet","Monospace","4x4","Pick-up","Collection","Autre"];
 const couleurs=["Blanc","Noir","Gris","Argent","Bleu","Rouge","Vert","Jaune","Orange","Marron","Beige","Autre"];
 const listeEquipements=["GPS","Apple CarPlay","Android Auto","Caméra recul","Caméra 360","Radar arrière","Sièges chauffants","Toit panoramique","Régulateur adaptatif","Attelage","Feux LED","Jantes alu"];
 const toggleEquipement=(item:string)=>setEquipements(old=>old.includes(item)?old.filter(x=>x!==item):[...old,item]);
@@ -372,6 +372,15 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
 .vehicles-sub .vehicle-equipment-tab:hover,.vehicles-sub .vehicle-equipment-tab:focus-visible,.vehicles-sub .vehicle-equipment-tab.selected{background:#fff0b5;border-color:#ffc800;color:#092858;outline:none}
 @media(max-width:1350px){.vehicles-sub .vehicle-equipment-tabs{display:flex;overflow-x:auto;gap:9px;padding-bottom:7px;scrollbar-width:thin}.vehicles-sub .vehicle-equipment-tab{flex:0 0 150px;min-height:108px}}
 @media(max-width:600px){.vehicles-sub .vehicle-equipment-tab{flex-basis:135px;min-height:103px}.vehicles-sub .vehicle-equipment-tab span{font-size:12px}}
+
+/* Photo, pictogramme et libellé : cartes d'équipement de style homogène. */
+.vehicles-sub .vehicle-equipment-tabs{align-items:stretch}
+.vehicles-sub .vehicle-equipment-tab{justify-content:flex-start;min-height:170px!important;padding:7px 7px 12px!important;gap:7px!important;overflow:hidden}
+.vehicles-sub .vehicle-equipment-tab .vehicle-equipment-photo{display:block;width:100%;height:89px;flex:0 0 89px;object-fit:cover;border-radius:9px;background:#e9f2fb}
+.vehicles-sub .vehicle-equipment-tab svg{height:25px;width:25px}
+.vehicles-sub .vehicle-equipment-tab span{font-size:13px;line-height:1.18;font-weight:850}
+.vehicles-sub .vehicle-tab:not(.selected) .vehicle-tab-photo:not(.vehicle-tab-photo-exact){background-size:cover!important}
+@media(max-width:600px){.vehicles-sub .vehicle-equipment-tab{min-height:157px!important}.vehicles-sub .vehicle-equipment-tab .vehicle-equipment-photo{height:78px;flex-basis:78px}}
 `}</style>
 <section className="hero vehicles-photo-hero" aria-label="Automobile et véhicules">
 <img src="/auto-reel/bandeau.svg" alt="Automobile et véhicules : sélection de voitures" />
@@ -382,14 +391,14 @@ html body:has(.vehicles-sub) .tim-shell>.tim-content{
 <div className="vehicle-tabs-wrap" aria-label="Parcourir les catégories de véhicules">
  <button className="vehicle-tabs-arrow" type="button" aria-label="Voir les catégories précédentes" onClick={()=>tabsScrollRef.current?.scrollBy({left:-480,behavior:"smooth"})}>‹</button>
  <nav ref={tabsScrollRef} className="vehicle-tabs" aria-label="Choisir le type de véhicule">
- {vehiculeTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-tab "+(slug===t.slug?"selected":"")} aria-current={slug===t.slug?"page":undefined}><span className={"vehicle-tab-photo"+(Object.prototype.hasOwnProperty.call(tabPhotoPositions,t.slug)?" vehicle-tab-photo-exact":"")} style={Object.prototype.hasOwnProperty.call(tabPhotoPositions,t.slug)?{backgroundPosition:tabPhotoPositions[t.slug as keyof typeof tabPhotoPositions]}:{backgroundImage:"url("+t.image+")",backgroundSize:"contain"}} role="img" aria-label={"Illustration : "+t.label}/><strong>{t.label}</strong><span className="vehicle-tab-chevron" aria-hidden="true">›</span></a>)}
+ {vehiculeTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-tab "+(slug===t.slug?"selected":"")} aria-current={slug===t.slug?"page":undefined}><span className={"vehicle-tab-photo"+(Object.prototype.hasOwnProperty.call(tabPhotoPositions,t.slug)?" vehicle-tab-photo-exact":"")} style={Object.prototype.hasOwnProperty.call(tabPhotoPositions,t.slug)?{backgroundPosition:tabPhotoPositions[t.slug as keyof typeof tabPhotoPositions]}:{backgroundImage:"url("+t.image+")",backgroundSize:t.slug==="autres-vehicules"?"cover":"contain"}} role="img" aria-label={"Illustration : "+t.label}/><strong>{t.label}</strong><span className="vehicle-tab-chevron" aria-hidden="true">›</span></a>)}
  </nav>
  <button className="vehicle-tabs-arrow" type="button" aria-label="Voir les catégories suivantes" onClick={()=>tabsScrollRef.current?.scrollBy({left:480,behavior:"smooth"})}>›</button>
 </div>
 <section className="vehicle-equipment-section" aria-label="Équipements et services de véhicules">
  <h2>Équipements &amp; Services</h2>
  <nav className="vehicle-equipment-tabs" aria-label="Choisir un équipement ou service">
- {equipementTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-equipment-tab"+(slug===t.slug?" selected":"")} aria-current={slug===t.slug?"page":undefined}><t.Icon size={31} strokeWidth={2.2} aria-hidden="true"/><span>{t.label}</span></a>)}
+ {equipementTabs.map(t=><a key={t.slug} href={"/automobile/"+t.slug} className={"vehicle-equipment-tab"+(slug===t.slug?" selected":"")} aria-current={slug===t.slug?"page":undefined}><img className="vehicle-equipment-photo" src={t.photo} alt="" loading="lazy" onError={e=>{e.currentTarget.style.display="none"}}/><t.Icon size={27} strokeWidth={2.2} aria-hidden="true"/><span>{t.label}</span></a>)}
  </nav>
 </section>
 <div className="inner">
